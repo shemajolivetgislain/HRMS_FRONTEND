@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "header": "Tech Innovators Ltd",
+    "type": "Technology",
+    "status": "Active",
+    "target": "456",
+    "limit": "Enterprise",
+    "reviewer": "New York"
+  },
+  {
+    "id": 2,
+    "header": "Global Finance Corp",
+    "type": "Finance",
+    "status": "Pending",
+    "target": "389",
+    "limit": "Pro",
+    "reviewer": "London"
+  },
+  {
+    "id": 3,
+    "header": "Healthcare Plus Inc",
+    "type": "Healthcare",
+    "status": "Active",
+    "target": "278",
+    "limit": "Basic",
+    "reviewer": "Toronto"
+  },
+  {
+    "id": 4,
+    "header": "Retail Solutions LLC",
+    "type": "Retail",
+    "status": "Active",
+    "target": "245",
+    "limit": "Pro",
+    "reviewer": "London"
+  },
+  {
+    "id": 5,
+    "header": "Manufacturing Co",
+    "type": "Manufacturing",
+    "status": "Suspended",
+    "target": "198",
+    "limit": "Basic",
+    "reviewer": "Sydney"
+  },
+  {
+    "id": 6,
+    "header": "EduTech Systems",
+    "type": "Education",
+    "status": "Active",
+    "target": "150",
+    "limit": "Pro",
+    "reviewer": "New York"
+  },
+  {
+    "id": 7,
+    "header": "Green Energy Solutions",
+    "type": "Energy",
+    "status": "Pending",
+    "target": "320",
+    "limit": "Enterprise",
+    "reviewer": "Toronto"
+  },
+  {
+    "id": 8,
+    "header": "Logistics Pro",
+    "type": "Transportation",
+    "status": "Active",
+    "target": "890",
+    "limit": "Enterprise",
+    "reviewer": "London"
+  },
+  {
+    "id": 9,
+    "header": "Creative Media Agency",
+    "type": "Media",
+    "status": "Active",
+    "target": "45",
+    "limit": "Basic",
+    "reviewer": "New York"
+  },
+  {
+    "id": 10,
+    "header": "Food Delivery Express",
+    "type": "Hospitality",
+    "status": "Suspended",
+    "target": "560",
+    "limit": "Pro",
+    "reviewer": "Sydney"
+  },
+  {
+    "id": 11,
+    "header": "Cyber Security Experts",
+    "type": "Technology",
+    "status": "Active",
+    "target": "120",
+    "limit": "Pro",
+    "reviewer": "Toronto"
+  },
+  {
+    "id": 12,
+    "header": "Real Estate Ventures",
+    "type": "Real Estate",
+    "status": "Active",
+    "target": "75",
+    "limit": "Basic",
+    "reviewer": "New York"
+  }
+]

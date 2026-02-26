@@ -1,5 +1,4 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -33,7 +32,7 @@
   --chart-3: oklch(0.546 0.245 262.881);
   --chart-4: oklch(0.488 0.243 264.376);
   --chart-5: oklch(0.424 0.199 265.638);
-  --radius: 0.45rem;
+  --radius: 0.25rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.546 0.245 262.881);
@@ -64,7 +63,7 @@
   --accent-foreground: oklch(0.985 0 0);
   --success: oklch(0.65 0.15 142);
   --success-foreground: oklch(0.12 0 0);
-  --warning: oklch(0.80 0.15 60);
+  --warning: oklch(0.8 0.15 60);
   --warning-foreground: oklch(0.12 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.12 0 0);
@@ -88,7 +87,7 @@
 
 @theme inline {
   --font-sans: var(--font-sans);
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
