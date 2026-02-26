@@ -6,6 +6,8 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons'
 import {
   Select,
   SelectContent,
@@ -14,7 +16,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { Eye, EyeOff } from 'lucide-react'
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('profile')
@@ -304,11 +305,7 @@ export default function SettingsPage() {
                       onClick={() => setShowApiKey(!showApiKey)}
                       className="text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      {showApiKey ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
+                      <HugeiconsIcon icon={showApiKey ? ViewOffIcon : ViewIcon} className="w-4 h-4" />
                     </button>
                   </div>
                   <Button variant="outline" onClick={() => navigator.clipboard.writeText('sk_live_51234567890abcdefghijk')}>

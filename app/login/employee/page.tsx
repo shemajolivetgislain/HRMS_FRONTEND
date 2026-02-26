@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Eye, EyeOff, ChevronRight } from 'lucide-react'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { ViewIcon, ViewOffIcon, ArrowRight01Icon } from '@hugeicons/core-free-icons'
 
 export default function EmployeeLoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -86,7 +87,7 @@ export default function EmployeeLoginPage() {
             <Label htmlFor="password" className="text-sm">
               Password
             </Label>
-            <Link href="/auth/forgot-password" className="text-xs text-primary hover:underline">
+            <Link href="/auth/forgot-password" hidden className="text-xs text-primary hover:underline">
               Forgot password?
             </Link>
           </div>
@@ -105,11 +106,7 @@ export default function EmployeeLoginPage() {
               className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground transition-colors"
               tabIndex={-1}
             >
-              {showPassword ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
+              <HugeiconsIcon icon={showPassword ? ViewOffIcon : ViewIcon} className="w-4 h-4" />
             </button>
           </div>
           {errors.password && (
@@ -135,7 +132,7 @@ export default function EmployeeLoginPage() {
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium group"
         >
           Sign In
-          <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
+          <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
         </Button>
 
         {/* Divider */}
@@ -155,11 +152,9 @@ export default function EmployeeLoginPage() {
           type="button"
           variant="outline"
           className="w-full border-border"
-          asChild
+          render={<Link href="/login" />}
         >
-          <Link href="/login">
-            Sign in as Admin
-          </Link>
+          Sign in as Admin
         </Button>
 
         {/* Footer */}

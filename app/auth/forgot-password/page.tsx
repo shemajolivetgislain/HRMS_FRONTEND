@@ -6,7 +6,8 @@ import { AuthCard } from '@/components/auth/auth-card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ArrowLeft, ChevronRight, Mail } from 'lucide-react'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { ArrowLeft01Icon, ArrowRight01Icon, Mail01Icon } from '@hugeicons/core-free-icons'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
@@ -54,7 +55,7 @@ export default function ForgotPasswordPage() {
           {/* Success Icon */}
           <div className="flex items-center justify-center">
             <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center">
-              <Mail className="w-8 h-8 text-success" />
+              <HugeiconsIcon icon={Mail01Icon} className="w-8 h-8 text-success" />
             </div>
           </div>
 
@@ -101,12 +102,10 @@ export default function ForgotPasswordPage() {
           <Button
             variant="ghost"
             className="w-full text-muted-foreground hover:text-foreground"
-            asChild
+            render={<Link href="/login" />}
           >
-            <Link href="/login">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Login
-            </Link>
+            <HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4 mr-2" />
+            Back to Login
           </Button>
         </div>
       </AuthCard>
@@ -153,7 +152,7 @@ export default function ForgotPasswordPage() {
         >
           {isLoading ? 'Sending...' : 'Send Reset Link'}
           {!isLoading && (
-            <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
+            <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
           )}
         </Button>
 
@@ -174,11 +173,9 @@ export default function ForgotPasswordPage() {
           type="button"
           variant="outline"
           className="w-full border-border"
-          asChild
+          render={<Link href="/login" />}
         >
-          <Link href="/login">
-            Sign In
-          </Link>
+          Sign In
         </Button>
       </form>
     </AuthCard>

@@ -1,72 +1,78 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import Link from 'next/link'
-import { AuthCard } from '@/components/auth/auth-card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { PasswordStrengthIndicator } from '@/components/auth/password-strength-indicator'
-import { Eye, EyeOff, ChevronRight, CheckCircle } from 'lucide-react'
+import React, { useState } from "react";
+import Link from "next/link";
+import { AuthCard } from "@/components/auth/auth-card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { PasswordStrengthIndicator } from "@/components/auth/password-strength-indicator";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  ViewIcon,
+  ViewOffIcon,
+  ArrowRight01Icon,
+  Tick01Icon,
+} from "@hugeicons/core-free-icons";
 
 export default function ResetPasswordPage() {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [resetComplete, setResetComplete] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [resetComplete, setResetComplete] = useState(false);
 
   const [formData, setFormData] = useState({
-    password: '',
-    confirmPassword: '',
-  })
+    password: "",
+    confirmPassword: "",
+  });
 
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
+    }));
     if (errors[field]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [field]: '',
-      }))
+        [field]: "",
+      }));
     }
-  }
+  };
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
     if (!formData.password) {
-      newErrors.password = 'Password is required'
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters'
+      newErrors.password = "Password must be at least 8 characters";
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password'
+      newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match'
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (validateForm()) {
-      setIsLoading(true)
-      console.log('Resetting password...')
+      setIsLoading(true);
+      console.log("Resetting password...");
 
       // Simulate API call
       setTimeout(() => {
-        setIsLoading(false)
-        setResetComplete(true)
-      }, 1500)
+        setIsLoading(false);
+        setResetComplete(true);
+      }, 1500);
     }
-  }
+  };
 
   if (resetComplete) {
     return (
@@ -78,7 +84,10 @@ export default function ResetPasswordPage() {
           {/* Success Icon */}
           <div className="flex items-center justify-center">
             <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center">
-              <CheckCircle className="w-8 h-8 text-success" />
+              <HugeiconsIcon
+                icon={Tick01Icon}
+                className="w-8 h-8 text-success"
+              />
             </div>
           </div>
 
@@ -95,16 +104,17 @@ export default function ResetPasswordPage() {
           {/* Sign In Button */}
           <Button
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium group"
-            asChild
+            render={<Link href="/login" />}
           >
-            <Link href="/login">
-              Back to Sign In
-              <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
+            Back to Sign In
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
+              className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform"
+            />
           </Button>
         </div>
       </AuthCard>
-    )
+    );
   }
 
   return (
@@ -121,11 +131,15 @@ export default function ResetPasswordPage() {
           <div className="relative">
             <Input
               id="password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               value={formData.password}
-              onChange={(e) => handleInputChange('password', e.target.value)}
-              className={errors.password ? 'border-destructive focus:ring-destructive' : ''}
+              onChange={(e) => handleInputChange("password", e.target.value)}
+              className={
+                errors.password
+                  ? "border-destructive focus:ring-destructive"
+                  : ""
+              }
             />
             <button
               type="button"
@@ -133,11 +147,10 @@ export default function ResetPasswordPage() {
               className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground transition-colors"
               tabIndex={-1}
             >
-              {showPassword ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
+              <HugeiconsIcon
+                icon={showPassword ? ViewOffIcon : ViewIcon}
+                className="w-4 h-4"
+              />
             </button>
           </div>
           {errors.password && (
@@ -156,11 +169,17 @@ export default function ResetPasswordPage() {
           <div className="relative">
             <Input
               id="confirmPassword"
-              type={showConfirmPassword ? 'text' : 'password'}
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="••••••••"
               value={formData.confirmPassword}
-              onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-              className={errors.confirmPassword ? 'border-destructive focus:ring-destructive' : ''}
+              onChange={(e) =>
+                handleInputChange("confirmPassword", e.target.value)
+              }
+              className={
+                errors.confirmPassword
+                  ? "border-destructive focus:ring-destructive"
+                  : ""
+              }
             />
             <button
               type="button"
@@ -168,11 +187,10 @@ export default function ResetPasswordPage() {
               className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground transition-colors"
               tabIndex={-1}
             >
-              {showConfirmPassword ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
+              <HugeiconsIcon
+                icon={showConfirmPassword ? ViewOffIcon : ViewIcon}
+                className="w-4 h-4"
+              />
             </button>
           </div>
           {errors.confirmPassword && (
@@ -183,12 +201,17 @@ export default function ResetPasswordPage() {
         {/* Submit Button */}
         <Button
           type="submit"
-          disabled={!formData.password || !formData.confirmPassword || isLoading}
+          disabled={
+            !formData.password || !formData.confirmPassword || isLoading
+          }
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium group"
         >
-          {isLoading ? 'Updating...' : 'Update Password'}
+          {isLoading ? "Updating..." : "Update Password"}
           {!isLoading && (
-            <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
+              className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform"
+            />
           )}
         </Button>
 
@@ -197,13 +220,11 @@ export default function ResetPasswordPage() {
           type="button"
           variant="ghost"
           className="w-full text-muted-foreground hover:text-foreground"
-          asChild
+          render={<Link href="/login" />}
         >
-          <Link href="/login">
-            Back to Sign In
-          </Link>
+          Back to Sign In
         </Button>
       </form>
     </AuthCard>
-  )
+  );
 }

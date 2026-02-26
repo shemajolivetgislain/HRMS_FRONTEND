@@ -18,13 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { HugeiconsIcon } from '@hugeicons/react'
 import {
-  ArrowUpDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from 'lucide-react'
+  Sorting05Icon,
+  ArrowLeft01Icon,
+  ArrowRight01Icon,
+  ArrowLeftDoubleIcon,
+  ArrowRightDoubleIcon,
+} from '@hugeicons/core-free-icons'
 import { cn } from '@/lib/utils'
 
 export interface ColumnDef<T> {
@@ -139,7 +140,7 @@ export function AdvancedDataTable<T extends { id?: string | number }>({
                         className="flex items-center gap-2 hover:text-primary transition-colors"
                       >
                         {column.header}
-                        <ArrowUpDown className="w-4 h-4 opacity-50" />
+                        <HugeiconsIcon icon={Sorting05Icon} className="w-4 h-4 opacity-50" />
                       </button>
                     ) : (
                       column.header
@@ -238,7 +239,7 @@ export function AdvancedDataTable<T extends { id?: string | number }>({
             onClick={() => setCurrentPage(1)}
             disabled={currentPage === 1}
           >
-            <ChevronsLeft className="w-4 h-4" />
+            <HugeiconsIcon icon={ArrowLeftDoubleIcon} className="w-4 h-4" />
           </Button>
           <Button
             variant="outline"
@@ -246,7 +247,7 @@ export function AdvancedDataTable<T extends { id?: string | number }>({
             onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
           >
-            <ChevronLeft className="w-4 h-4" />
+            <HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4" />
           </Button>
           <span className="text-sm font-medium px-2">
             {currentPage} / {totalPages}
@@ -257,7 +258,7 @@ export function AdvancedDataTable<T extends { id?: string | number }>({
             onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages}
           >
-            <ChevronRight className="w-4 h-4" />
+            <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
           </Button>
           <Button
             variant="outline"
@@ -265,7 +266,7 @@ export function AdvancedDataTable<T extends { id?: string | number }>({
             onClick={() => setCurrentPage(totalPages)}
             disabled={currentPage === totalPages}
           >
-            <ChevronsRight className="w-4 h-4" />
+            <HugeiconsIcon icon={ArrowRightDoubleIcon} className="w-4 h-4" />
           </Button>
         </div>
       </div>

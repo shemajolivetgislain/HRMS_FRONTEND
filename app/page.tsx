@@ -1,60 +1,63 @@
-'use client'
+"use client";
 
-import React from 'react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import React from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Building2,
-  Users,
-  BarChart3,
-  CheckCircle,
-  ArrowRight,
-  Shield,
-  Zap,
-  Globe,
-} from 'lucide-react'
+  Building02Icon,
+  UserGroupIcon,
+  ChartBarLineIcon,
+  Tick01Icon,
+  ArrowRight01Icon,
+  Shield01Icon,
+  FlashIcon,
+  Globe02Icon,
+} from "@hugeicons/core-free-icons";
 
 export default function Home() {
   const features = [
     {
-      icon: Users,
-      title: 'Employee Management',
-      description: 'Centralized employee database with comprehensive profile management',
+      icon: UserGroupIcon,
+      title: "Employee Management",
+      description:
+        "Centralized employee database with comprehensive profile management",
     },
     {
-      icon: BarChart3,
-      title: 'Analytics & Reports',
-      description: 'Real-time insights and detailed reports on workforce metrics',
+      icon: ChartBarLineIcon,
+      title: "Analytics & Reports",
+      description:
+        "Real-time insights and detailed reports on workforce metrics",
     },
     {
-      icon: Shield,
-      title: 'Security',
-      description: 'Enterprise-grade security with role-based access control',
+      icon: Shield01Icon,
+      title: "Security",
+      description: "Enterprise-grade security with role-based access control",
     },
     {
-      icon: Zap,
-      title: 'Performance',
-      description: 'Lightning-fast load times and seamless user experience',
+      icon: FlashIcon,
+      title: "Performance",
+      description: "Lightning-fast load times and seamless user experience",
     },
     {
-      icon: Globe,
-      title: 'Multi-Company',
-      description: 'Support for multiple companies with isolated data',
+      icon: Globe02Icon,
+      title: "Multi-Company",
+      description: "Support for multiple companies with isolated data",
     },
     {
-      icon: CheckCircle,
-      title: 'Compliance',
-      description: 'Built-in compliance features for regulatory requirements',
+      icon: Tick01Icon,
+      title: "Compliance",
+      description: "Built-in compliance features for regulatory requirements",
     },
-  ]
+  ];
 
   const stats = [
-    { number: '1M+', label: 'Employees Managed' },
-    { number: '500+', label: 'Companies' },
-    { number: '99.9%', label: 'Uptime' },
-    { number: '24/7', label: 'Support' },
-  ]
+    { number: "1M+", label: "Employees Managed" },
+    { number: "500+", label: "Companies" },
+    { number: "99.9%", label: "Uptime" },
+    { number: "24/7", label: "Support" },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
@@ -68,29 +71,40 @@ export default function Home() {
             <span className="font-bold text-foreground">HRMS</span>
           </div>
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="#features"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               Features
             </a>
-            <a href="#stats" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="#stats"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               Stats
             </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="#"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               Pricing
             </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="#"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               Contact
             </a>
           </nav>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" asChild>
-              <Link href="/login">
-                Sign In
-              </Link>
+            <Button variant="ghost" render={<Link href="/login" />}>
+              Sign In
             </Button>
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
-              <Link href="/register/company">
-                Get Started
-              </Link>
+            <Button
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              render={<Link href="/register/company" />}
+            >
+              Get Started
             </Button>
           </div>
         </div>
@@ -104,34 +118,39 @@ export default function Home() {
               Modern HRMS for Growing Companies
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-              Streamline your human resources management with our comprehensive, enterprise-grade HR system designed for efficiency and compliance.
+              Streamline your human resources management with our comprehensive,
+              enterprise-grade HR system designed for efficiency and compliance.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground group" asChild>
-              <Link href="/register/company">
-                Start Free Trial
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground group"
+              render={<Link href="/register/company" />}
+            >
+              Start Free Trial
+              <HugeiconsIcon
+                icon={ArrowRight01Icon}
+                className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform"
+              />
             </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/login">
-                View Demo
-              </Link>
+            <Button size="lg" variant="outline" render={<Link href="/login" />}>
+              View Demo
             </Button>
           </div>
 
           {/* Stats */}
-          <div id="stats" className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-12">
+          <div
+            id="stats"
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-12"
+          >
             {stats.map((stat, idx) => (
               <div key={idx} className="space-y-1">
                 <p className="text-3xl sm:text-4xl font-bold text-primary">
                   {stat.number}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  {stat.label}
-                </p>
+                <p className="text-sm text-muted-foreground">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -139,7 +158,10 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section
+        id="features"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20"
+      >
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
             Powerful Features
@@ -151,12 +173,12 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, idx) => {
-            const Icon = feature.icon
+            const Icon = feature.icon;
             return (
               <Card key={idx} className="p-6 hover-lift">
                 <div className="space-y-4">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <Icon className="w-6 h-6" />
+                    <HugeiconsIcon icon={Icon} className="w-6 h-6" />
                   </div>
                   <div>
                     <h3 className="font-bold text-foreground mb-2">
@@ -168,7 +190,7 @@ export default function Home() {
                   </div>
                 </div>
               </Card>
-            )
+            );
           })}
         </div>
       </section>
@@ -181,13 +203,19 @@ export default function Home() {
               Ready to Transform Your HR?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of companies that have streamlined their HR operations with HRMS. Start your free trial today.
+              Join thousands of companies that have streamlined their HR
+              operations with HRMS. Start your free trial today.
             </p>
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground group" asChild>
-              <Link href="/register/company">
-                Get Started Now
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground group"
+              render={<Link href="/register/company" />}
+            >
+              Get Started Now
+              <HugeiconsIcon
+                icon={ArrowRight01Icon}
+                className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform"
+              />
             </Button>
           </div>
         </Card>
@@ -211,25 +239,88 @@ export default function Home() {
             <div>
               <h4 className="font-semibold text-foreground mb-4">Product</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Security</a></li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Pricing
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Security
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold text-foreground mb-4">Company</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Contact</a></li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Blog
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Contact
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold text-foreground mb-4">Legal</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">Privacy</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Terms</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Compliance</a></li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Privacy
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Terms
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Compliance
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -239,13 +330,22 @@ export default function Home() {
               © 2026 HRMS. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a
+                href="#"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
                 Twitter
               </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a
+                href="#"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
                 LinkedIn
               </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a
+                href="#"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
                 GitHub
               </a>
             </div>
@@ -253,5 +353,5 @@ export default function Home() {
         </div>
       </footer>
     </div>
-  )
+  );
 }

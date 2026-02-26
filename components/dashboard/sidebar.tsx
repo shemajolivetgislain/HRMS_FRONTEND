@@ -3,16 +3,17 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { HugeiconsIcon } from '@hugeicons/react'
 import {
-  LayoutDashboard,
-  Users,
-  Building2,
-  Settings,
-  LogOut,
-  ChevronLeft,
-  ChevronRight,
-  Menu,
-} from 'lucide-react'
+  DashboardCircleIcon,
+  UserGroupIcon,
+  Building02Icon,
+  Settings02Icon,
+  Logout01Icon,
+  ArrowLeft01Icon,
+  ArrowRight01Icon,
+  Menu01Icon,
+} from '@hugeicons/core-free-icons'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
@@ -21,25 +22,25 @@ const navigationItems = [
   {
     title: 'Dashboard',
     href: '/dashboard',
-    icon: LayoutDashboard,
+    icon: DashboardCircleIcon,
     badge: null,
   },
   {
     title: 'Companies',
     href: '/dashboard/companies',
-    icon: Building2,
+    icon: Building02Icon,
     badge: null,
   },
   {
     title: 'Users',
     href: '/dashboard/users',
-    icon: Users,
+    icon: UserGroupIcon,
     badge: null,
   },
   {
     title: 'Settings',
     href: '/dashboard/settings',
-    icon: Settings,
+    icon: Settings02Icon,
     badge: null,
   },
 ]
@@ -69,7 +70,7 @@ export function Sidebar({ onToggle, collapsed: initialCollapsed = false }: Sideb
           onClick={handleToggle}
           className="rounded-lg"
         >
-          <Menu className="w-5 h-5" />
+          <HugeiconsIcon icon={Menu01Icon} className="w-5 h-5" />
         </Button>
       </div>
 
@@ -110,26 +111,26 @@ export function Sidebar({ onToggle, collapsed: initialCollapsed = false }: Sideb
             const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
 
             return (
-              <Link key={item.href} href={item.href}>
-                <a
-                  className={cn(
-                    'relative flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-all duration-200 hover:bg-sidebar-accent cursor-pointer',
-                    isActive && 'bg-sidebar-accent text-sidebar-primary before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-sidebar-primary before:rounded-r-full'
-                  )}
-                  title={collapsed ? item.title : undefined}
-                >
-                  <Icon className="w-4 h-4 flex-shrink-0" />
-                  {!collapsed && (
-                    <>
-                      <span className="flex-1">{item.title}</span>
-                      {item.badge && (
-                        <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium bg-sidebar-primary text-sidebar-primary-foreground">
-                          {item.badge}
-                        </span>
-                      )}
-                    </>
-                  )}
-                </a>
+              <Link 
+                key={item.href} 
+                href={item.href}
+                className={cn(
+                  'relative flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-all duration-200 hover:bg-sidebar-accent cursor-pointer',
+                  isActive && 'bg-sidebar-accent text-sidebar-primary before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-sidebar-primary before:rounded-r-full'
+                )}
+                title={collapsed ? item.title : undefined}
+              >
+                <HugeiconsIcon icon={Icon} className="w-4 h-4 flex-shrink-0" />
+                {!collapsed && (
+                  <>
+                    <span className="flex-1">{item.title}</span>
+                    {item.badge && (
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-medium bg-sidebar-primary text-sidebar-primary-foreground">
+                        {item.badge}
+                      </span>
+                    )}
+                  </>
+                )}
               </Link>
             )
           })}
@@ -165,7 +166,7 @@ export function Sidebar({ onToggle, collapsed: initialCollapsed = false }: Sideb
             )}
             title={collapsed ? 'Logout' : undefined}
           >
-            <LogOut className="w-4 h-4 flex-shrink-0" />
+            <HugeiconsIcon icon={Logout01Icon} className="w-4 h-4 flex-shrink-0" />
             {!collapsed && <span className="flex-1">Logout</span>}
           </button>
         </div>
@@ -179,9 +180,9 @@ export function Sidebar({ onToggle, collapsed: initialCollapsed = false }: Sideb
             className="w-full"
           >
             {collapsed ? (
-              <ChevronRight className="w-4 h-4" />
+              <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
             ) : (
-              <ChevronLeft className="w-4 h-4" />
+              <HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4" />
             )}
           </Button>
         </div>
@@ -197,3 +198,4 @@ export function Sidebar({ onToggle, collapsed: initialCollapsed = false }: Sideb
     </>
   )
 }
+

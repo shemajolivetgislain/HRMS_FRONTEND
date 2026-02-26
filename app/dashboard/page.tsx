@@ -1,18 +1,19 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { StatsCard } from '@/components/dashboard/stats-card'
-import { StatusBadge } from '@/components/dashboard/status-badge'
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { StatsCard } from "@/components/dashboard/stats-card";
+import { StatusBadge } from "@/components/dashboard/status-badge";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Building2,
-  Users,
-  UserCheck,
-  TrendingUp,
-  ArrowRight,
-  AlertCircle,
-} from 'lucide-react'
+  Building02Icon,
+  UserGroupIcon,
+  UserCheck01Icon,
+  ChartBar,
+  ArrowRight01Icon,
+  AlertCircleIcon,
+} from "@hugeicons/core-free-icons";
 
 export default function DashboardPage() {
   return (
@@ -20,9 +21,7 @@ export default function DashboardPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">
-            Dashboard
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
           <p className="text-muted-foreground mt-1">
             Welcome back to your HRMS system
           </p>
@@ -37,9 +36,9 @@ export default function DashboardPage() {
         <StatsCard
           title="Total Companies"
           value="24"
-          icon={<Building2 className="w-6 h-6" />}
+          icon={<HugeiconsIcon icon={Building02Icon} className="w-6 h-6" />}
           trend={{
-            direction: 'up',
+            direction: "up",
             percentage: 12,
           }}
           description="Active companies"
@@ -47,9 +46,9 @@ export default function DashboardPage() {
         <StatsCard
           title="Total Users"
           value="1,248"
-          icon={<Users className="w-6 h-6" />}
+          icon={<HugeiconsIcon icon={UserGroupIcon} className="w-6 h-6" />}
           trend={{
-            direction: 'up',
+            direction: "up",
             percentage: 8,
           }}
           description="Across all companies"
@@ -57,9 +56,9 @@ export default function DashboardPage() {
         <StatsCard
           title="Active Employees"
           value="982"
-          icon={<UserCheck className="w-6 h-6" />}
+          icon={<HugeiconsIcon icon={UserCheck01Icon} className="w-6 h-6" />}
           trend={{
-            direction: 'up',
+            direction: "up",
             percentage: 5,
           }}
           description="This month"
@@ -67,9 +66,9 @@ export default function DashboardPage() {
         <StatsCard
           title="System Uptime"
           value="99.8%"
-          icon={<TrendingUp className="w-6 h-6" />}
+          icon={<HugeiconsIcon icon={ChartBar} className="w-6 h-6" />}
           trend={{
-            direction: 'up',
+            direction: "up",
             percentage: 0.2,
           }}
           description="30-day average"
@@ -86,45 +85,45 @@ export default function DashboardPage() {
             </h2>
             <Button variant="ghost" size="sm" className="text-primary">
               View All
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-2" />
             </Button>
           </div>
 
           <div className="space-y-3">
             {[
               {
-                title: 'New Company Registered',
-                description: 'Tech Solutions Inc.',
-                time: '2 hours ago',
-                icon: Building2,
+                title: "New Company Registered",
+                description: "Tech Solutions Inc.",
+                time: "2 hours ago",
+                icon: Building02Icon,
               },
               {
-                title: 'User Signup',
-                description: '15 new employees added to ABC Corp',
-                time: '5 hours ago',
-                icon: Users,
+                title: "User Signup",
+                description: "15 new employees added to ABC Corp",
+                time: "5 hours ago",
+                icon: UserGroupIcon,
               },
               {
-                title: 'System Update',
-                description: 'v2.5.0 deployed successfully',
-                time: '1 day ago',
-                icon: TrendingUp,
+                title: "System Update",
+                description: "v2.5.0 deployed successfully",
+                time: "1 day ago",
+                icon: ChartBar,
               },
               {
-                title: 'Company Suspended',
-                description: 'XYZ Ltd - Payment overdue',
-                time: '2 days ago',
-                icon: AlertCircle,
+                title: "Company Suspended",
+                description: "XYZ Ltd - Payment overdue",
+                time: "2 days ago",
+                icon: AlertCircleIcon,
               },
             ].map((activity, index) => {
-              const Icon = activity.icon
+              const Icon = activity.icon;
               return (
                 <div
                   key={index}
                   className="flex items-start gap-4 p-3 rounded-lg border border-border hover:bg-muted transition-colors"
                 >
                   <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <Icon className="w-5 h-5" />
+                    <HugeiconsIcon icon={Icon} className="w-5 h-5" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground">
@@ -138,7 +137,7 @@ export default function DashboardPage() {
                     {activity.time}
                   </span>
                 </div>
-              )
+              );
             })}
           </div>
         </Card>
@@ -158,7 +157,10 @@ export default function DashboardPage() {
                 <StatusBadge status="active" label="Operational" />
               </div>
               <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-success rounded-full" style={{ width: '100%' }} />
+                <div
+                  className="h-full bg-success rounded-full"
+                  style={{ width: "100%" }}
+                />
               </div>
             </div>
 
@@ -170,7 +172,10 @@ export default function DashboardPage() {
                 <StatusBadge status="active" label="Operational" />
               </div>
               <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-success rounded-full" style={{ width: '99%' }} />
+                <div
+                  className="h-full bg-success rounded-full"
+                  style={{ width: "99%" }}
+                />
               </div>
             </div>
 
@@ -182,7 +187,10 @@ export default function DashboardPage() {
                 <StatusBadge status="active" label="Operational" />
               </div>
               <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-success rounded-full" style={{ width: '98%' }} />
+                <div
+                  className="h-full bg-success rounded-full"
+                  style={{ width: "98%" }}
+                />
               </div>
             </div>
 
@@ -194,7 +202,10 @@ export default function DashboardPage() {
                 <StatusBadge status="active" label="Operational" />
               </div>
               <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-success rounded-full" style={{ width: '97%' }} />
+                <div
+                  className="h-full bg-success rounded-full"
+                  style={{ width: "97%" }}
+                />
               </div>
             </div>
 
@@ -216,17 +227,37 @@ export default function DashboardPage() {
           </h2>
           <Button variant="ghost" size="sm" className="text-primary">
             View All
-            <ArrowRight className="w-4 h-4 ml-2" />
+            <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-2" />
           </Button>
         </div>
 
         <div className="space-y-3">
           {[
-            { name: 'Tech Innovators Ltd', employees: 456, status: 'active' as const },
-            { name: 'Global Finance Corp', employees: 389, status: 'active' as const },
-            { name: 'Healthcare Plus Inc', employees: 278, status: 'active' as const },
-            { name: 'Retail Solutions LLC', employees: 245, status: 'active' as const },
-            { name: 'Manufacturing Co', employees: 198, status: 'active' as const },
+            {
+              name: "Tech Innovators Ltd",
+              employees: 456,
+              status: "active" as const,
+            },
+            {
+              name: "Global Finance Corp",
+              employees: 389,
+              status: "active" as const,
+            },
+            {
+              name: "Healthcare Plus Inc",
+              employees: 278,
+              status: "active" as const,
+            },
+            {
+              name: "Retail Solutions LLC",
+              employees: 245,
+              status: "active" as const,
+            },
+            {
+              name: "Manufacturing Co",
+              employees: 198,
+              status: "active" as const,
+            },
           ].map((company, index) => (
             <div
               key={index}
@@ -246,5 +277,5 @@ export default function DashboardPage() {
         </div>
       </Card>
     </div>
-  )
+  );
 }

@@ -1,7 +1,8 @@
 'use client'
 
 import React from 'react'
-import { TrendingUp, TrendingDown } from 'lucide-react'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { ArrowUp01Icon, ArrowDown01Icon } from '@hugeicons/core-free-icons'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
@@ -46,9 +47,9 @@ export function StatsCard({
           {trend && (
             <div className="flex items-center gap-1 mt-2">
               {trend.direction === 'up' ? (
-                <TrendingUp className="w-4 h-4 text-success" />
+                <HugeiconsIcon icon={ArrowUp01Icon} className="w-4 h-4 text-success" />
               ) : (
-                <TrendingDown className="w-4 h-4 text-destructive" />
+                <HugeiconsIcon icon={ArrowDown01Icon} className="w-4 h-4 text-destructive" />
               )}
               <span className={cn(
                 'text-xs font-medium',

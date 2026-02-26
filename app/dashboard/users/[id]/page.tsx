@@ -8,17 +8,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { StatusBadge } from '@/components/dashboard/status-badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { HugeiconsIcon } from '@hugeicons/react'
 import {
-  Edit2,
-  Mail,
-  Phone,
-  MapPin,
-  Briefcase,
-  Calendar,
-  FileText,
-  Download,
-  MoreHorizontal,
-} from 'lucide-react'
+  PencilEdit02Icon,
+  Mail01Icon,
+  CallIcon,
+  Location01Icon,
+  Briefcase01Icon,
+  Calendar01Icon,
+  Note01Icon,
+  Download01Icon,
+  MoreHorizontalIcon,
+} from '@hugeicons/core-free-icons'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -103,21 +104,23 @@ export default function EmployeeProfilePage() {
                   size="icon"
                   onClick={() => setIsEditing(!isEditing)}
                 >
-                  <Edit2 className="w-4 h-4" />
+                  <HugeiconsIcon icon={PencilEdit02Icon} className="w-4 h-4" />
                 </Button>
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon">
-                      <MoreHorizontal className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
+                  <DropdownMenuTrigger 
+                    render={
+                      <Button variant="outline" size="icon">
+                        <HugeiconsIcon icon={MoreHorizontalIcon} className="w-4 h-4" />
+                      </Button>
+                    }
+                  />
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem>
-                      <Mail className="w-4 h-4 mr-2" />
+                      <HugeiconsIcon icon={Mail01Icon} className="w-4 h-4 mr-2" />
                       <span>Send Email</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Download className="w-4 h-4 mr-2" />
+                      <HugeiconsIcon icon={Download01Icon} className="w-4 h-4 mr-2" />
                       <span>Export Profile</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="text-destructive">
@@ -225,14 +228,14 @@ export default function EmployeeProfilePage() {
               </form>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InfoField label="Full Name" value={formData.name} icon={<FileText className="w-4 h-4" />} />
-                <InfoField label="Email" value={formData.email} icon={<Mail className="w-4 h-4" />} />
-                <InfoField label="Phone" value={formData.phone} icon={<Phone className="w-4 h-4" />} />
-                <InfoField label="Date of Birth" value={new Date(formData.dob).toLocaleDateString()} icon={<Calendar className="w-4 h-4" />} />
-                <InfoField label="Address" value={formData.address} icon={<MapPin className="w-4 h-4" />} />
-                <InfoField label="City" value={formData.city} icon={<MapPin className="w-4 h-4" />} />
-                <InfoField label="Country" value={formData.country} icon={<MapPin className="w-4 h-4" />} />
-                <InfoField label="Zip Code" value={formData.zipCode} icon={<MapPin className="w-4 h-4" />} />
+                <InfoField label="Full Name" value={formData.name} icon={<HugeiconsIcon icon={Note01Icon} className="w-4 h-4" />} />
+                <InfoField label="Email" value={formData.email} icon={<HugeiconsIcon icon={Mail01Icon} className="w-4 h-4" />} />
+                <InfoField label="Phone" value={formData.phone} icon={<HugeiconsIcon icon={CallIcon} className="w-4 h-4" />} />
+                <InfoField label="Date of Birth" value={new Date(formData.dob).toLocaleDateString()} icon={<HugeiconsIcon icon={Calendar01Icon} className="w-4 h-4" />} />
+                <InfoField label="Address" value={formData.address} icon={<HugeiconsIcon icon={Location01Icon} className="w-4 h-4" />} />
+                <InfoField label="City" value={formData.city} icon={<HugeiconsIcon icon={Location01Icon} className="w-4 h-4" />} />
+                <InfoField label="Country" value={formData.country} icon={<HugeiconsIcon icon={Location01Icon} className="w-4 h-4" />} />
+                <InfoField label="Zip Code" value={formData.zipCode} icon={<HugeiconsIcon icon={Location01Icon} className="w-4 h-4" />} />
               </div>
             )}
           </Card>
@@ -245,12 +248,12 @@ export default function EmployeeProfilePage() {
               Employment Information
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <InfoField label="Position" value={formData.position} icon={<Briefcase className="w-4 h-4" />} />
-              <InfoField label="Department" value={formData.department} icon={<Briefcase className="w-4 h-4" />} />
-              <InfoField label="Manager" value={formData.manager} icon={<FileText className="w-4 h-4" />} />
-              <InfoField label="Hire Date" value={new Date(formData.hireDate).toLocaleDateString()} icon={<Calendar className="w-4 h-4" />} />
-              <InfoField label="Status" value={<StatusBadge status={formData.status} />} icon={<FileText className="w-4 h-4" />} />
-              <InfoField label="Tenure" value={`${Math.floor((new Date().getTime() - new Date(formData.hireDate).getTime()) / (1000 * 60 * 60 * 24 * 365))} years`} icon={<Calendar className="w-4 h-4" />} />
+              <InfoField label="Position" value={formData.position} icon={<HugeiconsIcon icon={Briefcase01Icon} className="w-4 h-4" />} />
+              <InfoField label="Department" value={formData.department} icon={<HugeiconsIcon icon={Briefcase01Icon} className="w-4 h-4" />} />
+              <InfoField label="Manager" value={formData.manager} icon={<HugeiconsIcon icon={Note01Icon} className="w-4 h-4" />} />
+              <InfoField label="Hire Date" value={new Date(formData.hireDate).toLocaleDateString()} icon={<HugeiconsIcon icon={Calendar01Icon} className="w-4 h-4" />} />
+              <InfoField label="Status" value={<StatusBadge status={formData.status} />} icon={<HugeiconsIcon icon={Note01Icon} className="w-4 h-4" />} />
+              <InfoField label="Tenure" value={`${Math.floor((new Date().getTime() - new Date(formData.hireDate).getTime()) / (1000 * 60 * 60 * 24 * 365))} years`} icon={<HugeiconsIcon icon={Calendar01Icon} className="w-4 h-4" />} />
             </div>
           </Card>
         </TabsContent>
@@ -276,7 +279,7 @@ export default function EmployeeProfilePage() {
                     </p>
                   </div>
                   <Button variant="ghost" size="icon">
-                    <Download className="w-4 h-4" />
+                    <HugeiconsIcon icon={Download01Icon} className="w-4 h-4" />
                   </Button>
                 </div>
               ))}
@@ -331,3 +334,4 @@ function InfoField({ label, value, icon }: InfoFieldProps) {
     </div>
   )
 }
+

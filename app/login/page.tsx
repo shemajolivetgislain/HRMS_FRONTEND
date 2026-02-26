@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Eye, EyeOff, ChevronRight } from 'lucide-react'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { ViewIcon, ViewOffIcon, ArrowRight01Icon } from '@hugeicons/core-free-icons'
 
 export default function AdminLoginPage() {
   const [role, setRole] = useState<'system' | 'company'>('system')
@@ -127,11 +128,7 @@ export default function AdminLoginPage() {
               className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground transition-colors"
               tabIndex={-1}
             >
-              {showPassword ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
+              <HugeiconsIcon icon={showPassword ? ViewOffIcon : ViewIcon} className="w-4 h-4" />
             </button>
           </div>
           {errors.password && (
@@ -157,7 +154,7 @@ export default function AdminLoginPage() {
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium group"
         >
           Sign In
-          <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
+          <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
         </Button>
 
         {/* Divider */}
@@ -177,11 +174,9 @@ export default function AdminLoginPage() {
           type="button"
           variant="outline"
           className="w-full border-border"
-          asChild
+          render={<Link href="/register/company" />}
         >
-          <Link href="/register/company">
-            Create Account
-          </Link>
+          Create Account
         </Button>
 
         {/* Employee Login Link */}

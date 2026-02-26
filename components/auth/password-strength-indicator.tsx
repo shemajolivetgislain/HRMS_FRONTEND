@@ -1,7 +1,8 @@
 'use client'
 
 import React from 'react'
-import { Check, X } from 'lucide-react'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { Tick01Icon, Cancel01Icon } from '@hugeicons/core-free-icons'
 import { cn } from '@/lib/utils'
 
 interface PasswordStrengthIndicatorProps {
@@ -74,9 +75,9 @@ export function PasswordStrengthIndicator({
           <ul className="space-y-1">
             <li className="flex items-center gap-2 text-xs text-muted-foreground">
               {requirements.minLength ? (
-                <Check className="w-4 h-4 text-success" />
+                <HugeiconsIcon icon={Tick01Icon} className="w-4 h-4 text-success" />
               ) : (
-                <X className="w-4 h-4 text-muted-foreground/50" />
+                <HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 text-muted-foreground/50" />
               )}
               <span className={requirements.minLength ? 'text-success' : ''}>
                 At least 8 characters
@@ -84,9 +85,9 @@ export function PasswordStrengthIndicator({
             </li>
             <li className="flex items-center gap-2 text-xs text-muted-foreground">
               {requirements.hasUppercase ? (
-                <Check className="w-4 h-4 text-success" />
+                <HugeiconsIcon icon={Tick01Icon} className="w-4 h-4 text-success" />
               ) : (
-                <X className="w-4 h-4 text-muted-foreground/50" />
+                <HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 text-muted-foreground/50" />
               )}
               <span className={requirements.hasUppercase ? 'text-success' : ''}>
                 One uppercase letter (A-Z)
@@ -94,9 +95,9 @@ export function PasswordStrengthIndicator({
             </li>
             <li className="flex items-center gap-2 text-xs text-muted-foreground">
               {requirements.hasLowercase ? (
-                <Check className="w-4 h-4 text-success" />
+                <HugeiconsIcon icon={Tick01Icon} className="w-4 h-4 text-success" />
               ) : (
-                <X className="w-4 h-4 text-muted-foreground/50" />
+                <HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 text-muted-foreground/50" />
               )}
               <span className={requirements.hasLowercase ? 'text-success' : ''}>
                 One lowercase letter (a-z)
@@ -104,9 +105,9 @@ export function PasswordStrengthIndicator({
             </li>
             <li className="flex items-center gap-2 text-xs text-muted-foreground">
               {requirements.hasNumber ? (
-                <Check className="w-4 h-4 text-success" />
+                <HugeiconsIcon icon={Tick01Icon} className="w-4 h-4 text-success" />
               ) : (
-                <X className="w-4 h-4 text-muted-foreground/50" />
+                <HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 text-muted-foreground/50" />
               )}
               <span className={requirements.hasNumber ? 'text-success' : ''}>
                 One number (0-9)
@@ -114,9 +115,9 @@ export function PasswordStrengthIndicator({
             </li>
             <li className="flex items-center gap-2 text-xs text-muted-foreground">
               {requirements.hasSpecial ? (
-                <Check className="w-4 h-4 text-success" />
+                <HugeiconsIcon icon={Tick01Icon} className="w-4 h-4 text-success" />
               ) : (
-                <X className="w-4 h-4 text-muted-foreground/50" />
+                <HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 text-muted-foreground/50" />
               )}
               <span className={requirements.hasSpecial ? 'text-success' : ''}>
                 One special character (!@#$%^&*)

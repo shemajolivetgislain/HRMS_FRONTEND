@@ -3,12 +3,13 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { HugeiconsIcon } from '@hugeicons/react'
 import {
-  Bell,
-  Settings,
-  LogOut,
-  User,
-} from 'lucide-react'
+  Notification01Icon,
+  Settings02Icon,
+  Logout01Icon,
+  UserIcon,
+} from '@hugeicons/core-free-icons'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -50,21 +51,20 @@ export function TopNav({ title, showBreadcrumb = true }: TopNavProps) {
           )}
           {showBreadcrumb && breadcrumbs.length > 0 && !title && (
             <nav className="flex items-center gap-2 text-sm">
-              <Link href="/dashboard">
-                <a className="text-muted-foreground hover:text-foreground transition-colors">
-                  Dashboard
-                </a>
+              <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
+                Dashboard
               </Link>
               {breadcrumbs.map((crumb, index) => (
                 <React.Fragment key={crumb.href}>
                   <span className="text-muted-foreground">/</span>
-                  <Link href={crumb.href}>
-                    <a className={index === breadcrumbs.length - 1 ?
+                  <Link 
+                    href={crumb.href}
+                    className={index === breadcrumbs.length - 1 ?
                       'text-foreground font-medium' :
                       'text-muted-foreground hover:text-foreground transition-colors'
-                    }>
-                      {crumb.label}
-                    </a>
+                    }
+                  >
+                    {crumb.label}
                   </Link>
                 </React.Fragment>
               ))}
@@ -81,7 +81,7 @@ export function TopNav({ title, showBreadcrumb = true }: TopNavProps) {
             className="relative"
             title="Notifications"
           >
-            <Bell className="w-5 h-5" />
+            <HugeiconsIcon icon={Notification01Icon} className="w-5 h-5" />
             <span className="absolute top-2 right-2 w-2 h-2 bg-destructive rounded-full" />
           </Button>
 
@@ -89,26 +89,26 @@ export function TopNav({ title, showBreadcrumb = true }: TopNavProps) {
           <Button
             variant="ghost"
             size="icon"
-            asChild
+            render={<Link href="/dashboard/settings" title="Settings" />}
           >
-            <Link href="/dashboard/settings" title="Settings">
-              <Settings className="w-5 h-5" />
-            </Link>
+            <HugeiconsIcon icon={Settings02Icon} className="w-5 h-5" />
           </Button>
 
           {/* User Profile Dropdown */}
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full"
-              >
-                <Avatar className="w-8 h-8">
-                  <AvatarImage src="https://avatar.vercel.sh/admin" />
-                  <AvatarFallback>AD</AvatarFallback>
-                </Avatar>
-              </Button>
+            <DropdownMenuTrigger 
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full"
+                />
+              }
+            >
+              <Avatar className="w-8 h-8">
+                <AvatarImage src="https://avatar.vercel.sh/admin" />
+                <AvatarFallback>AD</AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <div className="px-2 py-1.5">
@@ -120,21 +120,17 @@ export function TopNav({ title, showBreadcrumb = true }: TopNavProps) {
                 </p>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/profile">
-                  <User className="w-4 h-4 mr-2" />
-                  <span>My Profile</span>
-                </Link>
+              <DropdownMenuItem render={<Link href="/profile" />}>
+                <HugeiconsIcon icon={UserIcon} className="w-4 h-4 mr-2" />
+                <span>My Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/settings">
-                  <Settings className="w-4 h-4 mr-2" />
-                  <span>Settings</span>
-                </Link>
+              <DropdownMenuItem render={<Link href="/dashboard/settings" />}>
+                <HugeiconsIcon icon={Settings02Icon} className="w-4 h-4 mr-2" />
+                <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-destructive">
-                <LogOut className="w-4 h-4 mr-2" />
+                <HugeiconsIcon icon={Logout01Icon} className="w-4 h-4 mr-2" />
                 <span>Logout</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -144,3 +140,4 @@ export function TopNav({ title, showBreadcrumb = true }: TopNavProps) {
     </header>
   )
 }
+

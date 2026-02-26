@@ -1,96 +1,91 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import Link from 'next/link'
-import { AuthCard } from '@/components/auth/auth-card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import React, { useState } from "react";
+import Link from "next/link";
+import { AuthCard } from "@/components/auth/auth-card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { ChevronRight } from 'lucide-react'
+} from "@/components/ui/select";
 
 const industries = [
-  'Technology',
-  'Finance',
-  'Healthcare',
-  'Retail',
-  'Manufacturing',
-  'Education',
-  'Consulting',
-  'Other',
-]
+  "Technology",
+  "Finance",
+  "Healthcare",
+  "Retail",
+  "Manufacturing",
+  "Education",
+  "Consulting",
+  "Other",
+];
 
-const companySizes = [
-  '1-50',
-  '51-200',
-  '201-500',
-  '501-1000',
-  '1000+',
-]
+const companySizes = ["1-50", "51-200", "201-500", "501-1000", "1000+"];
 
 export default function CompanyRegistrationPage() {
   const [formData, setFormData] = useState({
-    companyName: '',
-    email: '',
-    phone: '',
-    industry: '',
-    companySize: '',
-  })
+    companyName: "",
+    email: "",
+    phone: "",
+    industry: "",
+    companySize: "",
+  });
 
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
+    }));
     // Clear error on field change
     if (errors[field]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [field]: '',
-      }))
+        [field]: "",
+      }));
     }
-  }
+  };
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
     if (!formData.companyName.trim()) {
-      newErrors.companyName = 'Company name is required'
+      newErrors.companyName = "Company name is required";
     }
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
+      newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email'
+      newErrors.email = "Please enter a valid email";
     }
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required'
+      newErrors.phone = "Phone number is required";
     }
     if (!formData.industry) {
-      newErrors.industry = 'Please select an industry'
+      newErrors.industry = "Please select an industry";
     }
     if (!formData.companySize) {
-      newErrors.companySize = 'Please select company size'
+      newErrors.companySize = "Please select company size";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted:', formData)
+      console.log("Form submitted:", formData);
       // Navigate to company admin registration
     }
-  }
+  };
 
   return (
     <AuthCard
@@ -133,8 +128,12 @@ export default function CompanyRegistrationPage() {
               id="companyName"
               placeholder="Enter your company name"
               value={formData.companyName}
-              onChange={(e) => handleInputChange('companyName', e.target.value)}
-              className={errors.companyName ? 'border-destructive focus:ring-destructive' : ''}
+              onChange={(e) => handleInputChange("companyName", e.target.value)}
+              className={
+                errors.companyName
+                  ? "border-destructive focus:ring-destructive"
+                  : ""
+              }
             />
             {errors.companyName && (
               <p className="text-xs text-destructive">{errors.companyName}</p>
@@ -151,8 +150,10 @@ export default function CompanyRegistrationPage() {
               type="email"
               placeholder="company@example.com"
               value={formData.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
-              className={errors.email ? 'border-destructive focus:ring-destructive' : ''}
+              onChange={(e) => handleInputChange("email", e.target.value)}
+              className={
+                errors.email ? "border-destructive focus:ring-destructive" : ""
+              }
             />
             {errors.email && (
               <p className="text-xs text-destructive">{errors.email}</p>
@@ -168,8 +169,10 @@ export default function CompanyRegistrationPage() {
               id="phone"
               placeholder="+1 (555) 000-0000"
               value={formData.phone}
-              onChange={(e) => handleInputChange('phone', e.target.value)}
-              className={errors.phone ? 'border-destructive focus:ring-destructive' : ''}
+              onChange={(e) => handleInputChange("phone", e.target.value)}
+              className={
+                errors.phone ? "border-destructive focus:ring-destructive" : ""
+              }
             />
             {errors.phone && (
               <p className="text-xs text-destructive">{errors.phone}</p>
@@ -183,9 +186,17 @@ export default function CompanyRegistrationPage() {
             </Label>
             <Select
               value={formData.industry}
-              onValueChange={(value) => handleInputChange('industry', value)}
+              onValueChange={(value) =>
+                handleInputChange("industry", value || "")
+              }
             >
-              <SelectTrigger className={errors.industry ? 'border-destructive focus:ring-destructive' : ''}>
+              <SelectTrigger
+                className={
+                  errors.industry
+                    ? "border-destructive focus:ring-destructive"
+                    : ""
+                }
+              >
                 <SelectValue placeholder="Select your industry" />
               </SelectTrigger>
               <SelectContent>
@@ -208,9 +219,17 @@ export default function CompanyRegistrationPage() {
             </Label>
             <Select
               value={formData.companySize}
-              onValueChange={(value) => handleInputChange('companySize', value)}
+              onValueChange={(value) =>
+                handleInputChange("companySize", value || "")
+              }
             >
-              <SelectTrigger className={errors.companySize ? 'border-destructive focus:ring-destructive' : ''}>
+              <SelectTrigger
+                className={
+                  errors.companySize
+                    ? "border-destructive focus:ring-destructive"
+                    : ""
+                }
+              >
                 <SelectValue placeholder="Number of employees" />
               </SelectTrigger>
               <SelectContent>
@@ -233,17 +252,23 @@ export default function CompanyRegistrationPage() {
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium group"
         >
           Next
-          <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
+          <HugeiconsIcon
+            icon={ArrowRight01Icon}
+            className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform"
+          />
         </Button>
 
         {/* Sign In Link */}
         <p className="text-center text-sm text-muted-foreground">
-          Already have an account?{' '}
-          <Link href="/login" className="text-primary hover:underline font-medium">
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="text-primary hover:underline font-medium"
+          >
             Sign In
           </Link>
         </p>
       </form>
     </AuthCard>
-  )
+  );
 }
