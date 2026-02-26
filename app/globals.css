@@ -5,7 +5,6 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Light theme defaults */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -46,7 +45,6 @@
 }
 
 .dark {
-  /* Dark theme - primary for HRMS dashboard */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -136,12 +134,29 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-muted-foreground) transparent;
   }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-muted-foreground);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-foreground);
+  }
+
   body {
     @apply bg-background text-foreground;
   }
 
-  /* Typography */
   h1 {
     @apply text-3xl font-bold tracking-tight;
   }
@@ -156,37 +171,5 @@
   }
   p {
     @apply leading-relaxed;
-  }
-}
-
-@layer utilities {
-  /* Fade In Animation */
-  .animate-fade-in {
-    @apply animate-in fade-in duration-300;
-  }
-
-  /* Slide Up Animation */
-  .animate-slide-up {
-    @apply animate-in slide-in-from-bottom-4 duration-300;
-  }
-
-  /* Scale In Animation */
-  .animate-scale-in {
-    @apply animate-in zoom-in-95 duration-300;
-  }
-
-  /* Smooth Border */
-  /* .border-smooth {
-    @apply border-border smooth-transition;
-  } */
-
-  /* High Contrast Text */
-  .text-high-contrast {
-    @apply text-foreground font-medium;
-  }
-
-  /* Muted Text */
-  .text-muted-emphasis {
-    @apply text-muted-foreground;
   }
 }

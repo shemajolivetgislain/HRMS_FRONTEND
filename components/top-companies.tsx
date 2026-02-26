@@ -51,15 +51,15 @@ export function TopCompanies() {
         </div>
         <div className="flex flex-col gap-5 pt-2">
           {topCompanies.map((company, i) => (
-            <div key={i} className="flex items-center justify-between group">
-              <div className="flex items-center gap-3.5">
-                <div className="text-muted-foreground/50 group-hover:text-primary transition-colors shrink-0">
-                  <HugeiconsIcon
-                    icon={Building03Icon}
-                    strokeWidth={1.5}
-                    className="size-5"
-                  />
-                </div>
+            <div
+              key={i}
+              className="flex items-center justify-between group cursor-default"
+            >
+              <div className="flex items-center gap-3.5 transform transition-transform duration-300 group-hover:translate-x-1 w-full">
+                <span className="text-xl font-light tabular-nums tracking-tighter text-muted-foreground/30 group-hover:text-primary/40 transition-colors w-6 text-right shrink-0 select-none">
+                  0{i + 1}
+                </span>
+
                 <div className="flex flex-col gap-0.5">
                   <div className="font-semibold tracking-tight text-foreground/90 leading-none text-sm group-hover:text-foreground transition-colors">
                     {company.name}
@@ -80,7 +80,7 @@ export function TopCompanies() {
                 </span>
                 <div className="flex items-center gap-1.5">
                   <span
-                    className={`block size-1.5 rounded-full ${company.status === "Active" ? "bg-emerald-500" : "bg-amber-500"}`}
+                    className={`block size-1.5 rounded-full ${company.status === "Active" ? "bg-success" : "bg-warning"}`}
                   />
                   <span className="text-[10px] tracking-wide text-muted-foreground/70">
                     {company.status}

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { NavUser } from "@/components/nav-user";
+import { NavUser } from "./nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -18,7 +18,6 @@ import {
   Building02Icon,
   UserGroupIcon,
   Settings02Icon,
-  CommandIcon,
 } from "@hugeicons/core-free-icons";
 import { NavMain } from "./nav-main";
 
@@ -53,20 +52,14 @@ const data = {
 };
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader className="py-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              className="data-[slot=sidebar-menu-button]:p-1.5!"
-              render={<a href="#" />}
-            >
-              <HugeiconsIcon
-                icon={CommandIcon}
-                strokeWidth={2}
-                className="size-5!"
-              />
-              <span className="text-base font-semibold">Acme Inc.</span>
+            <SidebarMenuButton className="data-[slot=sidebar-menu-button]:p-1.5! hover:bg-transparent! flex items-center cursor-default">
+              <span className="text-xl font-bold tracking-tighter uppercase leading-none text-foreground">
+                HRMS
+              </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

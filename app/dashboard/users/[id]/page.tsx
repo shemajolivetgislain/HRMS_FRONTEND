@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { StatusBadge } from '@/components/dashboard/status-badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { HugeiconsIcon } from '@hugeicons/react'
@@ -92,7 +91,7 @@ export default function EmployeeProfilePage() {
                   {formData.position}
                 </p>
                 <div className="flex items-center gap-2 mt-3">
-                  <StatusBadge status={formData.status} />
+                  <span>{formData.status}</span>
                   <span className="text-xs text-muted-foreground">
                     {formData.department}
                   </span>
@@ -252,7 +251,7 @@ export default function EmployeeProfilePage() {
               <InfoField label="Department" value={formData.department} icon={<HugeiconsIcon icon={Briefcase01Icon} className="w-4 h-4" />} />
               <InfoField label="Manager" value={formData.manager} icon={<HugeiconsIcon icon={Note01Icon} className="w-4 h-4" />} />
               <InfoField label="Hire Date" value={new Date(formData.hireDate).toLocaleDateString()} icon={<HugeiconsIcon icon={Calendar01Icon} className="w-4 h-4" />} />
-              <InfoField label="Status" value={<StatusBadge status={formData.status} />} icon={<HugeiconsIcon icon={Note01Icon} className="w-4 h-4" />} />
+              <InfoField label="Status" value={<span>{formData.status}</span>} icon={<HugeiconsIcon icon={Note01Icon} className="w-4 h-4" />} />
               <InfoField label="Tenure" value={`${Math.floor((new Date().getTime() - new Date(formData.hireDate).getTime()) / (1000 * 60 * 60 * 24 * 365))} years`} icon={<HugeiconsIcon icon={Calendar01Icon} className="w-4 h-4" />} />
             </div>
           </Card>

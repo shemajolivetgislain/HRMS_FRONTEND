@@ -9,7 +9,6 @@ import {
   AdvancedDataTable,
   type ColumnDef,
 } from "@/components/dashboard/advanced-data-table";
-import { StatusBadge } from "@/components/dashboard/status-badge";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -169,9 +168,7 @@ export default function UsersPage() {
       accessorKey: "status",
       header: "Status",
       sortable: true,
-      cell: (value) => (
-        <StatusBadge status={value as "active" | "inactive" | "pending"} />
-      ),
+      cell: (value) => <span className="text-sm">{value}</span>,
     },
     {
       accessorKey: "hireDate",

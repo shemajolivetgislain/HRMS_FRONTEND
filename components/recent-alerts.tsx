@@ -25,7 +25,7 @@ export function RecentAlerts() {
             <HugeiconsIcon
               icon={CheckmarkCircle01Icon}
               strokeWidth={1.5}
-              className="size-4 mt-0.5 text-emerald-500 shrink-0"
+              className="size-4 mt-0.5 text-success shrink-0"
             />
             <div className="flex flex-col gap-0.5">
               <div className="leading-none tracking-tight font-medium text-sm text-foreground/90">
@@ -55,7 +55,7 @@ export function RecentAlerts() {
             <HugeiconsIcon
               icon={Notification01Icon}
               strokeWidth={1.5}
-              className="size-4 mt-0.5 text-red-500 shrink-0"
+              className="size-4 mt-0.5 text-destructive shrink-0"
             />
             <div className="flex flex-col gap-0.5">
               <div className="leading-none tracking-tight font-medium text-sm text-foreground/90">
@@ -70,7 +70,7 @@ export function RecentAlerts() {
             <HugeiconsIcon
               icon={Clock01Icon}
               strokeWidth={1.5}
-              className="size-4 mt-0.5 text-blue-500 shrink-0"
+              className="size-4 mt-0.5 text-primary shrink-0"
             />
             <div className="flex flex-col gap-0.5">
               <div className="leading-none tracking-tight font-medium text-sm text-foreground/90">

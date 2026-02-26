@@ -62,7 +62,7 @@ export function RecentActivity() {
           {activities.map((activity, i) => (
             <div
               key={i}
-              className="group flex gap-4 items-start relative before:absolute before:inset-y-0 before:-left-[18px] before:w-px before:bg-border/20 hover:before:bg-primary/50 transition-colors"
+              className="group flex gap-4 items-start relative before:absolute before:inset-y-0 before:-left-[18px] before:w-px before:bg-border/20 hover:before:bg-primary/50 transition-all duration-300 hover:translate-x-1"
             >
               <Avatar className="size-8 rounded-full shrink-0 border border-border/20 bg-background mix-blend-luminosity hover:mix-blend-normal transition-all duration-300">
                 <AvatarImage src={activity.avatar} />

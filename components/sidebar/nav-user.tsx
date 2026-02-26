@@ -1,10 +1,6 @@
-"use client"
+"use client";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,46 +9,68 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { MoreVerticalCircle01Icon, UserCircle02Icon, CreditCardIcon, Notification03Icon, Logout01Icon } from "@hugeicons/core-free-icons"
+} from "@/components/ui/sidebar";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  MoreVerticalCircle01Icon,
+  UserCircle02Icon,
+  CreditCardIcon,
+  Notification03Icon,
+  Logout01Icon,
+  Sun01Icon,
+  Moon01Icon,
+  ComputerIcon,
+} from "@hugeicons/core-free-icons";
+import { useTheme } from "next-themes";
 
 export function NavUser({
   user,
 }: {
   user: {
-    name: string
-    email: string
-    avatar: string
-  }
+    name: string;
+    email: string;
+    avatar: string;
+  };
 }) {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
+  const { setTheme } = useTheme();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
-              <SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />
+              <SidebarMenuButton
+                size="lg"
+                className="aria-expanded:bg-muted/50 hover:bg-muted/40 transition-colors duration-200 cursor-pointer rounded-lg"
+              />
             }
           >
-            <Avatar className="size-8 rounded-lg grayscale">
+            <Avatar className="size-8 rounded-lg shadow-xs group-hover:scale-105 transition-transform duration-300">
               <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <AvatarFallback className="rounded-lg bg-primary/10 text-primary font-medium text-[10px] tracking-wide">
+                AD
+              </AvatarFallback>
             </Avatar>
-            <div className="grid flex-1 text-start text-sm leading-tight">
-              <span className="truncate font-medium">{user.name}</span>
-              <span className="text-foreground/70 truncate text-xs">
+            <div className="grid flex-1 text-start text-sm leading-tight ml-1">
+              <span className="truncate font-semibold tracking-tight text-foreground/90">
+                {user.name}
+              </span>
+              <span className="truncate text-[11px] font-medium text-muted-foreground/70">
                 {user.email}
               </span>
             </div>
-            <HugeiconsIcon icon={MoreVerticalCircle01Icon} strokeWidth={2} className="ms-auto size-4" />
+            <HugeiconsIcon
+              icon={MoreVerticalCircle01Icon}
+              strokeWidth={2}
+              className="ms-auto size-4 text-muted-foreground/50 group-hover:text-foreground transition-colors"
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="min-w-56"
@@ -92,6 +110,24 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="px-2 py-1.5 text-xs font-semibold text-muted-foreground/70 uppercase tracking-widest">
+                Theme
+              </DropdownMenuLabel>
+              <DropdownMenuItem onClick={() => setTheme("light")}>
+                <HugeiconsIcon icon={Sun01Icon} strokeWidth={2} />
+                Light
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
+                <HugeiconsIcon icon={Moon01Icon} strokeWidth={2} />
+                Dark
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("system")}>
+                <HugeiconsIcon icon={ComputerIcon} strokeWidth={2} />
+                System
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
             <DropdownMenuItem>
               <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />
               Log out
@@ -100,5 +136,5 @@ export function NavUser({
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }
