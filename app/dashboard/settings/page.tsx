@@ -1,354 +1,320 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons'
+import React, { useState } from "react";
+import { 
+  Frame, 
+  FramePanel, 
+  FrameHeader, 
+  FrameTitle, 
+  FrameDescription, 
+  FrameContent,
+  FrameFooter
+} from "@/components/ui/frame";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
+  Settings02Icon,
+  UserCircleIcon,
+  LockPasswordIcon,
+  Notification01Icon,
+  CreditCardIcon,
+  Tick01Icon,
+  Mail01Icon,
+  Building03Icon,
+  Shield01Icon,
+  GlobeIcon,
+  Sun01Icon,
+  Moon01Icon,
+  ComputerIcon,
+  UserGroupIcon,
+  Layout01Icon,
+  TranslateIcon,
+  MoreHorizontalIcon,
+  UserAdd01Icon,
+} from "@hugeicons/core-free-icons";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { UserAvatar } from "@/components/dashboard/user-avatar";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState('profile')
-  const [showApiKey, setShowApiKey] = useState(false)
+  const { theme, setTheme } = useTheme();
+  const [isSaving, setIsSaving] = useState(false);
 
-  const [profileData, setProfileData] = useState({
-    companyName: 'Tech Innovators Ltd',
-    email: 'admin@techinnovators.com',
-    phone: '+1 (555) 123-4567',
-    industry: 'Technology',
-    website: 'www.techinnovators.com',
-    address: '123 Tech Street, Silicon Valley, CA 94025',
-  })
-
-  const [notifications, setNotifications] = useState({
-    emailNotifications: true,
-    employeeUpdates: true,
-    systemAlerts: true,
-    weeklyReport: true,
-    payrollReminders: true,
-  })
-
-  const [security, setSecurity] = useState({
-    twoFactorAuth: false,
-    sessionTimeout: '30',
-    passwordExpiry: '90',
-  })
+  const handleSave = () => {
+    setIsSaving(true);
+    setTimeout(() => setIsSaving(false), 800);
+  };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">
-          Settings
-        </h1>
-        <p className="text-muted-foreground mt-1">
-          Manage your company and system settings
-        </p>
-      </div>
+    <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full">
+      <DashboardHeader 
+        category="Administration" 
+        title="Settings"
+        description="Global system configuration and access control"
+      >
+        <Button
+          size="sm"
+          className="h-9 px-6 rounded-lg text-[12px] font-bold shadow-sm capitalize gap-2"
+          onClick={handleSave}
+          disabled={isSaving}
+        >
+          {isSaving ? (
+            <div className="size-3.5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+          ) : (
+            <HugeiconsIcon icon={Tick01Icon} size={14} strokeWidth={2} />
+          )}
+          {isSaving ? "Saving..." : "Save Changes"}
+        </Button>
+      </DashboardHeader>
 
-      {/* Settings Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2 lg:w-auto">
-          <TabsTrigger value="profile">Company Profile</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="integrations">Integrations</TabsTrigger>
-        </TabsList>
-
-        {/* Company Profile Tab */}
-        <TabsContent value="profile" className="space-y-4">
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-6">
-              Company Information
-            </h2>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="company">Company Name</Label>
-                  <Input
-                    id="company"
-                    value={profileData.companyName}
-                    onChange={(e) => setProfileData({ ...profileData, companyName: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={profileData.email}
-                    onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    id="phone"
-                    value={profileData.phone}
-                    onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="industry">Industry</Label>
-                  <Select defaultValue={profileData.industry}>
-                    <SelectTrigger id="industry">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Technology">Technology</SelectItem>
-                      <SelectItem value="Finance">Finance</SelectItem>
-                      <SelectItem value="Healthcare">Healthcare</SelectItem>
-                      <SelectItem value="Retail">Retail</SelectItem>
-                      <SelectItem value="Manufacturing">Manufacturing</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="address">Address</Label>
-                  <Input
-                    id="address"
-                    value={profileData.address}
-                    onChange={(e) => setProfileData({ ...profileData, address: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="website">Website</Label>
-                  <Input
-                    id="website"
-                    value={profileData.website}
-                    onChange={(e) => setProfileData({ ...profileData, website: e.target.value })}
-                  />
-                </div>
-              </div>
-              <div className="flex gap-2 pt-4">
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                  Save Changes
-                </Button>
-                <Button variant="outline">
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </Card>
-
-          {/* Branding Card */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-6">
-              Company Branding
-            </h2>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>Company Logo</Label>
-                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
-                  <p className="text-sm text-muted-foreground">
-                    Drag and drop your logo here or click to upload
-                  </p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="primaryColor">Primary Color</Label>
-                <div className="flex gap-2">
-                  <div className="w-12 h-10 rounded-lg bg-primary border-2 border-border cursor-pointer" />
-                  <Input id="primaryColor" placeholder="#2563eb" className="flex-1" defaultValue="#3b82f6" />
-                </div>
-              </div>
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                Save Branding
-              </Button>
+      <div className="flex flex-col flex-1 overflow-hidden px-4 lg:px-6 pb-6 h-full">
+        {/* Unified Sidebar Layout */}
+        <Tabs 
+          defaultValue="general" 
+          orientation="vertical" 
+          className="flex flex-1 gap-0 border border-border/40 rounded-[20px] bg-card overflow-hidden h-full"
+        >
+          {/* Sidebar Column */}
+          <div className="w-[240px] flex flex-col bg-muted/5 border-r border-border/5">
+            <div className="px-6 py-6 border-b border-border/5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/30">System Settings</p>
             </div>
-          </Card>
-        </TabsContent>
+            
+            <TabsList className="flex flex-col h-auto w-full bg-transparent border-none p-2 space-y-0.5 items-stretch justify-start">
+              <SettingsTabTrigger value="general" icon={Building03Icon} title="General" />
+              <SettingsTabTrigger value="appearance" icon={Layout01Icon} title="Appearance" />
+              <SettingsTabTrigger value="notifications" icon={Notification01Icon} title="Notifications" />
+              <div className="px-4 py-4 mt-2">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/30">Security & Team</p>
+              </div>
+              <SettingsTabTrigger value="security" icon={Shield01Icon} title="Security" />
+              <SettingsTabTrigger value="team" icon={UserGroupIcon} title="Admin Team" />
+            </TabsList>
+          </div>
 
-        {/* Notifications Tab */}
-        <TabsContent value="notifications" className="space-y-4">
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-6">
-              Notification Preferences
-            </h2>
-            <div className="space-y-4">
-              {[
-                {
-                  key: 'emailNotifications' as const,
-                  title: 'Email Notifications',
-                  description: 'Receive important updates via email',
-                },
-                {
-                  key: 'employeeUpdates' as const,
-                  title: 'Employee Updates',
-                  description: 'Get notified about employee activities',
-                },
-                {
-                  key: 'systemAlerts' as const,
-                  title: 'System Alerts',
-                  description: 'Critical system and security alerts',
-                },
-                {
-                  key: 'weeklyReport' as const,
-                  title: 'Weekly Report',
-                  description: 'Receive weekly summary reports',
-                },
-                {
-                  key: 'payrollReminders' as const,
-                  title: 'Payroll Reminders',
-                  description: 'Reminders for upcoming payroll dates',
-                },
-              ].map((item) => (
-                <div key={item.key} className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-muted transition-colors">
-                  <div className="flex-1">
-                    <p className="font-medium text-foreground">{item.title}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{item.description}</p>
+          {/* Scrollable Main Area */}
+          <div className="flex-1 min-w-0 h-full overflow-y-auto no-scrollbar bg-background/40">
+            <div className="max-w-4xl p-10 space-y-12">
+              
+              {/* General Tab */}
+              <TabsContent value="general" className="mt-0 space-y-12 animate-in fade-in slide-in-from-right-1 duration-300">
+                <section className="space-y-6">
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground/90">Company Profile</h3>
+                    <p className="text-[13px] font-medium text-muted-foreground/50">Manage your organizational identity and branding.</p>
                   </div>
-                  <Switch
-                    checked={notifications[item.key]}
-                    onCheckedChange={(checked) =>
-                      setNotifications({ ...notifications, [item.key]: checked })
-                    }
-                  />
-                </div>
-              ))}
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground mt-4">
-                Save Preferences
-              </Button>
-            </div>
-          </Card>
-        </TabsContent>
-
-        {/* Security Tab */}
-        <TabsContent value="security" className="space-y-4">
-          {/* Two-Factor Authentication */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-6">
-              Two-Factor Authentication
-            </h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium text-foreground">Enable 2FA</p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Enhance your account security with two-factor authentication
-                  </p>
-                </div>
-                <Switch
-                  checked={security.twoFactorAuth}
-                  onCheckedChange={(checked) =>
-                    setSecurity({ ...security, twoFactorAuth: checked })
-                  }
-                />
-              </div>
-            </div>
-          </Card>
-
-          {/* Session Management */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-6">
-              Session Management
-            </h2>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="timeout">Session Timeout (minutes)</Label>
-                <Input
-                  id="timeout"
-                  type="number"
-                  value={security.sessionTimeout}
-                  onChange={(e) =>
-                    setSecurity({ ...security, sessionTimeout: e.target.value })
-                  }
-                />
-                <p className="text-xs text-muted-foreground">
-                  Automatically logout inactive users after this duration
-                </p>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="expiry">Password Expiry (days)</Label>
-                <Input
-                  id="expiry"
-                  type="number"
-                  value={security.passwordExpiry}
-                  onChange={(e) =>
-                    setSecurity({ ...security, passwordExpiry: e.target.value })
-                  }
-                />
-                <p className="text-xs text-muted-foreground">
-                  Require users to change password after this period
-                </p>
-              </div>
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                Save Security Settings
-              </Button>
-            </div>
-          </Card>
-
-          {/* API Keys */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-6">
-              API Keys
-            </h2>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>API Key</Label>
-                <div className="flex gap-2">
-                  <div className="flex-1 flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-muted/50">
-                    <code className="text-xs font-mono text-muted-foreground flex-1">
-                      {showApiKey ? 'sk_live_51234567890abcdefghijk' : '••••••••••••••••••••••••••'}
-                    </code>
-                    <button
-                      onClick={() => setShowApiKey(!showApiKey)}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <HugeiconsIcon icon={showApiKey ? ViewOffIcon : ViewIcon} className="w-4 h-4" />
-                    </button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+                    <SettingsField label="Legal Entity Name" defaultValue="Acme Global Inc." />
+                    <SettingsField label="Primary Industry" defaultValue="Technology" />
+                    <SettingsField label="Support Email" defaultValue="hr-support@acme.com" type="email" />
+                    <SettingsField label="Company Domain" defaultValue="acme.com" prefix="https://" />
+                    <SettingsField label="Headquarters" defaultValue="123 Innovation Drive, San Francisco, CA" className="md:col-span-2" />
                   </div>
-                  <Button variant="outline" onClick={() => navigator.clipboard.writeText('sk_live_51234567890abcdefghijk')}>
-                    Copy
-                  </Button>
-                </div>
-              </div>
-              <Button variant="outline" className="text-destructive hover:text-destructive">
-                Regenerate API Key
-              </Button>
-            </div>
-          </Card>
-        </TabsContent>
+                </section>
 
-        {/* Integrations Tab */}
-        <TabsContent value="integrations" className="space-y-4">
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-foreground mb-6">
-              Connected Integrations
-            </h2>
-            <div className="space-y-3">
-              {[
-                { name: 'Google Workspace', status: 'connected', icon: '🔵' },
-                { name: 'Slack', status: 'connected', icon: '🔵' },
-                { name: 'Microsoft Teams', status: 'not connected', icon: '⚪' },
-                { name: 'Zoom', status: 'connected', icon: '🔵' },
-              ].map((integration, idx) => (
-                <div key={idx} className="flex items-center justify-between p-4 rounded-lg border border-border">
-                  <div className="flex-1">
-                    <p className="font-medium text-foreground">{integration.name}</p>
-                    <p className="text-xs text-muted-foreground mt-1 capitalize">
-                      {integration.status}
+                <section className="pt-10 border-t border-border/5 space-y-6">
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground/90">Regional Defaults</h3>
+                    <p className="text-[13px] font-medium text-muted-foreground/50">Configure localization and operational settings.</p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+                    <SettingsField label="System Language" defaultValue="English (US)" icon={TranslateIcon} />
+                    <SettingsField label="Base Currency" defaultValue="USD ($)" icon={GlobeIcon} />
+                  </div>
+                </section>
+              </TabsContent>
+
+              {/* Appearance Tab */}
+              <TabsContent value="appearance" className="mt-0 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
+                <div className="space-y-1">
+                  <h3 className="text-lg font-semibold text-foreground/90">Interface Theme</h3>
+                  <p className="text-[13px] font-medium text-muted-foreground/50">Customize the dashboard aesthetic for your workspace.</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <ThemeCard active={theme === "light"} onClick={() => setTheme("light")} icon={Sun01Icon} title="Light" description="Clean & sharp" />
+                  <ThemeCard active={theme === "dark"} onClick={() => setTheme("dark")} icon={Moon01Icon} title="Dark" description="Ink Navy feel" />
+                  <ThemeCard active={theme === "system"} onClick={() => setTheme("system")} icon={ComputerIcon} title="System" description="Device default" />
+                </div>
+              </TabsContent>
+
+              {/* Notifications Tab */}
+              <TabsContent value="notifications" className="mt-0 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
+                <div className="space-y-1">
+                  <h3 className="text-lg font-semibold text-foreground/90">Notification Matrix</h3>
+                  <p className="text-[13px] font-medium text-muted-foreground/50">Manage your individual system alert preferences.</p>
+                </div>
+                <div className="divide-y divide-border/5 border-y border-border/5">
+                  <ToggleRow icon={Mail01Icon} title="Weekly Summary" description="Consolidated report of all HR activities and movements." defaultChecked />
+                  <ToggleRow icon={Shield01Icon} title="Security Alerts" description="Immediate notice for new device logins or access changes." defaultChecked />
+                  <ToggleRow icon={CreditCardIcon} title="Payroll Updates" description="Notifications for disbursement cycles and approvals." />
+                  <ToggleRow icon={UserAdd01Icon} title="Candidate Flow" description="Alerts when candidates move to priority stages." defaultChecked />
+                </div>
+              </TabsContent>
+
+              {/* Security Tab */}
+              <TabsContent value="security" className="mt-0 space-y-10 animate-in fade-in slide-in-from-right-1 duration-300">
+                <div className="space-y-6">
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground/90">Access Credentials</h3>
+                    <p className="text-[13px] font-medium text-muted-foreground/50">Keep your administrative account secure with a strong password.</p>
+                  </div>
+                  <div className="max-w-md space-y-6">
+                    <SettingsField label="Current Password" type="password" defaultValue="********" />
+                    <SettingsField label="New Password" type="password" defaultValue="" />
+                    <Button className="h-9 px-6 rounded-lg font-bold text-[11px] uppercase tracking-widest bg-primary text-primary-foreground">Update Credentials</Button>
+                  </div>
+                </div>
+
+                <div className="pt-10 border-t border-border/5 space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <h3 className="text-lg font-semibold text-foreground/90">Two-Factor Auth</h3>
+                      <p className="text-[13px] font-medium text-muted-foreground/50">Additional verification layer for your account.</p>
+                    </div>
+                    <Badge variant="success" className="h-5 px-2 rounded-md font-bold text-[9px]">ENFORCED</Badge>
+                  </div>
+                  <div className="p-5 rounded-2xl bg-primary/[0.02] border border-primary/5 flex items-center justify-between">
+                    <p className="text-[13px] font-medium text-foreground/70 leading-relaxed max-w-sm">
+                      Your account is currently protected with enterprise-grade **TOTP** and **Biometric** verification.
                     </p>
+                    <Button variant="outline" size="sm" className="h-8 rounded-lg border-primary/20 text-primary font-bold text-[10px] uppercase tracking-widest bg-transparent">
+                      Configure
+                    </Button>
                   </div>
-                  <Button variant="outline" size="sm">
-                    {integration.status === 'connected' ? 'Disconnect' : 'Connect'}
-                  </Button>
                 </div>
-              ))}
+              </TabsContent>
+
+              {/* Team Tab */}
+              <TabsContent value="team" className="mt-0 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
+                <div className="flex items-end justify-between">
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground/90">Administrator Team</h3>
+                    <p className="text-[13px] font-medium text-muted-foreground/50">Manage users with elevated system permissions.</p>
+                  </div>
+                  <Button size="sm" className="h-8 px-4 text-[11px] font-bold rounded-lg shadow-sm">Invite Admin</Button>
+                </div>
+                <div className="divide-y divide-border/5 border-y border-border/5">
+                  <AdminRow name="Admin User" email="admin@acme.com" role="Super Admin" status="active" />
+                  <AdminRow name="Sarah Jenkins" email="s.jenkins@acme.com" role="HR Manager" status="active" />
+                  <AdminRow name="Michael Chen" email="m.chen@acme.com" role="Financial Auditor" status="active" />
+                </div>
+              </TabsContent>
+
             </div>
-          </Card>
-        </TabsContent>
-      </Tabs>
+          </div>
+        </Tabs>
+      </div>
+    </main>
+  );
+}
+
+function SettingsTabTrigger({ value, icon: Icon, title }: { value: string; icon: any; title: string }) {
+  return (
+    <TabsTrigger 
+      value={value} 
+      className="relative w-full flex items-center gap-3 px-4 py-2 rounded-md transition-all text-left data-[state=active]:text-primary text-muted-foreground/50 hover:text-foreground/80 group overflow-hidden"
+    >
+      <HugeiconsIcon icon={Icon} size={16} strokeWidth={2} className="group-data-[state=active]:text-primary transition-colors" />
+      <span className="text-[13px] font-semibold tracking-tight">{title}</span>
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-full opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
+    </TabsTrigger>
+  );
+}
+
+function SettingsField({ label, defaultValue, type = "text", prefix, icon: Icon, className }: { label: string; defaultValue: string; type?: string; prefix?: string; icon?: any; className?: string }) {
+  return (
+    <div className={cn("space-y-2", className)}>
+      <Label className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/40">{label}</Label>
+      <div className="relative group/input">
+        {prefix && (
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] font-bold text-muted-foreground/30">{prefix}</span>
+        )}
+        <Input 
+          defaultValue={defaultValue} 
+          type={type}
+          className={cn(
+            "h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-[13px] font-medium shadow-none",
+            prefix ? "pl-16" : "pl-3"
+          )} 
+        />
+        {Icon && (
+          <HugeiconsIcon icon={Icon} size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/20 group-hover/input:text-muted-foreground/40 transition-colors" />
+        )}
+      </div>
     </div>
-  )
+  );
+}
+
+function ThemeCard({ active, onClick, icon: Icon, title, description }: { active: boolean; onClick: () => void; icon: any; title: string; description: string }) {
+  return (
+    <button 
+      onClick={onClick}
+      className={cn(
+        "flex flex-col gap-4 p-5 rounded-2xl border text-left transition-all duration-300",
+        active 
+          ? "bg-primary/[0.03] border-primary/20 shadow-xs" 
+          : "bg-muted/5 border-border/5 hover:border-border/20"
+      )}
+    >
+      <div className={cn(
+        "size-9 rounded-xl flex items-center justify-center border transition-colors",
+        active ? "bg-primary text-white border-primary" : "bg-muted/10 text-muted-foreground/40 border-border/5"
+      )}>
+        <HugeiconsIcon icon={Icon} size={18} strokeWidth={2} />
+      </div>
+      <div>
+        <p className={cn("text-[13px] font-semibold leading-none", active ? "text-foreground" : "text-muted-foreground/70")}>{title}</p>
+        <p className="text-[11px] font-medium text-muted-foreground/40 mt-1.5">{description}</p>
+      </div>
+    </button>
+  );
+}
+
+function ToggleRow({ icon: Icon, title, description, defaultChecked }: { icon: any; title: string; description: string; defaultChecked?: boolean }) {
+  return (
+    <div className="flex items-center justify-between py-5 hover:bg-muted/5 transition-all group px-2 -mx-2 rounded-xl">
+      <div className="flex items-start gap-4">
+        <div className="h-9 w-9 rounded-xl bg-muted/5 border border-border/5 flex items-center justify-center text-muted-foreground/20 group-hover:border-primary/20 group-hover:text-primary transition-all">
+          <HugeiconsIcon icon={Icon} size={16} strokeWidth={1.5} />
+        </div>
+        <div className="space-y-1">
+          <p className="text-[14px] font-semibold text-foreground/80">{title}</p>
+          <p className="text-[12px] font-medium text-muted-foreground/40 max-w-md leading-relaxed">{description}</p>
+        </div>
+      </div>
+      <Switch defaultChecked={defaultChecked} className="scale-[0.75]" />
+    </div>
+  );
+}
+
+function AdminRow({ name, email, role, status }: { name: string; email: string; role: string; status: string }) {
+  return (
+    <div className="flex items-center justify-between py-4 hover:bg-muted/5 transition-all group/admin px-2 -mx-2 rounded-xl">
+      <div className="flex items-center gap-4">
+        <UserAvatar name={name} size="sm" className="shadow-sm border border-border/10" />
+        <div>
+          <p className="text-[13px] font-semibold text-foreground/90 leading-none">{name}</p>
+          <p className="text-[11px] font-medium text-muted-foreground/40 mt-1">{email}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-6">
+        <div className="hidden md:flex flex-col items-end">
+          <span className="text-[10px] font-bold text-muted-foreground/30 capitalize tracking-widest leading-none mb-1">Access</span>
+          <span className="text-[12px] font-semibold text-foreground/70">{role}</span>
+        </div>
+        <Badge variant={status === "active" ? "success" : "muted"} showDot className="h-5 px-2 rounded-md font-bold text-[9px] uppercase tracking-widest border-none">
+          {status}
+        </Badge>
+        <Button variant="ghost" size="icon-sm" className="h-8 w-8 rounded-lg opacity-0 group-hover/admin:opacity-100 transition-opacity">
+          <HugeiconsIcon icon={MoreHorizontalIcon} className="size-4 opacity-40" />
+        </Button>
+      </div>
+    </div>
+  );
 }
