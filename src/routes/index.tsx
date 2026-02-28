@@ -98,7 +98,11 @@ function Home() {
             </a>
           </nav>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="default" render={<Link to="/auth/login" />}>
+            <Button
+              variant="ghost"
+              size="default"
+              render={<Link to="/auth/login" />}
+            >
               Sign In
             </Button>
             <Button
@@ -134,10 +138,14 @@ function Home() {
               Start Free Trial
               <HugeiconsIcon
                 icon={ArrowRight01Icon}
-                className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform"
+                className="group-hover:translate-x-0.5 transition-transform"
               />
             </Button>
-            <Button size="lg" variant="outline" render={<Link to="/auth/login" />}>
+            <Button
+              size="lg"
+              variant="outline"
+              render={<Link to="/auth/login" />}
+            >
               View Demo
             </Button>
           </div>
@@ -216,14 +224,13 @@ function Home() {
               Get Started Now
               <HugeiconsIcon
                 icon={ArrowRight01Icon}
-                className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform"
+                className="group-hover:translate-x-0.5 transition-transform"
               />
             </Button>
           </div>
         </Card>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-border bg-muted/30 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">

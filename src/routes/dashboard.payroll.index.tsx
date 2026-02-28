@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Frame,
   FramePanel,
@@ -11,399 +10,269 @@ import {
   FrameContent,
   FrameFooter,
 } from "@/components/ui/frame";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Coins01Icon,
   Download01Icon,
-  Search01Icon,
-  ArrowUpRight01Icon,
-  Calendar01Icon,
-  ArrowLeft01Icon,
-  ArrowRight01Icon,
-  CreditCardIcon,
   Tick01Icon,
+  ArrowRight01Icon,
+  ArrowLeft01Icon,
+  Calendar01Icon,
+  InformationCircleIcon,
+  UserGroupIcon,
+  Clock01Icon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { UserAvatar } from "@/components/dashboard/user-avatar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { formatCurrency, formatDate, cn } from "@/lib/utils";
 import { api } from "@/lib/mock-api";
-
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
+import { ErrorComponent } from "@/components/error-component";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/payroll/")({
-  loader: async () => await api.getPayroll(),
+  loader: async () => {
+    const [history, activeRun] = await Promise.all([
+      api.getPayroll(),
+      api.getActivePayrollRun(),
+    ]);
+    return { history, activeRun };
+  },
   pendingComponent: DashboardPending,
+  errorComponent: ErrorComponent,
   component: PayrollPage,
 });
 
+const steps = [
+  { id: 1, label: "Attendance", desc: "Verify working days" },
+  { id: 2, label: "HR Verify", desc: "Policy check" },
+  { id: 3, label: "Mgmt Approv.", desc: "Review anomalies" },
+  { id: 4, label: "Salary Sheet", desc: "Tax & Net Calc" },
+  { id: 5, label: "Final Approv.", desc: "Board sign-off" },
+  { id: 6, label: "Payment", desc: "Execute bank transfer" },
+];
+
 function PayrollPage() {
-  const payrollData = Route.useLoaderData();
-  const [searchTerm, setSearchTerm] = useState("");
+  const { history, activeRun } = Route.useLoaderData();
+  const [currentStep, setCurrentStep] = useState(activeRun.currentStep);
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden">
       <DashboardHeader
         category="Financials"
-        title="Payroll"
-        description="Manage employee disbursements and salary structures"
+        title="Payroll Engine"
+        description="Localized tax compliance and disbursement management"
       >
-        <Button
-          variant="outline"
-          size="lg"
-          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
-        >
-          <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
-          Statement
-        </Button>
-        <Button
-          size="lg"
-          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
-        >
-          <HugeiconsIcon icon={Coins01Icon} size={14} strokeWidth={2} />
-          Run Payroll
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" size="lg" className="font-bold gap-2">
+            <HugeiconsIcon icon={Download01Icon} size={14} />
+            History
+          </Button>
+          <Button
+            size="lg"
+            className="font-bold gap-2 bg-success hover:bg-success/90"
+          >
+            <HugeiconsIcon icon={Tick01Icon} size={14} />
+            Complete Cycle
+          </Button>
+        </div>
       </DashboardHeader>
 
-      <div className="flex flex-col gap-4 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatCard
-            label="Total Disbursement"
-            value="$42,850.00"
-            change="+4.2%"
-            up={true}
-            icon={Coins01Icon}
-            variant="primary"
-          />
-          <StatCard
-            label="Pending Approvals"
-            value="14"
-            change="-2"
-            up={false}
-            icon={Tick01Icon}
-            variant="warning"
-          />
-          <StatCard
-            label="Next Pay Date"
-            value="Jan 25"
-            icon={Calendar01Icon}
-            variant="success"
-          />
-        </section>
-
+      <div className="flex flex-col gap-6 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
+        {/* Active Wizard */}
         <section>
-          <Frame className="group/frame">
+          <Frame>
             <FramePanel className="p-0 overflow-hidden bg-card">
-              <FrameHeader className="border-b-0 pb-2">
-                <div>
-                  <FrameTitle>Disbursement History</FrameTitle>
-                  <FrameDescription>
-                    Complete record of all employee payments
-                  </FrameDescription>
+              <FrameHeader className="border-b border-border/5">
+                <div className="flex items-center gap-3">
+                  <div className="size-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
+                    <HugeiconsIcon icon={Clock01Icon} size={20} />
+                  </div>
+                  <div>
+                    <FrameTitle>
+                      Active Run: {activeRun.month} {activeRun.year}
+                    </FrameTitle>
+                    <FrameDescription>
+                      Following the 6-step compliance workflow
+                    </FrameDescription>
+                  </div>
                 </div>
+                <Badge
+                  variant="warning"
+                  className="h-6 px-3 rounded-md font-bold text-[10px] uppercase"
+                >
+                  Step {currentStep} of 6
+                </Badge>
               </FrameHeader>
 
-              <div className="px-6 pb-5 pt-2 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-3 border-b border-border/5">
-                <div className="relative">
-                  <HugeiconsIcon
-                    icon={Search01Icon}
-                    className="absolute left-3 top-2.5 size-4 text-muted-foreground/40"
-                    strokeWidth={2}
-                  />
-                  <Input
-                    placeholder="Search payee…"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-9 h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-xs"
-                  />
+              <div className="px-10 py-12 border-b border-border/5 bg-muted/[0.02]">
+                <div className="flex items-center justify-between relative max-w-4xl mx-auto">
+                  <div className="absolute left-0 right-0 top-5 -translate-y-1/2 h-0.5 bg-border/10 -z-0" />
+                  {steps.map((s) => (
+                    <div
+                      key={s.id}
+                      className="relative z-10 flex flex-col items-center gap-4"
+                    >
+                      <div
+                        className={cn(
+                          "size-10 rounded-full flex items-center justify-center transition-all duration-500",
+                          currentStep === s.id
+                            ? "bg-primary text-white scale-110 shadow-lg shadow-primary/20 ring-4 ring-primary/20 border-2 border-white"
+                            : currentStep > s.id
+                              ? "bg-success text-white"
+                              : "bg-muted text-muted-foreground/40 border border-border/5",
+                        )}
+                      >
+                        {currentStep > s.id ? (
+                          <HugeiconsIcon
+                            icon={Tick01Icon}
+                            size={16}
+                            strokeWidth={3}
+                          />
+                        ) : (
+                          <span className="text-xs font-bold">{s.id}</span>
+                        )}
+                      </div>
+                      <div className="text-center">
+                        <p
+                          className={cn(
+                            "text-[10px] font-bold uppercase tracking-widest",
+                            currentStep === s.id
+                              ? "text-primary"
+                              : "text-muted-foreground/30",
+                          )}
+                        >
+                          {s.label}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-
-                <Select defaultValue="dec-2023">
-                  <SelectTrigger className="h-9 rounded-lg border-border/40 bg-muted/5">
-                    <div className="flex items-center gap-2 text-xs">
-                      <span className="text-muted-foreground/40 text-[10px] font-bold uppercase tracking-wider">
-                        Month:
-                      </span>
-                      <SelectValue />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="dec-2023" className="text-xs">
-                      Dec 2023
-                    </SelectItem>
-                    <SelectItem value="nov-2023" className="text-xs">
-                      Nov 2023
-                    </SelectItem>
-                    <SelectItem value="oct-2023" className="text-xs">
-                      Oct 2023
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select defaultValue="all">
-                  <SelectTrigger className="h-9 rounded-lg border-border/40 bg-muted/5">
-                    <div className="flex items-center gap-2 text-xs">
-                      <span className="text-muted-foreground/40 text-[10px] font-bold uppercase tracking-wider">
-                        Status:
-                      </span>
-                      <SelectValue />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all" className="text-xs">
-                      All Status
-                    </SelectItem>
-                    <SelectItem value="paid" className="text-xs">
-                      Paid
-                    </SelectItem>
-                    <SelectItem value="processing" className="text-xs">
-                      Processing
-                    </SelectItem>
-                    <SelectItem value="delayed" className="text-xs">
-                      Delayed
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
 
-              <FrameContent className="p-0">
-                <Table>
-                  <TableHeader className="bg-muted/10">
-                    <TableRow className="hover:bg-transparent border-border/5">
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">
-                        Reference
-                      </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Employee
-                      </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Amount
-                      </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Method
-                      </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Date
-                      </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Status
-                      </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">
-                        Action
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {payrollData.map((item) => (
-                      <TableRow
-                        key={item.id}
-                        className="border-border/5 hover:bg-muted/5 transition-colors group"
-                      >
-                        <TableCell className="pl-6 py-4">
-                          <span className="text-[11px] font-bold text-muted-foreground/30 tabular-nums">
-                            {item.id}
-                          </span>
-                        </TableCell>
-                        <TableCell className="px-2">
-                          <div className="flex items-center gap-3">
-                            <UserAvatar name={item.employee} size="sm" />
-                            <div>
-                              <p className="text-[13px] font-semibold text-foreground/80 leading-none">
-                                {item.employee}
-                              </p>
-                              <p className="text-[11px] font-medium text-muted-foreground/40 mt-1">
-                                {item.role}
-                              </p>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="px-2">
-                          <span className="text-[13px] font-semibold text-foreground/90 tabular-nums">
-                            {formatCurrency(item.amount)}
-                          </span>
-                        </TableCell>
-                        <TableCell className="px-2">
-                          <div className="flex items-center gap-2">
-                            <HugeiconsIcon
-                              icon={CreditCardIcon}
-                              size={12}
-                              className="text-muted-foreground/30"
-                            />
-                            <span className="text-[12px] font-medium text-foreground/60">
-                              {item.method}
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="px-2">
-                          <span className="text-[12px] font-bold text-muted-foreground/40 tabular-nums">
-                            {formatDate(item.date)}
-                          </span>
-                        </TableCell>
-                        <TableCell className="px-2">
-                          <Badge
-                            variant={
-                              item.status === "paid"
-                                ? "success"
-                                : item.status === "processing"
-                                  ? "warning"
-                                  : "destructive"
-                            }
-                            showDot
-                          >
-                            {item.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right pr-6">
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            className="rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                            render={
-                              <Link
-                                to="/dashboard/payroll/$id"
-                                params={{ id: item.id }}
-                              />
-                            }
-                          >
-                            <HugeiconsIcon
-                              icon={ArrowUpRight01Icon}
-                              className="size-4 opacity-40"
-                            />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </FrameContent>
+              <FrameContent className="p-16 text-center max-w-2xl mx-auto space-y-8">
+                <div className="space-y-3">
+                  <h3 className="text-3xl font-semibold tracking-tight text-foreground/90">
+                    {steps[currentStep - 1].label}
+                  </h3>
+                  <p className="text-[15px] text-muted-foreground/50 leading-relaxed font-medium">
+                    {steps[currentStep - 1].desc}. Ensure all department
+                    attendance sheets are submitted and verified before
+                    proceeding to HR validation.
+                  </p>
+                </div>
 
-              <FrameFooter className="flex items-center justify-between">
-                <p className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
-                  Showing {payrollData.length} of 124 disbursements
-                </p>
-                <div className="flex items-center gap-1.5">
-                  <button 
-                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors"
-                    aria-label="Previous page"
+                <div className="flex items-center justify-center gap-4 pt-6">
+                  <Button
+                    variant="ghost"
+                    size="xl"
+                    disabled={currentStep === 1}
+                    onClick={() => setCurrentStep((prev) => (prev - 1) as any)}
+                    className="rounded-full px-8 font-bold text-muted-foreground/40 hover:text-foreground hover:bg-muted/5 transition-all"
                   >
                     <HugeiconsIcon
                       icon={ArrowLeft01Icon}
-                      size={12}
-                      strokeWidth={2.5}
+                      size={16}
+                      className="mr-2"
                     />
-                  </button>
-                  <button 
-                    className="h-7 w-7 flex items-center justify-center rounded-md bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold"
-                    aria-label="Page 1"
-                    aria-current="page"
+                    Back
+                  </Button>
+                  <Button
+                    size="xl"
+                    disabled={currentStep === 6}
+                    onClick={() => setCurrentStep((prev) => (prev + 1) as any)}
+                    className="rounded-full bg-primary text-primary-foreground hover:opacity-95 px-10 font-bold border-2 border-white/10 transition-all active:scale-95"
                   >
-                    1
-                  </button>
-                  <button 
-                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors"
-                    aria-label="Next page"
-                  >
+                    Next Step
                     <HugeiconsIcon
                       icon={ArrowRight01Icon}
-                      size={12}
-                      strokeWidth={2.5}
+                      size={16}
+                      className="ml-2"
                     />
-                  </button>
+                  </Button>
                 </div>
+              </FrameContent>
+
+              <FrameFooter className="bg-primary/[0.02] border-t border-primary/5 px-8 py-4 flex items-center justify-between">
+                <div className="flex items-center gap-6">
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest leading-none mb-1.5">
+                      Estimated Gross
+                    </span>
+                    <span className="text-[14px] font-bold text-foreground/80 tabular-nums">
+                      $450,000.00
+                    </span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest leading-none mb-1.5">
+                      Tax & Deductions
+                    </span>
+                    <span className="text-[14px] font-bold text-destructive/70 tabular-nums">
+                      -$125,000.00
+                    </span>
+                  </div>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-[11px] font-bold text-primary gap-2"
+                >
+                  <HugeiconsIcon icon={InformationCircleIcon} size={14} />
+                  View Logic
+                </Button>
               </FrameFooter>
+            </FramePanel>
+          </Frame>
+        </section>
+
+        {/* Info Grid */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Frame>
+            <FramePanel className="p-6 bg-card space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="size-8 rounded-lg bg-info/10 flex items-center justify-center text-info">
+                  <HugeiconsIcon icon={InformationCircleIcon} size={16} />
+                </div>
+                <h4 className="font-semibold text-foreground/90">
+                  Compliance Note
+                </h4>
+              </div>
+              <p className="text-[13px] text-muted-foreground/70 leading-relaxed italic">
+                “Statutory deductions are automatically calculated based on the
+                RRA 2024 brackets and RSSB pension contributions (6% Employee,
+                8% Employer).”
+              </p>
+            </FramePanel>
+          </Frame>
+
+          <Frame>
+            <FramePanel className="p-6 bg-card space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="size-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                  <HugeiconsIcon icon={UserGroupIcon} size={16} />
+                </div>
+                <h4 className="font-semibold text-foreground/90">
+                  Departmental Status
+                </h4>
+              </div>
+              <div className="flex items-center gap-4 pt-1">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="size-7 rounded-full border-2 border-card bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground/60"
+                    >
+                      DP
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[12px] font-medium text-muted-foreground/60">
+                  8 of 12 departments have submitted attendance.
+                </p>
+              </div>
             </FramePanel>
           </Frame>
         </section>
       </div>
     </main>
-  );
-}
-
-function StatCard({
-  label,
-  value,
-  change,
-  up,
-  icon: Icon,
-  variant,
-  sub,
-}: {
-  label: string;
-  value: string;
-  change?: string;
-  up?: boolean;
-  icon: any;
-  variant:
-    | "primary"
-    | "success"
-    | "warning"
-    | "destructive"
-    | "info"
-    | "accent";
-  sub?: string;
-}) {
-  return (
-    <Frame className="group/frame h-full">
-      <FramePanel className="p-5 flex flex-col gap-4 bg-card">
-        <div className="flex items-start justify-between">
-          <div
-            className={cn(
-              "h-9 w-9 rounded-xl flex items-center justify-center border border-border/10",
-              variant === "primary" && "bg-primary/10 text-primary",
-              variant === "success" && "bg-success/10 text-success",
-              variant === "warning" && "bg-warning/10 text-warning",
-              variant === "destructive" && "bg-destructive/10 text-destructive",
-              variant === "info" && "bg-info/10 text-info",
-              variant === "accent" && "bg-accent/10 text-accent",
-            )}
-          >
-            <HugeiconsIcon icon={Icon} size={18} strokeWidth={2} />
-          </div>
-          {change ? (
-            <Badge
-              variant="muted"
-              className={cn(
-                "border-none px-1.5 py-0.5 rounded-md font-bold",
-                up
-                  ? "text-success bg-success/10"
-                  : "text-destructive bg-destructive/10",
-              )}
-            >
-              <span className="text-[10px]">
-                {up ? "↑" : "↓"} {change}
-              </span>
-            </Badge>
-          ) : null}
-        </div>
-        <div>
-          <div className="text-2xl font-semibold tracking-tight text-foreground/90 leading-none mb-1.5 tabular-nums">
-            {value}
-          </div>
-          <div className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest">
-            {label}
-          </div>
-          {sub ? (
-            <p className="text-[10px] text-muted-foreground/30 font-medium mt-1 uppercase tracking-tighter">
-              {sub}
-            </p>
-          ) : null}
-        </div>
-      </FramePanel>
-    </Frame>
   );
 }

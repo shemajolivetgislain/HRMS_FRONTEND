@@ -103,12 +103,16 @@ function ResetPasswordPage() {
           </div>
 
           <div className="space-y-3 pt-2">
-            <Button render={<Link to="/auth/login" />} size="xl" className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group pt-2">
+            <Button
+              render={<Link to="/auth/login" />}
+              size="xl"
+              className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group"
+            >
               Sign In Now
               <HugeiconsIcon
                 icon={ArrowRight01Icon}
                 size={16}
-                className="ml-2 group-hover:translate-x-0.5 transition-transform"
+                className="group-hover:translate-x-0.5 transition-transform"
               />
             </Button>
           </div>
@@ -220,14 +224,14 @@ function ResetPasswordPage() {
           disabled={
             !formData.password || !formData.confirmPassword || isLoading
           }
-          className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group pt-2"
+          className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group"
         >
           {isLoading ? "Updating…" : "Update Password"}
           {!isLoading && (
             <HugeiconsIcon
               icon={ArrowRight01Icon}
               size={16}
-              className="ml-2 group-hover:translate-x-0.5 transition-transform"
+              className="group-hover:translate-x-0.5 transition-transform"
             />
           )}
         </Button>

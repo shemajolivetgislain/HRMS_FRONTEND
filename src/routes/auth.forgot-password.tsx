@@ -173,7 +173,7 @@ function ForgotPasswordPage() {
           type="submit"
           disabled={!email || isLoading}
           size="xl"
-          className="w-full bg-primary text-primary-foreground font-bold rounded-lg shadow-sm hover:opacity-95 transition-all group pt-2"
+          className="w-full bg-primary text-primary-foreground font-bold rounded-lg shadow-sm hover:opacity-95 transition-all group"
         >
           {isLoading ? "Sending…" : "Send Reset Link"}
           {!isLoading && (

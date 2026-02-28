@@ -117,7 +117,7 @@ function RecruitmentPage() {
         </Button>
         <Button
           size="lg"
-          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
+          className="text-[12px] font-bold gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           New Opening

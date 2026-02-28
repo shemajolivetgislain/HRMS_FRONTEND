@@ -96,16 +96,16 @@ function LoginPage() {
           </label>
         </div>
 
-        <Button 
-          render={<Link to="/dashboard" />} 
+        <Button
+          render={<Link to="/dashboard" />}
           size="xl"
-          className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group pt-2"
+          className="w-full bg-primary text-primary-foreground font-bold hover:opacity-95 transition-all group"
         >
           Sign In
           <HugeiconsIcon
             icon={ArrowRight01Icon}
             size={16}
-            className="ml-2 group-hover:translate-x-0.5 transition-transform"
+            className="group-hover:translate-x-0.5 transition-transform"
           />
         </Button>
       </form>

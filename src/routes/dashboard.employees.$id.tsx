@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,20 +16,17 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
   PencilEdit02Icon,
   Mail01Icon,
-  CallIcon,
-  Location01Icon,
   Briefcase01Icon,
-  Calendar01Icon,
-  Note01Icon,
   Download01Icon,
   MoreHorizontalIcon,
   ArrowLeft01Icon,
-  Tick01Icon,
   Cancel01Icon,
   File02Icon,
   UserCircleIcon,
   SecurityPasswordIcon,
   Clock01Icon,
+  Shield01Icon,
+  Tick01Icon,
 } from "@hugeicons/core-free-icons";
 import {
   DropdownMenu,
@@ -41,23 +38,6 @@ import { UserAvatar } from "@/components/dashboard/user-avatar";
 import { Badge } from "@/components/ui/badge";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { cn } from "@/lib/utils";
-
-interface EmployeeProfile {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  position: string;
-  department: string;
-  manager: string;
-  status: "active" | "inactive" | "pending";
-  hireDate: string;
-  dob: string;
-  address: string;
-  city: string;
-  country: string;
-  zipCode: string;
-}
 import { api } from "@/lib/mock-api";
 
 export const Route = createFileRoute("/dashboard/employees/$id")({
@@ -72,14 +52,7 @@ export const Route = createFileRoute("/dashboard/employees/$id")({
 function EmployeeProfilePage() {
   const employeeData = Route.useLoaderData();
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(employeeData);
-
-  const handleInputChange = (field: keyof EmployeeProfile, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  const [formData] = useState(employeeData);
 
   const statusVariant =
     formData.status === "active"
@@ -106,7 +79,7 @@ function EmployeeProfilePage() {
         </Button>
         <Button
           size="lg"
-          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
+          className="text-[12px] font-bold gap-2 capitalize"
           onClick={() => setIsEditing(!isEditing)}
         >
           <HugeiconsIcon
@@ -119,7 +92,38 @@ function EmployeeProfilePage() {
       </DashboardHeader>
 
       <div className="flex flex-col gap-6 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
-        {/* Profile Identity */}
+        {formData.complianceStatus === "non-compliant" ? (
+          <section className="animate-in fade-in slide-in-from-top-2 duration-500">
+            <div className="p-4 rounded-2xl bg-destructive/[0.03] border border-destructive/10 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 text-destructive">
+                <div className="size-8 rounded-lg bg-destructive/10 flex items-center justify-center">
+                  <HugeiconsIcon
+                    icon={Shield01Icon}
+                    size={16}
+                    strokeWidth={2.5}
+                  />
+                </div>
+                <div>
+                  <p className="text-[13px] font-bold leading-none mb-1">
+                    Onboarding Policy Gap
+                  </p>
+                  <p className="text-[11px] font-medium opacity-70">
+                    Mandatory identity documents (Criminal Record, Medical
+                    Report) are missing from this profile.
+                  </p>
+                </div>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-8 border-destructive/20 text-destructive hover:bg-destructive/5 font-bold text-[10px] uppercase tracking-widest"
+              >
+                Resolve Policy
+              </Button>
+            </div>
+          </section>
+        ) : null}
+
         <section>
           <Frame className="group/frame border-none bg-transparent p-0">
             <FramePanel className="p-6 bg-card">
@@ -226,356 +230,368 @@ function EmployeeProfilePage() {
           </Frame>
         </section>
 
-        {/* Detailed Tabs */}
-        <section>
-          <Tabs defaultValue="personal" className="space-y-6">
-            <TabsList className="bg-muted/20 border border-border/5 p-1 rounded-xl h-11 w-full md:w-fit">
-              <TabsTrigger
-                value="personal"
-                className="flex-1 md:flex-none rounded-lg px-6 text-[11px] font-bold capitalize tracking-wider data-[state=active]:bg-background data-[state=active]:shadow-xs"
-              >
-                Information
-              </TabsTrigger>
-              <TabsTrigger
-                value="employment"
-                className="flex-1 md:flex-none rounded-lg px-6 text-[11px] font-bold capitalize tracking-wider data-[state=active]:bg-background data-[state=active]:shadow-xs"
-              >
-                Job Details
-              </TabsTrigger>
-              <TabsTrigger
-                value="documents"
-                className="flex-1 md:flex-none rounded-lg px-6 text-[11px] font-bold capitalize tracking-wider data-[state=active]:bg-background data-[state=active]:shadow-xs"
-              >
-                Documents
-              </TabsTrigger>
-              <TabsTrigger
-                value="activity"
-                className="flex-1 md:flex-none rounded-lg px-6 text-[11px] font-bold capitalize tracking-wider data-[state=active]:bg-background data-[state=active]:shadow-xs"
-              >
-                Log History
-              </TabsTrigger>
-            </TabsList>
+        {/* Detailed Tabs Sidebar Layout */}
+        <section className="flex-1 min-h-0">
+          <Tabs
+            defaultValue="personal"
+            className="flex flex-col lg:flex-row gap-6 h-full items-start"
+          >
+            <div className="w-full lg:w-[240px] flex-shrink-0">
+              <TabsList className="flex flex-col h-auto w-full bg-muted/10 border border-border/5 p-1.5 rounded-2xl gap-1 items-stretch justify-start">
+                <EmployeeTabTrigger value="personal" label="Information" />
+                <EmployeeTabTrigger value="employment" label="Job Details" />
+                <EmployeeTabTrigger value="documents" label="Documents" />
+                <EmployeeTabTrigger value="activity" label="Log History" />
+              </TabsList>
+            </div>
 
-            {/* Information Tab */}
-            <TabsContent
-              value="personal"
-              className="animate-in fade-in slide-in-from-bottom-2 duration-300"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 space-y-6">
+            <div className="flex-1 w-full min-w-0">
+              {/* Information Tab */}
+              <TabsContent
+                value="personal"
+                className="mt-0 animate-in fade-in slide-in-from-right-1 duration-300"
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-2 space-y-6">
+                    <Frame>
+                      <FramePanel className="p-0 overflow-hidden bg-card">
+                        <FrameHeader>
+                          <div>
+                            <FrameTitle>Personal Profile</FrameTitle>
+                            <FrameDescription>
+                              Basic contact and identification details
+                            </FrameDescription>
+                          </div>
+                          {isEditing && (
+                            <Button size="sm" className="font-bold shadow-sm">
+                              Save Changes
+                            </Button>
+                          )}
+                        </FrameHeader>
+                        <FrameContent className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 py-8">
+                          <Field
+                            label="Full Name"
+                            value={formData.name}
+                            isEditing={isEditing}
+                          />
+                          <Field
+                            label="Email Address"
+                            value={formData.email}
+                            isEditing={isEditing}
+                            type="email"
+                          />
+                          <Field
+                            label="Phone Number"
+                            value={formData.phone}
+                            isEditing={isEditing}
+                          />
+                          <Field
+                            label="Birth Date"
+                            value={formData.dob}
+                            isEditing={isEditing}
+                            type="date"
+                          />
+                          <Field
+                            label="Home Address"
+                            value={formData.address}
+                            isEditing={isEditing}
+                            className="md:col-span-2"
+                          />
+                          <Field
+                            label="City"
+                            value={formData.city}
+                            isEditing={isEditing}
+                          />
+                          <Field
+                            label="Country"
+                            value={formData.country}
+                            isEditing={isEditing}
+                          />
+                        </FrameContent>
+                      </FramePanel>
+                    </Frame>
+                  </div>
+
+                  <div className="space-y-6">
+                    <Frame>
+                      <FramePanel className="p-6 space-y-6 bg-card">
+                        <div className="space-y-1">
+                          <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+                            Emergency Contact
+                          </p>
+                          <p className="text-[13px] font-semibold text-foreground/80">
+                            Jane Doe (Spouse)
+                          </p>
+                          <p className="text-[11px] font-medium text-muted-foreground/60">
+                            +1 (555) 987-6543
+                          </p>
+                        </div>
+                        <div className="pt-4 border-t border-border/5 space-y-1">
+                          <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+                            Timezone
+                          </p>
+                          <p className="text-[13px] font-semibold text-foreground/80">
+                            Pacific Standard Time (PST)
+                          </p>
+                        </div>
+                      </FramePanel>
+                    </Frame>
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Job Details Tab */}
+              <TabsContent
+                value="employment"
+                className="mt-0 animate-in fade-in slide-in-from-right-1 duration-300"
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <Frame>
-                    <FramePanel className="p-0 overflow-hidden">
+                    <FramePanel className="p-0 overflow-hidden bg-card">
                       <FrameHeader>
                         <div>
-                          <FrameTitle>Personal Profile</FrameTitle>
+                          <FrameTitle>Current Position</FrameTitle>
                           <FrameDescription>
-                            Basic contact and identification details
+                            Employment status and role hierarchy
                           </FrameDescription>
                         </div>
-                        {isEditing && (
-                          <Button
-                            size="sm"
-                            className="font-bold shadow-sm"
-                          >
-                            Save Changes
-                          </Button>
-                        )}
                       </FrameHeader>
                       <FrameContent className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 py-8">
+                        <Field label="Job Position" value={formData.position} />
+                        <Field label="Department" value={formData.department} />
+                        <Field label="Line Manager" value={formData.manager} />
                         <Field
-                          label="Full Name"
-                          value={formData.name}
-                          isEditing={isEditing}
+                          label="Employment Status"
+                          value={
+                            <Badge variant={statusVariant} showDot>
+                              {formData.status}
+                            </Badge>
+                          }
                         />
                         <Field
-                          label="Email Address"
-                          value={formData.email}
-                          isEditing={isEditing}
-                          type="email"
+                          label="Hire Date"
+                          value={
+                            formData.hireDate
+                              ? new Date(formData.hireDate).toLocaleDateString(
+                                  undefined,
+                                  {
+                                    day: "2-digit",
+                                    month: "long",
+                                    year: "numeric",
+                                  },
+                                )
+                              : ""
+                          }
                         />
+                        <Field label="Tenure" value="3 Years, 2 Months" />
+                      </FrameContent>
+                    </FramePanel>
+                  </Frame>
+
+                  <Frame>
+                    <FramePanel className="p-0 overflow-hidden bg-card">
+                      <FrameHeader>
+                        <div>
+                          <FrameTitle>Work Arrangement</FrameTitle>
+                          <FrameDescription>
+                            Schedule and location settings
+                          </FrameDescription>
+                        </div>
+                      </FrameHeader>
+                      <FrameContent className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 py-8">
+                        <Field label="Work Type" value="Full-time" />
                         <Field
-                          label="Phone Number"
-                          value={formData.phone}
-                          isEditing={isEditing}
+                          label="Location"
+                          value="Remote (San Francisco)"
                         />
-                        <Field
-                          label="Birth Date"
-                          value={formData.dob}
-                          isEditing={isEditing}
-                          type="date"
-                        />
-                        <Field
-                          label="Home Address"
-                          value={formData.address}
-                          isEditing={isEditing}
-                          className="md:col-span-2"
-                        />
-                        <Field
-                          label="City"
-                          value={formData.city}
-                          isEditing={isEditing}
-                        />
-                        <Field
-                          label="Country"
-                          value={formData.country}
-                          isEditing={isEditing}
-                        />
+                        <Field label="Working Days" value="Mon - Fri" />
+                        <Field label="Typical Hours" value="09:00 - 18:00" />
                       </FrameContent>
                     </FramePanel>
                   </Frame>
                 </div>
+              </TabsContent>
 
-                <div className="space-y-6">
-                  <Frame>
-                    <FramePanel className="p-6 space-y-6">
-                      <div className="space-y-1">
-                        <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
-                          Emergency Contact
-                        </p>
-                        <p className="text-[13px] font-semibold text-foreground/80">
-                          Jane Doe (Spouse)
-                        </p>
-                        <p className="text-[11px] font-medium text-muted-foreground/60">
-                          +1 (555) 987-6543
-                        </p>
-                      </div>
-                      <div className="pt-4 border-t border-border/5 space-y-1">
-                        <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
-                          Timezone
-                        </p>
-                        <p className="text-[13px] font-semibold text-foreground/80">
-                          Pacific Standard Time (PST)
-                        </p>
-                      </div>
-                    </FramePanel>
-                  </Frame>
-                </div>
-              </div>
-            </TabsContent>
-
-            {/* Job Details Tab */}
-            <TabsContent
-              value="employment"
-              className="animate-in fade-in slide-in-from-bottom-2 duration-300"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Documents Tab */}
+              <TabsContent
+                value="documents"
+                className="mt-0 animate-in fade-in slide-in-from-right-1 duration-300"
+              >
                 <Frame>
-                  <FramePanel className="p-0 overflow-hidden">
+                  <FramePanel className="p-0 overflow-hidden bg-card">
                     <FrameHeader>
                       <div>
-                        <FrameTitle>Current Position</FrameTitle>
+                        <FrameTitle>Employee Files</FrameTitle>
                         <FrameDescription>
-                          Employment status and role hierarchy
+                          Secure document storage and legal paperwork
                         </FrameDescription>
                       </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="font-bold capitalize"
+                      >
+                        Upload New
+                      </Button>
                     </FrameHeader>
-                    <FrameContent className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 py-8">
-                      <Field label="Job Position" value={formData.position} />
-                      <Field label="Department" value={formData.department} />
-                      <Field label="Line Manager" value={formData.manager} />
-                      <Field
-                        label="Employment Status"
-                        value={
-                          <Badge variant={statusVariant} showDot>
-                            {formData.status}
-                          </Badge>
-                        }
-                      />
-                      <Field
-                        label="Hire Date"
-                        value={new Date(formData.hireDate).toLocaleDateString(
-                          undefined,
-                          { day: "2-digit", month: "long", year: "numeric" },
-                        )}
-                      />
-                      <Field label="Tenure" value="3 Years, 2 Months" />
-                    </FrameContent>
-                  </FramePanel>
-                </Frame>
-
-                <Frame>
-                  <FramePanel className="p-0 overflow-hidden">
-                    <FrameHeader>
-                      <div>
-                        <FrameTitle>Work Arrangement</FrameTitle>
-                        <FrameDescription>
-                          Schedule and location settings
-                        </FrameDescription>
-                      </div>
-                    </FrameHeader>
-                    <FrameContent className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 py-8">
-                      <Field label="Work Type" value="Full-time" />
-                      <Field label="Location" value="Remote (San Francisco)" />
-                      <Field label="Working Days" value="Mon - Fri" />
-                      <Field label="Typical Hours" value="09:00 - 18:00" />
-                    </FrameContent>
-                  </FramePanel>
-                </Frame>
-              </div>
-            </TabsContent>
-
-            {/* Documents Tab */}
-            <TabsContent
-              value="documents"
-              className="animate-in fade-in slide-in-from-bottom-2 duration-300"
-            >
-              <Frame>
-                <FramePanel className="p-0 overflow-hidden">
-                  <FrameHeader>
-                    <div>
-                      <FrameTitle>Employee Files</FrameTitle>
-                      <FrameDescription>
-                        Secure document storage and legal paperwork
-                      </FrameDescription>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="font-bold capitalize"
-                    >
-                      Upload New
-                    </Button>
-                  </FrameHeader>
-                  <FrameContent className="p-0">
-                    <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/5">
-                      {[
-                        {
-                          name: "Employment Contract",
-                          date: "Mar 15, 2021",
-                          type: "PDF",
-                          size: "1.2 MB",
-                        },
-                        {
-                          name: "Offer Letter",
-                          date: "Feb 28, 2021",
-                          type: "PDF",
-                          size: "840 KB",
-                        },
-                        {
-                          name: "Policy Agreement",
-                          date: "Mar 15, 2021",
-                          type: "PDF",
-                          size: "2.1 MB",
-                        },
-                        {
-                          name: "Identity Records",
-                          date: "Jan 10, 2021",
-                          type: "JPG",
-                          size: "4.5 MB",
-                        },
-                      ].map((doc, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center justify-between px-6 py-5 hover:bg-muted/5 transition-all group/doc"
-                        >
-                          <div className="flex items-center gap-4">
-                            <div className="h-10 w-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary group-hover/doc:bg-primary group-hover/doc:text-white transition-all">
-                              <HugeiconsIcon icon={File02Icon} size={18} />
-                            </div>
-                            <div>
-                              <p className="text-[13px] font-semibold text-foreground/80">
-                                {doc.name}
-                              </p>
-                              <p className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest mt-0.5">
-                                {doc.date} • {doc.size}
-                              </p>
-                            </div>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            className="rounded-lg opacity-0 group-hover/doc:opacity-100 transition-opacity"
+                    <FrameContent className="p-0">
+                      <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/5">
+                        {[
+                          {
+                            name: "Employment Contract",
+                            date: "Mar 15, 2021",
+                            type: "PDF",
+                            size: "1.2 MB",
+                          },
+                          {
+                            name: "Offer Letter",
+                            date: "Feb 28, 2021",
+                            type: "PDF",
+                            size: "840 KB",
+                          },
+                          {
+                            name: "Policy Agreement",
+                            date: "Mar 15, 2021",
+                            type: "PDF",
+                            size: "2.1 MB",
+                          },
+                          {
+                            name: "Identity Records",
+                            date: "Jan 10, 2021",
+                            type: "JPG",
+                            size: "4.5 MB",
+                          },
+                        ].map((doc, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center justify-between px-6 py-5 hover:bg-muted/5 transition-all group/doc"
                           >
-                            <HugeiconsIcon
-                              icon={Download01Icon}
-                              className="size-4"
-                            />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </FrameContent>
-                </FramePanel>
-              </Frame>
-            </TabsContent>
+                            <div className="flex items-center gap-4">
+                              <div className="h-10 w-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary group-hover/doc:bg-primary group-hover/doc:text-white transition-all">
+                                <HugeiconsIcon icon={File02Icon} size={18} />
+                              </div>
+                              <div>
+                                <p className="text-[13px] font-semibold text-foreground/80">
+                                  {doc.name}
+                                </p>
+                                <p className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest mt-0.5">
+                                  {doc.date} • {doc.size}
+                                </p>
+                              </div>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              className="rounded-lg opacity-0 group-hover/doc:opacity-100 transition-opacity"
+                            >
+                              <HugeiconsIcon
+                                icon={Download01Icon}
+                                className="size-4"
+                              />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </FrameContent>
+                  </FramePanel>
+                </Frame>
+              </TabsContent>
 
-            {/* History Tab */}
-            <TabsContent
-              value="activity"
-              className="animate-in fade-in slide-in-from-bottom-2 duration-300"
-            >
-              <Frame>
-                <FramePanel className="p-0 overflow-hidden">
-                  <FrameHeader>
-                    <div>
-                      <FrameTitle>Activity Log</FrameTitle>
-                      <FrameDescription>
-                        Complete audit trail of profile changes
-                      </FrameDescription>
-                    </div>
-                  </FrameHeader>
-                  <FrameContent className="p-8">
-                    <div className="space-y-0">
-                      {[
-                        {
-                          action: "Updated banking details",
-                          date: "Today at 4:12 PM",
-                          user: "Self",
-                          icon: Clock01Icon,
-                        },
-                        {
-                          action: "Salary tier adjustment",
-                          date: "Oct 12, 2023",
-                          user: "Admin (Sarah)",
-                          icon: Tick01Icon,
-                        },
-                        {
-                          action: "Promoted to Senior Role",
-                          date: "Aug 05, 2023",
-                          user: "Manager (Alice)",
-                          icon: UserCircleIcon,
-                        },
-                        {
-                          action: "Account initialized",
-                          date: "Mar 15, 2021",
-                          user: "System",
-                          icon: Clock01Icon,
-                        },
-                      ].map((log, idx) => (
-                        <div
-                          key={idx}
-                          className="relative pl-10 pb-10 last:pb-0 group/log"
-                        >
-                          <div className="absolute left-[15px] top-6 bottom-0 w-px bg-border/10 group-last/log:hidden" />
-                          <div className="absolute left-0 top-1 size-8 rounded-full bg-background border border-border/40 flex items-center justify-center z-10 group-hover/log:border-primary/40 transition-colors shadow-xs">
-                            <HugeiconsIcon
-                              icon={log.icon}
-                              size={14}
-                              className="text-muted-foreground/40 group-hover/log:text-primary transition-colors"
-                            />
+              {/* History Tab */}
+              <TabsContent
+                value="activity"
+                className="mt-0 animate-in fade-in slide-in-from-right-1 duration-300"
+              >
+                <Frame>
+                  <FramePanel className="p-0 overflow-hidden bg-card">
+                    <FrameHeader>
+                      <div>
+                        <FrameTitle>Activity Log</FrameTitle>
+                        <FrameDescription>
+                          Complete audit trail of profile changes
+                        </FrameDescription>
+                      </div>
+                    </FrameHeader>
+                    <FrameContent className="p-8">
+                      <div className="space-y-0">
+                        {[
+                          {
+                            action: "Updated banking details",
+                            date: "Today at 4:12 PM",
+                            user: "Self",
+                            icon: Clock01Icon,
+                          },
+                          {
+                            action: "Salary tier adjustment",
+                            date: "Oct 12, 2023",
+                            user: "Admin (Sarah)",
+                            icon: Tick01Icon,
+                          },
+                          {
+                            action: "Promoted to Senior Role",
+                            date: "Aug 05, 2023",
+                            user: "Manager (Alice)",
+                            icon: UserCircleIcon,
+                          },
+                          {
+                            action: "Account initialized",
+                            date: "Mar 15, 2021",
+                            user: "System",
+                            icon: Clock01Icon,
+                          },
+                        ].map((log, idx) => (
+                          <div
+                            key={idx}
+                            className="relative pl-10 pb-10 last:pb-0 group/log"
+                          >
+                            <div className="absolute left-[15px] top-6 bottom-0 w-px bg-border/10 group-last/log:hidden" />
+                            <div className="absolute left-0 top-1 size-8 rounded-full bg-background border border-border/40 flex items-center justify-center z-10 group-hover/log:border-primary/40 transition-colors shadow-xs">
+                              <HugeiconsIcon
+                                icon={log.icon}
+                                size={14}
+                                className="text-muted-foreground/40 group-hover/log:text-primary transition-colors"
+                              />
+                            </div>
+                            <div className="space-y-1 pt-0.5">
+                              <p className="text-[13px] font-semibold text-foreground/80 leading-none">
+                                {log.action}
+                              </p>
+                              <p className="text-[11px] font-medium text-muted-foreground/50">
+                                {log.date} by{" "}
+                                <span className="text-foreground/60">
+                                  {log.user}
+                                </span>
+                              </p>
+                            </div>
                           </div>
-                          <div className="space-y-1 pt-0.5">
-                            <p className="text-[13px] font-semibold text-foreground/80 leading-none">
-                              {log.action}
-                            </p>
-                            <p className="text-[11px] font-medium text-muted-foreground/50">
-                              {log.date} by{" "}
-                              <span className="text-foreground/60">
-                                {log.user}
-                              </span>
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </FrameContent>
-                </FramePanel>
-              </Frame>
-            </TabsContent>
+                        ))}
+                      </div>
+                    </FrameContent>
+                  </FramePanel>
+                </Frame>
+              </TabsContent>
+            </div>
           </Tabs>
         </section>
       </div>
     </main>
+  );
+}
+
+function EmployeeTabTrigger({
+  value,
+  label,
+}: {
+  value: string;
+  label: string;
+}) {
+  return (
+    <TabsTrigger
+      value={value}
+      className="relative flex items-center px-4 py-2.5 rounded-xl transition-all text-left data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm text-muted-foreground/50 hover:text-foreground/80 group overflow-hidden border border-transparent data-[state=active]:border-border/5"
+    >
+      <span className="text-[12px] font-semibold tracking-tight">{label}</span>
+    </TabsTrigger>
   );
 }
 

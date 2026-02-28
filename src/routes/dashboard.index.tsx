@@ -1,8 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DashboardMetrics } from "@/components/dashboard/dashboard-metrics";
 import { ChartAttendanceStacked } from "@/components/dashboard/chart-attendance-stacked";
-import { DashboardSchedule } from "@/components/dashboard/dashboard-schedule";
-import { DashboardPayroll } from "@/components/dashboard/dashboard-payroll";
 import { EmployeeDistribution } from "@/components/dashboard/employee-distribution";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { TopCompanies } from "@/components/dashboard/top-companies";
@@ -13,7 +10,12 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
   PlusSignCircleIcon,
   ArrowUpRight01Icon,
+  UserGroupIcon,
+  Coins01Icon,
+  Calendar01Icon,
+  Task01Icon,
 } from "@hugeicons/core-free-icons";
+import { StatCard } from "@/components/dashboard/stat-card";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardPage,
@@ -37,7 +39,7 @@ function DashboardPage() {
         </Button>
         <Button
           size="lg"
-          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
+          className="text-[12px] font-bold gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           New Employee
@@ -45,32 +47,28 @@ function DashboardPage() {
       </DashboardHeader>
 
       <div className="flex flex-col gap-4 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
-        {/* row 1 — kpi metrics */}
-        <section>
-          <DashboardMetrics />
+        {/* Unified Stat Cards */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatCard label="Total Employees" value="143" change="+4" up icon={UserGroupIcon} variant="primary" sub="Active headcount" />
+          <StatCard label="Monthly Payroll" value="RWF 12.5M" change="+2.4%" up icon={Coins01Icon} variant="success" sub="Disbursement" />
+          <StatCard label="On Leave Today" value="8" change="-2" up={false} icon={Calendar01Icon} variant="warning" sub="Staff availability" />
+          <StatCard label="Pending Tasks" value="14" change="+5" up icon={Task01Icon} variant="info" sub="Requiring action" />
         </section>
 
-        {/* row 2 — attendance chart + today's schedule */}
         <section className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
           <ChartAttendanceStacked />
-          <DashboardSchedule />
+          <div className="space-y-4">
+            <QuickActions />
+          </div>
         </section>
 
-        {/* row 3 — recent activity + quick actions (sidebar) */}
         <section className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4">
           <RecentActivity />
-          <QuickActions />
-        </section>
-
-        {/* row 4 — top companies + employee distribution */}
-        <section className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
-          <TopCompanies />
           <EmployeeDistribution />
         </section>
 
-        {/* row 5 — payroll full-width */}
-        <section>
-          <DashboardPayroll />
+        <section className="grid grid-cols-1 gap-4">
+          <TopCompanies />
         </section>
       </div>
     </main>

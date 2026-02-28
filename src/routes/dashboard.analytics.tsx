@@ -1,4 +1,3 @@
-import React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Frame,
@@ -14,12 +13,9 @@ import {
   CartesianGrid,
   XAxis,
   Line,
-  LineChart,
   Area,
   AreaChart,
-  ResponsiveContainer,
   YAxis,
-  Tooltip,
   Cell,
 } from "recharts";
 import {
@@ -32,19 +28,17 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  ChartBarLineIcon,
   Download01Icon,
-  FilterIcon,
   Calendar01Icon,
   UserMultiple02Icon,
   Sorting05Icon,
   AiChatIcon,
   ActivityIcon,
-  ArrowUp01Icon,
   InformationCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { cn } from "@/lib/utils";
+import { ErrorComponent } from "@/components/error-component";
 
 const growthData = [
   { month: "Jan", headcount: 120, target: 110, attrition: 2 },
@@ -70,8 +64,6 @@ const chartConfig = {
   productivity: { label: "Efficiency", color: "var(--chart-3)" },
 } satisfies ChartConfig;
 
-import { ErrorComponent } from "@/components/error-component";
-
 export const Route = createFileRoute("/dashboard/analytics")({
   errorComponent: ErrorComponent,
   component: AnalyticsPage,
@@ -96,7 +88,7 @@ function AnalyticsPage() {
           </Button>
           <Button
             size="lg"
-            className="text-[12px] font-bold shadow-sm gap-2 capitalize"
+            className="text-[12px] font-bold gap-2 capitalize"
           >
             <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
             Export Data

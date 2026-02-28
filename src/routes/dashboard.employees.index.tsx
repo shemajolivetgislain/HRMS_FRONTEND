@@ -1,4 +1,3 @@
-import React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +21,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Search01Icon,
@@ -29,12 +29,10 @@ import {
   Download01Icon,
   MoreHorizontalIcon,
   Mail01Icon,
-  LockPasswordIcon,
   Delete02Icon,
   ViewIcon,
   ArrowLeft01Icon,
   ArrowRight01Icon,
-  UserGroupIcon,
 } from "@hugeicons/core-free-icons";
 import {
   Select,
@@ -72,8 +70,6 @@ function EmployeesPage() {
     setFilterStatus,
     selectedIds,
     currentPage,
-    rowsPerPage,
-    setRowsPerPage,
     filteredEmployees,
     departments,
     statuses,
@@ -98,7 +94,7 @@ function EmployeesPage() {
         </Button>
         <Button
           size="lg"
-          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
+          className="text-[12px] font-bold gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           Add Employee
@@ -191,43 +187,6 @@ function EmployeesPage() {
                 </Select>
               </div>
 
-              {selectedIds.size > 0 ? (
-                <div className="px-6 py-3 bg-primary/[0.02] border-b border-primary/10 flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-200">
-                  <div className="flex items-center gap-3">
-                    <Badge variant="accent" className="h-6 px-2.5 rounded-md">
-                      {selectedIds.size} Selected
-                    </Badge>
-                    <p className="text-[11px] font-medium text-primary/60">
-                      Bulk actions available for selected records
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-8 px-3 rounded-lg border-primary/20 text-primary text-[11px] font-bold hover:bg-primary/5"
-                    >
-                      <HugeiconsIcon
-                        icon={Mail01Icon}
-                        className="size-3.5 mr-1.5"
-                      />
-                      Email
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-8 px-3 rounded-lg border-destructive/20 text-destructive hover:text-destructive hover:bg-destructive/5 text-[11px] font-bold"
-                    >
-                      <HugeiconsIcon
-                        icon={Delete02Icon}
-                        className="size-3.5 mr-1.5"
-                      />
-                      Deactivate
-                    </Button>
-                  </div>
-                </div>
-              ) : null}
-
               <FrameContent className="p-0">
                 <Table>
                   <TableHeader className="bg-muted/10">
@@ -246,10 +205,10 @@ function EmployeesPage() {
                         Employee
                       </TableHead>
                       <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Department
+                        Compliance
                       </TableHead>
                       <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Position
+                        Onboarding
                       </TableHead>
                       <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
                         Status
@@ -274,21 +233,35 @@ function EmployeesPage() {
                             />
                           </TableCell>
                           <TableCell className="px-2 py-4">
-                            <UserAvatar
-                              name={user.name}
-                              email={user.email}
-                              size="sm"
-                            />
+                            <div className="flex items-center gap-3">
+                              <UserAvatar
+                                name={user.name}
+                                email={user.email}
+                                size="sm"
+                              />
+                              <div className="hidden sm:block">
+                                <p className="text-[13px] font-semibold text-foreground/90">{user.name}</p>
+                                <p className="text-[11px] text-muted-foreground/50">{user.department}</p>
+                              </div>
+                            </div>
                           </TableCell>
                           <TableCell className="px-2">
-                            <span className="text-[13px] font-medium text-foreground/70">
-                              {user.department}
-                            </span>
+                            <Badge
+                              variant={user.complianceStatus === "compliant" ? "success" : "destructive"}
+                              showDot
+                              className="h-5 rounded-md"
+                            >
+                              {user.complianceStatus}
+                            </Badge>
                           </TableCell>
                           <TableCell className="px-2">
-                            <span className="text-[13px] font-medium text-muted-foreground/70">
-                              {user.position}
-                            </span>
+                            <div className="w-24 space-y-1.5">
+                              <div className="flex items-center justify-between text-[9px] font-bold text-muted-foreground/40 uppercase">
+                                <span>Track</span>
+                                <span>{user.onboardingProgress}%</span>
+                              </div>
+                              <Progress value={user.onboardingProgress} className="h-1" />
+                            </div>
                           </TableCell>
                           <TableCell className="px-2">
                             <Badge
@@ -299,7 +272,7 @@ function EmployeesPage() {
                                     ? "warning"
                                     : "destructive"
                               }
-                              showDot
+                              className="capitalize"
                             >
                               {user.status}
                             </Badge>
@@ -346,13 +319,6 @@ function EmployeesPage() {
                                   />
                                   <span>Send Message</span>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <HugeiconsIcon
-                                    icon={LockPasswordIcon}
-                                    className="size-4 mr-2"
-                                  />
-                                  <span>Reset Access</span>
-                                </DropdownMenuItem>
                                 <DropdownMenuItem className="text-destructive focus:bg-destructive/10">
                                   <HugeiconsIcon
                                     icon={Delete02Icon}
@@ -367,40 +333,8 @@ function EmployeesPage() {
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell
-                          colSpan={6}
-                          className="h-[300px] text-center"
-                        >
-                          <div className="flex flex-col items-center justify-center gap-3">
-                            <div className="h-12 w-12 rounded-2xl bg-muted/10 flex items-center justify-center">
-                              <HugeiconsIcon
-                                icon={UserGroupIcon}
-                                className="size-6 text-muted-foreground/20"
-                                strokeWidth={1.5}
-                              />
-                            </div>
-                            <div className="space-y-1">
-                              <p className="text-[13px] font-semibold text-foreground/70">
-                                No employees found
-                              </p>
-                              <p className="text-[11px] text-muted-foreground/50 max-w-[200px] mx-auto">
-                                We couldn't find any records matching your
-                                current search or filters.
-                              </p>
-                            </div>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                setSearchTerm("");
-                                setFilterDept("all");
-                                setFilterStatus("all");
-                              }}
-                              className="h-8 px-3 rounded-lg border-border/40 text-[11px] font-bold mt-2"
-                            >
-                              Reset Filters
-                            </Button>
-                          </div>
+                        <TableCell colSpan={6} className="h-[300px] text-center">
+                          <p className="text-sm text-muted-foreground">No employees found</p>
                         </TableCell>
                       </TableRow>
                     )}
@@ -409,69 +343,16 @@ function EmployeesPage() {
               </FrameContent>
 
               <FrameFooter className="flex items-center justify-between border-t border-border/5">
-                <div className="flex items-center gap-6">
-                  <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
-                    {filteredEmployees.length} Employees Total
-                  </span>
-
-                  <div className="flex items-center gap-2 border-l border-border/5 pl-6">
-                    <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
-                      Rows:
-                    </span>
-                    <Select
-                      value={rowsPerPage}
-                      onValueChange={(val) => val && setRowsPerPage(val)}
-                    >
-                      <SelectTrigger className="h-7 w-[70px] rounded-md border-border/40 bg-transparent text-[10px] font-bold shadow-none">
-                        <SelectValue placeholder="10" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="10">10</SelectItem>
-                        <SelectItem value="20">20</SelectItem>
-                        <SelectItem value="50">50</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
+                <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+                  {filteredEmployees.length} Records Total
+                </span>
                 <div className="flex items-center gap-1.5">
-                  <div className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest mr-4">
-                    Page {currentPage} of 1
-                  </div>
-                  <button 
-                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40"
-                    aria-label="Previous page"
-                  >
-                    <HugeiconsIcon
-                      icon={ArrowLeft01Icon}
-                      size={12}
-                      strokeWidth={2.5}
-                    />
+                  <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors border border-transparent hover:border-border/40" aria-label="Previous">
+                    <HugeiconsIcon icon={ArrowLeft01Icon} size={12} strokeWidth={2.5} />
                   </button>
-                  {[1].map((p) => (
-                    <button
-                      key={p}
-                      className={`h-7 w-7 flex items-center justify-center rounded-md text-[10px] font-bold transition-all
-                        ${
-                          p === currentPage
-                            ? "bg-primary/10 text-primary border border-primary/20"
-                            : "text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground border border-transparent hover:border-border/40"
-                        }`}
-                      aria-label={`Page ${p}`}
-                      aria-current={p === currentPage ? "page" : undefined}
-                    >
-                      {p}
-                    </button>
-                  ))}
-                  <button 
-                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40"
-                    aria-label="Next page"
-                  >
-                    <HugeiconsIcon
-                      icon={ArrowRight01Icon}
-                      size={12}
-                      strokeWidth={2.5}
-                    />
+                  <button className="h-7 w-7 flex items-center justify-center rounded-md bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold">1</button>
+                  <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors border border-transparent hover:border-border/40" aria-label="Next">
+                    <HugeiconsIcon icon={ArrowRight01Icon} size={12} strokeWidth={2.5} />
                   </button>
                 </div>
               </FrameFooter>

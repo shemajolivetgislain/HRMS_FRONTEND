@@ -1,207 +1,294 @@
-import type { Employee, PayrollRecord, JobOpening, Activity } from "@/types";
+import type { Employee, PayrollRecord, JobOpening, Company, LeaveRequest, LeaveBalance, PerformanceReview, TaxConfig, PayrollRun, Applicant, EmployeeDocument, SystemLog } from "@/types";
+
+export const mockCompanies: Company[] = [
+  {
+    id: "COMP-001",
+    name: "Kigali Tech Hub",
+    sector: "Technology",
+    tin: "102938475",
+    email: "ops@kigalitech.rw",
+    phone: "+250 788 100 200",
+    status: "active",
+    registeredAt: "2024-01-15",
+    employeeCount: 143,
+  },
+  {
+    id: "COMP-002",
+    name: "Akagera Logistics",
+    sector: "Transportation",
+    tin: "556677889",
+    email: "hr@akagera.rw",
+    phone: "+250 788 300 400",
+    status: "active",
+    registeredAt: "2024-02-10",
+    employeeCount: 89,
+  },
+  {
+    id: "COMP-003",
+    name: "Nyungwe Tea Estate",
+    sector: "Agriculture",
+    tin: "112233445",
+    email: "admin@nyungwetea.com",
+    phone: "+250 788 500 600",
+    status: "suspended",
+    registeredAt: "2023-11-20",
+    employeeCount: 56,
+  }
+];
 
 export const mockEmployees: Employee[] = [
   {
-    id: "1",
-    name: "John Doe",
-    email: "john@example.com",
+    id: "EMP-001",
+    name: "Jean Paul Nkurunziza",
+    email: "jp.nkurunziza@kigalitech.rw",
     department: "Engineering",
-    position: "Senior Developer",
+    position: "Software Architect",
     status: "active",
     hireDate: "2021-03-15",
-    phone: "+1 (555) 123-4567",
-    manager: "Alice Johnson",
-    dob: "1990-05-22",
-    address: "123 Main Street",
-    city: "San Francisco",
-    country: "United States",
-    zipCode: "94102",
+    complianceStatus: "compliant",
+    onboardingProgress: 100,
+    phone: "+250 781 000 001",
+    address: "KN 254 St, Kigali",
+    city: "Kigali",
+    country: "Rwanda",
   },
   {
-    id: "2",
-    name: "Sarah Smith",
-    email: "sarah@example.com",
+    id: "EMP-002",
+    name: "Divine Uwase",
+    email: "d.uwase@kigalitech.rw",
     department: "HR",
-    position: "HR Manager",
+    position: "Talent Manager",
     status: "active",
     hireDate: "2020-07-22",
-  },
+    complianceStatus: "non-compliant",
+    onboardingProgress: 85,
+    phone: "+250 781 000 002",
+  }
+];
+
+export const mockDocuments: EmployeeDocument[] = [
   {
-    id: "3",
-    name: "Mike Johnson",
-    email: "mike@example.com",
-    department: "Sales",
-    position: "Sales Executive",
+    id: "DOC-001",
+    employeeId: "EMP-001",
+    employeeName: "Jean Paul Nkurunziza",
+    type: "CONTRACT",
+    fileName: "architect_contract_final.pdf",
+    fileSize: "1.2 MB",
+    uploadedAt: "2021-03-15",
     status: "active",
-    hireDate: "2022-01-10",
   },
   {
-    id: "4",
-    name: "Emma Wilson",
-    email: "emma@example.com",
-    department: "Finance",
-    position: "Finance Analyst",
+    id: "DOC-002",
+    employeeId: "EMP-001",
+    employeeName: "Jean Paul Nkurunziza",
+    type: "ID",
+    fileName: "national_id_card.jpg",
+    fileSize: "850 KB",
+    uploadedAt: "2021-03-10",
+    status: "active",
+  }
+];
+
+export const mockSystemLogs: SystemLog[] = [
+  {
+    id: "LOG-001",
+    timestamp: "2024-03-28 14:30:22",
+    level: "security",
+    event: "Company 'Nyungwe Tea Estate' suspended for compliance review",
+    actor: "System Admin",
+    ipAddress: "197.243.10.5",
+  },
+  {
+    id: "LOG-002",
+    timestamp: "2024-03-28 12:15:05",
+    level: "info",
+    event: "New tenant 'Kigali Tech Hub' onboarding initiated",
+    actor: "Super Admin",
+    ipAddress: "41.216.100.12",
+  }
+];
+
+export const mockApplicants: Applicant[] = [
+  {
+    id: "CAN-001",
+    firstName: "Moses",
+    lastName: "Mugisha",
+    email: "m.mugisha@gmail.com",
+    phone: "+250 780 111 222",
+    jobTitleId: "JOB-101",
+    applicationReference: "APP-RW-001",
+    stage: "First Interview",
+    score: 4.8,
+    appliedAt: "2024-03-20",
+    history: []
+  }
+];
+
+export const mockTaxConfig: TaxConfig = {
+  rraBrackets: [
+    { min: 0, max: 60000, rate: 0 },
+    { min: 60001, max: 100000, rate: 10 },
+    { min: 100001, max: 200000, rate: 20 },
+    { min: 200001, max: null, rate: 30 },
+  ],
+  rssbEmployee: 6,
+  rssbEmployer: 8,
+  maternityEmployee: 0.3,
+  maternityEmployer: 0.3,
+  cbhiRate: 0.5,
+};
+
+export const mockActivePayroll: PayrollRun = {
+  id: "RUN-2024-03",
+  month: "March",
+  year: 2024,
+  currentStep: 1,
+  status: "draft",
+  totalGross: 12500000,
+  totalDeductions: 3200000,
+  totalNet: 9300000,
+};
+
+export const mockLeaves: LeaveRequest[] = [
+  {
+    id: "LR-101",
+    employeeId: "EMP-001",
+    employeeName: "Jean Paul Nkurunziza",
+    type: "Annual",
+    startDate: "2024-04-10",
+    endDate: "2024-04-15",
+    days: 5,
+    reason: "Holiday in Gisenyi",
     status: "pending",
-    hireDate: "2024-02-01",
-  },
+    appliedAt: "2024-03-28",
+  }
+];
+
+export const mockLeaveBalances: LeaveBalance[] = [
   {
-    id: "5",
-    name: "David Brown",
-    email: "david@example.com",
-    department: "Engineering",
-    position: "DevOps Engineer",
-    status: "inactive",
-    hireDate: "2019-06-12",
-  },
+    employeeId: "EMP-001",
+    annual: 18,
+    sick: 5,
+    maternity: 0,
+    used: 4,
+  }
+];
+
+export const mockPerformance: PerformanceReview[] = [
   {
-    id: "6",
-    name: "Lisa Anderson",
-    email: "lisa@example.com",
-    department: "Marketing",
-    position: "Marketing Manager",
-    status: "active",
-    hireDate: "2021-11-05",
-  },
-  {
-    id: "7",
-    name: "James Taylor",
-    email: "james@example.com",
-    department: "Engineering",
-    position: "QA Engineer",
-    status: "active",
-    hireDate: "2022-03-20",
-  },
-  {
-    id: "8",
-    name: "Rachel Green",
-    email: "rachel@example.com",
-    department: "Operations",
-    position: "Operations Coordinator",
-    status: "active",
-    hireDate: "2021-09-14",
-  },
+    id: "REV-001",
+    employeeId: "EMP-001",
+    employeeName: "Jean Paul Nkurunziza",
+    quarter: "Q1",
+    year: 2024,
+    status: "submitted",
+    goals: [
+      {
+        id: "G-1",
+        perspective: "Financial",
+        objective: "Cost optimization",
+        target: "5% reduction",
+        weight: 30,
+        rating: 3,
+      }
+    ],
+    selfRating: 3.5,
+  }
 ];
 
 export const mockPayroll: PayrollRecord[] = [
   {
     id: "PAY-001",
-    employee: "Ahmed Levin",
-    role: "Product Manager",
-    amount: 8450.0,
-    method: "Bank Transfer",
+    employee: "Jean Paul Nkurunziza",
+    role: "Software Architect",
+    amount: 1500000,
+    method: "Bank Transfer (BK)",
     date: "2023-12-27",
     status: "paid",
-    net: 6190.0,
-    base: 7200.0,
-    bonus: 1250.0,
-    tax: 1840.0,
-    deductions: 420.0,
-    account: "Standard Chartered · **** 4291",
-  },
-  {
-    id: "PAY-002",
-    employee: "Alena Dokidis",
-    role: "Product Designer",
-    amount: 7200.0,
-    method: "Bank Transfer",
-    date: "2023-12-25",
-    status: "paid",
-  },
-  {
-    id: "PAY-003",
-    employee: "Mira Schleifer",
-    role: "UI/UX Designer",
-    amount: 6800.0,
-    method: "PayPal",
-    date: "2023-12-25",
-    status: "paid",
-  },
-  {
-    id: "PAY-004",
-    employee: "Marcus Rosser",
-    role: "Frontend Engineer",
-    amount: 9100.0,
-    method: "Bank Transfer",
-    date: "2023-12-24",
-    status: "processing",
-  },
-  {
-    id: "PAY-005",
-    employee: "Sarah Jenkins",
-    role: "QA Lead",
-    amount: 7850.0,
-    method: "Bank Transfer",
-    date: "2023-12-22",
-    status: "delayed",
-  },
+  }
 ];
 
 export const mockJobs: JobOpening[] = [
   {
     id: "JOB-101",
-    title: "Senior Frontend Engineer",
+    title: "Senior Developer",
     dept: "Engineering",
     type: "Full-time",
-    location: "Remote",
+    location: "Kigali (Remote)",
     applicants: 42,
     status: "published",
     date: "2 days ago",
-  },
-  {
-    id: "JOB-102",
-    title: "Product Designer",
-    dept: "Design",
-    type: "Full-time",
-    location: "New York, NY",
-    applicants: 28,
-    status: "published",
-    date: "5 days ago",
-  },
-  {
-    id: "JOB-103",
-    title: "HR Specialist",
-    dept: "Human Resources",
-    type: "Contract",
-    location: "London, UK",
-    applicants: 15,
-    status: "draft",
-    date: "1 week ago",
-  },
-  {
-    id: "JOB-104",
-    title: "QA Engineer",
-    dept: "Engineering",
-    type: "Full-time",
-    location: "Remote",
-    applicants: 12,
-    status: "on-hold",
-    date: "2 weeks ago",
-  },
+  }
 ];
 
 export const api = {
+  getDocuments: async () => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return mockDocuments;
+  },
+  getSystemLogs: async () => {
+    await new Promise(resolve => setTimeout(resolve, 400));
+    return mockSystemLogs;
+  },
+  getApplicants: async (jobId?: string) => {
+    await new Promise(resolve => setTimeout(resolve, 400));
+    if (jobId) return mockApplicants.filter(a => a.jobTitleId === jobId);
+    return mockApplicants;
+  },
+  getApplicant: async (id: string) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return mockApplicants.find(a => a.id === id) || null;
+  },
+  getTaxConfig: async () => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return mockTaxConfig;
+  },
+  getActivePayrollRun: async () => {
+    await new Promise(resolve => setTimeout(resolve, 400));
+    return mockActivePayroll;
+  },
+  getCompanies: async () => {
+    await new Promise(resolve => setTimeout(resolve, 600));
+    return mockCompanies;
+  },
+  getCompany: async (id: string) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return mockCompanies.find(c => c.id === id) || null;
+  },
   getEmployees: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
     return mockEmployees;
   },
   getEmployee: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockEmployees.find((e) => e.id === id) || null;
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return mockEmployees.find(e => e.id === id) || null;
+  },
+  getLeaves: async () => {
+    await new Promise(resolve => setTimeout(resolve, 400));
+    return mockLeaves;
+  },
+  getLeaveBalance: async (empId: string) => {
+    await new Promise(resolve => setTimeout(resolve, 200));
+    return mockLeaveBalances.find(b => b.employeeId === empId) || null;
+  },
+  getPerformanceReviews: async () => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return mockPerformance;
   },
   getPayroll: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
     return mockPayroll;
   },
   getPayrollRecord: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockPayroll.find((p) => p.id === id) || null;
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return mockPayroll.find(p => p.id === id) || null;
   },
   getJobs: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
     return mockJobs;
   },
   getJob: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockJobs.find((j) => j.id === id) || null;
-  },
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return mockJobs.find(j => j.id === id) || null;
+  }
 };

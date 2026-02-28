@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,59 +17,39 @@ import {
   Download01Icon,
   MoreHorizontalIcon,
   Calendar01Icon,
+  UserMultiple02Icon,
   Briefcase01Icon,
   Location01Icon,
   Mail01Icon,
   UserAdd01Icon,
   Sorting05Icon,
+  ViewIcon,
   PlusSignCircleIcon,
+  Tick01Icon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
+import { cn } from "@/lib/utils";
 import { api } from "@/lib/mock-api";
-
-const candidates = [
-  {
-    id: "CAN-001",
-    name: "Benjamin Rush",
-    stage: "Interview",
-    score: "4.8",
-    applied: "3 days ago",
-  },
-  {
-    id: "CAN-002",
-    name: "Elena Gilbert",
-    stage: "Screening",
-    score: "4.2",
-    applied: "5 days ago",
-  },
-  {
-    id: "CAN-003",
-    name: "Stefan Salvatore",
-    stage: "Assessment",
-    score: "3.9",
-    applied: "12 hours ago",
-  },
-  {
-    id: "CAN-004",
-    name: "Bonnie Bennett",
-    stage: "Technical Test",
-    score: "4.5",
-    applied: "1 week ago",
-  },
-];
+import { DashboardPending } from "@/components/dashboard/dashboard-pending";
+import { ErrorComponent } from "@/components/error-component";
 
 export const Route = createFileRoute("/dashboard/recruitment/$id")({
   loader: async ({ params }) => {
-    const job = await api.getJob(params.id);
+    const [job, candidates] = await Promise.all([
+      api.getJob(params.id),
+      api.getApplicants(params.id)
+    ]);
     if (!job) throw new Error("Job opening not found");
-    return job;
+    return { job, candidates };
   },
+  pendingComponent: DashboardPending,
+  errorComponent: ErrorComponent,
   component: RecruitmentDetailsPage,
 });
 
 function RecruitmentDetailsPage() {
-  const role = Route.useLoaderData();
+  const { job: role, candidates } = Route.useLoaderData();
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden">
@@ -80,15 +60,15 @@ function RecruitmentDetailsPage() {
       >
         <Button
           variant="outline"
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
           render={<Link to="/dashboard/recruitment" />}
         >
           <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
           Back
         </Button>
         <Button
-          size="sm"
+          size="lg"
           className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
         >
           <HugeiconsIcon icon={UserAdd01Icon} size={14} strokeWidth={2} />
@@ -97,6 +77,7 @@ function RecruitmentDetailsPage() {
       </DashboardHeader>
 
       <div className="flex flex-col xl:flex-row gap-4 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
+        {/* Left: Candidates Table */}
         <div className="flex-1 min-w-0">
           <Frame className="group/frame">
             <FramePanel className="p-0 overflow-hidden bg-card">
@@ -110,7 +91,7 @@ function RecruitmentDetailsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-8 rounded-lg font-bold text-[10px] uppercase tracking-widest gap-2"
+                  className="font-bold text-[10px] uppercase tracking-widest gap-2"
                 >
                   <HugeiconsIcon icon={Sorting05Icon} size={14} />
                   Ranking
@@ -123,19 +104,19 @@ function RecruitmentDetailsPage() {
                       key={can.id}
                       className="p-5 hover:bg-muted/5 transition-all group/can cursor-pointer"
                     >
-                      <div className="flex items-center justify-between gap-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                         <div className="flex items-center gap-4 min-w-0">
                           <UserAvatar
-                            name={can.name}
+                            name={`${can.firstName} ${can.lastName}`}
                             size="default"
                             className="shadow-sm border border-border/10"
                           />
                           <div className="min-w-0">
                             <p className="text-[14px] font-semibold text-foreground/90 leading-tight">
-                              {can.name}
+                              {can.firstName} {can.lastName}
                             </p>
                             <p className="text-[11px] font-medium text-muted-foreground/50 mt-1.5">
-                              Applied {can.applied}
+                              Applied {can.appliedAt}
                             </p>
                           </div>
                         </div>
@@ -146,41 +127,49 @@ function RecruitmentDetailsPage() {
                               Score
                             </p>
                             <p className="text-[13px] font-bold text-foreground/80 tabular-nums">
-                              {can.score}
+                              {can.score.toFixed(1)}
                             </p>
                           </div>
-                          <div className="flex flex-col gap-1 w-24">
+                          <div className="flex flex-col gap-1 w-28">
                             <p className="text-[9px] font-bold text-muted-foreground/30 uppercase tracking-widest">
                               Stage
                             </p>
                             <Badge
                               variant="muted"
-                              className="h-5 px-2 rounded-md font-bold text-[9px] uppercase tracking-widest border-none bg-primary/5 text-primary"
+                              className="h-5 px-2 rounded-md font-bold text-[9px] uppercase tracking-widest border-none bg-primary/5 text-primary whitespace-nowrap"
                             >
                               {can.stage}
                             </Badge>
                           </div>
-                          <div className="flex items-center gap-1 pl-4 border-l border-border/5">
+                          
+                          <div className="flex items-center gap-2 pl-4 border-l border-border/5">
+                            {can.stage === "Offer Sent" ? (
+                              <Button
+                                size="sm"
+                                className="bg-success hover:bg-success/90 text-white font-bold text-[10px] uppercase gap-1.5 h-8 px-3"
+                              >
+                                <HugeiconsIcon icon={Tick01Icon} size={12} strokeWidth={3} />
+                                Hire
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="font-bold text-[10px] uppercase h-8 px-3"
+                              >
+                                Review
+                              </Button>
+                            )}
+                            
                             <Button
                               variant="ghost"
                               size="icon-sm"
-                              className="rounded-lg opacity-0 group-hover/can:opacity-100 transition-opacity"
+                              className="rounded-lg opacity-40 group-hover/can:opacity-100 transition-opacity"
                               aria-label="Candidate actions"
                             >
                               <HugeiconsIcon
-                                icon={Mail01Icon}
-                                className="size-4 opacity-40"
-                              />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon-sm"
-                              className="rounded-lg opacity-0 group-hover/can:opacity-100 transition-opacity"
-                              aria-label="More candidate actions"
-                            >
-                              <HugeiconsIcon
                                 icon={MoreHorizontalIcon}
-                                className="size-4 opacity-40"
+                                className="size-4"
                               />
                             </Button>
                           </div>
@@ -192,20 +181,21 @@ function RecruitmentDetailsPage() {
               </FrameContent>
               <FrameFooter className="flex items-center justify-between py-4">
                 <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
-                  Showing {candidates.length} candidates
+                  Showing {candidates.length} of {role.applicants} applicants
                 </span>
                 <Button
                   variant="ghost"
                   size="sm"
                   className="h-7 text-[10px] font-bold text-primary/60 hover:text-primary capitalize"
                 >
-                  Download All Resumes
+                  Download Resumes
                 </Button>
               </FrameFooter>
             </FramePanel>
           </Frame>
         </div>
 
+        {/* Right: Role Metadata */}
         <div className="w-full xl:w-[320px] space-y-4">
           <Frame>
             <FramePanel className="p-0 overflow-hidden bg-card">
@@ -256,7 +246,8 @@ function RecruitmentDetailsPage() {
               <FrameFooter>
                 <Button
                   variant="outline"
-                  className="w-full h-9 rounded-lg border-border/40 font-bold capitalize gap-2 text-[11px] hover:bg-muted/50"
+                  size="lg"
+                  className="w-full font-bold capitalize gap-2 text-[11px] hover:bg-muted/50"
                 >
                   <HugeiconsIcon icon={Download01Icon} size={14} />
                   Job Description

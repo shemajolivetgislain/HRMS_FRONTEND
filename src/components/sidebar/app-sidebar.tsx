@@ -24,7 +24,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { NavMain } from "./nav-main";
 
-const data = {
+const defaultData = {
   user: {
     name: "Admin",
     email: "admin@hrms.com",
@@ -42,6 +42,31 @@ const data = {
       icon: <HugeiconsIcon icon={UserGroupIcon} strokeWidth={2} />,
     },
     {
+      title: "Recruitment",
+      url: "/dashboard/recruitment",
+      icon: <HugeiconsIcon icon={JobShareIcon} strokeWidth={2} />,
+    },
+    {
+      title: "Document Vault",
+      url: "/dashboard/documents",
+      icon: <HugeiconsIcon icon={File02Icon} strokeWidth={2} />,
+    },
+    {
+      title: "Leave Management",
+      url: "/dashboard/leaves",
+      icon: <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} />,
+    },
+    {
+      title: "Performance",
+      url: "/dashboard/performance",
+      icon: <HugeiconsIcon icon={ChartBarLineIcon} strokeWidth={2} />,
+    },
+    {
+      title: "Payroll",
+      url: "/dashboard/payroll",
+      icon: <HugeiconsIcon icon={Coins01Icon} strokeWidth={2} />,
+    },
+    {
       title: "Reports",
       url: "/dashboard/reports",
       icon: <HugeiconsIcon icon={File02Icon} strokeWidth={2} />,
@@ -52,23 +77,20 @@ const data = {
       icon: <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} />,
     },
     {
-      title: "Payroll",
-      url: "/dashboard/payroll",
-      icon: <HugeiconsIcon icon={Coins01Icon} strokeWidth={2} />,
-    },
-    {
       title: "Analytics",
       url: "/dashboard/analytics",
       icon: <HugeiconsIcon icon={ChartBarLineIcon} strokeWidth={2} />,
     },
-    {
-      title: "Recruitment",
-      url: "/dashboard/recruitment",
-      icon: <HugeiconsIcon icon={JobShareIcon} strokeWidth={2} />,
-    },
   ],
 };
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  customNav?: typeof defaultData.navMain;
+}
+
+export function AppSidebar({ customNav, ...props }: AppSidebarProps) {
+  const navItems = customNav || defaultData.navMain;
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="py-2">
@@ -83,10 +105,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navItems} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={defaultData.user} />
       </SidebarFooter>
     </Sidebar>
   );

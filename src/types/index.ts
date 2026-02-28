@@ -1,9 +1,63 @@
-export type Status = "active" | "inactive" | "pending" | "paid" | "processing" | "delayed" | "published" | "draft" | "on-hold";
+export type Role = "SYSTEM_ADMIN" | "COMPANY_ADMIN" | "EMPLOYEE";
+
+export type Status = 
+  | "active" 
+  | "inactive" 
+  | "pending" 
+  | "suspended" 
+  | "paid" 
+  | "processing" 
+  | "delayed" 
+  | "published" 
+  | "draft" 
+  | "on-hold"
+  | "approved"
+  | "rejected"
+  | "compliant"
+  | "non-compliant";
+
+export type RecruitmentStage = 
+  | "New Applied"
+  | "Screening"
+  | "Online Assessment"
+  | "First Interview"
+  | "Final Interview"
+  | "Offer Sent"
+  | "Recruited"
+  | "Rejected"
+  | "Reserved";
+
+export type DocumentType = 
+  | "CV" 
+  | "ID" 
+  | "CONTRACT" 
+  | "CRIMINAL_CERTIFICATE" 
+  | "MEDICAL_REPORT" 
+  | "RESIGNATION_LETTER" 
+  | "EXPERIENCE_LETTER" 
+  | "CLEARENCE_LETTER"
+  | "POLICY_MANUAL"
+  | "TEMPLATE";
+
+export interface Company {
+  id: string;
+  name: string;
+  sector: string;
+  tin: string;
+  logoUrl?: string;
+  phone: string;
+  email: string;
+  status: "active" | "suspended" | "inactive";
+  registeredAt: string;
+  employeeCount: number;
+}
 
 export interface User {
   id: string;
   name: string;
   email: string;
+  role: Role;
+  companyId?: string;
   avatar?: string;
   status: "online" | "away" | "offline";
 }
@@ -14,7 +68,7 @@ export interface Employee {
   email: string;
   department: string;
   position: string;
-  status: "active" | "inactive" | "pending";
+  status: "active" | "inactive" | "pending" | "probation" | "resigned" | "terminated";
   hireDate: string;
   avatar?: string;
   phone?: string;
@@ -24,6 +78,118 @@ export interface Employee {
   city?: string;
   country?: string;
   zipCode?: string;
+  complianceStatus: "compliant" | "non-compliant";
+  onboardingProgress: number;
+}
+
+export interface EmployeeDocument {
+  id: string;
+  employeeId: string;
+  employeeName: string;
+  type: DocumentType;
+  fileName: string;
+  fileSize: string;
+  uploadedAt: string;
+  status: "active" | "replaced";
+}
+
+export interface SystemLog {
+  id: string;
+  timestamp: string;
+  level: "info" | "warning" | "error" | "security";
+  event: string;
+  actor: string;
+  companyId?: string;
+  ipAddress: string;
+}
+
+export interface Applicant {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  jobTitleId: string;
+  applicationReference: string;
+  stage: RecruitmentStage;
+  score: number;
+  appliedAt: string;
+  history: {
+    status: RecruitmentStage;
+    doneBy: string;
+    doneAt: string;
+    comment: string;
+  }[];
+}
+
+export interface LeaveRequest {
+  id: string;
+  employeeId: string;
+  employeeName: string;
+  type: "Annual" | "Sick" | "Maternity" | "Paternity" | "Unpaid";
+  startDate: string;
+  endDate: string;
+  days: number;
+  reason: string;
+  status: "pending" | "approved" | "rejected";
+  appliedAt: string;
+}
+
+export interface LeaveBalance {
+  employeeId: string;
+  annual: number;
+  sick: number;
+  maternity: number;
+  used: number;
+}
+
+export interface PerformanceGoal {
+  id: string;
+  perspective: "Financial" | "Customer" | "Internal Process" | "Growth";
+  objective: string;
+  target: string;
+  weight: number;
+  rating?: 1 | 2 | 3 | 4;
+  feedback?: string;
+}
+
+export interface PerformanceReview {
+  id: string;
+  employeeId: string;
+  employeeName: string;
+  quarter: "Q1" | "Q2" | "Q3" | "Q4";
+  year: number;
+  status: "draft" | "submitted" | "reviewed" | "completed";
+  goals: PerformanceGoal[];
+  selfRating?: number;
+  managerRating?: number;
+  overallFeedback?: string;
+}
+
+export interface TaxBracket {
+  min: number;
+  max: number | null;
+  rate: number;
+}
+
+export interface TaxConfig {
+  rraBrackets: TaxBracket[];
+  rssbEmployee: number;
+  rssbEmployer: number;
+  maternityEmployee: number;
+  maternityEmployer: number;
+  cbhiRate: number;
+}
+
+export interface PayrollRun {
+  id: string;
+  month: string;
+  year: number;
+  currentStep: 1 | 2 | 3 | 4 | 5 | 6;
+  status: "draft" | "processing" | "completed";
+  totalGross: number;
+  totalDeductions: number;
+  totalNet: number;
 }
 
 export interface PayrollRecord {

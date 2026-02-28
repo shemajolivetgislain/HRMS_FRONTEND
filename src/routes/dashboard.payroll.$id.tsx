@@ -1,4 +1,3 @@
-import React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
@@ -6,7 +5,6 @@ import {
   FramePanel,
   FrameHeader,
   FrameTitle,
-  FrameDescription,
   FrameContent,
   FrameFooter,
 } from "@/components/ui/frame";
@@ -15,12 +13,9 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowLeft01Icon,
   Download01Icon,
-  MoreHorizontalIcon,
   Calendar01Icon,
   CreditCardIcon,
   Tick01Icon,
-  InformationCircleIcon,
-  UserGroupIcon,
   Note01Icon,
   Coins01Icon,
   Shield01Icon,
@@ -29,13 +24,6 @@ import {
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { api } from "@/lib/mock-api";
 
 export const Route = createFileRoute("/dashboard/payroll/$id")({

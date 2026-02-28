@@ -27,8 +27,8 @@ export function NavMain({
         <SidebarMenu className="gap-1.5 mt-2">
           {items.map((item) => {
             const isActive =
-              item.url === "/dashboard"
-                ? pathname === "/dashboard"
+              item.url === "/dashboard" || item.url === "/admin"
+                ? pathname === item.url
                 : pathname === item.url || pathname.startsWith(`${item.url}/`);
 
             return (

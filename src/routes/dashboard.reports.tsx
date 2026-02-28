@@ -1,6 +1,4 @@
-"use client";
-
-import React from "react";
+import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Frame,
@@ -32,7 +30,8 @@ import {
   MoreHorizontalIcon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { createFileRoute } from "@tanstack/react-router";
+import { ErrorComponent } from "@/components/error-component";
+import { StatCard } from "@/components/dashboard/stat-card";
 
 const reports = [
   {
@@ -77,8 +76,6 @@ const reports = [
   },
 ];
 
-import { ErrorComponent } from "@/components/error-component";
-
 export const Route = createFileRoute("/dashboard/reports")({
   errorComponent: ErrorComponent,
   component: ReportsPage,
@@ -92,56 +89,38 @@ function ReportsPage() {
         title="Reports"
         description="Generate and manage organizational data exports"
       >
-        <Button
-          variant="outline"
-          size="lg"
-          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
-        >
-          <HugeiconsIcon icon={FilterIcon} size={14} strokeWidth={2} />
-          Filter
-        </Button>
-        <Button
-          size="lg"
-          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
-        >
-          <HugeiconsIcon icon={Analytics01Icon} size={14} strokeWidth={2} />
-          Generate New
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="lg"
+            className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          >
+            <HugeiconsIcon icon={FilterIcon} size={14} strokeWidth={2} />
+            Filter
+          </Button>
+          <Button
+            size="lg"
+            className="text-[12px] font-bold gap-2 capitalize"
+          >
+            <HugeiconsIcon icon={Analytics01Icon} size={14} strokeWidth={2} />
+            Generate New
+          </Button>
+        </div>
       </DashboardHeader>
 
-      <div className="flex flex-col gap-4 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
-        {/* Quick Report Categories */}
+      <div className="flex flex-col gap-6 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
+        {/* Quick Report Categories using StatCard */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <ReportCategoryCard
-            title="Attendance"
-            count="12 reports"
-            icon={Calendar01Icon}
-            color="var(--chart-1)"
-          />
-          <ReportCategoryCard
-            title="Financial"
-            count="8 reports"
-            icon={Clock01Icon}
-            color="var(--chart-2)"
-          />
-          <ReportCategoryCard
-            title="Performance"
-            count="24 reports"
-            icon={UserGroupIcon}
-            color="var(--chart-3)"
-          />
-          <ReportCategoryCard
-            title="System"
-            count="5 reports"
-            icon={Analytics01Icon}
-            color="var(--chart-4)"
-          />
+          <StatCard label="Attendance" value="12 Reports" icon={Calendar01Icon} variant="primary" sub="Last 30 days" />
+          <StatCard label="Financial" value="8 Reports" icon={Clock01Icon} variant="success" sub="Audit ready" />
+          <StatCard label="Performance" value="24 Reports" icon={UserGroupIcon} variant="info" sub="Quarterly reviews" />
+          <StatCard label="System" value="5 Reports" icon={Analytics01Icon} variant="accent" sub="Audit logs" />
         </section>
 
         {/* Reports Table */}
         <section>
           <Frame className="group/frame">
-            <FramePanel className="p-0 overflow-hidden">
+            <FramePanel className="p-0 overflow-hidden bg-card">
               <FrameHeader>
                 <div>
                   <FrameTitle>Recent Generated Reports</FrameTitle>
@@ -179,14 +158,14 @@ function ReportsPage() {
                       >
                         <TableCell className="pl-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="h-9 w-9 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
+                            <div className="h-9 w-9 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
                               <HugeiconsIcon icon={File02Icon} size={16} />
                             </div>
                             <div>
-                              <p className="text-[13px] font-semibold text-foreground/80">
+                              <p className="text-[13px] font-semibold text-foreground/90 leading-none">
                                 {report.name}
                               </p>
-                              <p className="text-[11px] font-bold text-muted-foreground/30 tabular-nums uppercase tracking-tight">
+                              <p className="text-[11px] font-bold text-muted-foreground/30 tabular-nums uppercase tracking-tight mt-1">
                                 {report.id}
                               </p>
                             </div>
@@ -209,7 +188,7 @@ function ReportsPage() {
                                 ? "success"
                                 : report.status === "processing"
                                   ? "warning"
-                                  : "secondary"
+                                  : "muted"
                             }
                             showDot
                           >
@@ -233,7 +212,7 @@ function ReportsPage() {
                             <Button
                               variant="ghost"
                               size="icon-sm"
-                              className="rounded-lg opacity-50"
+                              className="rounded-lg opacity-40 group-hover:opacity-100 transition-opacity"
                             >
                               <HugeiconsIcon
                                 icon={MoreHorizontalIcon}
@@ -257,57 +236,5 @@ function ReportsPage() {
         </section>
       </div>
     </main>
-  );
-}
-
-function ReportCategoryCard({
-  title,
-  count,
-  icon: Icon,
-  color,
-}: {
-  title: string;
-  count: string;
-  icon: any;
-  color: string;
-}) {
-  return (
-    <Frame className="group/frame h-full">
-      <FramePanel className="p-5 flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <div
-            className="h-9 w-9 rounded-xl flex items-center justify-center border border-border/10"
-            style={{
-              background: `color-mix(in srgb, ${color} 8%, transparent)`,
-            }}
-          >
-            <HugeiconsIcon
-              icon={Icon}
-              size={18}
-              style={{ color }}
-              strokeWidth={2}
-            />
-          </div>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="rounded-lg opacity-0 group-hover/frame:opacity-100 transition-opacity"
-          >
-            <HugeiconsIcon
-              icon={MoreHorizontalIcon}
-              className="size-4 opacity-40"
-            />
-          </Button>
-        </div>
-        <div>
-          <p className="text-[13px] font-semibold text-foreground/80 leading-none mb-1.5">
-            {title}
-          </p>
-          <p className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest">
-            {count}
-          </p>
-        </div>
-      </FramePanel>
-    </Frame>
   );
 }
