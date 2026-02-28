@@ -40,8 +40,8 @@ const data = {
       icon: <HugeiconsIcon icon={DashboardSquare01Icon} strokeWidth={2} />,
     },
     {
-      title: "Employee",
-      url: "/dashboard/employee",
+      title: "Employees",
+      url: "/dashboard/employees",
       icon: <HugeiconsIcon icon={UserGroupIcon} strokeWidth={2} />,
     },
     {
