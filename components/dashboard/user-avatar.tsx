@@ -39,11 +39,11 @@ export function UserAvatar({
     .slice(0, 2)
     .toUpperCase();
 
-  // Detect if src is a broken local path or missing, and replace with dicebear
-  const isBrokenLocalPath = src?.startsWith('/avatars/')
-  const avatarUrl = !src || isBrokenLocalPath 
-    ? `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`
-    : src
+  const isBrokenLocalPath = src?.startsWith("/avatars/");
+  const avatarUrl =
+    !src || isBrokenLocalPath
+      ? `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`
+      : src;
 
   const avatarContent = (
     <Avatar size={size} className={className}>

@@ -1,131 +1,149 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import Link from 'next/link'
-import { AuthCard } from '@/components/auth/auth-card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { ArrowLeft01Icon, ArrowRight01Icon, Mail01Icon } from '@hugeicons/core-free-icons'
+import React, { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  ArrowLeft01Icon,
+  ArrowRight01Icon,
+  Mail01Icon,
+} from "@hugeicons/core-free-icons";
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('')
-  const [errors, setErrors] = useState<string>('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
+  const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const validateEmail = () => {
     if (!email.trim()) {
-      setErrors('Email is required')
-      return false
+      setErrors("Email is required");
+      return false;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setErrors('Please enter a valid email')
-      return false
+      setErrors("Please enter a valid email");
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setErrors('')
+    e.preventDefault();
+    setErrors("");
 
     if (!validateEmail()) {
-      return
+      return;
     }
 
-    setIsLoading(true)
-    console.log('Sending reset link to:', email)
+    setIsLoading(true);
 
-    // Simulate API call
     setTimeout(() => {
-      setIsLoading(false)
-      setSubmitted(true)
-    }, 1500)
-  }
+      setIsLoading(false);
+      setSubmitted(true);
+    }, 1500);
+  };
 
   if (submitted) {
     return (
-      <AuthCard
-        title="Check Your Email"
-        subtitle="We've sent a password reset link"
-      >
+      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-2">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground/90">
+            Check Your Email
+          </h1>
+          <p className="text-[14px] font-medium text-muted-foreground/50 leading-relaxed">
+            We've sent a password reset link to your inbox.
+          </p>
+        </div>
+
         <div className="space-y-6">
-          {/* Success Icon */}
-          <div className="flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center">
-              <HugeiconsIcon icon={Mail01Icon} className="w-8 h-8 text-success" />
+          <div className="p-4 rounded-xl bg-primary/[0.02] border border-primary/10 flex items-start gap-4">
+            <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+              <HugeiconsIcon icon={Mail01Icon} size={20} />
+            </div>
+            <div>
+              <p className="text-[13px] font-semibold text-foreground/80 leading-none">
+                Link Sent
+              </p>
+              <p className="text-[11px] font-medium text-muted-foreground/50 mt-1.5 leading-relaxed">
+                Reset link sent to{" "}
+                <span className="text-foreground/70 font-bold">{email}</span>
+              </p>
             </div>
           </div>
 
-          {/* Email Display */}
-          <div className="text-center space-y-2">
-            <p className="text-sm text-muted-foreground">
-              We've sent a password reset link to:
+          <div className="p-5 bg-muted/5 rounded-xl border border-border/40 space-y-3">
+            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground/40">
+              Next Steps
             </p>
-            <p className="text-sm font-medium text-foreground break-all">
-              {email}
-            </p>
+            <ul className="space-y-2.5">
+              {[
+                "Check your email for the reset link",
+                "Click the link to create a new password",
+                "Sign in with your new credentials",
+              ].map((step, i) => (
+                <li key={i} className="flex items-start gap-2.5">
+                  <span className="flex-shrink-0 w-4 h-4 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">
+                    {i + 1}
+                  </span>
+                  <span className="text-[12px] font-medium text-muted-foreground/60 leading-tight">
+                    {step}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Instructions */}
-          <div className="p-4 bg-muted/50 rounded-lg border border-border space-y-2">
-            <p className="text-xs font-medium text-foreground">
-              Next Steps:
-            </p>
-            <ol className="text-xs text-muted-foreground space-y-1 list-decimal list-inside">
-              <li>Check your email for the reset link</li>
-              <li>Click the link to create a new password</li>
-              <li>Sign in with your new password</li>
-            </ol>
+          <div className="space-y-3 pt-2">
+            <Button
+              onClick={() => {
+                setSubmitted(false);
+                setEmail("");
+              }}
+              variant="outline"
+              className="w-full h-10 border-border/40 text-[12px] font-bold text-muted-foreground/60 hover:text-foreground"
+            >
+              Use different email
+            </Button>
+
+            <Link href="/auth/login" className="block">
+              <Button
+                variant="ghost"
+                className="w-full h-9 text-[11px] font-bold text-muted-foreground/40 hover:text-foreground"
+              >
+                <HugeiconsIcon
+                  icon={ArrowLeft01Icon}
+                  size={14}
+                  className="mr-2"
+                />
+                Back to login
+              </Button>
+            </Link>
           </div>
-
-          {/* Note */}
-          <p className="text-xs text-muted-foreground text-center">
-            If you don't see the email, check your spam folder or try again.
-          </p>
-
-          {/* Resend Button */}
-          <Button
-            onClick={() => {
-              setSubmitted(false)
-              setEmail('')
-            }}
-            variant="ghost"
-            className="w-full text-primary"
-          >
-            Use different email
-          </Button>
-
-          {/* Back to Login */}
-          <Button
-            variant="ghost"
-            className="w-full text-muted-foreground hover:text-foreground"
-            render={<Link href="/login" />}
-          >
-            <HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4 mr-2" />
-            Back to Login
-          </Button>
         </div>
-      </AuthCard>
-    )
+      </div>
+    );
   }
 
   return (
-    <AuthCard
-      title="Reset Password"
-      subtitle="Enter your email to receive a reset link"
-    >
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Description */}
-        <p className="text-sm text-muted-foreground">
-          Enter the email address associated with your account and we'll send you a link to reset your password.
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="space-y-2">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground/90">
+          Reset Password
+        </h1>
+        <p className="text-[14px] font-medium text-muted-foreground/50 leading-relaxed">
+          Enter your email to receive a recovery link.
         </p>
+      </div>
 
-        {/* Email Input */}
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm">
+          <Label
+            htmlFor="email"
+            className="text-[11px] font-semibold text-muted-foreground/60 capitalize"
+          >
             Email Address
           </Label>
           <Input
@@ -134,50 +152,48 @@ export default function ForgotPasswordPage() {
             placeholder="admin@example.com"
             value={email}
             onChange={(e) => {
-              setEmail(e.target.value)
-              if (errors) setErrors('')
+              setEmail(e.target.value);
+              if (errors) setErrors("");
             }}
-            className={errors ? 'border-destructive focus:ring-destructive' : ''}
+            className={`h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all pl-3 shadow-none text-sm ${
+              errors ? "border-destructive/50 ring-destructive/20" : ""
+            }`}
           />
           {errors && (
-            <p className="text-xs text-destructive">{errors}</p>
+            <p className="text-[11px] font-medium text-destructive mt-1">
+              {errors}
+            </p>
           )}
         </div>
 
-        {/* Submit Button */}
         <Button
           type="submit"
           disabled={!email || isLoading}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium group"
+          size="xl"
+          className="w-full bg-primary text-primary-foreground font-bold rounded-lg shadow-sm hover:opacity-95 transition-all group"
         >
-          {isLoading ? 'Sending...' : 'Send Reset Link'}
+          {isLoading ? "Sending..." : "Send Reset Link"}
           {!isLoading && (
-            <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
+              size={16}
+              className=" group-hover:translate-x-0.5 transition-transform"
+            />
           )}
         </Button>
 
-        {/* Divider */}
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-border" />
-          </div>
-          <div className="relative flex justify-center text-xs">
-            <span className="px-2 bg-card text-muted-foreground">
-              Remember your password?
-            </span>
-          </div>
+        <div className="pt-6 border-t border-border/5">
+          <Link href="/auth/login" className="block">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full h-10 border-border/40 text-[12px] font-bold text-muted-foreground/60 hover:text-foreground"
+            >
+              Sign In
+            </Button>
+          </Link>
         </div>
-
-        {/* Back to Login */}
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full border-border"
-          render={<Link href="/login" />}
-        >
-          Sign In
-        </Button>
       </form>
-    </AuthCard>
-  )
+    </div>
+  );
 }
