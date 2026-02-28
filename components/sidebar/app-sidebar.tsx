@@ -16,13 +16,11 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
   DashboardSquare01Icon,
   UserGroupIcon,
-  Settings02Icon,
   File02Icon,
   Calendar01Icon,
   Coins01Icon,
   ChartBarLineIcon,
   JobShareIcon,
-  HelpCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { NavMain } from "./nav-main";
 
@@ -67,16 +65,6 @@ const data = {
       title: "Recruitment",
       url: "/dashboard/recruitment",
       icon: <HugeiconsIcon icon={JobShareIcon} strokeWidth={2} />,
-    },
-    {
-      title: "Settings",
-      url: "/dashboard/settings",
-      icon: <HugeiconsIcon icon={Settings02Icon} strokeWidth={2} />,
-    },
-    {
-      title: "Help",
-      url: "/dashboard/help",
-      icon: <HugeiconsIcon icon={HelpCircleIcon} strokeWidth={2} />,
     },
   ],
 };

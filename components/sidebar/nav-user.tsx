@@ -19,15 +19,16 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   MoreVerticalCircle01Icon,
-  UserCircle02Icon,
-  CreditCardIcon,
-  Notification03Icon,
   Logout01Icon,
   Sun01Icon,
   Moon01Icon,
   ComputerIcon,
+  Settings02Icon,
+  HelpCircleIcon,
+  Message01Icon,
 } from "@hugeicons/core-free-icons";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 export function NavUser({
   user,
@@ -73,7 +74,7 @@ export function NavUser({
             />
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="min-w-56"
+            className="min-w-56 rounded-xl"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -87,8 +88,8 @@ export function NavUser({
                     size="sm" 
                   />
                   <div className="grid flex-1 text-start text-sm leading-tight">
-                    <span className="truncate font-medium">{user.name}</span>
-                    <span className="text-muted-foreground truncate text-xs">
+                    <span className="truncate font-semibold">{user.name}</span>
+                    <span className="text-muted-foreground truncate text-[11px]">
                       {user.email}
                     </span>
                   </div>
@@ -97,22 +98,22 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <HugeiconsIcon icon={UserCircle02Icon} strokeWidth={2} />
-                Account
+              <DropdownMenuItem render={<Link href="/dashboard/settings" />}>
+                <HugeiconsIcon icon={Settings02Icon} strokeWidth={2} />
+                <span>System Settings</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <HugeiconsIcon icon={CreditCardIcon} strokeWidth={2} />
-                Billing
+              <DropdownMenuItem render={<Link href="/dashboard/help" />}>
+                <HugeiconsIcon icon={HelpCircleIcon} strokeWidth={2} />
+                Help Center
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <HugeiconsIcon icon={Notification03Icon} strokeWidth={2} />
-                Notifications
+              <DropdownMenuItem render={<a href="mailto:support@hrms.com?subject=HRMS Feedback" />}>
+                <HugeiconsIcon icon={Message01Icon} strokeWidth={2} />
+                Send Feedback
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuLabel className="px-2 py-1.5 text-xs font-semibold text-muted-foreground/70 uppercase tracking-widest">
+              <DropdownMenuLabel className="px-2 py-1.5 text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
                 Theme
               </DropdownMenuLabel>
               <DropdownMenuItem onClick={() => setTheme("light")}>
@@ -129,7 +130,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive focus:bg-destructive/10">
               <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />
               Log out
             </DropdownMenuItem>
