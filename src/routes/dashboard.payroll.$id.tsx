@@ -28,7 +28,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency, formatDate } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,34 +36,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { api } from "@/lib/mock-api";
+
 export const Route = createFileRoute("/dashboard/payroll/$id")({
+  loader: async ({ params }) => {
+    const data = await api.getPayrollRecord(params.id);
+    if (!data) throw new Error("Payroll record not found");
+    return data;
+  },
   component: PayrollDetailsPage,
 });
 
 function PayrollDetailsPage() {
-  const data = {
-    id: "PAY-001",
-    employee: "Ahmed Levin",
-    role: "Product Manager",
-    department: "Engineering",
-    amount: "$8,450.00",
-    base: "$7,200.00",
-    bonus: "$1,250.00",
-    tax: "$1,840.00",
-    deductions: "$420.00",
-    net: "$6,190.00",
-    method: "Bank Transfer",
-    account: "Standard Chartered · **** 4291",
-    date: "Dec 27, 2023",
-    status: "paid",
-  };
-
-  const statusVariant =
-    data.status === "paid"
-      ? "success"
-      : data.status === "processing"
-        ? "warning"
-        : "destructive";
+  const data = Route.useLoaderData();
+  const statusVariant = 
+    data.status === "paid" ? "success" : 
+    data.status === "processing" ? "warning" : 
+    "destructive";
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden">
@@ -72,16 +61,15 @@ function PayrollDetailsPage() {
         title="Payment Record"
         description={`Transaction reference ${data.id}`}
       >
-        <Link to="/dashboard/payroll">
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
-          >
-            <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
-            Back
-          </Button>
-        </Link>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          render={<Link to="/dashboard/payroll" />}
+        >
+          <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
+          Back
+        </Button>
         <Button
           size="sm"
           className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
@@ -133,7 +121,7 @@ function PayrollDetailsPage() {
                           Net Disbursement
                         </p>
                         <p className="text-2xl font-semibold text-primary tabular-nums tracking-tight">
-                          {data.net}
+                          {data.net ? formatCurrency(data.net) : formatCurrency(0)}
                         </p>
                       </div>
                     </div>
@@ -157,9 +145,9 @@ function PayrollDetailsPage() {
                   </div>
                 </FrameHeader>
                 <FrameContent className="flex-1 space-y-5 py-2">
-                  <LineItem label="Basic Salary" value={data.base} />
-                  <LineItem label="Performance Bonus" value={data.bonus} />
-                  <LineItem label="Allowances" value="$0.00" />
+                  <LineItem label="Basic Salary" value={data.base ? formatCurrency(data.base) : formatCurrency(0)} />
+                  <LineItem label="Performance Bonus" value={data.bonus ? formatCurrency(data.bonus) : formatCurrency(0)} />
+                  <LineItem label="Allowances" value={formatCurrency(0)} />
                 </FrameContent>
                 <FrameFooter className="bg-success/[0.02] border-success/5">
                   <div className="flex items-center justify-between">
@@ -167,7 +155,7 @@ function PayrollDetailsPage() {
                       Total Gross
                     </span>
                     <span className="text-[14px] font-bold text-success tabular-nums">
-                      {data.amount}
+                      {formatCurrency(data.amount)}
                     </span>
                   </div>
                 </FrameFooter>
@@ -188,17 +176,17 @@ function PayrollDetailsPage() {
                 <FrameContent className="flex-1 space-y-5 py-2">
                   <LineItem
                     label="Statutory Income Tax"
-                    value={data.tax}
+                    value={data.tax ? formatCurrency(data.tax) : formatCurrency(0)}
                     negative
                   />
                   <LineItem
                     label="Health Insurance"
-                    value={data.deductions}
+                    value={data.deductions ? formatCurrency(data.deductions) : formatCurrency(0)}
                     negative
                   />
                   <LineItem
                     label="Pension Contribution"
-                    value="$0.00"
+                    value={formatCurrency(0)}
                     negative
                   />
                 </FrameContent>
@@ -208,7 +196,7 @@ function PayrollDetailsPage() {
                       Total Deductions
                     </span>
                     <span className="text-[14px] font-bold text-destructive tabular-nums">
-                      -$2,260.00
+                      {data.tax && data.deductions ? formatCurrency(data.tax + data.deductions) : formatCurrency(0)}
                     </span>
                   </div>
                 </FrameFooter>
@@ -233,11 +221,9 @@ function PayrollDetailsPage() {
                     <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest mb-1">
                       Payment Method
                     </p>
-                    <p className="text-[13px] font-semibold text-foreground/80">
-                      {data.method}
-                    </p>
+                    <p className="text-[13px] font-semibold text-foreground/80">{data.method}</p>
                     <p className="text-[11px] font-medium text-muted-foreground/60 mt-0.5">
-                      {data.account}
+                      {data.account || "No account details"}
                     </p>
                   </div>
                 </div>
@@ -251,7 +237,7 @@ function PayrollDetailsPage() {
                       Executed On
                     </p>
                     <p className="text-[13px] font-semibold text-foreground/80">
-                      {data.date}
+                      {formatDate(data.date)}
                     </p>
                   </div>
                 </div>
@@ -268,7 +254,7 @@ function PayrollDetailsPage() {
                 <div className="space-y-0">
                   <TimelineStep
                     title="Payment Completed"
-                    date="Dec 27, 2023 · 10:45 AM"
+                    date={`${formatDate(data.date)} · 10:45 AM`}
                     active
                     completed
                   />

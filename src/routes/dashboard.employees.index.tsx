@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,136 +50,36 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { api } from "@/lib/mock-api";
+import { useEmployees } from "@/hooks/use-employees";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  department: string;
-  position: string;
-  status: "active" | "inactive" | "pending";
-  hireDate: string;
-}
-
-// Sample data
-const sampleUsers: User[] = [
-  {
-    id: "1",
-    name: "John Doe",
-    email: "john@example.com",
-    department: "Engineering",
-    position: "Senior Developer",
-    status: "active",
-    hireDate: "2021-03-15",
-  },
-  {
-    id: "2",
-    name: "Sarah Smith",
-    email: "sarah@example.com",
-    department: "HR",
-    position: "HR Manager",
-    status: "active",
-    hireDate: "2020-07-22",
-  },
-  {
-    id: "3",
-    name: "Mike Johnson",
-    email: "mike@example.com",
-    department: "Sales",
-    position: "Sales Executive",
-    status: "active",
-    hireDate: "2022-01-10",
-  },
-  {
-    id: "4",
-    name: "Emma Wilson",
-    email: "emma@example.com",
-    department: "Finance",
-    position: "Finance Analyst",
-    status: "pending",
-    hireDate: "2024-02-01",
-  },
-  {
-    id: "5",
-    name: "David Brown",
-    email: "david@example.com",
-    department: "Engineering",
-    position: "DevOps Engineer",
-    status: "inactive",
-    hireDate: "2019-06-12",
-  },
-  {
-    id: "6",
-    name: "Lisa Anderson",
-    email: "lisa@example.com",
-    department: "Marketing",
-    position: "Marketing Manager",
-    status: "active",
-    hireDate: "2021-11-05",
-  },
-  {
-    id: "7",
-    name: "James Taylor",
-    email: "james@example.com",
-    department: "Engineering",
-    position: "QA Engineer",
-    status: "active",
-    hireDate: "2022-03-20",
-  },
-  {
-    id: "8",
-    name: "Rachel Green",
-    email: "rachel@example.com",
-    department: "Operations",
-    position: "Operations Coordinator",
-    status: "active",
-    hireDate: "2021-09-14",
-  },
-];
+import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 
 export const Route = createFileRoute("/dashboard/employees/")({
+  loader: async () => await api.getEmployees(),
+  pendingComponent: DashboardPending,
   component: EmployeesPage,
 });
 
 function EmployeesPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterDept, setFilterDept] = useState("all");
-  const [filterStatus, setFilterStatus] = useState("all");
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState("10");
-
-  // Filter and search logic
-  const filteredUsers = sampleUsers.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesDept = filterDept === "all" || user.department === filterDept;
-    const matchesStatus =
-      filterStatus === "all" || user.status === filterStatus;
-    return matchesSearch && matchesDept && matchesStatus;
-  });
-
-  const departments = ["all", ...new Set(sampleUsers.map((u) => u.department))];
-  const statuses = ["all", "active", "inactive", "pending"];
-
-  const toggleSelectAll = () => {
-    if (selectedIds.size === filteredUsers.length && filteredUsers.length > 0) {
-      setSelectedIds(new Set());
-    } else {
-      setSelectedIds(new Set(filteredUsers.map((u) => u.id)));
-    }
-  };
-
-  const toggleSelect = (id: string) => {
-    const newSelected = new Set(selectedIds);
-    if (newSelected.has(id)) {
-      newSelected.delete(id);
-    } else {
-      newSelected.add(id);
-    }
-    setSelectedIds(newSelected);
-  };
+  const initialEmployees = Route.useLoaderData();
+  const {
+    searchTerm,
+    setSearchTerm,
+    filterDept,
+    setFilterDept,
+    filterStatus,
+    setFilterStatus,
+    selectedIds,
+    currentPage,
+    rowsPerPage,
+    setRowsPerPage,
+    filteredEmployees,
+    departments,
+    statuses,
+    toggleSelectAll,
+    toggleSelect,
+  } = useEmployees(initialEmployees);
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden">
@@ -190,15 +90,15 @@ function EmployeesPage() {
       >
         <Button
           variant="outline"
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Export List
         </Button>
         <Button
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           Add Employee
@@ -206,10 +106,9 @@ function EmployeesPage() {
       </DashboardHeader>
 
       <div className="flex flex-col gap-4 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
-        {/* Unified Directory Section */}
         <section>
           <Frame className="group/frame">
-            <FramePanel className="p-0 overflow-hidden">
+            <FramePanel className="p-0 overflow-hidden bg-card">
               <FrameHeader className="border-b-0 pb-2">
                 <div>
                   <FrameTitle>Employee Directory</FrameTitle>
@@ -219,12 +118,11 @@ function EmployeesPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <p className="text-[11px] font-bold text-muted-foreground/30 capitalize tracking-widest mr-2">
-                    {filteredUsers.length} Records
+                    {filteredEmployees.length} Records
                   </p>
                 </div>
               </FrameHeader>
 
-              {/* Integrated Search & Filters Area */}
               <div className="px-6 pb-5 pt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 border-b border-border/5">
                 <div className="relative">
                   <HugeiconsIcon
@@ -233,7 +131,7 @@ function EmployeesPage() {
                     strokeWidth={2}
                   />
                   <Input
-                    placeholder="Search employees..."
+                    placeholder="Search employees…"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-9 h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-xs"
@@ -293,8 +191,7 @@ function EmployeesPage() {
                 </Select>
               </div>
 
-              {/* Batch Actions */}
-              {selectedIds.size > 0 && (
+              {selectedIds.size > 0 ? (
                 <div className="px-6 py-3 bg-primary/[0.02] border-b border-primary/10 flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-200">
                   <div className="flex items-center gap-3">
                     <Badge variant="accent" className="h-6 px-2.5 rounded-md">
@@ -329,7 +226,7 @@ function EmployeesPage() {
                     </Button>
                   </div>
                 </div>
-              )}
+              ) : null}
 
               <FrameContent className="p-0">
                 <Table>
@@ -338,8 +235,8 @@ function EmployeesPage() {
                       <TableHead className="w-[48px] px-6">
                         <Checkbox
                           checked={
-                            selectedIds.size === filteredUsers.length &&
-                            filteredUsers.length > 0
+                            selectedIds.size === filteredEmployees.length &&
+                            filteredEmployees.length > 0
                           }
                           onCheckedChange={toggleSelectAll}
                           className="size-4 rounded-sm border-border/60"
@@ -363,8 +260,8 @@ function EmployeesPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredUsers.length > 0 ? (
-                      filteredUsers.map((user) => (
+                    {filteredEmployees.length > 0 ? (
+                      filteredEmployees.map((user) => (
                         <TableRow
                           key={user.id}
                           className="border-border/5 hover:bg-muted/5 transition-colors group"
@@ -415,6 +312,7 @@ function EmployeesPage() {
                                     variant="ghost"
                                     size="icon-sm"
                                     className="rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                    aria-label="Employee actions"
                                   >
                                     <HugeiconsIcon
                                       icon={MoreHorizontalIcon}
@@ -430,7 +328,7 @@ function EmployeesPage() {
                                 <DropdownMenuItem
                                   render={
                                     <Link
-                                      to={`/dashboard/employees`}
+                                      to="/dashboard/employees/$id"
                                       params={{ id: user.id }}
                                     />
                                   }
@@ -513,7 +411,7 @@ function EmployeesPage() {
               <FrameFooter className="flex items-center justify-between border-t border-border/5">
                 <div className="flex items-center gap-6">
                   <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
-                    {filteredUsers.length} Employees Total
+                    {filteredEmployees.length} Employees Total
                   </span>
 
                   <div className="flex items-center gap-2 border-l border-border/5 pl-6">
@@ -540,7 +438,10 @@ function EmployeesPage() {
                   <div className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest mr-4">
                     Page {currentPage} of 1
                   </div>
-                  <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40">
+                  <button 
+                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40"
+                    aria-label="Previous page"
+                  >
                     <HugeiconsIcon
                       icon={ArrowLeft01Icon}
                       size={12}
@@ -556,11 +457,16 @@ function EmployeesPage() {
                             ? "bg-primary/10 text-primary border border-primary/20"
                             : "text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground border border-transparent hover:border-border/40"
                         }`}
+                      aria-label={`Page ${p}`}
+                      aria-current={p === currentPage ? "page" : undefined}
                     >
                       {p}
                     </button>
                   ))}
-                  <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40">
+                  <button 
+                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40"
+                    aria-label="Next page"
+                  >
                     <HugeiconsIcon
                       icon={ArrowRight01Icon}
                       size={12}

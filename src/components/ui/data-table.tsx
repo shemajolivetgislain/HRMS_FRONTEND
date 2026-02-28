@@ -123,8 +123,8 @@ function DragHandle({ id }: { id: number }) {
       {...attributes}
       {...listeners}
       variant="ghost"
-      size="icon"
-      className="text-muted-foreground size-7 hover:bg-transparent"
+      size="icon-sm"
+      className="text-muted-foreground hover:bg-transparent"
     >
       <HugeiconsIcon
         icon={DragDropVerticalIcon}
@@ -304,8 +304,8 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
           render={
             <Button
               variant="ghost"
-              className="data-open:bg-muted text-muted-foreground flex size-8"
               size="icon"
+              className="data-open:bg-muted text-muted-foreground"
             />
           }
         >
@@ -489,7 +489,7 @@ export function DataTable({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="gap-2">
             <HugeiconsIcon icon={Add01Icon} strokeWidth={2} />
             <span className="hidden lg:inline">Add Section</span>
           </Button>
@@ -593,7 +593,8 @@ export function DataTable({
             <div className="ms-auto flex items-center gap-2 lg:ms-0">
               <Button
                 variant="outline"
-                className="hidden h-8 w-8 p-0 lg:flex"
+                size="icon"
+                className="hidden lg:flex"
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
               >
@@ -602,7 +603,6 @@ export function DataTable({
               </Button>
               <Button
                 variant="outline"
-                className="size-8"
                 size="icon"
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
@@ -612,7 +612,6 @@ export function DataTable({
               </Button>
               <Button
                 variant="outline"
-                className="size-8"
                 size="icon"
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
@@ -622,8 +621,8 @@ export function DataTable({
               </Button>
               <Button
                 variant="outline"
-                className="hidden size-8 lg:flex"
                 size="icon"
+                className="hidden lg:flex"
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
               >

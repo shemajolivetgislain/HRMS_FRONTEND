@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { 
   Frame, 
   FramePanel, 
@@ -55,7 +56,7 @@ const activities = [
   },
 ];
 
-export function RecentActivity() {
+export const RecentActivity = React.memo(function RecentActivity() {
   return (
     <Frame className="h-full group/frame">
       <FramePanel className="flex flex-col h-full overflow-hidden">
@@ -67,7 +68,7 @@ export function RecentActivity() {
           <Button
             variant="outline"
             size="sm"
-            className="h-8 px-3 rounded-lg border-border/50 font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
+            className="font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
           >
             History
           </Button>
@@ -114,4 +115,4 @@ export function RecentActivity() {
       </FramePanel>
     </Frame>
   );
-}
+});

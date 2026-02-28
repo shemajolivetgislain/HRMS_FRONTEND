@@ -34,7 +34,6 @@ import {
   Mail01Icon,
   Briefcase01Icon,
   Location01Icon,
-  Clock01Icon,
   UserAdd01Icon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
@@ -46,50 +45,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { api } from "@/lib/mock-api";
 
-const jobs = [
-  {
-    id: "JOB-101",
-    title: "Senior Frontend Engineer",
-    dept: "Engineering",
-    type: "Full-time",
-    location: "Remote",
-    applicants: 42,
-    status: "published",
-    date: "2 days ago",
-  },
-  {
-    id: "JOB-102",
-    title: "Product Designer",
-    dept: "Design",
-    type: "Full-time",
-    location: "New York, NY",
-    applicants: 28,
-    status: "published",
-    date: "5 days ago",
-  },
-  {
-    id: "JOB-103",
-    title: "HR Specialist",
-    dept: "Human Resources",
-    type: "Contract",
-    location: "London, UK",
-    applicants: 15,
-    status: "draft",
-    date: "1 week ago",
-  },
-  {
-    id: "JOB-104",
-    title: "QA Engineer",
-    dept: "Engineering",
-    type: "Full-time",
-    location: "Remote",
-    applicants: 12,
-    status: "on-hold",
-    date: "2 weeks ago",
-  },
-];
-
+// Sample candidates data (could be moved to mock API later)
 const recentCandidates = [
   {
     id: 1,
@@ -125,12 +83,22 @@ const recentCandidates = [
   },
 ];
 
+import { DashboardPending } from "@/components/dashboard/dashboard-pending";
+
 export const Route = createFileRoute("/dashboard/recruitment/")({
+  loader: async () => await api.getJobs(),
+  pendingComponent: DashboardPending,
   component: RecruitmentPage,
 });
 
 function RecruitmentPage() {
+  const jobs = Route.useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredJobs = jobs.filter(job => 
+    job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    job.dept.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden">
@@ -141,15 +109,15 @@ function RecruitmentPage() {
       >
         <Button
           variant="outline"
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Report
         </Button>
         <Button
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           New Opening
@@ -157,13 +125,11 @@ function RecruitmentPage() {
       </DashboardHeader>
 
       <div className="flex flex-col xl:flex-row gap-6 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
-        {/* Left Side: KPIs and Job Table */}
         <div className="flex-1 min-w-0 space-y-6">
-          {/* Recruitment KPIs */}
           <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <RecruitmentStatCard
               label="Active Openings"
-              value="12"
+              value={jobs.length.toString()}
               change="+2"
               up={true}
               icon={JobShareIcon}
@@ -183,14 +149,13 @@ function RecruitmentPage() {
               label="Time to Hire"
               value="18 days"
               change="-4d"
-              up={true} // Going down is good for time-to-hire, showing it as a positive trend
+              up={true}
               icon={Sorting05Icon}
               variant="success"
               sub="Average lifecycle duration"
             />
           </section>
 
-          {/* Job Openings Management */}
           <section>
             <Frame className="group/frame">
               <FramePanel className="p-0 overflow-hidden bg-card">
@@ -203,7 +168,6 @@ function RecruitmentPage() {
                   </div>
                 </FrameHeader>
 
-                {/* Integrated Filters */}
                 <div className="px-6 pb-5 pt-2 flex flex-col sm:flex-row items-center gap-3 border-b border-border/5">
                   <div className="relative flex-1 w-full">
                     <HugeiconsIcon
@@ -212,7 +176,7 @@ function RecruitmentPage() {
                       strokeWidth={2}
                     />
                     <Input
-                      placeholder="Search roles or departments..."
+                      placeholder="Search roles or departments…"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-9 h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-xs w-full max-w-sm"
@@ -249,7 +213,7 @@ function RecruitmentPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {jobs.map((job) => (
+                      {filteredJobs.map((job) => (
                         <TableRow
                           key={job.id}
                           className="border-border/5 hover:bg-muted/5 transition-colors group"
@@ -309,6 +273,7 @@ function RecruitmentPage() {
                                     variant="ghost"
                                     size="icon-sm"
                                     className="rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                    aria-label="Job actions"
                                   >
                                     <HugeiconsIcon
                                       icon={MoreHorizontalIcon}
@@ -324,7 +289,7 @@ function RecruitmentPage() {
                                 <DropdownMenuItem
                                   render={
                                     <Link
-                                      to={`/dashboard/recruitment`}
+                                      to="/dashboard/recruitment/$id"
                                       params={{ id: job.id }}
                                     />
                                   }
@@ -363,7 +328,7 @@ function RecruitmentPage() {
 
                 <FrameFooter className="flex items-center justify-between border-t border-border/5">
                   <p className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
-                    Showing {jobs.length} total active pipelines
+                    Showing {filteredJobs.length} total active pipelines
                   </p>
                   <Button
                     variant="ghost"
@@ -378,7 +343,6 @@ function RecruitmentPage() {
           </section>
         </div>
 
-        {/* Right Side: Recent Candidates & Pipeline Info */}
         <div className="w-full xl:w-[380px] space-y-6">
           <Frame>
             <FramePanel className="p-0 overflow-hidden bg-card">
@@ -440,7 +404,6 @@ function RecruitmentPage() {
             </FramePanel>
           </Frame>
 
-          {/* Quick Action Card */}
           <Frame>
             <FramePanel className="p-5 flex items-center justify-between bg-primary/[0.02] border-primary/10">
               <div className="flex items-center gap-3">
@@ -471,7 +434,7 @@ function RecruitmentPage() {
   );
 }
 
-function RecruitmentStatCard({
+const RecruitmentStatCard = React.memo(function RecruitmentStatCard({
   label,
   value,
   change,
@@ -535,13 +498,13 @@ function RecruitmentStatCard({
           <div className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest">
             {label}
           </div>
-          {sub && (
+          {sub ? (
             <p className="text-[10px] text-muted-foreground/30 font-medium mt-1 tracking-tight">
               {sub}
             </p>
-          )}
+          ) : null}
         </div>
       </FramePanel>
     </Frame>
   );
-}
+});

@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   UserGroupIcon,
@@ -50,13 +51,12 @@ const metrics = [
   },
 ];
 
-export function DashboardMetrics() {
+export const DashboardMetrics = React.memo(function DashboardMetrics() {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {metrics.map((m, i) => (
         <Frame key={i} className="h-full group/frame">
           <FramePanel className="flex flex-col gap-5 p-6">
-            {/* icon + badge row */}
             <div className="flex items-start justify-between">
               <div
                 className="h-9 w-9 rounded-xl flex items-center justify-center border border-border/10"
@@ -72,11 +72,13 @@ export function DashboardMetrics() {
                 />
               </div>
 
-              <Badge 
-                variant="muted" 
+              <Badge
+                variant="muted"
                 className={cn(
                   "border-none px-1.5 py-0.5 rounded-md font-semibold tracking-tight",
-                  m.up ? "text-emerald-600 bg-emerald-500/10 dark:text-emerald-400" : "text-red-600 bg-red-500/10 dark:text-red-400"
+                  m.up
+                    ? "text-emerald-600 bg-emerald-500/10 dark:text-emerald-400"
+                    : "text-red-600 bg-red-500/10 dark:text-red-400",
                 )}
               >
                 <span className="text-[10px]">
@@ -106,4 +108,4 @@ export function DashboardMetrics() {
       ))}
     </div>
   );
-}
+});

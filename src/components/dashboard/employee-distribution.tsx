@@ -50,7 +50,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function EmployeeDistribution() {
+export const EmployeeDistribution = React.memo(function EmployeeDistribution() {
   const [selected, setSelected] = React.useState<string>("FT");
 
   const totalEmployees = React.useMemo(() => {
@@ -116,7 +116,7 @@ export function EmployeeDistribution() {
                     key={`cell-${index}`}
                     fill={entry.fill}
                     stroke={entry.fill}
-                    className="outline-none transition-all duration-300"
+                    className="outline-none transition-[fill,stroke,opacity,transform] duration-300"
                   />
                 ))}
                 <Label
@@ -151,6 +151,7 @@ export function EmployeeDistribution() {
                         </text>
                       );
                     }
+                    return null;
                   }}
                 />
               </Pie>
@@ -167,7 +168,7 @@ export function EmployeeDistribution() {
             >
               <div
                 className={cn(
-                  "h-1.5 w-1.5 rounded-full shrink-0 transition-all duration-300",
+                  "h-1.5 w-1.5 rounded-full shrink-0 transition-[opacity,transform] duration-300",
                   selected === item.code
                     ? "opacity-100 scale-125"
                     : "opacity-20",
@@ -193,4 +194,4 @@ export function EmployeeDistribution() {
       </FramePanel>
     </Frame>
   );
-}
+})

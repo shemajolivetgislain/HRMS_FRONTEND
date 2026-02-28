@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
   Frame,
   FramePanel,
@@ -53,10 +54,10 @@ const events = [
   },
 ];
 
-export function DashboardSchedule() {
+export const DashboardSchedule = React.memo(function DashboardSchedule() {
   return (
     <Frame className="h-full group/frame">
-      <FramePanel className="flex flex-col h-full overflow-hidden">
+      <FramePanel className="flex flex-col h-full overflow-hidden bg-card">
         <FrameHeader>
           <div>
             <FrameTitle>Schedule</FrameTitle>
@@ -64,11 +65,19 @@ export function DashboardSchedule() {
           </div>
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1 px-1.5 py-1 rounded-lg bg-muted/30 border border-border/5">
-              <button className="text-muted-foreground/30 hover:text-foreground transition-colors">
+              <button 
+                type="button"
+                className="text-muted-foreground/30 hover:text-foreground transition-colors"
+                aria-label="Previous month"
+              >
                 <HugeiconsIcon icon={ArrowLeft01Icon} size={12} strokeWidth={2.5} />
               </button>
               <span className="text-[10px] font-bold capitalize tracking-wider tabular-nums px-1.5 opacity-60">Dec 2023</span>
-              <button className="text-muted-foreground/30 hover:text-foreground transition-colors">
+              <button 
+                type="button"
+                className="text-muted-foreground/30 hover:text-foreground transition-colors"
+                aria-label="Next month"
+              >
                 <HugeiconsIcon icon={ArrowRight01Icon} size={12} strokeWidth={2.5} />
               </button>
             </div>
@@ -78,12 +87,18 @@ export function DashboardSchedule() {
         <FrameContent className="p-0 flex-1 overflow-auto">
           {/* tabs */}
           <div className="flex gap-6 px-6 py-2.5 border-b border-border/5 bg-muted/5">
-            <button className="relative flex items-center gap-2 text-[10px] font-bold capitalize tracking-widest text-foreground/80">
+            <button 
+              type="button"
+              className="relative flex items-center gap-2 text-[10px] font-bold capitalize tracking-widest text-foreground/80"
+            >
               Meetings
               <span className="bg-foreground/10 text-foreground/60 rounded px-1 py-0.5 text-[9px] font-black">5</span>
               <span className="absolute -bottom-[11px] left-0 right-0 h-0.5 bg-foreground/40 rounded-full" />
             </button>
-            <button className="flex items-center gap-2 text-[10px] font-bold capitalize tracking-widest text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors">
+            <button 
+              type="button"
+              className="flex items-center gap-2 text-[10px] font-bold capitalize tracking-widest text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
+            >
               Tasks
               <span className="bg-muted text-muted-foreground/30 rounded px-1 py-0.5 text-[9px] font-bold">6</span>
             </button>
@@ -107,7 +122,7 @@ export function DashboardSchedule() {
                   />
 
                   <div
-                    className="rounded-[12px] border border-border/10 p-3.5 transition-all duration-200 hover:bg-muted/5 group-hover/event:translate-x-0.5"
+                    className="rounded-[12px] border border-border/10 p-3.5 transition-[transform,background-color] duration-200 hover:bg-muted/5 group-hover/event:translate-x-0.5"
                     style={{
                       background: `color-mix(in srgb, ${ev.accent} 2%, transparent)`,
                     }}
@@ -133,11 +148,11 @@ export function DashboardSchedule() {
                               className="size-5 border-2 border-background"
                             />
                           ))}
-                          {ev.extra && (
+                          {ev.extra ? (
                             <AvatarGroupCount className="size-5 text-[8px] font-black border-2 border-background bg-muted">
                               {ev.extra}
                             </AvatarGroupCount>
-                          )}
+                          ) : null}
                         </AvatarGroup>
                       </div>
                     </div>
@@ -150,4 +165,4 @@ export function DashboardSchedule() {
       </FramePanel>
     </Frame>
   );
-}
+});

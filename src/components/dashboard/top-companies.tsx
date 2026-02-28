@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { 
   Frame, 
   FramePanel, 
@@ -53,7 +54,7 @@ const planVariant: Record<string, "accent" | "info" | "secondary"> = {
   Startup: "secondary",
 };
 
-export function TopCompanies() {
+export const TopCompanies = React.memo(function TopCompanies() {
   return (
     <Frame className="h-full group/frame">
       <FramePanel className="flex flex-col h-full overflow-hidden">
@@ -65,7 +66,7 @@ export function TopCompanies() {
           <Button
             variant="outline"
             size="sm"
-            className="h-8 px-3 rounded-lg border-border/50 font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
+            className="font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
           >
             Directory
           </Button>
@@ -92,14 +93,14 @@ export function TopCompanies() {
                   key={i}
                   className="grid grid-cols-[32px_1fr_80px_72px] items-center px-6 py-4 hover:bg-muted/10 transition-colors group"
                 >
-                  <span className="text-[11px] font-mono text-muted-foreground/30">
-                    0{i + 1}
+                  <span className="text-[11px] font-mono text-muted-foreground/30 tabular-nums">
+                    {(i + 1).toString().padStart(2, "0")}
                   </span>
                   <div className="flex flex-col gap-0.5 min-w-0">
                     <span className="text-[13px] font-semibold text-foreground/90 leading-tight truncate group-hover:text-foreground transition-colors">
                       {company.name}
                     </span>
-                    <span className="text-[11px] text-muted-foreground/50 flex items-center gap-1 font-medium">
+                    <span className="text-[11px] text-muted-foreground/50 flex items-center gap-1 font-medium tabular-nums">
                       <HugeiconsIcon
                         icon={UserMultiple02Icon}
                         strokeWidth={2}
@@ -134,4 +135,4 @@ export function TopCompanies() {
       </FramePanel>
     </Frame>
   );
-}
+});

@@ -32,7 +32,10 @@ function FramePanel({ className, ...props }: React.ComponentProps<"div">) {
 function FrameHeader({ className, ...props }: React.ComponentProps<"header">) {
   return (
     <header
-      className={cn("flex items-center justify-between px-6 py-5 border-b border-border/5", className)}
+      className={cn(
+        "flex items-center justify-between px-6 py-5 border-b border-border/5",
+        className,
+      )}
       data-slot="frame-panel-header"
       {...props}
     />
@@ -42,7 +45,10 @@ function FrameHeader({ className, ...props }: React.ComponentProps<"header">) {
 function FrameTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("text-[13px] font-semibold text-foreground/80 tracking-tight leading-none capitalize", className)}
+      className={cn(
+        "text-[13px] font-semibold text-foreground/80 tracking-tight leading-none capitalize",
+        className,
+      )}
       data-slot="frame-panel-title"
       {...props}
     />
@@ -55,7 +61,10 @@ function FrameDescription({
 }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("text-[11px] text-muted-foreground/50 font-medium mt-1.5 leading-none tracking-tight", className)}
+      className={cn(
+        "text-[11px] text-muted-foreground/50 font-medium mt-1.5 leading-none tracking-tight",
+        className,
+      )}
       data-slot="frame-panel-description"
       {...props}
     />

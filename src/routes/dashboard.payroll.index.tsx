@@ -25,9 +25,7 @@ import {
   Coins01Icon,
   Download01Icon,
   Search01Icon,
-  FilterIcon,
   ArrowUpRight01Icon,
-  MoreHorizontalIcon,
   Calendar01Icon,
   ArrowLeft01Icon,
   ArrowRight01Icon,
@@ -43,61 +41,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
+import { formatCurrency, formatDate, cn } from "@/lib/utils";
+import { api } from "@/lib/mock-api";
 
-const payrollData = [
-  {
-    id: "PAY-001",
-    employee: "Ahmed Levin",
-    role: "Product Manager",
-    amount: "$8,450.00",
-    method: "Bank Transfer",
-    date: "27 Dec 2023",
-    status: "paid",
-  },
-  {
-    id: "PAY-002",
-    employee: "Alena Dokidis",
-    role: "Product Designer",
-    amount: "$7,200.00",
-    method: "Bank Transfer",
-    date: "25 Dec 2023",
-    status: "paid",
-  },
-  {
-    id: "PAY-003",
-    employee: "Mira Schleifer",
-    role: "UI/UX Designer",
-    amount: "$6,800.00",
-    method: "PayPal",
-    date: "25 Dec 2023",
-    status: "paid",
-  },
-  {
-    id: "PAY-004",
-    employee: "Marcus Rosser",
-    role: "Frontend Engineer",
-    amount: "$9,100.00",
-    method: "Bank Transfer",
-    date: "24 Dec 2023",
-    status: "processing",
-  },
-  {
-    id: "PAY-005",
-    employee: "Sarah Jenkins",
-    role: "QA Lead",
-    amount: "$7,850.00",
-    method: "Bank Transfer",
-    date: "22 Dec 2023",
-    status: "delayed",
-  },
-];
+import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 
 export const Route = createFileRoute("/dashboard/payroll/")({
+  loader: async () => await api.getPayroll(),
+  pendingComponent: DashboardPending,
   component: PayrollPage,
 });
 
 function PayrollPage() {
+  const payrollData = Route.useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -109,15 +65,15 @@ function PayrollPage() {
       >
         <Button
           variant="outline"
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Statement
         </Button>
         <Button
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
         >
           <HugeiconsIcon icon={Coins01Icon} size={14} strokeWidth={2} />
           Run Payroll
@@ -125,7 +81,6 @@ function PayrollPage() {
       </DashboardHeader>
 
       <div className="flex flex-col gap-4 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
-        {/* Quick Stats */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard
             label="Total Disbursement"
@@ -151,7 +106,6 @@ function PayrollPage() {
           />
         </section>
 
-        {/* Main Payroll Management */}
         <section>
           <Frame className="group/frame">
             <FramePanel className="p-0 overflow-hidden bg-card">
@@ -164,7 +118,6 @@ function PayrollPage() {
                 </div>
               </FrameHeader>
 
-              {/* Integrated Filters */}
               <div className="px-6 pb-5 pt-2 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-3 border-b border-border/5">
                 <div className="relative">
                   <HugeiconsIcon
@@ -173,7 +126,7 @@ function PayrollPage() {
                     strokeWidth={2}
                   />
                   <Input
-                    placeholder="Search payee..."
+                    placeholder="Search payee…"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-9 h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-xs"
@@ -281,7 +234,7 @@ function PayrollPage() {
                         </TableCell>
                         <TableCell className="px-2">
                           <span className="text-[13px] font-semibold text-foreground/90 tabular-nums">
-                            {item.amount}
+                            {formatCurrency(item.amount)}
                           </span>
                         </TableCell>
                         <TableCell className="px-2">
@@ -298,7 +251,7 @@ function PayrollPage() {
                         </TableCell>
                         <TableCell className="px-2">
                           <span className="text-[12px] font-bold text-muted-foreground/40 tabular-nums">
-                            {item.date}
+                            {formatDate(item.date)}
                           </span>
                         </TableCell>
                         <TableCell className="px-2">
@@ -316,23 +269,22 @@ function PayrollPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right pr-6">
-                          <Link
-                            to={`/dashboard/payroll`}
-                            params={{
-                              id: item.id,
-                            }}
-                          >
-                            <Button
-                              variant="ghost"
-                              size="icon-sm"
-                              className="rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <HugeiconsIcon
-                                icon={ArrowUpRight01Icon}
-                                className="size-4 opacity-40"
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            className="rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                            render={
+                              <Link
+                                to="/dashboard/payroll/$id"
+                                params={{ id: item.id }}
                               />
-                            </Button>
-                          </Link>
+                            }
+                          >
+                            <HugeiconsIcon
+                              icon={ArrowUpRight01Icon}
+                              className="size-4 opacity-40"
+                            />
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -342,20 +294,30 @@ function PayrollPage() {
 
               <FrameFooter className="flex items-center justify-between">
                 <p className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
-                  Showing 5 of 124 disbursements
+                  Showing {payrollData.length} of 124 disbursements
                 </p>
                 <div className="flex items-center gap-1.5">
-                  <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors">
+                  <button 
+                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors"
+                    aria-label="Previous page"
+                  >
                     <HugeiconsIcon
                       icon={ArrowLeft01Icon}
                       size={12}
                       strokeWidth={2.5}
                     />
                   </button>
-                  <button className="h-7 w-7 flex items-center justify-center rounded-md bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold">
+                  <button 
+                    className="h-7 w-7 flex items-center justify-center rounded-md bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold"
+                    aria-label="Page 1"
+                    aria-current="page"
+                  >
                     1
                   </button>
-                  <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors">
+                  <button 
+                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors"
+                    aria-label="Next page"
+                  >
                     <HugeiconsIcon
                       icon={ArrowRight01Icon}
                       size={12}
@@ -412,7 +374,7 @@ function StatCard({
           >
             <HugeiconsIcon icon={Icon} size={18} strokeWidth={2} />
           </div>
-          {change && (
+          {change ? (
             <Badge
               variant="muted"
               className={cn(
@@ -426,7 +388,7 @@ function StatCard({
                 {up ? "↑" : "↓"} {change}
               </span>
             </Badge>
-          )}
+          ) : null}
         </div>
         <div>
           <div className="text-2xl font-semibold tracking-tight text-foreground/90 leading-none mb-1.5 tabular-nums">
@@ -435,11 +397,11 @@ function StatCard({
           <div className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest">
             {label}
           </div>
-          {sub && (
+          {sub ? (
             <p className="text-[10px] text-muted-foreground/30 font-medium mt-1 uppercase tracking-tighter">
               {sub}
             </p>
-          )}
+          ) : null}
         </div>
       </FramePanel>
     </Frame>

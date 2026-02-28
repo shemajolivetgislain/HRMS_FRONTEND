@@ -17,9 +17,6 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Settings02Icon,
-  UserCircleIcon,
-  LockPasswordIcon,
   Notification01Icon,
   CreditCardIcon,
   Tick01Icon,
@@ -41,7 +38,10 @@ import { UserAvatar } from "@/components/dashboard/user-avatar";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
+import { ErrorComponent } from "@/components/error-component";
+
 export const Route = createFileRoute("/dashboard/settings")({
+  errorComponent: ErrorComponent,
   component: SettingsPage,
 });
 
@@ -62,8 +62,8 @@ function SettingsPage() {
         description="Global system configuration and access control"
       >
         <Button
-          size="sm"
-          className="h-9 px-6 rounded-lg text-[12px] font-bold shadow-sm capitalize gap-2"
+          size="lg"
+          className="text-[12px] font-bold shadow-sm capitalize gap-2"
           onClick={handleSave}
           disabled={isSaving}
         >
@@ -72,7 +72,7 @@ function SettingsPage() {
           ) : (
             <HugeiconsIcon icon={Tick01Icon} size={14} strokeWidth={2} />
           )}
-          {isSaving ? "Saving..." : "Save Changes"}
+          {isSaving ? "Saving…" : "Save Changes"}
         </Button>
       </DashboardHeader>
 
@@ -297,7 +297,7 @@ function SettingsPage() {
                       type="password"
                       defaultValue=""
                     />
-                    <Button className="h-9 px-6 rounded-lg font-bold text-[11px] uppercase tracking-widest bg-primary text-primary-foreground">
+                    <Button size="lg" className="font-bold text-[11px] uppercase tracking-widest bg-primary text-primary-foreground">
                       Update Credentials
                     </Button>
                   </div>

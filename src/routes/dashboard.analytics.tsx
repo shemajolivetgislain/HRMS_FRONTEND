@@ -70,7 +70,10 @@ const chartConfig = {
   productivity: { label: "Efficiency", color: "var(--chart-3)" },
 } satisfies ChartConfig;
 
+import { ErrorComponent } from "@/components/error-component";
+
 export const Route = createFileRoute("/dashboard/analytics")({
+  errorComponent: ErrorComponent,
   component: AnalyticsPage,
 });
 
@@ -85,15 +88,15 @@ function AnalyticsPage() {
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
-            size="sm"
-            className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+            size="lg"
+            className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
           >
             <HugeiconsIcon icon={Calendar01Icon} size={14} strokeWidth={2} />
             H1 2024
           </Button>
           <Button
-            size="sm"
-            className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
+            size="lg"
+            className="text-[12px] font-bold shadow-sm gap-2 capitalize"
           >
             <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
             Export Data
@@ -121,9 +124,9 @@ function AnalyticsPage() {
                 <div className="space-y-4">
                   <div className="p-3.5 rounded-xl bg-background border border-primary/5 shadow-sm">
                     <p className="text-[13px] font-medium text-foreground/80 leading-relaxed italic">
-                      "Headcount is trending 4% above target. Retention in
+                      “Headcount is trending 4% above target. Retention in
                       Engineering has reached an all-time high of 98% this
-                      quarter."
+                      quarter.”
                     </p>
                   </div>
                   <div className="flex items-center gap-2">

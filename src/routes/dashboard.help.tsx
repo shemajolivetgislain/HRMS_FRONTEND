@@ -85,8 +85,8 @@ function HelpPage() {
         description="Access documentation, system status, and technical support"
       >
         <Button
-          size="sm"
-          className="h-9 px-6 rounded-lg text-[12px] font-bold shadow-sm capitalize gap-2"
+          size="lg"
+          className="font-bold shadow-sm capitalize gap-2"
         >
           <HugeiconsIcon icon={Message01Icon} size={14} strokeWidth={2} />
           Live Chat
@@ -114,8 +114,7 @@ function HelpPage() {
                     strokeWidth={2}
                   />
                   <Input
-                    placeholder="Search for guides, workflows, or technical docs..."
-                    value={searchTerm}
+                    placeholder="Search for guides, workflows, or technical docs…"                    value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-12 h-12 rounded-xl border-border/40 bg-background shadow-sm focus:ring-4 focus:ring-primary/5 transition-all text-sm"
                   />
@@ -191,7 +190,8 @@ function HelpPage() {
                 <FrameFooter>
                   <Button
                     variant="ghost"
-                    className="text-[11px] font-bold text-primary hover:bg-primary/5 px-4 h-8 rounded-lg capitalize"
+                    size="sm"
+                    className="font-bold text-primary hover:bg-primary/5 capitalize"
                   >
                     View all articles
                   </Button>
@@ -248,7 +248,8 @@ function HelpPage() {
                 </div>
                 <Button
                   variant="outline"
-                  className="w-full h-9 rounded-lg border-primary/20 text-primary font-bold text-[11px] uppercase tracking-widest bg-transparent"
+                  size="lg"
+                  className="w-full border-primary/20 text-primary font-bold text-[11px] uppercase tracking-widest bg-transparent"
                 >
                   View Reference
                 </Button>
@@ -298,7 +299,8 @@ function SupportCard({
         </div>
         <Button
           variant="outline"
-          className="h-8 rounded-lg border-border/40 font-bold text-[10px] uppercase tracking-widest w-full hover:bg-muted/50"
+          size="sm"
+          className="font-bold text-[10px] uppercase tracking-widest w-full hover:bg-muted/50"
         >
           {label}
         </Button>

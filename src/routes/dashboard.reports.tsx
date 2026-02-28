@@ -77,7 +77,10 @@ const reports = [
   },
 ];
 
+import { ErrorComponent } from "@/components/error-component";
+
 export const Route = createFileRoute("/dashboard/reports")({
+  errorComponent: ErrorComponent,
   component: ReportsPage,
 });
 
@@ -91,15 +94,15 @@ function ReportsPage() {
       >
         <Button
           variant="outline"
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
         >
           <HugeiconsIcon icon={FilterIcon} size={14} strokeWidth={2} />
           Filter
         </Button>
         <Button
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
         >
           <HugeiconsIcon icon={Analytics01Icon} size={14} strokeWidth={2} />
           Generate New

@@ -1,18 +1,18 @@
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
-import { cva, type VariantProps } from "class-variance-authority"
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "h-5 gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-medium tracking-tight transition-all inline-flex items-center justify-center w-fit whitespace-nowrap shrink-0 [&>svg]:size-3! overflow-hidden group/badge capitalize",
+  "h-5 gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-medium tracking-tight transition-colors inline-flex items-center justify-center w-fit whitespace-nowrap shrink-0 [&>svg]:size-3! overflow-hidden group/badge capitalize",
   {
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground border-transparent",
         secondary: "bg-secondary text-secondary-foreground border-transparent",
         outline: "border-border text-foreground bg-transparent",
-        
+
         // Professional Status Variants
         success: [
           "bg-emerald-500/8 text-emerald-700 border-emerald-500/20",
@@ -34,21 +34,21 @@ const badgeVariants = cva(
           "bg-indigo-500/8 text-indigo-700 border-indigo-500/20",
           "dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/20",
         ],
-        
+
         // Subtle Variant for metrics/trends
         muted: "bg-muted/50 text-muted-foreground border-transparent",
       },
       showDot: {
         true: "",
         false: "",
-      }
+      },
     },
     defaultVariants: {
       variant: "default",
       showDot: false,
     },
-  }
-)
+  },
+);
 
 const dotVariants = cva("size-1 rounded-full shrink-0", {
   variants: {
@@ -62,15 +62,16 @@ const dotVariants = cva("size-1 rounded-full shrink-0", {
       info: "bg-blue-500",
       accent: "bg-indigo-500",
       muted: "bg-muted-foreground",
-    }
+    },
   },
   defaultVariants: {
     variant: "default",
-  }
-})
+  },
+});
 
-interface BadgeProps extends useRender.ComponentProps<"span">, VariantProps<typeof badgeVariants> {
-  showDot?: boolean
+interface BadgeProps
+  extends useRender.ComponentProps<"span">, VariantProps<typeof badgeVariants> {
+  showDot?: boolean;
 }
 
 function Badge({
@@ -86,7 +87,7 @@ function Badge({
       {showDot && <span className={cn(dotVariants({ variant }))} />}
       {children}
     </>
-  )
+  );
 
   return useRender({
     defaultTagName: "span",
@@ -95,7 +96,7 @@ function Badge({
         className: cn(badgeVariants({ variant, showDot }), className),
         children: content,
       },
-      props
+      props,
     ),
     render,
     state: {
@@ -103,7 +104,7 @@ function Badge({
       variant,
       showDot,
     },
-  })
+  });
 }
 
-export { Badge, badgeVariants }
+export { Badge, badgeVariants };

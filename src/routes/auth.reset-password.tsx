@@ -103,7 +103,7 @@ function ResetPasswordPage() {
           </div>
 
           <div className="space-y-3 pt-2">
-            <Button render={<Link to="/auth/login" />} className="w-full h-10 bg-primary text-primary-foreground font-bold rounded-lg shadow-sm hover:opacity-95 transition-all group pt-2">
+            <Button render={<Link to="/auth/login" />} size="xl" className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group pt-2">
               Sign In Now
               <HugeiconsIcon
                 icon={ArrowRight01Icon}
@@ -216,13 +216,13 @@ function ResetPasswordPage() {
 
         <Button
           type="submit"
-          size={"xl"}
+          size="xl"
           disabled={
             !formData.password || !formData.confirmPassword || isLoading
           }
-          className="w-full bg-primary text-primary-foreground font-bold rounded-lg shadow-sm hover:opacity-95 transition-all group pt-2"
+          className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group pt-2"
         >
-          {isLoading ? "Updating..." : "Update Password"}
+          {isLoading ? "Updating…" : "Update Password"}
           {!isLoading && (
             <HugeiconsIcon
               icon={ArrowRight01Icon}

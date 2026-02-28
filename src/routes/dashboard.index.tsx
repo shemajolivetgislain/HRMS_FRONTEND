@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DashboardMetrics } from "@/components/dashboard-metrics";
-import { ChartAttendanceStacked } from "@/components/chart-attendance-stacked";
-import { DashboardSchedule } from "@/components/dashboard-schedule";
-import { DashboardPayroll } from "@/components/dashboard-payroll";
-import { EmployeeDistribution } from "@/components/employee-distribution";
-import { QuickActions } from "@/components/quick-actions";
-import { TopCompanies } from "@/components/top-companies";
-import { RecentActivity } from "@/components/recent-activity";
+import { DashboardMetrics } from "@/components/dashboard/dashboard-metrics";
+import { ChartAttendanceStacked } from "@/components/dashboard/chart-attendance-stacked";
+import { DashboardSchedule } from "@/components/dashboard/dashboard-schedule";
+import { DashboardPayroll } from "@/components/dashboard/dashboard-payroll";
+import { EmployeeDistribution } from "@/components/dashboard/employee-distribution";
+import { QuickActions } from "@/components/dashboard/quick-actions";
+import { TopCompanies } from "@/components/dashboard/top-companies";
+import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -29,15 +29,15 @@ function DashboardPage() {
       >
         <Button
           variant="outline"
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
         >
           <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} strokeWidth={2} />
           Export
         </Button>
         <Button
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
+          size="lg"
+          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           New Employee

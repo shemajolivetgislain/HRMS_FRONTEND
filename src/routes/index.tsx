@@ -98,10 +98,11 @@ function Home() {
             </a>
           </nav>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" render={<Link to="/auth/login" />}>
+            <Button variant="ghost" size="default" render={<Link to="/auth/login" />}>
               Sign In
             </Button>
             <Button
+              size="default"
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
               render={<Link to="/auth/register" />}
             >

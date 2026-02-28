@@ -4,7 +4,10 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
+import { ErrorComponent } from "@/components/error-component";
+
 export const Route = createFileRoute("/dashboard")({
+  errorComponent: ErrorComponent,
   component: DashboardLayout,
 });
 

@@ -64,9 +64,9 @@ export function DashboardPayroll() {
           <Button
             variant="outline"
             size="sm"
-            className="h-8 px-3 rounded-lg border-border/50 font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
+            className="font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
           >
-            Manage
+            History
           </Button>
         </FrameHeader>
 
@@ -131,7 +131,10 @@ export function DashboardPayroll() {
             Showing 4 of 48 records
           </span>
           <div className="flex items-center gap-1.5">
-            <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40">
+            <button 
+              className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40"
+              aria-label="Previous page"
+            >
               <HugeiconsIcon icon={ArrowLeft01Icon} size={12} strokeWidth={2.5} />
             </button>
             {[1, 2, 3].map((p) => (
@@ -141,11 +144,16 @@ export function DashboardPayroll() {
                   ${p === 1 
                     ? "bg-primary/10 text-primary border border-primary/20" 
                     : "text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground border border-transparent hover:border-border/40"}`}
+                aria-label={`Page ${p}`}
+                aria-current={p === 1 ? "page" : undefined}
               >
                 {p}
               </button>
             ))}
-            <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40">
+            <button 
+              className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40"
+              aria-label="Next page"
+            >
               <HugeiconsIcon icon={ArrowRight01Icon} size={12} strokeWidth={2.5} />
             </button>
           </div>

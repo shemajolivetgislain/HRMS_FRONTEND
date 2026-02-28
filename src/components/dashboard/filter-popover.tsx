@@ -123,13 +123,13 @@ export function FilterPopover() {
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 text-[11px] font-bold text-muted-foreground/60 hover:text-foreground"
+            className="font-bold text-muted-foreground/60 hover:text-foreground"
           >
             Reset
           </Button>
           <Button
             size="sm"
-            className="h-8 px-4 text-[11px] font-bold rounded-lg shadow-sm"
+            className="font-bold shadow-sm"
           >
             Apply Filters
           </Button>

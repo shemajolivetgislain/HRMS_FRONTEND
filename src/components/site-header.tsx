@@ -2,6 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Search02Icon, Notification01Icon } from "@hugeicons/core-free-icons";
 import { useLocation } from "@tanstack/react-router";
@@ -66,7 +67,7 @@ export function SiteHeader() {
           </div>
           <input
             type="text"
-            placeholder="Search directory..."
+            placeholder="Search directory…"
             className="h-9 w-64 rounded-xl border border-border/40 bg-muted/10 pl-9 pr-12 text-sm outline-none transition-all placeholder:text-muted-foreground/50 hover:bg-muted/30 hover:border-border/60 focus:border-primary/30 focus:bg-background focus:ring-4 focus:ring-primary/5"
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -77,14 +78,19 @@ export function SiteHeader() {
         </div>
 
         <div className="flex items-center gap-0.5 pl-2">
-          <button className="relative flex size-9 items-center justify-center rounded-xl text-muted-foreground/70 hover:bg-muted/50 hover:text-foreground transition-colors group">
+          <Button
+            variant="ghost"
+            size="icon-lg"
+            className="relative text-muted-foreground/70"
+            aria-label="Notifications"
+          >
             <HugeiconsIcon
               icon={Notification01Icon}
-              className="size-5 group-hover:scale-105 transition-transform"
+              className="size-5 group-hover/button:scale-105 transition-transform"
               strokeWidth={1.5}
             />
             <span className="absolute top-2 right-2.5 size-1.5 rounded-full bg-destructive shadow-[0_0_4px_--theme(--color-destructive)] animate-pulse" />
-          </button>
+          </Button>
         </div>
       </div>
     </header>

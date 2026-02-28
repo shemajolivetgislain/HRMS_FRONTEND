@@ -95,7 +95,7 @@ function RegisterPage() {
                 </SelectContent>
               </Select>
             </div>
-            <Button className="w-full h-10 mt-2 bg-primary text-primary-foreground font-bold rounded-lg group shadow-sm pt-2">
+            <Button size="xl" className="w-full mt-2 bg-primary text-primary-foreground font-bold group shadow-sm pt-2" type="submit">
               Continue
               <HugeiconsIcon icon={ArrowRight01Icon} size={16} className="ml-2 group-hover:translate-x-0.5 transition-transform" />
             </Button>
@@ -130,8 +130,8 @@ function RegisterPage() {
               </div>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="flex-1 h-10 rounded-lg font-bold" onClick={() => setStep(1)}>Back</Button>
-              <Button className="flex-[2] h-10 bg-primary text-primary-foreground font-bold rounded-lg group shadow-sm pt-2">
+              <Button variant="outline" size="xl" className="flex-1 font-bold" onClick={() => setStep(1)}>Back</Button>
+              <Button size="xl" className="flex-[2] bg-primary text-primary-foreground font-bold group shadow-sm pt-2" type="submit">
                 Complete
                 <HugeiconsIcon icon={Tick01Icon} size={16} className="ml-2" />
               </Button>
@@ -150,7 +150,7 @@ function RegisterPage() {
                 Your organization is ready. Check your email for a final verification link.
               </p>
             </div>
-            <Button render={<Link to="/dashboard" />} className="w-full h-10 bg-primary text-primary-foreground font-bold rounded-lg shadow-sm pt-2">
+            <Button render={<Link to="/dashboard" />} size="xl" className="w-full bg-primary text-primary-foreground font-bold shadow-sm pt-2">
               Access Dashboard
             </Button>
           </div>

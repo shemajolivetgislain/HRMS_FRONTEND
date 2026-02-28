@@ -58,29 +58,19 @@ interface EmployeeProfile {
   country: string;
   zipCode: string;
 }
-
-const employeeData: EmployeeProfile = {
-  id: "1",
-  name: "John Doe",
-  email: "john@example.com",
-  phone: "+1 (555) 123-4567",
-  position: "Senior Developer",
-  department: "Engineering",
-  manager: "Alice Johnson",
-  status: "active",
-  hireDate: "2021-03-15",
-  dob: "1990-05-22",
-  address: "123 Main Street",
-  city: "San Francisco",
-  country: "United States",
-  zipCode: "94102",
-};
+import { api } from "@/lib/mock-api";
 
 export const Route = createFileRoute("/dashboard/employees/$id")({
+  loader: async ({ params }) => {
+    const employee = await api.getEmployee(params.id);
+    if (!employee) throw new Error("Employee not found");
+    return employee;
+  },
   component: EmployeeProfilePage,
 });
 
 function EmployeeProfilePage() {
+  const employeeData = Route.useLoaderData();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(employeeData);
 
@@ -105,19 +95,18 @@ function EmployeeProfilePage() {
         title="Employee Details"
         description="Private records and operational history"
       >
-        <Link to="/dashboard/employees">
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
-          >
-            <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
-            Directory
-          </Button>
-        </Link>
         <Button
-          size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
+          variant="outline"
+          size="lg"
+          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          render={<Link to="/dashboard/employees" />}
+        >
+          <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
+          Directory
+        </Button>
+        <Button
+          size="lg"
+          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
           onClick={() => setIsEditing(!isEditing)}
         >
           <HugeiconsIcon
@@ -186,7 +175,7 @@ function EmployeeProfilePage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-9 px-4 rounded-lg border-border/40 font-bold capitalize shadow-none gap-2"
+                        className="font-bold capitalize shadow-none gap-2"
                       >
                         <HugeiconsIcon icon={Mail01Icon} className="size-4" />
                         Email
@@ -197,7 +186,7 @@ function EmployeeProfilePage() {
                             <Button
                               variant="outline"
                               size="icon-sm"
-                              className="h-9 w-9 rounded-lg border-border/40 shadow-none"
+                              className="border-border/40 shadow-none"
                             >
                               <HugeiconsIcon
                                 icon={MoreHorizontalIcon}
@@ -286,7 +275,7 @@ function EmployeeProfilePage() {
                         {isEditing && (
                           <Button
                             size="sm"
-                            className="h-8 px-4 text-[11px] font-bold rounded-lg shadow-sm"
+                            className="font-bold shadow-sm"
                           >
                             Save Changes
                           </Button>
@@ -442,7 +431,7 @@ function EmployeeProfilePage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 rounded-lg font-bold capitalize"
+                      className="font-bold capitalize"
                     >
                       Upload New
                     </Button>

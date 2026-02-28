@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,19 +17,16 @@ import {
   Download01Icon,
   MoreHorizontalIcon,
   Calendar01Icon,
-  UserMultiple02Icon,
   Briefcase01Icon,
   Location01Icon,
-  Clock01Icon,
   Mail01Icon,
   UserAdd01Icon,
   Sorting05Icon,
-  ViewIcon,
   PlusSignCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
-import { cn } from "@/lib/utils";
+import { api } from "@/lib/mock-api";
 
 const candidates = [
   {
@@ -63,20 +60,16 @@ const candidates = [
 ];
 
 export const Route = createFileRoute("/dashboard/recruitment/$id")({
+  loader: async ({ params }) => {
+    const job = await api.getJob(params.id);
+    if (!job) throw new Error("Job opening not found");
+    return job;
+  },
   component: RecruitmentDetailsPage,
 });
 
 function RecruitmentDetailsPage() {
-  const role = {
-    id: "JOB-101",
-    title: "Senior Frontend Engineer",
-    dept: "Engineering",
-    location: "Remote",
-    type: "Full-time",
-    posted: "Oct 12, 2023",
-    status: "published",
-    applicants: 132,
-  };
+  const role = Route.useLoaderData();
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden">
@@ -85,16 +78,15 @@ function RecruitmentDetailsPage() {
         title={role.title}
         description={`Management console for opening ${role.id}`}
       >
-        <Link to="/dashboard/recruitment">
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
-          >
-            <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
-            Back
-          </Button>
-        </Link>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          render={<Link to="/dashboard/recruitment" />}
+        >
+          <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
+          Back
+        </Button>
         <Button
           size="sm"
           className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
@@ -105,7 +97,6 @@ function RecruitmentDetailsPage() {
       </DashboardHeader>
 
       <div className="flex flex-col xl:flex-row gap-4 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
-        {/* Left: Candidates Table */}
         <div className="flex-1 min-w-0">
           <Frame className="group/frame">
             <FramePanel className="p-0 overflow-hidden bg-card">
@@ -174,6 +165,7 @@ function RecruitmentDetailsPage() {
                               variant="ghost"
                               size="icon-sm"
                               className="rounded-lg opacity-0 group-hover/can:opacity-100 transition-opacity"
+                              aria-label="Candidate actions"
                             >
                               <HugeiconsIcon
                                 icon={Mail01Icon}
@@ -184,6 +176,7 @@ function RecruitmentDetailsPage() {
                               variant="ghost"
                               size="icon-sm"
                               className="rounded-lg opacity-0 group-hover/can:opacity-100 transition-opacity"
+                              aria-label="More candidate actions"
                             >
                               <HugeiconsIcon
                                 icon={MoreHorizontalIcon}
@@ -199,7 +192,7 @@ function RecruitmentDetailsPage() {
               </FrameContent>
               <FrameFooter className="flex items-center justify-between py-4">
                 <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
-                  Showing {candidates.length} of {role.applicants} applicants
+                  Showing {candidates.length} candidates
                 </span>
                 <Button
                   variant="ghost"
@@ -213,7 +206,6 @@ function RecruitmentDetailsPage() {
           </Frame>
         </div>
 
-        {/* Right: Role Metadata */}
         <div className="w-full xl:w-[320px] space-y-4">
           <Frame>
             <FramePanel className="p-0 overflow-hidden bg-card">
@@ -257,7 +249,7 @@ function RecruitmentDetailsPage() {
                   <MetaItem
                     icon={Calendar01Icon}
                     label="Posted"
-                    value={role.posted}
+                    value={role.date}
                   />
                 </div>
               </FrameContent>
@@ -289,7 +281,7 @@ function RecruitmentDetailsPage() {
                   size="sm"
                   className="border border-border/10"
                 />
-                <div className="size-8 rounded-full border border-dashed border-border/40 flex items-center justify-center text-muted-foreground/30 hover:border-primary/20 hover:text-primary transition-all cursor-pointer">
+                <div className="size-8 rounded-full border border-dashed border-border/40 flex items-center justify-center text-muted-foreground/30 hover:border-primary/20 hover:text-primary transition-colors cursor-pointer">
                   <HugeiconsIcon icon={PlusSignCircleIcon} size={14} />
                 </div>
               </div>

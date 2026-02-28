@@ -93,11 +93,11 @@ function VerifyPage() {
         </div>
 
         <div className="space-y-3 pt-2">
-          <Button render={<Link to="/dashboard" />} className="w-full h-10 bg-primary text-primary-foreground font-bold rounded-lg group shadow-sm pt-2">
+          <Button render={<Link to="/dashboard" />} size="xl" className="w-full bg-primary text-primary-foreground font-bold group shadow-sm pt-2">
             Verify & Continue
             <HugeiconsIcon icon={ArrowRight01Icon} size={16} className="ml-2 group-hover:translate-x-0.5 transition-transform" />
           </Button>
-          <Button render={<Link to="/auth/login" />} variant="ghost" className="w-full h-9 text-[11px] font-bold text-muted-foreground/40 hover:text-foreground">
+          <Button render={<Link to="/auth/login" />} variant="ghost" size="lg" className="w-full font-bold text-muted-foreground/40 hover:text-foreground">
             Back to login
           </Button>
         </div>

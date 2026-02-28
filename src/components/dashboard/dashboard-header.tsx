@@ -21,26 +21,26 @@ export function DashboardHeader({
   return (
     <header className={cn("flex items-end justify-between pt-10 pb-8 px-4 lg:px-6", className)}>
       <div className="flex flex-col gap-1.5">
-        {category && (
+        {category ? (
           <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-[0.2em]">
             {category}
           </p>
-        )}
+        ) : null}
         <h1 className="text-2xl font-semibold tracking-tight text-foreground/90 leading-tight">
           {title}
         </h1>
-        {description && (
+        {description ? (
           <p className="text-[13px] font-medium text-muted-foreground/50">
             {description}
           </p>
-        )}
+        ) : null}
       </div>
 
-      {children && (
+      {children ? (
         <div className="flex items-center gap-2">
           {children}
         </div>
-      )}
+      ) : null}
     </header>
   );
 }

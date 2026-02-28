@@ -51,7 +51,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function ChartAreaInteractive() {
+export const ChartAreaInteractive = React.memo(function ChartAreaInteractive() {
   const isMobile = useIsMobile();
   const [timeRange, setTimeRange] = React.useState("180d");
 
@@ -61,23 +61,25 @@ export function ChartAreaInteractive() {
     }
   }, [isMobile]);
 
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date);
-    const referenceDate = new Date("2024-06-28");
-    let daysToSubtract = 180;
-    if (timeRange === "90d") {
-      daysToSubtract = 90;
-    } else if (timeRange === "30d") {
-      daysToSubtract = 30;
-    }
-    const startDate = new Date(referenceDate);
-    startDate.setDate(startDate.getDate() - daysToSubtract);
-    return date >= startDate;
-  });
+  const filteredData = React.useMemo(() => {
+    return chartData.filter((item) => {
+      const date = new Date(item.date);
+      const referenceDate = new Date("2024-06-28");
+      let daysToSubtract = 180;
+      if (timeRange === "90d") {
+        daysToSubtract = 90;
+      } else if (timeRange === "30d") {
+        daysToSubtract = 30;
+      }
+      const start = new Date(referenceDate);
+      start.setDate(start.getDate() - daysToSubtract);
+      return date >= start;
+    });
+  }, [timeRange]);
 
   return (
     <Frame className="h-full w-full relative">
-      <FramePanel className="flex flex-col h-full p-5 lg:p-6 pb-2! overflow-hidden">
+      <FramePanel className="flex flex-col h-full p-5 lg:p-6 pb-2! overflow-hidden bg-card">
         {/* Decorative Grid Background Texture (subtle noise/mesh element) */}
         <div className="absolute inset-x-0 top-0 h-40 bg-[linear-gradient(to_bottom,transparent_0%,--theme(--color-background)_100%),repeating-linear-gradient(45deg,transparent,transparent_10px,--theme(--color-border)_10px,--theme(--color-border)_11px)] opacity-[0.03] pointer-events-none"></div>
 
@@ -121,7 +123,7 @@ export function ChartAreaInteractive() {
               <SelectTrigger
                 className="flex w-32 border-none bg-muted/50 text-xs lg:hidden"
                 size="sm"
-                aria-label="Select a value"
+                aria-label="Select time range"
               >
                 <SelectValue placeholder="Last 6 months" />
               </SelectTrigger>
@@ -224,4 +226,4 @@ export function ChartAreaInteractive() {
       </FramePanel>
     </Frame>
   );
-}
+});

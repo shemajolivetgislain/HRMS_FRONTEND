@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
   Bar,
   BarChart,
@@ -42,7 +43,7 @@ const chartConfig = {
   absent: { label: "Absent", color: "var(--chart-3)" },
 } satisfies ChartConfig;
 
-export function ChartAttendanceStacked() {
+export const ChartAttendanceStacked = React.memo(function ChartAttendanceStacked() {
   return (
     <Frame className="h-full group/frame">
       <FramePanel className="flex flex-col h-full overflow-hidden">
@@ -120,4 +121,4 @@ export function ChartAttendanceStacked() {
       </FramePanel>
     </Frame>
   );
-}
+});

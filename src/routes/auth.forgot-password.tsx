@@ -105,14 +105,16 @@ function ForgotPasswordPage() {
                 setEmail("");
               }}
               variant="outline"
-              className="w-full h-10 border-border/40 text-[12px] font-bold text-muted-foreground/60 hover:text-foreground"
+              size="xl"
+              className="w-full font-bold text-muted-foreground/60 hover:text-foreground"
             >
               Use different email
             </Button>
 
             <Button
               variant="ghost"
-              className="w-full h-9 text-[11px] font-bold text-muted-foreground/40 hover:text-foreground"
+              size="lg"
+              className="w-full font-bold text-muted-foreground/40 hover:text-foreground"
               render={<Link to="/auth/login" />}
             >
               <HugeiconsIcon
@@ -173,7 +175,7 @@ function ForgotPasswordPage() {
           size="xl"
           className="w-full bg-primary text-primary-foreground font-bold rounded-lg shadow-sm hover:opacity-95 transition-all group pt-2"
         >
-          {isLoading ? "Sending..." : "Send Reset Link"}
+          {isLoading ? "Sending…" : "Send Reset Link"}
           {!isLoading && (
             <HugeiconsIcon
               icon={ArrowRight01Icon}
@@ -187,7 +189,8 @@ function ForgotPasswordPage() {
           <Button
             type="button"
             variant="outline"
-            className="w-full h-10 border-border/40 text-[12px] font-bold text-muted-foreground/60 hover:text-foreground"
+            size="xl"
+            className="w-full font-bold text-muted-foreground/60 hover:text-foreground"
             render={<Link to="/auth/login" />}
           >
             Sign In

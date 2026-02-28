@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { 
   Frame, 
   FramePanel, 
@@ -45,7 +46,7 @@ const actions = [
   },
 ];
 
-export function QuickActions() {
+export const QuickActions = React.memo(function QuickActions() {
   return (
     <Frame className="h-full group/frame">
       <FramePanel className="flex flex-col h-full overflow-hidden">
@@ -61,10 +62,11 @@ export function QuickActions() {
             {actions.map((action, i) => (
               <button
                 key={i}
-                className="group/btn flex w-full items-center gap-4 px-6 py-4 hover:bg-muted/10 transition-all text-left"
+                type="button"
+                className="group/btn flex w-full items-center gap-4 px-6 py-4 hover:bg-muted/10 transition-colors text-left"
               >
                 <div
-                  className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover/btn:scale-110 group-hover/btn:shadow-[0_0_15px_-3px_rgba(0,0,0,0.1)] group-hover/btn:shadow-inherit"
+                  className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0 transition-[transform,shadow,background-color] duration-300 group-hover/btn:scale-110 group-hover/btn:shadow-[0_0_15px_-3px_rgba(0,0,0,0.1)] group-hover/btn:shadow-inherit"
                   style={{
                     background: `color-mix(in srgb, ${action.accent} 12%, transparent)`,
                   }}
@@ -103,4 +105,4 @@ export function QuickActions() {
       </FramePanel>
     </Frame>
   );
-}
+});
