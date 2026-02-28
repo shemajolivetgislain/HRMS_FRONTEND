@@ -28,8 +28,10 @@ export function NavMain({
         <SidebarMenu className="gap-1.5 mt-2">
           {items.map((item) => {
             const isActive =
-              pathname === item.url || pathname.startsWith(`${item.url}/`);
-            console.log({ pathname, url: item.url, isActive });
+              item.url === "/dashboard"
+                ? pathname === "/dashboard"
+                : pathname === item.url || pathname.startsWith(`${item.url}/`);
+
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
@@ -62,7 +64,6 @@ export function NavMain({
                     {item.title}
                   </span>
 
-                  {/* Subtle Indicator bar */}
                   {isActive && (
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-full" />
                   )}
