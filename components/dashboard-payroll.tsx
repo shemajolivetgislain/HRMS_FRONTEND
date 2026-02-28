@@ -1,6 +1,14 @@
 "use client";
 
-import { Frame, FramePanel } from "@/components/ui/frame";
+import { 
+  Frame, 
+  FramePanel, 
+  FrameHeader, 
+  FrameTitle, 
+  FrameDescription, 
+  FrameContent,
+  FrameFooter
+} from "@/components/ui/frame";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -41,109 +49,107 @@ const rows = [
 const statusMap: Record<string, { label: string; variant: "success" | "warning" | "destructive" | "info" }> = {
   Paid: { label: "Paid", variant: "success" },
   Processing: { label: "Processing", variant: "info" },
-  Delayed: { label: "Delayed", accent: "var(--destructive)", variant: "destructive" },
+  Delayed: { label: "Delayed", variant: "destructive" },
 };
 
 export function DashboardPayroll() {
   return (
-    <Frame>
+    <Frame className="group/frame">
       <FramePanel className="p-0 overflow-hidden">
-        {/* table header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border/10">
+        <FrameHeader>
           <div>
-            <h3 className="text-sm font-semibold text-foreground/90">
-              Recent Payroll
-            </h3>
-            <p className="text-[11px] text-muted-foreground mt-0.5">
-              Disbursements for December 2023
-            </p>
+            <FrameTitle>Recent Payroll</FrameTitle>
+            <FrameDescription>Disbursements for December 2023</FrameDescription>
           </div>
           <Button
             variant="outline"
             size="sm"
-            className="h-8 px-3 text-[11px] rounded-lg border-border/50 font-medium shadow-none hover:bg-muted/50"
+            className="h-8 px-3 rounded-lg border-border/50 font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
           >
-            View All
+            Manage
           </Button>
-        </div>
+        </FrameHeader>
 
-        {/* column headers */}
-        <div className="grid grid-cols-[40px_1fr_1fr_120px_90px] items-center gap-0 px-5 py-2.5 bg-muted/20 border-b border-border/10">
-          {["#", "Employee", "Role", "Date", "Status"].map((h) => (
-            <span
-              key={h}
-              className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest first:text-center"
-            >
-              {h}
-            </span>
-          ))}
-        </div>
-
-        {/* rows */}
-        <div className="divide-y divide-border/5">
-          {rows.map((row) => {
-            const s = statusMap[row.status];
-            return (
-              <div
-                key={row.id}
-                className="grid grid-cols-[40px_1fr_1fr_120px_90px] items-center gap-0 px-5 py-3.5 hover:bg-muted/10 transition-colors group"
+        <FrameContent className="p-0">
+          {/* column headers */}
+          <div className="grid grid-cols-[48px_1fr_1fr_120px_100px] items-center gap-0 px-6 py-3 bg-muted/20 border-b border-border/5">
+            {["#", "Employee", "Role", "Date", "Status"].map((h) => (
+              <span
+                key={h}
+                className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest first:text-center"
               >
-                <span className="text-[11px] font-mono text-muted-foreground/40 text-center">
-                  {row.id}
-                </span>
+                {h}
+              </span>
+            ))}
+          </div>
 
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <UserAvatar 
-                    name={row.name} 
-                    size="sm" 
-                    className="shrink-0"
-                  />
-                  <span className="text-[13px] font-medium text-foreground/90 truncate">
-                    {row.name}
+          {/* rows */}
+          <div className="divide-y divide-border/5">
+            {rows.map((row) => {
+              const s = statusMap[row.status];
+              return (
+                <div
+                  key={row.id}
+                  className="grid grid-cols-[48px_1fr_1fr_120px_100px] items-center gap-0 px-6 py-4 hover:bg-muted/10 transition-colors group"
+                >
+                  <span className="text-[11px] font-mono text-muted-foreground/30 text-center">
+                    {row.id}
                   </span>
+
+                  <div className="flex items-center gap-3 min-w-0">
+                    <UserAvatar 
+                      name={row.name} 
+                      size="sm" 
+                      className="shrink-0 rounded-lg shadow-sm"
+                    />
+                    <span className="text-[13px] font-semibold text-foreground/90 truncate">
+                      {row.name}
+                    </span>
+                  </div>
+
+                  <span className="text-[12px] text-muted-foreground/70 truncate pr-4 font-medium">
+                    {row.role}
+                  </span>
+
+                  <span className="text-[11px] font-bold text-muted-foreground/50 tabular-nums">
+                    {row.date}
+                  </span>
+
+                  <div>
+                    <Badge variant={s.variant} showDot>
+                      {s.label}
+                    </Badge>
+                  </div>
                 </div>
+              );
+            })}
+          </div>
+        </FrameContent>
 
-                <span className="text-[12px] text-muted-foreground truncate pr-4">
-                  {row.role}
-                </span>
-
-                <span className="text-[11px] font-medium text-muted-foreground/70 tabular-nums">
-                  {row.date}
-                </span>
-
-                <div>
-                  <Badge variant={s.variant} showDot>
-                    {s.label}
-                  </Badge>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* footer */}
-        <div className="flex items-center justify-between px-5 py-3 border-t border-border/10 bg-muted/5">
-          <span className="text-[10px] text-muted-foreground/50 font-medium">
+        <FrameFooter className="flex items-center justify-between">
+          <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
             Showing 4 of 48 records
           </span>
-          <div className="flex items-center gap-1">
-            <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors">
-              <HugeiconsIcon icon={ArrowLeft01Icon} size={13} />
+          <div className="flex items-center gap-1.5">
+            <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40">
+              <HugeiconsIcon icon={ArrowLeft01Icon} size={12} strokeWidth={2.5} />
             </button>
-            {[1, 2, 3, 4, 5].map((p) => (
+            {[1, 2, 3].map((p) => (
               <button
                 key={p}
-                className={`h-7 w-7 flex items-center justify-center rounded-md text-[11px] font-semibold transition-colors
-                  ${p === 1 ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"}`}
+                className={`h-7 w-7 flex items-center justify-center rounded-md text-[10px] font-bold transition-all
+                  ${p === 1 
+                    ? "bg-primary/10 text-primary border border-primary/20" 
+                    : "text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground border border-transparent hover:border-border/40"}`}
               >
                 {p}
               </button>
             ))}
-            <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors">
-              <HugeiconsIcon icon={ArrowRight01Icon} size={13} />
+            <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 hover:text-foreground transition-colors border border-transparent hover:border-border/40">
+              <HugeiconsIcon icon={ArrowRight01Icon} size={12} strokeWidth={2.5} />
             </button>
           </div>
-        </div>
+        </FrameFooter>
       </FramePanel>
     </Frame>
   );

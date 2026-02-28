@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { PlusSignCircleIcon, Mail01Icon } from "@hugeicons/core-free-icons";
+import Link from "next/link";
 
 export function NavMain({
   items,
@@ -28,6 +29,7 @@ export function NavMain({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 tooltip={item.title}
+                render={<Link href={item.url} />}
                 className=" flex items-center gap-3 px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-muted/40 cursor-pointer data-[active=true]:bg-primary/5 data-[active=true]:text-primary"
               >
                 <div className="text-muted-foreground/70 transition-colors group-data-[active=true]:text-primary">

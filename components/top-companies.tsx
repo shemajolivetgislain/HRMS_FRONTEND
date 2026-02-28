@@ -1,6 +1,14 @@
 "use client";
 
-import { Frame, FramePanel } from "@/components/ui/frame";
+import { 
+  Frame, 
+  FramePanel, 
+  FrameHeader, 
+  FrameTitle, 
+  FrameDescription, 
+  FrameContent,
+  FrameFooter
+} from "@/components/ui/frame";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -47,85 +55,82 @@ const planVariant: Record<string, "accent" | "info" | "secondary"> = {
 
 export function TopCompanies() {
   return (
-    <Frame className="h-full">
-      <FramePanel className="flex flex-col h-full p-0 overflow-hidden">
-        {/* header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border/10">
+    <Frame className="h-full group/frame">
+      <FramePanel className="flex flex-col h-full overflow-hidden">
+        <FrameHeader>
           <div>
-            <h3 className="text-sm font-semibold text-foreground/90">
-              Top Companies
-            </h3>
-            <p className="text-[11px] text-muted-foreground mt-0.5">
-              Ranked by employee count
-            </p>
+            <FrameTitle>Top Companies</FrameTitle>
+            <FrameDescription>Ranked by employee count</FrameDescription>
           </div>
           <Button
             variant="outline"
             size="sm"
-            className="h-8 px-3 text-[11px] rounded-lg border-border/50 font-medium shadow-none hover:bg-muted/50"
+            className="h-8 px-3 rounded-lg border-border/50 font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
           >
             Directory
           </Button>
-        </div>
+        </FrameHeader>
 
-        {/* column headers */}
-        <div className="grid grid-cols-[32px_1fr_80px_72px] items-center px-5 py-2.5 bg-muted/20 border-b border-border/10">
-          {["#", "Company", "Plan", "Status"].map((h) => (
-            <span
-              key={h}
-              className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest"
-            >
-              {h}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex-1 divide-y divide-border/5">
-          {topCompanies.map((company, i) => {
-            return (
-              <div
-                key={i}
-                className="grid grid-cols-[32px_1fr_80px_72px] items-center px-5 py-3.5 hover:bg-muted/10 transition-colors group"
+        <FrameContent className="p-0 flex-1">
+          {/* table headers */}
+          <div className="grid grid-cols-[32px_1fr_80px_72px] items-center px-6 py-2.5 bg-muted/20 border-b border-border/5">
+            {["#", "Company", "Plan", "Status"].map((h) => (
+              <span
+                key={h}
+                className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest"
               >
-                <span className="text-[11px] font-mono text-muted-foreground/40">
-                  0{i + 1}
-                </span>
-                <div className="flex flex-col gap-0.5 min-w-0">
-                  <span className="text-[13px] font-medium text-foreground/90 leading-tight truncate group-hover:text-foreground transition-colors">
-                    {company.name}
-                  </span>
-                  <span className="text-[11px] text-muted-foreground flex items-center gap-1">
-                    <HugeiconsIcon
-                      icon={UserMultiple02Icon}
-                      strokeWidth={2}
-                      size={11}
-                    />
-                    {company.employees} employees
-                  </span>
-                </div>
-                <Badge variant={planVariant[company.plan] || "secondary"} className="w-fit">
-                  {company.plan}
-                </Badge>
-                <div className="flex items-center">
-                  <Badge 
-                    variant={company.status === "Active" ? "success" : "warning"} 
-                    showDot 
-                    className="capitalize"
-                  >
-                    {company.status}
-                  </Badge>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                {h}
+              </span>
+            ))}
+          </div>
 
-        {/* footer */}
-        <div className="px-5 py-3 border-t border-border/10 bg-muted/5">
-          <span className="text-[10px] text-muted-foreground/50 font-medium">
+          {/* rows */}
+          <div className="divide-y divide-border/5">
+            {topCompanies.map((company, i) => {
+              return (
+                <div
+                  key={i}
+                  className="grid grid-cols-[32px_1fr_80px_72px] items-center px-6 py-4 hover:bg-muted/10 transition-colors group"
+                >
+                  <span className="text-[11px] font-mono text-muted-foreground/30">
+                    0{i + 1}
+                  </span>
+                  <div className="flex flex-col gap-0.5 min-w-0">
+                    <span className="text-[13px] font-semibold text-foreground/90 leading-tight truncate group-hover:text-foreground transition-colors">
+                      {company.name}
+                    </span>
+                    <span className="text-[11px] text-muted-foreground/50 flex items-center gap-1 font-medium">
+                      <HugeiconsIcon
+                        icon={UserMultiple02Icon}
+                        strokeWidth={2}
+                        size={11}
+                      />
+                      {company.employees}
+                    </span>
+                  </div>
+                  <Badge variant={planVariant[company.plan] || "secondary"} className="w-fit">
+                    {company.plan}
+                  </Badge>
+                  <div className="flex items-center">
+                    <Badge 
+                      variant={company.status === "Active" ? "success" : "warning"} 
+                      showDot 
+                      className="border-none bg-transparent p-0 text-muted-foreground/70"
+                    >
+                      {company.status}
+                    </Badge>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </FrameContent>
+
+        <FrameFooter>
+          <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
             Showing {topCompanies.length} of 42 companies
           </span>
-        </div>
+        </FrameFooter>
       </FramePanel>
     </Frame>
   );

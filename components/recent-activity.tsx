@@ -1,6 +1,14 @@
 "use client";
 
-import { Frame, FramePanel } from "@/components/ui/frame";
+import { 
+  Frame, 
+  FramePanel, 
+  FrameHeader, 
+  FrameTitle, 
+  FrameDescription, 
+  FrameContent,
+  FrameFooter
+} from "@/components/ui/frame";
 import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
 
@@ -49,65 +57,60 @@ const activities = [
 
 export function RecentActivity() {
   return (
-    <Frame className="h-full">
-      <FramePanel className="flex flex-col h-full p-0 overflow-hidden">
-        {/* header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border/10">
+    <Frame className="h-full group/frame">
+      <FramePanel className="flex flex-col h-full overflow-hidden">
+        <FrameHeader>
           <div>
-            <h3 className="text-sm font-semibold text-foreground/90">
-              Recent Activity
-            </h3>
-            <p className="text-[11px] text-muted-foreground mt-0.5">
-              Admin actions across all tenants
-            </p>
+            <FrameTitle>Recent Activity</FrameTitle>
+            <FrameDescription>Latest admin actions across all tenants</FrameDescription>
           </div>
           <Button
             variant="outline"
             size="sm"
-            className="h-8 px-3 text-[11px] rounded-lg border-border/50 font-medium shadow-none hover:bg-muted/50"
+            className="h-8 px-3 rounded-lg border-border/50 font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
           >
-            View All
+            History
           </Button>
-        </div>
+        </FrameHeader>
 
-        {/* activity rows */}
-        <div className="flex-1 divide-y divide-border/5">
-          {activities.map((activity, i) => (
-            <div
-              key={i}
-              className="flex items-start gap-3.5 px-5 py-3.5 hover:bg-muted/10 transition-colors group"
-            >
-              <UserAvatar 
-                src={activity.avatar} 
-                name={activity.user} 
-                size="sm" 
-                status={activity.status}
-                className="shrink-0 mt-0.5"
-              />
-              <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                <p className="text-[13px] leading-snug text-muted-foreground">
-                  <span className="font-semibold text-foreground/90">
-                    {activity.user}
-                  </span>{" "}
-                  {activity.action}{" "}
-                  <span className="font-semibold text-foreground/90">
-                    {activity.target}
+        <FrameContent className="p-0 flex-1">
+          <div className="divide-y divide-border/5">
+            {activities.map((activity, i) => (
+              <div
+                key={i}
+                className="flex items-start gap-4 px-6 py-4 hover:bg-muted/10 transition-colors group"
+              >
+                <UserAvatar 
+                  src={activity.avatar} 
+                  name={activity.user} 
+                  size="sm" 
+                  status={activity.status}
+                  className="shrink-0 mt-0.5 rounded-lg shadow-sm"
+                />
+                <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+                  <p className="text-[13px] leading-relaxed text-muted-foreground/70">
+                    <span className="font-semibold text-foreground/90">
+                      {activity.user}
+                    </span>{" "}
+                    {activity.action}{" "}
+                    <span className="font-semibold text-foreground/90">
+                      {activity.target}
+                    </span>
+                  </p>
+                  <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-[0.1em] mt-1 tabular-nums">
+                    {activity.time}
                   </span>
-                </p>
+                </div>
               </div>
-              <span className="text-[10px] text-muted-foreground/50 shrink-0 mt-0.5 font-medium tabular-nums uppercase tracking-wide">
-                {activity.time}
-              </span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </FrameContent>
 
-        {/* footer */}
-        <div className="px-5 py-3 border-t border-border/10 bg-muted/5">
-          <span className="text-[10px] text-muted-foreground/50 font-medium">
+        <FrameFooter>
+          <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
             Showing {activities.length} of 128 events
           </span>
-        </div>
+        </FrameFooter>
       </FramePanel>
     </Frame>
   );

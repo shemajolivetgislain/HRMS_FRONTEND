@@ -38,17 +38,17 @@ export function SiteHeader() {
           <input
             type="text"
             placeholder="Search directory..."
-            className="h-9 w-64 rounded-full border border-border/40 bg-muted/10 pl-9 pr-12 text-sm outline-none transition-all placeholder:text-muted-foreground/50 hover:bg-muted/30 hover:border-border/60 focus:border-primary/30 focus:bg-background focus:ring-4 focus:ring-primary/5"
+            className="h-9 w-64 rounded-xl border border-border/40 bg-muted/10 pl-9 pr-12 text-sm outline-none transition-all placeholder:text-muted-foreground/50 hover:bg-muted/30 hover:border-border/60 focus:border-primary/30 focus:bg-background focus:ring-4 focus:ring-primary/5"
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-2">
-            <kbd className="hidden sm:inline-flex h-5 items-center gap-0.5 rounded-full border border-border/40 bg-muted/50 px-2 font-sans text-[10px] font-medium text-muted-foreground/70">
+            <kbd className="hidden sm:inline-flex h-5 items-center gap-0.5 rounded-lg border border-border/40 bg-muted/50 px-2 font-sans text-[10px] font-medium text-muted-foreground/70">
               <span className="text-xs leading-none">⌘</span>K
             </kbd>
           </div>
         </div>
 
         <div className="flex items-center gap-0.5 pl-2">
-          <button className="relative flex size-9 items-center justify-center rounded-full text-muted-foreground/70 hover:bg-muted/50 hover:text-foreground transition-colors group">
+          <button className="relative flex size-9 items-center justify-center rounded-xl text-muted-foreground/70 hover:bg-muted/50 hover:text-foreground transition-colors group">
             <HugeiconsIcon
               icon={Notification01Icon}
               className="size-5 group-hover:scale-105 transition-transform"

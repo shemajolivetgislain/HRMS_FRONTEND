@@ -1,6 +1,14 @@
 "use client";
 
-import { Frame, FramePanel } from "@/components/ui/frame";
+import { 
+  Frame, 
+  FramePanel, 
+  FrameHeader, 
+  FrameTitle, 
+  FrameDescription, 
+  FrameContent,
+  FrameFooter
+} from "@/components/ui/frame";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Building03Icon,
@@ -39,64 +47,59 @@ const actions = [
 
 export function QuickActions() {
   return (
-    <Frame className="h-full">
-      <FramePanel className="flex flex-col h-full p-0 overflow-hidden">
-        {/* header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border/10">
+    <Frame className="h-full group/frame">
+      <FramePanel className="flex flex-col h-full overflow-hidden">
+        <FrameHeader>
           <div>
-            <h3 className="text-sm font-semibold text-foreground/90">
-              Quick Actions
-            </h3>
-            <p className="text-[11px] text-muted-foreground mt-0.5">
-              Common admin shortcuts
-            </p>
+            <FrameTitle>Quick Actions</FrameTitle>
+            <FrameDescription>Common administrative tasks</FrameDescription>
           </div>
-        </div>
+        </FrameHeader>
 
-        {/* action rows */}
-        <div className="flex-1 divide-y divide-border/5">
-          {actions.map((action, i) => (
-            <button
-              key={i}
-              className="group flex w-full items-center gap-3.5 px-5 py-3.5 hover:bg-muted/10 transition-colors text-left"
-            >
-              <div
-                className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0"
-                style={{
-                  background: `color-mix(in srgb, ${action.accent} 12%, transparent)`,
-                }}
+        <FrameContent className="p-0 flex-1">
+          <div className="divide-y divide-border/5">
+            {actions.map((action, i) => (
+              <button
+                key={i}
+                className="group/btn flex w-full items-center gap-4 px-6 py-4 hover:bg-muted/10 transition-all text-left"
               >
+                <div
+                  className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover/btn:scale-110 group-hover/btn:shadow-[0_0_15px_-3px_rgba(0,0,0,0.1)] group-hover/btn:shadow-inherit"
+                  style={{
+                    background: `color-mix(in srgb, ${action.accent} 12%, transparent)`,
+                  }}
+                >
+                  <HugeiconsIcon
+                    icon={action.icon}
+                    strokeWidth={2}
+                    size={16}
+                    style={{ color: action.accent }}
+                  />
+                </div>
+                <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+                  <span className="text-[13px] font-semibold text-foreground/90 leading-tight group-hover/btn:text-foreground transition-colors">
+                    {action.title}
+                  </span>
+                  <span className="text-[11px] text-muted-foreground/60 font-medium">
+                    {action.description}
+                  </span>
+                </div>
                 <HugeiconsIcon
-                  icon={action.icon}
-                  strokeWidth={1.5}
+                  icon={ArrowRight01Icon}
                   size={14}
-                  style={{ color: action.accent }}
+                  strokeWidth={2.5}
+                  className="text-muted-foreground/20 group-hover/btn:text-muted-foreground/60 group-hover/btn:translate-x-0.5 transition-all"
                 />
-              </div>
-              <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                <span className="text-[13px] font-medium text-foreground/90 leading-tight group-hover:text-foreground transition-colors">
-                  {action.title}
-                </span>
-                <span className="text-[11px] text-muted-foreground">
-                  {action.description}
-                </span>
-              </div>
-              <HugeiconsIcon
-                icon={ArrowRight01Icon}
-                size={13}
-                strokeWidth={2}
-                className="text-muted-foreground/30 group-hover:text-muted-foreground shrink-0 transition-colors"
-              />
-            </button>
-          ))}
-        </div>
+              </button>
+            ))}
+          </div>
+        </FrameContent>
 
-        {/* footer */}
-        <div className="px-5 py-3 border-t border-border/10 bg-muted/5">
-          <span className="text-[10px] text-muted-foreground/50 font-medium">
+        <FrameFooter>
+          <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
             {actions.length} shortcuts available
           </span>
-        </div>
+        </FrameFooter>
       </FramePanel>
     </Frame>
   );

@@ -6,7 +6,7 @@ function Frame({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "relative flex flex-col rounded-2xl border border-border/20 bg-muted/72 p-1",
+        "relative flex flex-col rounded-[24px] border border-border/5 bg-muted/10 p-1 group/frame",
         "*:[[data-slot=frame-panel]+[data-slot=frame-panel]]:mt-1",
         className,
       )}
@@ -20,7 +20,7 @@ function FramePanel({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "relative rounded-xl border bg-background bg-clip-padding p-5 shadow-xs/5 before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+        "relative rounded-[20px] border border-border/40 bg-card bg-clip-padding p-0 shadow-[0_1px_3px_rgba(0,0,0,0.02)]",
         className,
       )}
       data-slot="frame-panel"
@@ -32,7 +32,7 @@ function FramePanel({ className, ...props }: React.ComponentProps<"div">) {
 function FrameHeader({ className, ...props }: React.ComponentProps<"header">) {
   return (
     <header
-      className={cn("flex flex-col px-5 py-4", className)}
+      className={cn("flex items-center justify-between px-6 py-5 border-b border-border/5", className)}
       data-slot="frame-panel-header"
       {...props}
     />
@@ -42,7 +42,7 @@ function FrameHeader({ className, ...props }: React.ComponentProps<"header">) {
 function FrameTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("font-semibold text-sm", className)}
+      className={cn("text-[13px] font-semibold text-foreground/80 tracking-tight leading-none capitalize", className)}
       data-slot="frame-panel-title"
       {...props}
     />
@@ -55,8 +55,18 @@ function FrameDescription({
 }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-[11px] text-muted-foreground/50 font-medium mt-1.5 leading-none tracking-tight", className)}
       data-slot="frame-panel-description"
+      {...props}
+    />
+  );
+}
+
+function FrameContent({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn("px-6 py-5", className)}
+      data-slot="frame-panel-content"
       {...props}
     />
   );
@@ -65,7 +75,7 @@ function FrameDescription({
 function FrameFooter({ className, ...props }: React.ComponentProps<"footer">) {
   return (
     <footer
-      className={cn("px-5 py-4", className)}
+      className={cn("px-6 py-4 border-t border-border/5 bg-muted/5", className)}
       data-slot="frame-panel-footer"
       {...props}
     />
@@ -78,5 +88,6 @@ export {
   FrameHeader,
   FrameTitle,
   FrameDescription,
+  FrameContent,
   FrameFooter,
 };

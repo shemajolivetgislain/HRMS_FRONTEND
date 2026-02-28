@@ -5,12 +5,9 @@ import {
   BarChart,
   CartesianGrid,
   XAxis,
-  ResponsiveContainer,
 } from "recharts";
 import {
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
@@ -21,6 +18,7 @@ import {
   FrameHeader,
   FrameTitle,
   FrameDescription,
+  FrameContent,
 } from "@/components/ui/frame";
 
 const chartData = [
@@ -30,11 +28,12 @@ const chartData = [
   { month: "Apr", onTime: 450, late: 50, absent: 10 },
   { month: "May", onTime: 480, late: 40, absent: 15 },
   { month: "Jun", onTime: 430, late: 70, absent: 25 },
-  { month: "July", onTime: 430, late: 70, absent: 25 },
-  { month: "September", onTime: 430, late: 70, absent: 25 },
-  { month: "October", onTime: 430, late: 70, absent: 25 },
-  { month: "November", onTime: 430, late: 70, absent: 25 },
-  { month: "December", onTime: 430, late: 70, absent: 25 },
+  { month: "Jul", onTime: 430, late: 70, absent: 25 },
+  { month: "Aug", onTime: 410, late: 90, absent: 20 },
+  { month: "Sep", onTime: 430, late: 70, absent: 25 },
+  { month: "Oct", onTime: 430, late: 70, absent: 25 },
+  { month: "Nov", onTime: 430, late: 70, absent: 25 },
+  { month: "Dec", onTime: 430, late: 70, absent: 25 },
 ];
 
 const chartConfig = {
@@ -45,25 +44,21 @@ const chartConfig = {
 
 export function ChartAttendanceStacked() {
   return (
-    <Frame className="h-full">
-      <FramePanel className="flex flex-col h-full p-0 overflow-hidden">
-        <FrameHeader className="px-5 py-4 border-b border-border/10 flex-row flex items-center justify-between">
+    <Frame className="h-full group/frame">
+      <FramePanel className="flex flex-col h-full overflow-hidden">
+        <FrameHeader>
           <div>
-            <FrameTitle className="text-sm font-semibold text-foreground/90">
-              Attendance Rate
-            </FrameTitle>
-            <FrameDescription className="text-[11px] mt-0.5">
-              Jan – Dec 2024 · monthly breakdown
-            </FrameDescription>
+            <FrameTitle>Attendance Rate</FrameTitle>
+            <FrameDescription>Monthly breakdown for 2024</FrameDescription>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-4">
             {Object.entries(chartConfig).map(([key, cfg]) => (
               <div key={key} className="flex items-center gap-1.5">
                 <span
-                  className="h-2 w-2 rounded-full shrink-0"
+                  className="h-1.5 w-1.5 rounded-full shrink-0"
                   style={{ background: cfg.color }}
                 />
-                <span className="text-[10px] text-muted-foreground font-medium">
+                <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
                   {cfg.label}
                 </span>
               </div>
@@ -71,32 +66,33 @@ export function ChartAttendanceStacked() {
           </div>
         </FrameHeader>
 
-        <div className="flex-1 px-3 pb-3 pt-2 min-h-[240px]">
-          <ChartContainer config={chartConfig} className="h-full w-full">
+        <FrameContent className="flex-1 pb-2">
+          <ChartContainer config={chartConfig} className="h-full w-full min-h-[240px]">
             <BarChart
               data={chartData}
-              margin={{ top: 8, right: 0, left: -20, bottom: 0 }}
-              barCategoryGap="30%"
+              margin={{ top: 8, right: 0, left: -24, bottom: 0 }}
+              // Fat bars: reduced category gap
+              barCategoryGap="20%"
             >
               <CartesianGrid
                 vertical={false}
                 strokeDasharray="3 3"
                 stroke="hsl(var(--border))"
-                strokeOpacity={0.4}
+                strokeOpacity={0.2}
               />
               <XAxis
                 dataKey="month"
                 tickLine={false}
                 axisLine={false}
-                tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
-                tickMargin={6}
+                tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))", fontWeight: 600, opacity: 0.5 }}
+                tickMargin={10}
               />
               <ChartTooltip
-                cursor={{ fill: "hsl(var(--muted))", opacity: 0.4, radius: 4 }}
+                cursor={{ fill: "hsl(var(--muted))", opacity: 0.2 }}
                 content={
                   <ChartTooltipContent
                     hideLabel
-                    className="rounded-xl shadow-lg"
+                    className="rounded-lg shadow-sm border-border/10"
                   />
                 }
               />
@@ -104,7 +100,7 @@ export function ChartAttendanceStacked() {
                 dataKey="onTime"
                 stackId="a"
                 fill="var(--color-onTime)"
-                radius={[0, 0, 3, 3]}
+                radius={[0, 0, 4, 4]}
               />
               <Bar
                 dataKey="late"
@@ -120,7 +116,7 @@ export function ChartAttendanceStacked() {
               />
             </BarChart>
           </ChartContainer>
-        </div>
+        </FrameContent>
       </FramePanel>
     </Frame>
   );
