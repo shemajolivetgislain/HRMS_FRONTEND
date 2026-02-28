@@ -18,6 +18,12 @@ import {
   Building02Icon,
   UserGroupIcon,
   Settings02Icon,
+  File02Icon,
+  Calendar01Icon,
+  Coins01Icon,
+  ChartBarLineIcon,
+  Plug01Icon,
+  HelpCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { NavMain } from "./nav-main";
 
@@ -34,19 +40,44 @@ const data = {
       icon: <HugeiconsIcon icon={DashboardSquare01Icon} strokeWidth={2} />,
     },
     {
-      title: "Companies",
-      url: "/dashboard/companies",
-      icon: <HugeiconsIcon icon={Building02Icon} strokeWidth={2} />,
+      title: "Employee",
+      url: "/dashboard/employee",
+      icon: <HugeiconsIcon icon={UserGroupIcon} strokeWidth={2} />,
     },
     {
-      title: "Users",
-      url: "/dashboard/users",
-      icon: <HugeiconsIcon icon={UserGroupIcon} strokeWidth={2} />,
+      title: "Reports",
+      url: "/dashboard/reports",
+      icon: <HugeiconsIcon icon={File02Icon} strokeWidth={2} />,
+    },
+    {
+      title: "Calendar",
+      url: "/dashboard/calendar",
+      icon: <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} />,
+    },
+    {
+      title: "Payroll",
+      url: "/dashboard/payroll",
+      icon: <HugeiconsIcon icon={Coins01Icon} strokeWidth={2} />,
+    },
+    {
+      title: "Analytics",
+      url: "/dashboard/analytics",
+      icon: <HugeiconsIcon icon={ChartBarLineIcon} strokeWidth={2} />,
+    },
+    {
+      title: "Integration",
+      url: "/dashboard/integration",
+      icon: <HugeiconsIcon icon={Plug01Icon} strokeWidth={2} />,
     },
     {
       title: "Settings",
       url: "/dashboard/settings",
       icon: <HugeiconsIcon icon={Settings02Icon} strokeWidth={2} />,
+    },
+    {
+      title: "Help",
+      url: "/dashboard/help",
+      icon: <HugeiconsIcon icon={HelpCircleIcon} strokeWidth={2} />,
     },
   ],
 };

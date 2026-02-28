@@ -1,8 +1,9 @@
 "use client";
 
 import { Frame, FramePanel } from "@/components/ui/frame";
+import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Building03Icon, UserMultiple02Icon } from "@hugeicons/core-free-icons";
+import { UserMultiple02Icon } from "@hugeicons/core-free-icons";
 
 const topCompanies = [
   {
@@ -37,58 +38,102 @@ const topCompanies = [
   },
 ];
 
+const planAccent: Record<string, string> = {
+  Enterprise: "var(--chart-1)",
+  Growth: "var(--chart-2)",
+  Startup: "var(--chart-4)",
+};
+
 export function TopCompanies() {
   return (
     <Frame className="h-full">
-      <FramePanel className="flex h-full flex-col gap-5 p-5 lg:p-6">
-        <div className="flex items-center justify-between border-b border-border/20 pb-4">
-          <h3 className="text-[11px] font-medium text-muted-foreground tracking-widest uppercase">
-            Top Companies
-          </h3>
-          <span className="text-[10px] uppercase tracking-widest text-primary cursor-pointer hover:underline transition-colors">
+      <FramePanel className="flex flex-col h-full p-0 overflow-hidden">
+        {/* header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border/10">
+          <div>
+            <h3 className="text-sm font-semibold text-foreground/90">
+              Top Companies
+            </h3>
+            <p className="text-[11px] text-muted-foreground mt-0.5">
+              Ranked by employee count
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 px-3 text-[11px] rounded-lg border-border/50 font-medium shadow-none hover:bg-muted/50"
+          >
             Directory
-          </span>
+          </Button>
         </div>
-        <div className="flex flex-col gap-5 pt-2">
-          {topCompanies.map((company, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between group cursor-default"
+
+        {/* column headers */}
+        <div className="grid grid-cols-[32px_1fr_80px_72px] items-center px-5 py-2.5 bg-muted/20 border-b border-border/10">
+          {["#", "Company", "Plan", "Status"].map((h) => (
+            <span
+              key={h}
+              className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest"
             >
-              <div className="flex items-center gap-3.5 transform transition-transform duration-300 group-hover:translate-x-1 w-full">
-                <span className="text-xl font-light tabular-nums tracking-tighter text-muted-foreground/30 group-hover:text-primary/40 transition-colors w-6 text-right shrink-0 select-none">
+              {h}
+            </span>
+          ))}
+        </div>
+
+        {/* rows */}
+        <div className="flex-1 divide-y divide-border/5">
+          {topCompanies.map((company, i) => {
+            const accent =
+              planAccent[company.plan] ?? "var(--muted-foreground)";
+            return (
+              <div
+                key={i}
+                className="grid grid-cols-[32px_1fr_80px_72px] items-center px-5 py-3.5 hover:bg-muted/10 transition-colors group"
+              >
+                <span className="text-[11px] font-mono text-muted-foreground/40">
                   0{i + 1}
                 </span>
-
-                <div className="flex flex-col gap-0.5">
-                  <div className="font-semibold tracking-tight text-foreground/90 leading-none text-sm group-hover:text-foreground transition-colors">
+                <div className="flex flex-col gap-0.5 min-w-0">
+                  <span className="text-[13px] font-medium text-foreground/90 leading-tight truncate group-hover:text-foreground transition-colors">
                     {company.name}
-                  </div>
-                  <div className="text-[11px] text-muted-foreground flex items-center gap-1.5 mt-1 font-medium">
+                  </span>
+                  <span className="text-[11px] text-muted-foreground flex items-center gap-1">
                     <HugeiconsIcon
                       icon={UserMultiple02Icon}
                       strokeWidth={2}
-                      className="size-3"
+                      size={11}
                     />
-                    {company.employees} users
-                  </div>
+                    {company.employees} employees
+                  </span>
                 </div>
-              </div>
-              <div className="flex flex-col items-end gap-1">
-                <span className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground">
+                <span
+                  className="inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide w-fit"
+                  style={{
+                    background: `color-mix(in srgb, ${accent} 10%, transparent)`,
+                    color: accent,
+                  }}
+                >
                   {company.plan}
                 </span>
                 <div className="flex items-center gap-1.5">
                   <span
-                    className={`block size-1.5 rounded-full ${company.status === "Active" ? "bg-success" : "bg-warning"}`}
+                    className={`block size-1.5 rounded-full ${
+                      company.status === "Active" ? "bg-success" : "bg-warning"
+                    }`}
                   />
-                  <span className="text-[10px] tracking-wide text-muted-foreground/70">
+                  <span className="text-[11px] text-muted-foreground/70">
                     {company.status}
                   </span>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+        </div>
+
+        {/* footer */}
+        <div className="px-5 py-3 border-t border-border/10 bg-muted/5">
+          <span className="text-[10px] text-muted-foreground/50 font-medium">
+            Showing {topCompanies.length} of 42 companies
+          </span>
         </div>
       </FramePanel>
     </Frame>

@@ -59,7 +59,7 @@ const employeeData: EmployeeProfile = {
   city: 'San Francisco',
   country: 'United States',
   zipCode: '94102',
-}
+import { UserAvatar } from '@/components/dashboard/user-avatar'
 
 export default function EmployeeProfilePage() {
   const [isEditing, setIsEditing] = useState(false)
@@ -77,10 +77,11 @@ export default function EmployeeProfilePage() {
       {/* Header with Avatar */}
       <Card className="p-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-6">
-          <Avatar className="w-24 h-24">
-            <AvatarImage src={`https://avatar.vercel.sh/${formData.name}`} />
-            <AvatarFallback>{formData.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-          </Avatar>
+          <UserAvatar 
+            name={formData.name} 
+            size="lg" 
+            className="w-24 h-24 rounded-2xl" 
+          />
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>

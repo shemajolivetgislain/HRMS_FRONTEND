@@ -1,70 +1,81 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { cn } from '@/lib/utils'
+import React from "react";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  AvatarBadge,
+} from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
 
 interface UserAvatarProps {
-  src?: string
-  name: string
-  email?: string
-  size?: 'sm' | 'md' | 'lg'
-  status?: 'online' | 'offline' | 'away'
-  className?: string
-}
-
-const sizeMap = {
-  sm: 'w-8 h-8',
-  md: 'w-10 h-10',
-  lg: 'w-12 h-12',
+  src?: string;
+  name: string;
+  email?: string;
+  size?: "sm" | "default" | "lg";
+  status?: "online" | "offline" | "away";
+  className?: string;
 }
 
 const statusColorMap = {
-  online: 'bg-success',
-  offline: 'bg-muted-foreground',
-  away: 'bg-warning',
-}
+  online: "bg-emerald-500",
+  offline: "bg-muted-foreground",
+  away: "bg-amber-500",
+};
 
 export function UserAvatar({
   src,
   name,
   email,
-  size = 'md',
+  size = "default",
   status,
   className,
 }: UserAvatarProps) {
   const initials = name
-    .split(' ')
+    .split(" ")
     .map((n) => n[0])
-    .join('')
-    .toUpperCase()
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+  // Detect if src is a broken local path or missing, and replace with dicebear
+  const isBrokenLocalPath = src?.startsWith('/avatars/')
+  const avatarUrl = !src || isBrokenLocalPath 
+    ? `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`
+    : src
 
   const avatarContent = (
-    <div className="relative">
-      <Avatar className={cn(sizeMap[size], className)}>
-        <AvatarImage src={src} />
-        <AvatarFallback>{initials}</AvatarFallback>
-      </Avatar>
+    <Avatar size={size} className={className}>
+      <AvatarImage src={avatarUrl} alt={name} />
+      <AvatarFallback>{initials}</AvatarFallback>
       {status && (
-        <span className={cn(
-          'absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-background',
-          statusColorMap[status]
-        )} />
+        <AvatarBadge
+          className={cn(
+            statusColorMap[status],
+            "ring-2 ring-background border-none",
+          )}
+          aria-label={status}
+        />
       )}
-    </div>
-  )
+    </Avatar>
+  );
 
   if (email) {
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         {avatarContent}
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-foreground truncate">{name}</p>
-          <p className="text-xs text-muted-foreground truncate">{email}</p>
+        <div className="flex flex-col min-w-0">
+          <p className="text-[13px] font-semibold text-foreground/90 leading-tight truncate">
+            {name}
+          </p>
+          <p className="text-[11px] text-muted-foreground truncate mt-0.5">
+            {email}
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
-  return avatarContent
+  return avatarContent;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/dashboard/user-avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,12 +52,12 @@ export function NavUser({
               />
             }
           >
-            <Avatar className="size-8 rounded-lg shadow-xs group-hover:scale-105 transition-transform duration-300">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback className="rounded-lg bg-primary/10 text-primary font-medium text-[10px] tracking-wide">
-                AD
-              </AvatarFallback>
-            </Avatar>
+            <UserAvatar 
+              src={user.avatar} 
+              name={user.name} 
+              size="sm" 
+              className="rounded-lg shadow-xs group-hover:scale-105 transition-transform duration-300" 
+            />
             <div className="grid flex-1 text-start text-sm leading-tight ml-1">
               <span className="truncate font-semibold tracking-tight text-foreground/90">
                 {user.name}
@@ -81,10 +81,11 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                  <Avatar className="size-8">
-                    <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                  </Avatar>
+                  <UserAvatar 
+                    src={user.avatar} 
+                    name={user.name} 
+                    size="sm" 
+                  />
                   <div className="grid flex-1 text-start text-sm leading-tight">
                     <span className="truncate font-medium">{user.name}</span>
                     <span className="text-muted-foreground truncate text-xs">

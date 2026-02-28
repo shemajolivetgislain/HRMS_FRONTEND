@@ -1,91 +1,112 @@
 "use client";
 
 import { Frame, FramePanel } from "@/components/ui/frame";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { UserAvatar } from "@/components/dashboard/user-avatar";
 
 const activities = [
   {
     user: "Sarah Jenkins",
     avatar: "/avatars/01.png",
-    fallback: "SJ",
-    action: "approved a new company registration",
+    action: "approved a new company registration for",
     target: "TechFlow Solutions",
-    time: "2 mins ago",
+    time: "2m ago",
+    status: "online" as const,
   },
   {
     user: "Michael Chen",
     avatar: "/avatars/02.png",
-    fallback: "MC",
     action: "updated billing settings for",
     target: "Acme Corp",
-    time: "15 mins ago",
+    time: "15m ago",
+    status: "away" as const,
   },
   {
     user: "Emma Davis",
     avatar: "/avatars/03.png",
-    fallback: "ED",
     action: "resolved a support ticket for",
     target: "Global Industries",
-    time: "1 hour ago",
+    time: "1h ago",
+    status: "online" as const,
   },
   {
     user: "System",
     avatar: "/avatars/04.png",
-    fallback: "SY",
     action: "automatically rotated API keys for",
     target: "Payment Gateway",
-    time: "3 hours ago",
+    time: "3h ago",
+    status: "online" as const,
   },
   {
     user: "David Wilson",
     avatar: "/avatars/05.png",
-    fallback: "DW",
     action: "suspended user account in",
     target: "Healthcare Plus",
-    time: "5 hours ago",
+    time: "5h ago",
+    status: "offline" as const,
   },
 ];
 
 export function RecentActivity() {
   return (
     <Frame className="h-full">
-      <FramePanel className="flex h-full flex-col gap-5 p-5 lg:p-6">
-        <div className="flex items-center justify-between border-b border-border/20 pb-4">
-          <h3 className="text-[11px] font-medium text-muted-foreground tracking-widest uppercase">
-            Recent Activity
-          </h3>
-          <span className="text-[10px] uppercase tracking-widest text-primary cursor-pointer hover:underline transition-colors">
+      <FramePanel className="flex flex-col h-full p-0 overflow-hidden">
+        {/* header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border/10">
+          <div>
+            <h3 className="text-sm font-semibold text-foreground/90">
+              Recent Activity
+            </h3>
+            <p className="text-[11px] text-muted-foreground mt-0.5">
+              Admin actions across all tenants
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 px-3 text-[11px] rounded-lg border-border/50 font-medium shadow-none hover:bg-muted/50"
+          >
             View All
-          </span>
+          </Button>
         </div>
-        <div className="flex flex-col gap-6 pt-2">
+
+        {/* activity rows */}
+        <div className="flex-1 divide-y divide-border/5">
           {activities.map((activity, i) => (
             <div
               key={i}
-              className="group flex gap-4 items-start relative before:absolute before:inset-y-0 before:-left-[18px] before:w-px before:bg-border/20 hover:before:bg-primary/50 transition-all duration-300 hover:translate-x-1"
+              className="flex items-start gap-3.5 px-5 py-3.5 hover:bg-muted/10 transition-colors group"
             >
-              <Avatar className="size-8 rounded-full shrink-0 border border-border/20 bg-background mix-blend-luminosity hover:mix-blend-normal transition-all duration-300">
-                <AvatarImage src={activity.avatar} />
-                <AvatarFallback className="rounded-full bg-muted/30 text-[10px] font-light tracking-wide text-foreground/70">
-                  {activity.fallback}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col gap-1 w-full translate-y-[-2px]">
-                <div className="text-sm leading-relaxed text-muted-foreground">
-                  <span className="font-semibold text-foreground tracking-tight mr-1">
+              <UserAvatar 
+                src={activity.avatar} 
+                name={activity.user} 
+                size="sm" 
+                status={activity.status}
+                className="shrink-0 mt-0.5"
+              />
+              <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+                <p className="text-[13px] leading-snug text-muted-foreground">
+                  <span className="font-semibold text-foreground/90">
                     {activity.user}
-                  </span>
-                  {activity.action}
-                  <span className="font-semibold text-foreground tracking-tight ml-1">
+                  </span>{" "}
+                  {activity.action}{" "}
+                  <span className="font-semibold text-foreground/90">
                     {activity.target}
                   </span>
-                </div>
-                <div className="text-[10px] text-muted-foreground/50 uppercase tracking-widest font-medium mt-0.5">
-                  {activity.time}
-                </div>
+                </p>
               </div>
+              <span className="text-[10px] text-muted-foreground/50 shrink-0 mt-0.5 font-medium tabular-nums uppercase tracking-wide">
+                {activity.time}
+              </span>
             </div>
           ))}
+        </div>
+
+        {/* footer */}
+        <div className="px-5 py-3 border-t border-border/10 bg-muted/5">
+          <span className="text-[10px] text-muted-foreground/50 font-medium">
+            Showing {activities.length} of 128 events
+          </span>
         </div>
       </FramePanel>
     </Frame>
