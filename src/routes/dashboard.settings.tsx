@@ -1,0 +1,599 @@
+import React, { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import {
+  Frame,
+  FramePanel,
+  FrameHeader,
+  FrameTitle,
+  FrameDescription,
+  FrameContent,
+  FrameFooter,
+} from "@/components/ui/frame";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  Settings02Icon,
+  UserCircleIcon,
+  LockPasswordIcon,
+  Notification01Icon,
+  CreditCardIcon,
+  Tick01Icon,
+  Mail01Icon,
+  Building03Icon,
+  Shield01Icon,
+  GlobeIcon,
+  Sun01Icon,
+  Moon01Icon,
+  ComputerIcon,
+  UserGroupIcon,
+  Layout01Icon,
+  TranslateIcon,
+  MoreHorizontalIcon,
+  UserAdd01Icon,
+} from "@hugeicons/core-free-icons";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { UserAvatar } from "@/components/dashboard/user-avatar";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
+
+export const Route = createFileRoute("/dashboard/settings")({
+  component: SettingsPage,
+});
+
+function SettingsPage() {
+  const { theme, setTheme } = useTheme();
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSave = () => {
+    setIsSaving(true);
+    setTimeout(() => setIsSaving(false), 800);
+  };
+
+  return (
+    <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full">
+      <DashboardHeader
+        category="Administration"
+        title="Settings"
+        description="Global system configuration and access control"
+      >
+        <Button
+          size="sm"
+          className="h-9 px-6 rounded-lg text-[12px] font-bold shadow-sm capitalize gap-2"
+          onClick={handleSave}
+          disabled={isSaving}
+        >
+          {isSaving ? (
+            <div className="size-3.5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+          ) : (
+            <HugeiconsIcon icon={Tick01Icon} size={14} strokeWidth={2} />
+          )}
+          {isSaving ? "Saving..." : "Save Changes"}
+        </Button>
+      </DashboardHeader>
+
+      <div className="flex flex-col flex-1 overflow-hidden px-4 lg:px-6 pb-6 h-full">
+        {/* Unified Sidebar Layout */}
+        <Tabs
+          defaultValue="general"
+          orientation="vertical"
+          className="flex flex-1 gap-0 border border-border/40 rounded-[20px] bg-card overflow-hidden h-full"
+        >
+          {/* Sidebar Column */}
+          <div className="w-[240px] flex flex-col bg-muted/5 border-r border-border/5">
+            <div className="px-6 py-6 border-b border-border/5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
+                System Settings
+              </p>
+            </div>
+
+            <TabsList className="flex flex-col h-auto w-full bg-transparent border-none p-2 space-y-0.5 items-stretch justify-start">
+              <SettingsTabTrigger
+                value="general"
+                icon={Building03Icon}
+                title="General"
+              />
+              <SettingsTabTrigger
+                value="appearance"
+                icon={Layout01Icon}
+                title="Appearance"
+              />
+              <SettingsTabTrigger
+                value="notifications"
+                icon={Notification01Icon}
+                title="Notifications"
+              />
+              <div className="px-4 py-4 mt-2">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
+                  Security & Team
+                </p>
+              </div>
+              <SettingsTabTrigger
+                value="security"
+                icon={Shield01Icon}
+                title="Security"
+              />
+              <SettingsTabTrigger
+                value="team"
+                icon={UserGroupIcon}
+                title="Admin Team"
+              />
+            </TabsList>
+          </div>
+
+          {/* Scrollable Main Area */}
+          <div className="flex-1 min-w-0 h-full overflow-y-auto no-scrollbar bg-background/40">
+            <div className="max-w-4xl p-10 space-y-12">
+              {/* General Tab */}
+              <TabsContent
+                value="general"
+                className="mt-0 space-y-12 animate-in fade-in slide-in-from-right-1 duration-300"
+              >
+                <section className="space-y-6">
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground/90">
+                      Company Profile
+                    </h3>
+                    <p className="text-[13px] font-medium text-muted-foreground/50">
+                      Manage your organizational identity and branding.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+                    <SettingsField
+                      label="Legal Entity Name"
+                      defaultValue="Acme Global Inc."
+                    />
+                    <SettingsField
+                      label="Primary Industry"
+                      defaultValue="Technology"
+                    />
+                    <SettingsField
+                      label="Support Email"
+                      defaultValue="hr-support@acme.com"
+                      type="email"
+                    />
+                    <SettingsField
+                      label="Company Domain"
+                      defaultValue="acme.com"
+                      prefix="https://"
+                    />
+                    <SettingsField
+                      label="Headquarters"
+                      defaultValue="123 Innovation Drive, San Francisco, CA"
+                      className="md:col-span-2"
+                    />
+                  </div>
+                </section>
+
+                <section className="pt-10 border-t border-border/5 space-y-6">
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground/90">
+                      Regional Defaults
+                    </h3>
+                    <p className="text-[13px] font-medium text-muted-foreground/50">
+                      Configure localization and operational settings.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+                    <SettingsField
+                      label="System Language"
+                      defaultValue="English (US)"
+                      icon={TranslateIcon}
+                    />
+                    <SettingsField
+                      label="Base Currency"
+                      defaultValue="USD ($)"
+                      icon={GlobeIcon}
+                    />
+                  </div>
+                </section>
+              </TabsContent>
+
+              {/* Appearance Tab */}
+              <TabsContent
+                value="appearance"
+                className="mt-0 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300"
+              >
+                <div className="space-y-1">
+                  <h3 className="text-lg font-semibold text-foreground/90">
+                    Interface Theme
+                  </h3>
+                  <p className="text-[13px] font-medium text-muted-foreground/50">
+                    Customize the dashboard aesthetic for your workspace.
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <ThemeCard
+                    active={theme === "light"}
+                    onClick={() => setTheme("light")}
+                    icon={Sun01Icon}
+                    title="Light"
+                    description="Clean & sharp"
+                  />
+                  <ThemeCard
+                    active={theme === "dark"}
+                    onClick={() => setTheme("dark")}
+                    icon={Moon01Icon}
+                    title="Dark"
+                    description="Ink Navy feel"
+                  />
+                  <ThemeCard
+                    active={theme === "system"}
+                    onClick={() => setTheme("system")}
+                    icon={ComputerIcon}
+                    title="System"
+                    description="Device default"
+                  />
+                </div>
+              </TabsContent>
+
+              {/* Notifications Tab */}
+              <TabsContent
+                value="notifications"
+                className="mt-0 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300"
+              >
+                <div className="space-y-1">
+                  <h3 className="text-lg font-semibold text-foreground/90">
+                    Notification Matrix
+                  </h3>
+                  <p className="text-[13px] font-medium text-muted-foreground/50">
+                    Manage your individual system alert preferences.
+                  </p>
+                </div>
+                <div className="divide-y divide-border/5 border-y border-border/5">
+                  <ToggleRow
+                    icon={Mail01Icon}
+                    title="Weekly Summary"
+                    description="Consolidated report of all HR activities and movements."
+                    defaultChecked
+                  />
+                  <ToggleRow
+                    icon={Shield01Icon}
+                    title="Security Alerts"
+                    description="Immediate notice for new device logins or access changes."
+                    defaultChecked
+                  />
+                  <ToggleRow
+                    icon={CreditCardIcon}
+                    title="Payroll Updates"
+                    description="Notifications for disbursement cycles and approvals."
+                  />
+                  <ToggleRow
+                    icon={UserAdd01Icon}
+                    title="Candidate Flow"
+                    description="Alerts when candidates move to priority stages."
+                    defaultChecked
+                  />
+                </div>
+              </TabsContent>
+
+              {/* Security Tab */}
+              <TabsContent
+                value="security"
+                className="mt-0 space-y-10 animate-in fade-in slide-in-from-right-1 duration-300"
+              >
+                <div className="space-y-6">
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground/90">
+                      Access Credentials
+                    </h3>
+                    <p className="text-[13px] font-medium text-muted-foreground/50">
+                      Keep your administrative account secure with a strong
+                      password.
+                    </p>
+                  </div>
+                  <div className="max-w-md space-y-6">
+                    <SettingsField
+                      label="Current Password"
+                      type="password"
+                      defaultValue="********"
+                    />
+                    <SettingsField
+                      label="New Password"
+                      type="password"
+                      defaultValue=""
+                    />
+                    <Button className="h-9 px-6 rounded-lg font-bold text-[11px] uppercase tracking-widest bg-primary text-primary-foreground">
+                      Update Credentials
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="pt-10 border-t border-border/5 space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <h3 className="text-lg font-semibold text-foreground/90">
+                        Two-Factor Auth
+                      </h3>
+                      <p className="text-[13px] font-medium text-muted-foreground/50">
+                        Additional verification layer for your account.
+                      </p>
+                    </div>
+                    <Badge
+                      variant="success"
+                      className="h-5 px-2 rounded-md font-bold text-[9px]"
+                    >
+                      ENFORCED
+                    </Badge>
+                  </div>
+                  <div className="p-5 rounded-2xl bg-primary/[0.02] border border-primary/5 flex items-center justify-between">
+                    <p className="text-[13px] font-medium text-foreground/70 leading-relaxed max-w-sm">
+                      Your account is currently protected with enterprise-grade
+                      **TOTP** and **Biometric** verification.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 rounded-lg border-primary/20 text-primary font-bold text-[10px] uppercase tracking-widest bg-transparent"
+                    >
+                      Configure
+                    </Button>
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Team Tab */}
+              <TabsContent
+                value="team"
+                className="mt-0 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300"
+              >
+                <div className="flex items-end justify-between">
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground/90">
+                      Administrator Team
+                    </h3>
+                    <p className="text-[13px] font-medium text-muted-foreground/50">
+                      Manage users with elevated system permissions.
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    className="h-8 px-4 text-[11px] font-bold rounded-lg shadow-sm"
+                  >
+                    Invite Admin
+                  </Button>
+                </div>
+                <div className="divide-y divide-border/5 border-y border-border/5">
+                  <AdminRow
+                    name="Admin User"
+                    email="admin@acme.com"
+                    role="Super Admin"
+                    status="active"
+                  />
+                  <AdminRow
+                    name="Sarah Jenkins"
+                    email="s.jenkins@acme.com"
+                    role="HR Manager"
+                    status="active"
+                  />
+                  <AdminRow
+                    name="Michael Chen"
+                    email="m.chen@acme.com"
+                    role="Financial Auditor"
+                    status="active"
+                  />
+                </div>
+              </TabsContent>
+            </div>
+          </div>
+        </Tabs>
+      </div>
+    </main>
+  );
+}
+
+function SettingsTabTrigger({
+  value,
+  icon: Icon,
+  title,
+}: {
+  value: string;
+  icon: any;
+  title: string;
+}) {
+  return (
+    <TabsTrigger
+      value={value}
+      className="relative w-full flex items-center gap-3 px-4 py-2 rounded-md transition-all text-left data-[state=active]:text-primary text-muted-foreground/50 hover:text-foreground/80 group overflow-hidden"
+    >
+      <HugeiconsIcon
+        icon={Icon}
+        size={16}
+        strokeWidth={2}
+        className="group-data-[state=active]:text-primary transition-colors"
+      />
+      <span className="text-[13px] font-semibold tracking-tight">{title}</span>
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-full opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
+    </TabsTrigger>
+  );
+}
+
+function SettingsField({
+  label,
+  defaultValue,
+  type = "text",
+  prefix,
+  icon: Icon,
+  className,
+}: {
+  label: string;
+  defaultValue: string;
+  type?: string;
+  prefix?: string;
+  icon?: any;
+  className?: string;
+}) {
+  return (
+    <div className={cn("space-y-2", className)}>
+      <Label className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/40">
+        {label}
+      </Label>
+      <div className="relative group/input">
+        {prefix && (
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] font-bold text-muted-foreground/30">
+            {prefix}
+          </span>
+        )}
+        <Input
+          defaultValue={defaultValue}
+          type={type}
+          className={cn(
+            "h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-[13px] font-medium shadow-none",
+            prefix ? "pl-16" : "pl-3",
+          )}
+        />
+        {Icon && (
+          <HugeiconsIcon
+            icon={Icon}
+            size={14}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/20 group-hover/input:text-muted-foreground/40 transition-colors"
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ThemeCard({
+  active,
+  onClick,
+  icon: Icon,
+  title,
+  description,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: any;
+  title: string;
+  description: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "flex flex-col gap-4 p-5 rounded-2xl border text-left transition-all duration-300",
+        active
+          ? "bg-primary/[0.03] border-primary/20 shadow-xs"
+          : "bg-muted/5 border-border/5 hover:border-border/20",
+      )}
+    >
+      <div
+        className={cn(
+          "size-9 rounded-xl flex items-center justify-center border transition-colors",
+          active
+            ? "bg-primary text-white border-primary"
+            : "bg-muted/10 text-muted-foreground/40 border-border/5",
+        )}
+      >
+        <HugeiconsIcon icon={Icon} size={18} strokeWidth={2} />
+      </div>
+      <div>
+        <p
+          className={cn(
+            "text-[13px] font-semibold leading-none",
+            active ? "text-foreground" : "text-muted-foreground/70",
+          )}
+        >
+          {title}
+        </p>
+        <p className="text-[11px] font-medium text-muted-foreground/40 mt-1.5">
+          {description}
+        </p>
+      </div>
+    </button>
+  );
+}
+
+function ToggleRow({
+  icon: Icon,
+  title,
+  description,
+  defaultChecked,
+}: {
+  icon: any;
+  title: string;
+  description: string;
+  defaultChecked?: boolean;
+}) {
+  return (
+    <div className="flex items-center justify-between py-5 hover:bg-muted/5 transition-all group px-2 -mx-2 rounded-xl">
+      <div className="flex items-start gap-4">
+        <div className="h-9 w-9 rounded-xl bg-muted/5 border border-border/5 flex items-center justify-center text-muted-foreground/20 group-hover:border-primary/20 group-hover:text-primary transition-all">
+          <HugeiconsIcon icon={Icon} size={16} strokeWidth={1.5} />
+        </div>
+        <div className="space-y-1">
+          <p className="text-[14px] font-semibold text-foreground/80">
+            {title}
+          </p>
+          <p className="text-[12px] font-medium text-muted-foreground/40 max-w-md leading-relaxed">
+            {description}
+          </p>
+        </div>
+      </div>
+      <Switch defaultChecked={defaultChecked} className="scale-[0.75]" />
+    </div>
+  );
+}
+
+function AdminRow({
+  name,
+  email,
+  role,
+  status,
+}: {
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+}) {
+  return (
+    <div className="flex items-center justify-between py-4 hover:bg-muted/5 transition-all group/admin px-2 -mx-2 rounded-xl">
+      <div className="flex items-center gap-4">
+        <UserAvatar
+          name={name}
+          size="sm"
+          className="shadow-sm border border-border/10"
+        />
+        <div>
+          <p className="text-[13px] font-semibold text-foreground/90 leading-none">
+            {name}
+          </p>
+          <p className="text-[11px] font-medium text-muted-foreground/40 mt-1">
+            {email}
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-6">
+        <div className="hidden md:flex flex-col items-end">
+          <span className="text-[10px] font-bold text-muted-foreground/30 capitalize tracking-widest leading-none mb-1">
+            Access
+          </span>
+          <span className="text-[12px] font-semibold text-foreground/70">
+            {role}
+          </span>
+        </div>
+        <Badge
+          variant={status === "active" ? "success" : "muted"}
+          showDot
+          className="h-5 px-2 rounded-md font-bold text-[9px] uppercase tracking-widest border-none"
+        >
+          {status}
+        </Badge>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="h-8 w-8 rounded-lg opacity-0 group-hover/admin:opacity-100 transition-opacity"
+        >
+          <HugeiconsIcon
+            icon={MoreHorizontalIcon}
+            className="size-4 opacity-40"
+          />
+        </Button>
+      </div>
+    </div>
+  );
+}
