@@ -10,6 +10,7 @@ import {
   type ColumnDef,
 } from "@/components/dashboard/advanced-data-table";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
+import { Badge } from "@/components/ui/badge";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Search01Icon,
@@ -168,7 +169,14 @@ export default function UsersPage() {
       accessorKey: "status",
       header: "Status",
       sortable: true,
-      cell: (value) => <span className="text-sm">{value}</span>,
+      cell: (value) => {
+        const s = value as string;
+        const variant = 
+          s === "active" ? "success" : 
+          s === "pending" ? "warning" : 
+          "destructive";
+        return <Badge variant={variant} showDot className="capitalize">{s}</Badge>;
+      },
     },
     {
       accessorKey: "hireDate",

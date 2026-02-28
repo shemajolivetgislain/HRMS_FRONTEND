@@ -2,6 +2,7 @@
 
 import { Frame, FramePanel } from "@/components/ui/frame";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { UserMultiple02Icon } from "@hugeicons/core-free-icons";
 
@@ -38,10 +39,10 @@ const topCompanies = [
   },
 ];
 
-const planAccent: Record<string, string> = {
-  Enterprise: "var(--chart-1)",
-  Growth: "var(--chart-2)",
-  Startup: "var(--chart-4)",
+const planVariant: Record<string, "accent" | "info" | "secondary"> = {
+  Enterprise: "accent",
+  Growth: "info",
+  Startup: "secondary",
 };
 
 export function TopCompanies() {
@@ -79,11 +80,8 @@ export function TopCompanies() {
           ))}
         </div>
 
-        {/* rows */}
         <div className="flex-1 divide-y divide-border/5">
           {topCompanies.map((company, i) => {
-            const accent =
-              planAccent[company.plan] ?? "var(--muted-foreground)";
             return (
               <div
                 key={i}
@@ -105,24 +103,17 @@ export function TopCompanies() {
                     {company.employees} employees
                   </span>
                 </div>
-                <span
-                  className="inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide w-fit"
-                  style={{
-                    background: `color-mix(in srgb, ${accent} 10%, transparent)`,
-                    color: accent,
-                  }}
-                >
+                <Badge variant={planVariant[company.plan] || "secondary"} className="w-fit">
                   {company.plan}
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <span
-                    className={`block size-1.5 rounded-full ${
-                      company.status === "Active" ? "bg-success" : "bg-warning"
-                    }`}
-                  />
-                  <span className="text-[11px] text-muted-foreground/70">
+                </Badge>
+                <div className="flex items-center">
+                  <Badge 
+                    variant={company.status === "Active" ? "success" : "warning"} 
+                    showDot 
+                    className="capitalize"
+                  >
                     {company.status}
-                  </span>
+                  </Badge>
                 </div>
               </div>
             );

@@ -38,10 +38,10 @@ const rows = [
   },
 ];
 
-const statusMap: Record<string, { label: string; accent: string }> = {
-  Paid: { label: "Paid", accent: "var(--chart-2)" },
-  Processing: { label: "Processing", accent: "var(--chart-4)" },
-  Delayed: { label: "Delayed", accent: "var(--destructive)" },
+const statusMap: Record<string, { label: string; variant: "success" | "warning" | "destructive" | "info" }> = {
+  Paid: { label: "Paid", variant: "success" },
+  Processing: { label: "Processing", variant: "info" },
+  Delayed: { label: "Delayed", accent: "var(--destructive)", variant: "destructive" },
 };
 
 export function DashboardPayroll() {
@@ -112,15 +112,9 @@ export function DashboardPayroll() {
                 </span>
 
                 <div>
-                  <span
-                    className="inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
-                    style={{
-                      background: `color-mix(in srgb, ${s.accent} 10%, transparent)`,
-                      color: s.accent,
-                    }}
-                  >
+                  <Badge variant={s.variant} showDot>
                     {s.label}
-                  </span>
+                  </Badge>
                 </div>
               </div>
             );

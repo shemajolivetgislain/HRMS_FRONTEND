@@ -8,6 +8,8 @@ import {
   Briefcase02Icon,
 } from "@hugeicons/core-free-icons";
 import { Frame, FramePanel } from "@/components/ui/frame";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const metrics = [
   {
@@ -70,15 +72,17 @@ export function DashboardMetrics() {
                 />
               </div>
 
-              <span
-                className="inline-flex items-center gap-0.5 rounded-xl px-2 py-0.5 text-[10px] font-semibold tracking-wide"
-                style={{
-                  background: `color-mix(in srgb, ${m.accent} 10%, transparent)`,
-                  color: m.accent,
-                }}
+              <Badge 
+                variant="muted" 
+                className={cn(
+                  "border-none px-1.5 py-0.5",
+                  m.up ? "text-emerald-600 bg-emerald-500/10 dark:text-emerald-400 dark:bg-emerald-500/15" : "text-red-600 bg-red-500/10 dark:text-red-400 dark:bg-red-500/15"
+                )}
               >
-                {m.up ? "↑" : "↓"} {m.change}
-              </span>
+                <span className="text-[10px] font-bold">
+                  {m.up ? "↑" : "↓"} {m.change}
+                </span>
+              </Badge>
             </div>
 
             {/* value */}
