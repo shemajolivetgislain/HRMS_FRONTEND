@@ -16,17 +16,13 @@ import {
   Moon01Icon,
   ComputerIcon,
   Layout01Icon,
-  MoreHorizontalIcon,
   Settings02Icon,
   GlobalIcon,
   DatabaseIcon,
   AlertCircleIcon,
-  Mail01Icon,
-  Clock01Icon,
-} from "@hugeicons/core-free-icons";
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { UserAvatar } from "@/components/dashboard/user-avatar";
-import { useTheme } from "next-themes";
+  } from "@hugeicons/core-free-icons";
+  import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+  import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { ErrorComponent } from "@/components/error-component";

@@ -30,7 +30,6 @@ import {
   ViewIcon,
   Sorting05Icon,
   UserGroupIcon,
-  ActivityIcon,
   Shield01Icon,
   PencilEdit02Icon,
   Cancel01Icon,

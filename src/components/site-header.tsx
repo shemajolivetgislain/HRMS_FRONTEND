@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Search02Icon, Notification01Icon } from "@hugeicons/core-free-icons";
 import { useLocation } from "@tanstack/react-router";
-import { cn } from "@/lib/utils";
 
 const routeLabels: Record<string, string> = {
   dashboard: "Overview",

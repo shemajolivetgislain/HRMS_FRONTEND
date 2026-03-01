@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   Popover,
   PopoverContent,
@@ -12,9 +11,7 @@ import {
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
