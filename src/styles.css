@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -7,7 +8,6 @@
   --background: oklch(0.995 0.001 250);
   --foreground: oklch(0.15 0.01 250);
 
-  /* high-contrast standard */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.15 0.01 250);
   --popover: oklch(1 0 0);
@@ -91,7 +91,7 @@
 }
 
 @theme inline {
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
   --font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
@@ -145,7 +145,6 @@
     @apply border-border outline-ring/50;
   }
 
-  /* Ultra-sleek Scrollbar */
   ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -160,7 +159,6 @@
     @apply bg-muted-foreground/30;
   }
 
-  /* Section focus styling */
   section {
     @apply relative py-4 first:pt-0;
   }

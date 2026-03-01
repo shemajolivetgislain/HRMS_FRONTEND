@@ -21,11 +21,13 @@ export type RecruitmentStage =
   | "Screening"
   | "Online Assessment"
   | "First Interview"
+  | "Second and Final Interview"
   | "Final Interview"
   | "Offer Sent"
   | "Recruited"
   | "Rejected"
-  | "Reserved";
+  | "Reserved"
+  | "Shortlisted";
 
 export type DocumentType = 
   | "CV" 

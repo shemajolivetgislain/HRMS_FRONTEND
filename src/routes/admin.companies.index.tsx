@@ -43,6 +43,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { api } from "@/lib/mock-api";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
@@ -57,6 +74,7 @@ export const Route = createFileRoute("/admin/companies/")({
 function CompaniesManagementPage() {
   const companies = Route.useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const filtered = companies.filter(c => 
     c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -78,13 +96,88 @@ function CompaniesManagementPage() {
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Export Data
         </Button>
-        <Button
-          size="lg"
-          className="text-xs font-bold gap-2 capitalize"
-        >
-          <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
-          Register New
-        </Button>
+        
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger
+            render={
+              <Button
+                size="lg"
+                className="text-xs font-bold gap-2 capitalize"
+              >
+                <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
+                Register New
+              </Button>
+            }
+          />
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>Register New Company</DialogTitle>
+              <DialogDescription>
+                Onboard a new organization to the HRMS platform.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Company Name</Label>
+                  <Input id="name" placeholder="e.g. Igihe Logistics" className="h-9" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="tin">TIN Number</Label>
+                  <Input id="tin" placeholder="123456789" className="h-9" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="sector">Sector</Label>
+                  <Select defaultValue="Logistics">
+                    <SelectTrigger id="sector" className="h-9 w-full">
+                      <SelectValue placeholder="Select sector" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Logistics">Logistics</SelectItem>
+                      <SelectItem value="Technology">Technology</SelectItem>
+                      <SelectItem value="Finance">Finance</SelectItem>
+                      <SelectItem value="Hospitality">Hospitality</SelectItem>
+                      <SelectItem value="Healthcare">Healthcare</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Primary Email</Label>
+                  <Input id="email" type="email" placeholder="hr@company.com" className="h-9" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="tel">Telephone</Label>
+                  <Input id="tel" placeholder="+250..." className="h-9" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="password">Unique Password</Label>
+                  <Input id="password" type="password" placeholder="••••••••" className="h-9" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status">Initial Status</Label>
+                <Select defaultValue="active">
+                  <SelectTrigger id="status" className="h-9 w-full">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="suspended">Suspended</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+              <Button type="submit" onClick={() => setIsDialogOpen(false)}>Register Company</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </DashboardHeader>
 
       <div className="flex flex-col gap-6 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">

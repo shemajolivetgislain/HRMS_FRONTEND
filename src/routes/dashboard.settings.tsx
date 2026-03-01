@@ -25,6 +25,8 @@ import {
   MoreHorizontalIcon,
   Coins01Icon,
   File02Icon,
+  HierarchyIcon,
+  TaskDaily01Icon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
@@ -90,13 +92,17 @@ function SettingsPage() {
               <SettingsTabTrigger value="general" icon={Building03Icon} title="General" />
               <SettingsTabTrigger value="appearance" icon={Layout01Icon} title="Appearance" />
               <SettingsTabTrigger value="notifications" icon={Notification01Icon} title="Notifications" />
+              
               <div className="px-4 py-4 mt-2">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
                   Business Logic
                 </p>
               </div>
+              <SettingsTabTrigger value="departments" icon={HierarchyIcon} title="Departments" />
+              <SettingsTabTrigger value="job-titles" icon={TaskDaily01Icon} title="Job Titles" />
               <SettingsTabTrigger value="tax" icon={Coins01Icon} title="Tax & Finance" />
               <SettingsTabTrigger value="policy" icon={File02Icon} title="Policies" />
+              
               <div className="px-4 py-4 mt-2">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
                   Security & Team
@@ -120,6 +126,82 @@ function SettingsPage() {
                     <SettingsField label="Legal Entity Name" defaultValue="Igihe Logistics Inc." />
                     <SettingsField label="TIN Number" defaultValue="123-456-789" />
                   </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="departments" className="mt-0 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground/90">Managed Departments</h3>
+                    <p className="text-sm font-medium text-muted-foreground/50">Configure organizational departments.</p>
+                  </div>
+                  <Button size="sm" className="h-8 font-bold gap-2">
+                    <HugeiconsIcon icon={HierarchyIcon} size={14} />
+                    Add Department
+                  </Button>
+                </div>
+                <div className="border border-border/5 rounded-2xl overflow-hidden bg-muted/5">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-muted/10 border-b border-border/5">
+                      <tr>
+                        <th className="px-6 py-3 font-bold text-xs uppercase text-muted-foreground/40">Dept Name</th>
+                        <th className="px-6 py-3 font-bold text-xs uppercase text-muted-foreground/40">Status</th>
+                        <th className="px-6 py-3 font-bold text-xs uppercase text-muted-foreground/40 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/5">
+                      {["Operations", "Engineering", "Sales", "Human Resources"].map((dept) => (
+                        <tr key={dept} className="hover:bg-muted/5">
+                          <td className="px-6 py-4 font-semibold">{dept}</td>
+                          <td className="px-6 py-4">
+                            <Badge variant="success" showDot>Active</Badge>
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <Button variant="ghost" size="icon-xs"><HugeiconsIcon icon={MoreHorizontalIcon} size={14} /></Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="job-titles" className="mt-0 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground/90">Job Titles</h3>
+                    <p className="text-sm font-medium text-muted-foreground/50">Define and assign employee designations.</p>
+                  </div>
+                  <Button size="sm" className="h-8 font-bold gap-2">
+                    <HugeiconsIcon icon={TaskDaily01Icon} size={14} />
+                    Add Title
+                  </Button>
+                </div>
+                <div className="border border-border/5 rounded-2xl overflow-hidden bg-muted/5">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-muted/10 border-b border-border/5">
+                      <tr>
+                        <th className="px-6 py-3 font-bold text-xs uppercase text-muted-foreground/40">Title</th>
+                        <th className="px-6 py-3 font-bold text-xs uppercase text-muted-foreground/40">Dept</th>
+                        <th className="px-6 py-3 font-bold text-xs uppercase text-muted-foreground/40 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/5">
+                      {[
+                        { t: "Senior Developer", d: "Engineering" },
+                        { t: "Fleet Manager", d: "Operations" },
+                        { t: "Accountant", d: "Finance" }
+                      ].map((j) => (
+                        <tr key={j.t} className="hover:bg-muted/5">
+                          <td className="px-6 py-4 font-semibold">{j.t}</td>
+                          <td className="px-6 py-4 text-muted-foreground/60">{j.d}</td>
+                          <td className="px-6 py-4 text-right">
+                            <Button variant="ghost" size="icon-xs"><HugeiconsIcon icon={MoreHorizontalIcon} size={14} /></Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </TabsContent>
 

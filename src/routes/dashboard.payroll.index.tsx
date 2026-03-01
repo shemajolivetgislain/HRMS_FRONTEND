@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Frame,
@@ -13,12 +13,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Coins01Icon,
   Download01Icon,
   Tick01Icon,
   ArrowRight01Icon,
   ArrowLeft01Icon,
-  Calendar01Icon,
   InformationCircleIcon,
   UserGroupIcon,
   Clock01Icon,
@@ -52,7 +50,7 @@ const steps = [
 ];
 
 function PayrollPage() {
-  const { history, activeRun } = Route.useLoaderData();
+  const { activeRun } = Route.useLoaderData();
   const [currentStep, setCurrentStep] = useState(activeRun.currentStep);
 
   return (

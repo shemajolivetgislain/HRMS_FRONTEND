@@ -22,7 +22,6 @@ import {
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
 import { ErrorComponent } from "@/components/error-component";
-import { cn } from "@/lib/utils";
 
 const upcomingEvents = [
   {

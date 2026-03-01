@@ -45,6 +45,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { api } from "@/lib/mock-api";
 
 // Sample candidates data (could be moved to mock API later)
@@ -94,6 +111,7 @@ export const Route = createFileRoute("/dashboard/recruitment/")({
 function RecruitmentPage() {
   const jobs = Route.useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const filteredJobs = jobs.filter(job => 
     job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -115,13 +133,77 @@ function RecruitmentPage() {
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Report
         </Button>
-        <Button
-          size="lg"
-          className="text-xs font-bold gap-2 capitalize"
-        >
-          <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
-          New Opening
-        </Button>
+        
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger
+            render={
+              <Button
+                size="lg"
+                className="text-xs font-bold gap-2 capitalize"
+              >
+                <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
+                Register Candidate
+              </Button>
+            }
+          />
+          <DialogContent className="sm:max-w-[600px]">
+            <DialogHeader>
+              <DialogTitle>Register New Candidate</DialogTitle>
+              <DialogDescription>
+                Add a new applicant to the recruitment pipeline.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input id="firstName" placeholder="Moses" className="h-9" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input id="lastName" placeholder="Mugisha" className="h-9" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="idNumber">National ID / Passport</Label>
+                  <Input id="idNumber" placeholder="119..." className="h-9" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input id="email" type="email" placeholder="m.mugisha@gmail.com" className="h-9" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="phoneNumber">Phone Number</Label>
+                  <Input id="phoneNumber" placeholder="+250..." className="h-9" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="job">Target Role</Label>
+                  <Select>
+                    <SelectTrigger id="job" className="h-9 w-full">
+                      <SelectValue placeholder="Select position" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {jobs.map(job => (
+                        <SelectItem key={job.id} value={job.id}>{job.title}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="resume">Resume / CV (PDF)</Label>
+                <Input id="resume" type="file" className="h-9 pt-1.5" />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+              <Button type="submit" onClick={() => setIsDialogOpen(false)}>Add to Pipeline</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </DashboardHeader>
 
       <div className="flex flex-col xl:flex-row gap-6 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">

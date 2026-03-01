@@ -8,7 +8,6 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Notification01Icon,
   Tick01Icon,
   Building03Icon,
   Shield01Icon,

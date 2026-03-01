@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -47,6 +48,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { api } from "@/lib/mock-api";
 import { useEmployees } from "@/hooks/use-employees";
@@ -61,6 +72,7 @@ export const Route = createFileRoute("/dashboard/employees/")({
 
 function EmployeesPage() {
   const initialEmployees = Route.useLoaderData();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const {
     searchTerm,
     setSearchTerm,
@@ -69,7 +81,6 @@ function EmployeesPage() {
     filterStatus,
     setFilterStatus,
     selectedIds,
-    currentPage,
     filteredEmployees,
     departments,
     statuses,
@@ -92,13 +103,93 @@ function EmployeesPage() {
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Export List
         </Button>
-        <Button
-          size="lg"
-          className="text-xs font-bold gap-2 capitalize"
-        >
-          <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
-          Add Employee
-        </Button>
+        
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger
+            render={
+              <Button
+                size="lg"
+                className="text-xs font-bold gap-2 capitalize"
+              >
+                <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
+                Add Employee
+              </Button>
+            }
+          />
+          <DialogContent className="sm:max-w-[600px]">
+            <DialogHeader>
+              <DialogTitle>Onboard New Employee</DialogTitle>
+              <DialogDescription>
+                Register a new member to your organization.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input id="firstName" placeholder="Jean Paul" className="h-9" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input id="lastName" placeholder="Nkurunziza" className="h-9" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="idNumber">ID / Passport Number</Label>
+                  <Input id="idNumber" placeholder="119..." className="h-9" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input id="email" type="email" placeholder="jp.nkurunziza@igihe.rw" className="h-9" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="phoneNumber">Phone Number</Label>
+                  <Input id="phoneNumber" placeholder="+250..." className="h-9" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="department">Department</Label>
+                  <Select>
+                    <SelectTrigger id="department" className="h-9 w-full">
+                      <SelectValue placeholder="Select department" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Operations">Operations</SelectItem>
+                      <SelectItem value="Engineering">Engineering</SelectItem>
+                      <SelectItem value="HR">Human Resources</SelectItem>
+                      <SelectItem value="Finance">Finance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="jobTitle">Job Title</Label>
+                  <Input id="jobTitle" placeholder="Fleet Manager" className="h-9" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="status">Employment Status</Label>
+                  <Select defaultValue="active">
+                    <SelectTrigger id="status" className="h-9 w-full">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="probation">Probation</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+              <Button type="submit" onClick={() => setIsDialogOpen(false)}>Onboard Employee</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </DashboardHeader>
 
       <div className="flex flex-col gap-4 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">

@@ -8,88 +8,88 @@ export const Route = createFileRoute("/docs")({
 function DocsPage() {
   const modules = [
     {
-      title: "1. System Admin (Super Admin)",
-      desc: "This is the 'Master' view for the people who own the whole platform. They don't just see one company; they see all of them.",
+      title: "1. System Admin (Platform Console)",
+      desc: "The global view for platform owners. Manage all registered tenants (e.g., Igihe Logistics, Vision Finance) from a single control center.",
       features: [
-        "Company Registry: A list of every company using the app. You can see their TIN number and how many employees they have.",
-        "Account Control: If a company doesn't pay or breaks rules, the Super Admin can 'Suspend' them with one click.",
-        "Platform Health: Real-time stats on how many people are using the app and if the system is running fast.",
-        "Audit Logs: A security trail that records everything important that happens across the whole platform.",
+        "Company Registry: A complete list of every company using the app, including their TIN, sector, and employee count.",
+        "Tenant Control: Instantly suspend, activate, or deactivate platform access for any company.",
+        "System Logs: Comprehensive security trails recording major events (e.g., new tenant onboarding, compliance suspensions).",
+        "Company Setup: Register new companies, assign their unique master password, and provision company admin accounts.",
       ],
       links: [
         { label: "Platform Overview", to: "/admin" },
-        { label: "Manage All Companies", to: "/admin/companies" },
+        { label: "Manage Companies", to: "/admin/companies" },
         { label: "Security Logs", to: "/admin/logs" },
       ],
     },
     {
-      title: "2. Multi-Tenant Registration",
-      desc: "This is how new companies join the platform. It is designed to gather everything needed for Rwandan business laws.",
+      title: "2. Company Admin Setup",
+      desc: "The localized control panel for an individual company's HR manager to configure their specific workspace.",
       features: [
-        "TIN Collection: New companies must provide their 9-digit Tax ID during sign-up.",
-        "Master Password: Every company sets a unique 'Master Password' that their staff will need to join their specific workspace.",
-        "Owner Setup: The person who registers the company automatically becomes the 'Company Admin'.",
+        "Department & Title Management: Configure organizational structures like 'Operations' or 'Engineering' and define roles.",
+        "Policy Configuration: Set mandatory onboarding documents (CV, ID, Medical Report) and offboarding requirements (Resignation Letter).",
+        "Theme & Appearance: Customize the dashboard aesthetic (Light, Dark, System) for the company.",
       ],
-      links: [{ label: "Register New Company", to: "/auth/register" }],
+      links: [
+        { label: "Company Settings", to: "/dashboard/settings" },
+      ],
     },
     {
       title: "3. Employee & Compliance Records",
-      desc: "More than just a list of names. This is where HR manages the 'legal life' of an employee.",
+      desc: "The digital source of truth for the workforce, handling the entire employment lifecycle.",
       features: [
-        "Onboarding Tracker: A progress bar shows how far a new hire is in their setup process.",
-        "Compliance Alerts: If an employee is missing a 'Criminal Record' or 'Medical Report', the system shows a red warning banner on their profile.",
-        "Digital Vault: Securely store CVs, ID cards, and Contracts. No more paper files.",
+        "Status Tracking: Manage employees across different lifecycle states: Active, Probation, Resigned, and Terminated.",
+        "Onboarding Tracker: Track mandatory documents and setup processes for new hires to ensure full legal compliance.",
+        "Detailed Profiles: Store rich data including Line Managers, Dates of Birth, contact info, and digital document vaults.",
       ],
       links: [
         { label: "Employee Directory", to: "/dashboard/employees" },
         {
-          label: "Check Non-Compliant Staff",
+          label: "View Employee Profile",
           to: "/dashboard/employees/$id",
-          params: { id: "EMP-002" },
+          params: { id: "EMP-001" },
         },
-        { label: "Browse All Files", to: "/dashboard/documents" },
+        { label: "Browse Document Vault", to: "/dashboard/documents" },
       ],
     },
     {
       title: "4. The Payroll Engine",
-      desc: "A step-by-step wizard that makes sure people are paid correctly and all taxes are sent to the government.",
+      desc: "A compliant, step-by-step wizard ensuring accurate compensation and statutory deductions.",
       features: [
-        "6-Step Process: It walks you through Attendance -> HR Check -> Manager Approval -> Tax Calculation -> Final Sign-off -> Payment.",
-        "RRA Tax Brackets: Automatically calculates the 0%, 10%, 20%, and 30% tax tiers used in Rwanda.",
-        "Pension & Funds: Automatically subtracts the RSSB Pension (6% from employee, 8% from employer) and the Maternity fund.",
-        "Net Calculation: The system shows exactly how much is Gross salary and how much is actually paid to the bank.",
+        "6-Step Verification: Enforces a strict pipeline from Attendance Sheets -> HR Check -> Approval -> Salary Prep -> Final Verification.",
+        "RRA Tax Brackets: Automatically applies Rwanda Revenue Authority rates: 0% (0-60k), 10% (60k-100k), 20% (100k-200k), and 30% (200k+).",
+        "Statutory Deductions: Handles RSSB Pension (6% employee / 8% employer), CBHI (0.5%), and Maternity funds.",
       ],
       links: [
         { label: "Run Monthly Payroll", to: "/dashboard/payroll" },
-        { label: "View Tax Settings", to: "/dashboard/settings" },
       ],
     },
     {
       title: "5. Leave & Time-Off Management",
-      desc: "Automated rules for when staff take breaks. No more manual counting of days.",
+      desc: "Automated tracking for employee absences based on configured company policies.",
       features: [
-        "Accrual Rules: Automatically gives 1.5 days of leave every month. It also handles 5 days of sick leave and 3.5 months for maternity.",
-        "Approval Pipeline: Employees apply, and HR can see a list of 'Pending' requests to approve or reject.",
-        "Balance View: Every person can see exactly how many days they have left to use.",
+        "Statutory Accruals: Handles standard allowances like 1.5 days of annual leave per month.",
+        "Specialized Leaves: Pre-configured for Sick Leave (5 days/year) and Maternity Leave (3 months and 2 weeks).",
+        "Approval Workflows: Line managers and HR can review, approve, or reject employee requests with comments.",
       ],
       links: [{ label: "Manage Team Leaves", to: "/dashboard/leaves" }],
     },
     {
       title: "6. Performance (Balanced Scorecard)",
-      desc: "A modern way to review staff performance using the 'Balanced Scorecard' method.",
+      desc: "Strategic performance management aligning employee goals with company objectives.",
       features: [
-        "4 Perspectives: Reviews are split into Financial, Customer, Internal Process, and Growth goals.",
-        "1 to 4 Rating: A simple scale where 1 means 'Not Met' and 4 means 'Exceeded Targets'.",
-        "Dual Appraisal: The employee rates themselves first, then the manager gives their final rating and feedback.",
+        "4 Perspectives: Goals are categorized into Financial, Customer, Internal Process, and Growth.",
+        "Standardized Rating: Uses a 1-4 scale (1: Does not meet, 2: Almost meets, 3: Meets, 4: Exceeds).",
+        "Appraisal Process: Involves self-review, manager review, and a final appraisal meeting for documentation.",
       ],
       links: [{ label: "Staff Appraisals", to: "/dashboard/performance" }],
     },
     {
       title: "7. Recruitment Pipeline",
-      desc: "A tool to find and hire new talent without using messy spreadsheets.",
+      desc: "An integrated ATS (Applicant Tracking System) to move candidates from application to contract.",
       features: [
-        "Pipeline Stages: Drag candidates from 'Applied' to 'Interview' to 'Offer Sent'.",
-        "Hire Action: Once a candidate is ready, click 'Hire' to automatically turn them into an active Employee in the system.",
+        "Rigorous Stages: Track candidates through: Shortlisted, Online Assessment, First Interview, Second and Final Interview, Reserved, or Rejected.",
+        "Seamless Onboarding: Approved candidates can be converted directly into active Employees within the system.",
       ],
       links: [{ label: "Hiring Command Center", to: "/dashboard/recruitment" }],
     },
@@ -97,10 +97,13 @@ function DocsPage() {
 
   return (
     <div className="p-10 space-y-12 font-sans max-w-5xl bg-background min-h-screen">
-      <header className="space-y-4 border-b pb-8">
-        <h1 className="text-4xl font-bold tracking-tight">
-          HRMS Product Documentation
+      <header className="space-y-4 border-b border-border/10 pb-8">
+        <h1 className="text-4xl font-bold tracking-tight text-foreground/90">
+          HRMS Documentation
         </h1>
+        <p className="text-muted-foreground font-medium text-lg max-w-3xl">
+          A comprehensive guide to the Multi-Company Human Resource Management System. Explore the architecture, workflows, and compliance tools available to System and Company Administrators.
+        </p>
       </header>
 
       <div className="grid grid-cols-1 gap-12">
@@ -110,20 +113,20 @@ function DocsPage() {
               <h2 className="text-2xl font-bold text-primary group-hover:underline transition-all">
                 {m.title}
               </h2>
-              <p className="text-[15px] font-medium leading-relaxed">
+              <p className="text-[15px] font-medium leading-relaxed text-foreground/80">
                 {m.desc}
               </p>
             </div>
 
-            <div className="bg-muted/10 border border-border/5 p-6 rounded-2xl space-y-4">
+            <div className="bg-muted/5 border border-border/10 p-6 rounded-2xl space-y-4">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
-                What's covered:
+                Key Capabilities:
               </p>
               <ul className="space-y-3">
                 {m.features.map((f, k) => (
                   <li
                     key={k}
-                    className="text-sm text-muted-foreground flex items-start gap-3"
+                    className="text-sm text-muted-foreground flex items-start gap-3 leading-relaxed"
                   >
                     <span className="size-1.5 rounded-full bg-primary/40 mt-1.5 shrink-0" />
                     {f}
@@ -135,8 +138,11 @@ function DocsPage() {
             <div className="flex flex-wrap gap-3 pt-2">
               {m.links.map((l, j) => (
                 <Button
-                  variant={"link"}
-                  render={<Link key={j} to={l.to} params={l.params} />}
+                  key={j}
+                  variant="outline"
+                  size="sm"
+                  className="font-semibold shadow-none border-border/60 hover:bg-muted/50"
+                  render={<Link to={l.to} params={l.params} />}
                 >
                   {l.label}
                 </Button>
@@ -146,10 +152,10 @@ function DocsPage() {
         ))}
       </div>
 
-      <div className="pt-12 border-t border-border/5">
+      <div className="pt-12 border-t border-border/10 pb-20">
         <Link
           to="/dashboard"
-          className="inline-block bg-primary text-primary-foreground px-10 py-4 rounded-xl font-bold shadow-md shadow-primary/10 hover:scale-[1.02] active:scale-95 transition-all"
+          className="inline-flex items-center justify-center bg-primary text-primary-foreground px-10 py-4 rounded-xl font-bold shadow-md shadow-primary/10 hover:scale-[1.02] active:scale-95 transition-all"
         >
           Enter Main Dashboard
         </Link>

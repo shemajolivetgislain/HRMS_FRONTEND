@@ -26,7 +26,6 @@ import {
   Tick01Icon,
   Cancel01Icon,
   InformationCircleIcon,
-  UserGroupIcon,
   Clock01Icon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";

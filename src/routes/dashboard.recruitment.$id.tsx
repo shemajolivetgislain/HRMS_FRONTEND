@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,19 +16,15 @@ import {
   Download01Icon,
   MoreHorizontalIcon,
   Calendar01Icon,
-  UserMultiple02Icon,
   Briefcase01Icon,
   Location01Icon,
-  Mail01Icon,
   UserAdd01Icon,
   Sorting05Icon,
-  ViewIcon,
   PlusSignCircleIcon,
   Tick01Icon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
-import { cn } from "@/lib/utils";
 import { api } from "@/lib/mock-api";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { ErrorComponent } from "@/components/error-component";

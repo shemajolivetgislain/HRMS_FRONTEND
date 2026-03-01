@@ -11,6 +11,7 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -97,7 +98,6 @@ export function FilterPopover() {
             </div>
           </div>
 
-          {/* Status */}
           <div className="space-y-2.5">
             <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60">
               Employee Status
@@ -124,10 +124,7 @@ export function FilterPopover() {
           >
             Reset
           </Button>
-          <Button
-            size="sm"
-            className="font-bold shadow-sm"
-          >
+          <Button size="sm" className="font-bold shadow-sm">
             Apply Filters
           </Button>
         </div>

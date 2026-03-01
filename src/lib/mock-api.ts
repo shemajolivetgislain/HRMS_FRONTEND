@@ -51,6 +51,8 @@ export const mockEmployees: Employee[] = [
     address: "KN 254 St, Kigali",
     city: "Kigali",
     country: "Rwanda",
+    dob: "1990-05-12",
+    manager: "Skylar Calzoni",
   },
   {
     id: "EMP-002",
@@ -63,6 +65,11 @@ export const mockEmployees: Employee[] = [
     complianceStatus: "non-compliant",
     onboardingProgress: 85,
     phone: "+250 781 000 002",
+    address: "KK 312 Ave, Kicukiro",
+    city: "Kigali",
+    country: "Rwanda",
+    dob: "1994-11-30",
+    manager: "Jean Paul Nkurunziza",
   },
   {
     id: "EMP-003",
@@ -75,6 +82,11 @@ export const mockEmployees: Employee[] = [
     complianceStatus: "compliant",
     onboardingProgress: 100,
     phone: "+250 781 000 003",
+    address: "Rubavu Waterfront 12",
+    city: "Gisenyi",
+    country: "Rwanda",
+    dob: "1988-02-15",
+    manager: "Divine Uwase",
   },
   {
     id: "EMP-004",
@@ -87,6 +99,11 @@ export const mockEmployees: Employee[] = [
     complianceStatus: "compliant",
     onboardingProgress: 100,
     phone: "+250 781 000 004",
+    address: "Nyarutarama Close 5",
+    city: "Kigali",
+    country: "Rwanda",
+    dob: "1992-08-22",
+    manager: "System Admin",
   }
 ];
 
@@ -167,7 +184,7 @@ export const mockApplicants: Applicant[] = [
     phone: "+250 780 555 666",
     jobTitleId: "JOB-101",
     applicationReference: "APP-RW-003",
-    stage: "Online assessment",
+    stage: "Online Assessment",
     score: 3.9,
     appliedAt: "2024-03-22",
     history: []

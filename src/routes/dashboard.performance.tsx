@@ -1,4 +1,3 @@
-import React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Frame,
@@ -7,7 +6,6 @@ import {
   FrameTitle,
   FrameDescription,
   FrameContent,
-  FrameFooter,
 } from "@/components/ui/frame";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

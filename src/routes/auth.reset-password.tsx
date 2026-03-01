@@ -10,7 +10,6 @@ import {
   ViewOffIcon,
   ArrowRight01Icon,
   Tick01Icon,
-  ArrowLeft01Icon,
 } from "@hugeicons/core-free-icons";
 
 export const Route = createFileRoute("/auth/reset-password")({

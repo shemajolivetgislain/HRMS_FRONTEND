@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Frame,
   FramePanel,
   FrameHeader,
   FrameTitle,
-  FrameDescription,
   FrameContent,
   FrameFooter,
 } from "@/components/ui/frame";
@@ -14,13 +13,9 @@ import { Input } from "@/components/ui/input";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Search01Icon,
-  HelpCircleIcon,
   Book02Icon,
   Message01Icon,
-  CustomerServiceIcon,
   ArrowRight01Icon,
-  PlayIcon,
-  File02Icon,
   ActivityIcon,
   CodeIcon,
   CallIcon,
@@ -32,28 +27,6 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { Badge } from "#/components/ui/badge";
 import { cn } from "#/lib/utils";
 
-const categories = [
-  {
-    title: "Getting Started",
-    icon: PlayIcon,
-    description: "Basic concepts and initial setup guides",
-  },
-  {
-    title: "Employee Management",
-    icon: Book02Icon,
-    description: "How to manage profiles and lifecycle",
-  },
-  {
-    title: "Payroll & Finance",
-    icon: File02Icon,
-    description: "Configuration for disbursement cycles",
-  },
-  {
-    title: "Recruitment",
-    icon: CustomerServiceIcon,
-    description: "Pipeline management and candidate flow",
-  },
-];
 
 const faqs = [
   {
