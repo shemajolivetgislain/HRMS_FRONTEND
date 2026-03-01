@@ -81,14 +81,14 @@ function CalendarPage() {
           <Button
             variant="outline"
             size="lg"
-            className="text-[12px] font-semibold gap-2 capitalize"
+            className="text-xs font-semibold gap-2 capitalize"
           >
             <HugeiconsIcon icon={FilterIcon} size={14} strokeWidth={2} />
             Filter
           </Button>
           <Button
             size="lg"
-            className="text-[12px] font-bold gap-2 capitalize"
+            className="text-xs font-bold gap-2 capitalize"
           >
             <HugeiconsIcon icon={Add01Icon} size={14} strokeWidth={2} />
             New Event
@@ -126,7 +126,7 @@ function CalendarPage() {
                     })}
                   </FrameDescription>
                 </div>
-                <Badge variant="success" showDot className="h-5 px-2 text-[9px] font-bold uppercase border-none">
+                <Badge variant="success" showDot className="h-5 px-2 text-xs font-bold uppercase border-none">
                   Live
                 </Badge>
               </FrameHeader>
@@ -185,7 +185,7 @@ function CalendarPage() {
                                   />
                                 ))}
                                 {event.attendees.length > 2 && (
-                                  <span className="text-[9px] font-bold text-muted-foreground/30 ml-1">
+                                  <span className="text-xs font-bold text-muted-foreground/30 ml-1">
                                     +{event.attendees.length - 2} more
                                   </span>
                                 )}
@@ -217,7 +217,7 @@ function CalendarPage() {
                   </p>
                 </div>
               </div>
-              <Badge variant="info" className="h-5 px-2 rounded-md font-bold text-[9px]">
+              <Badge variant="info" className="h-5 px-2 rounded-md font-bold text-xs">
                 STABLE
               </Badge>
             </FramePanel>

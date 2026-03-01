@@ -51,7 +51,7 @@ function AdminSettingsPage() {
       >
         <Button
           size="lg"
-          className="text-[12px] font-bold capitalize gap-2"
+          className="text-xs font-bold capitalize gap-2"
           onClick={handleSave}
           disabled={isSaving}
         >
@@ -424,7 +424,7 @@ function SettingsField({
       </Label>
       <div className="relative group/input">
         {prefix && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] font-bold text-muted-foreground/30">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-muted-foreground/30">
             {prefix}
           </span>
         )}
@@ -469,7 +469,7 @@ function ToggleRow({
           <p className="text-[14px] font-semibold text-foreground/80">
             {title}
           </p>
-          <p className="text-[12px] font-medium text-muted-foreground/40 max-w-md leading-relaxed">
+          <p className="text-xs font-medium text-muted-foreground/40 max-w-md leading-relaxed">
             {description}
           </p>
         </div>

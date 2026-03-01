@@ -60,7 +60,7 @@ function SettingsPage() {
       >
         <Button
           size="lg"
-          className="text-[12px] font-bold capitalize gap-2"
+          className="text-xs font-bold capitalize gap-2"
           onClick={handleSave}
           disabled={isSaving}
         >
@@ -210,7 +210,7 @@ function SettingsPage() {
                         <p className="text-xs font-medium text-muted-foreground/40 mt-1">admin@igihe.rw</p>
                       </div>
                     </div>
-                    <Badge variant="success" showDot className="h-5 px-2 text-[9px] uppercase font-bold border-none">Active</Badge>
+                    <Badge variant="success" showDot className="h-5 px-2 text-xs uppercase font-bold border-none">Active</Badge>
                   </div>
                 </div>
               </TabsContent>
@@ -246,7 +246,7 @@ function SettingsField({ label, defaultValue, type = "text", prefix, icon: Icon,
       <Label className="text-xs font-bold uppercase tracking-[0.15em] text-muted-foreground/40">{label}</Label>
       <div className="relative group/input">
         {prefix && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] font-bold text-muted-foreground/30">{prefix}</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-muted-foreground/30">{prefix}</span>
         )}
         <Input
           defaultValue={defaultValue}
@@ -270,7 +270,7 @@ function ToggleRow({ icon: Icon, title, description, defaultChecked }: { icon: a
         </div>
         <div className="space-y-1">
           <p className="text-[14px] font-semibold text-foreground/80">{title}</p>
-          <p className="text-[12px] font-medium text-muted-foreground/40 max-w-md leading-relaxed">{description}</p>
+          <p className="text-xs font-medium text-muted-foreground/40 max-w-md leading-relaxed">{description}</p>
         </div>
       </div>
       <Switch defaultChecked={defaultChecked} className="scale-[0.75]" />

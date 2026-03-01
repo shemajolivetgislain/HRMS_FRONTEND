@@ -195,7 +195,7 @@ function PayrollPage() {
               <FrameFooter className="bg-primary/[0.02] border-t border-primary/5 px-8 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-6">
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest leading-none mb-1.5">
+                    <span className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest leading-none mb-1.5">
                       Estimated Gross
                     </span>
                     <span className="text-[14px] font-bold text-foreground/80 tabular-nums">
@@ -203,7 +203,7 @@ function PayrollPage() {
                     </span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest leading-none mb-1.5">
+                    <span className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest leading-none mb-1.5">
                       Tax & Deductions
                     </span>
                     <span className="text-[14px] font-bold text-destructive/70 tabular-nums">
@@ -265,7 +265,7 @@ function PayrollPage() {
                     </div>
                   ))}
                 </div>
-                <p className="text-[12px] font-medium text-muted-foreground/60">
+                <p className="text-xs font-medium text-muted-foreground/60">
                   8 of 12 departments have submitted attendance.
                 </p>
               </div>

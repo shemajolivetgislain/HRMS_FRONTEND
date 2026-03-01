@@ -19,6 +19,7 @@ import {
   Shield01Icon,
   ChartBarLineIcon,
   PencilEdit02Icon,
+  DashboardSquare01Icon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { api } from "@/lib/mock-api";
@@ -50,11 +51,20 @@ function CompanyDetailsPage() {
         <Button
           variant="outline"
           size="lg"
-          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
           render={<Link to="/admin/companies" />}
         >
           <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
           Registry
+        </Button>
+        <Button
+          variant="outline"
+          size="lg"
+          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          render={<Link to="/dashboard" />}
+        >
+          <HugeiconsIcon icon={DashboardSquare01Icon} size={14} strokeWidth={2} />
+          Go to Dashboard
         </Button>
         <Button size="lg" className="font-bold gap-2">
           <HugeiconsIcon icon={PencilEdit02Icon} size={14} strokeWidth={2} />
@@ -63,7 +73,6 @@ function CompanyDetailsPage() {
       </DashboardHeader>
 
       <div className="flex flex-col gap-6 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
-        {/* Quick Stats */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard label="Total Staff" value={company.employeeCount} icon={UserGroupIcon} variant="primary" sub="Active headcount" />
           <StatCard label="Registry Status" value={company.status} icon={Shield01Icon} variant={company.status === "active" ? "success" : "destructive"} sub="Platform access" />
@@ -122,7 +131,7 @@ function DetailItem({ label, value, icon: Icon }: { label: string; value: string
         <HugeiconsIcon icon={Icon} size={14} strokeWidth={2.5} />
         <span className="text-xs font-bold uppercase tracking-widest">{label}</span>
       </div>
-      <p className="text-[14px] font-semibold text-foreground/80 pl-5.5">{value}</p>
+      <p className="text-sm font-semibold text-foreground/80 pl-5.5">{value}</p>
     </div>
   );
 }

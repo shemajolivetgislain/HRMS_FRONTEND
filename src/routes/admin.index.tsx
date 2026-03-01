@@ -29,14 +29,14 @@ function AdminDashboard() {
         <Button
           variant="outline"
           size="lg"
-          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
         >
           <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} strokeWidth={2} />
           Reports
         </Button>
         <Button
           size="lg"
-          className="text-[12px] font-bold gap-2 capitalize"
+          className="text-xs font-bold gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           New Company

@@ -61,7 +61,7 @@ function RecruitmentDetailsPage() {
         <Button
           variant="outline"
           size="lg"
-          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
           render={<Link to="/dashboard/recruitment" />}
         >
           <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
@@ -69,7 +69,7 @@ function RecruitmentDetailsPage() {
         </Button>
         <Button
           size="lg"
-          className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
+          className="h-9 px-4 rounded-lg text-xs font-bold shadow-sm gap-2 capitalize"
         >
           <HugeiconsIcon icon={UserAdd01Icon} size={14} strokeWidth={2} />
           Add Candidate
@@ -123,7 +123,7 @@ function RecruitmentDetailsPage() {
 
                         <div className="flex items-center gap-8 shrink-0">
                           <div className="flex flex-col items-end gap-1">
-                            <p className="text-[9px] font-bold text-muted-foreground/30 uppercase tracking-widest">
+                            <p className="text-xs font-bold text-muted-foreground/30 uppercase tracking-widest">
                               Score
                             </p>
                             <p className="text-sm font-bold text-foreground/80 tabular-nums">
@@ -131,12 +131,12 @@ function RecruitmentDetailsPage() {
                             </p>
                           </div>
                           <div className="flex flex-col gap-1 w-28">
-                            <p className="text-[9px] font-bold text-muted-foreground/30 uppercase tracking-widest">
+                            <p className="text-xs font-bold text-muted-foreground/30 uppercase tracking-widest">
                               Stage
                             </p>
                             <Badge
                               variant="muted"
-                              className="h-5 px-2 rounded-md font-bold text-[9px] uppercase tracking-widest border-none bg-primary/5 text-primary whitespace-nowrap"
+                              className="h-5 px-2 rounded-md font-bold text-xs uppercase tracking-widest border-none bg-primary/5 text-primary whitespace-nowrap"
                             >
                               {can.stage}
                             </Badge>
@@ -162,7 +162,7 @@ function RecruitmentDetailsPage() {
                             )}
                             
                             <Button
-                              variant="ghost"
+                              variant="outline"
                               size="icon-sm"
                               className="rounded-lg opacity-40 group-hover/can:opacity-100 transition-opacity"
                               aria-label="Candidate actions"
@@ -184,7 +184,7 @@ function RecruitmentDetailsPage() {
                   Showing {candidates.length} of {role.applicants} applicants
                 </span>
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
                   className="h-7 text-xs font-bold text-primary/60 hover:text-primary capitalize"
                 >
@@ -211,7 +211,7 @@ function RecruitmentDetailsPage() {
                     <Badge
                       variant="success"
                       showDot
-                      className="h-5 rounded-md text-[9px] uppercase tracking-widest px-1.5"
+                      className="h-5 rounded-md text-xs uppercase tracking-widest px-1.5"
                     >
                       {role.status}
                     </Badge>

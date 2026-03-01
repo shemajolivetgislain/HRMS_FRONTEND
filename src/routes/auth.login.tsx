@@ -90,7 +90,7 @@ function LoginPage() {
           />
           <label
             htmlFor="remember"
-            className="text-[12px] font-medium text-muted-foreground/60 cursor-pointer select-none"
+            className="text-xs font-medium text-muted-foreground/60 cursor-pointer select-none"
           >
             Remember me
           </label>
@@ -125,7 +125,7 @@ function LoginPage() {
           </button>
         </div>
 
-        <p className="text-[12px] font-medium text-muted-foreground/60 text-center">
+        <p className="text-xs font-medium text-muted-foreground/60 text-center">
           New here?{" "}
           <Link
             to="/auth/register"

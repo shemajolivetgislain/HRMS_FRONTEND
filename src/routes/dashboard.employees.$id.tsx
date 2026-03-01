@@ -71,7 +71,7 @@ function EmployeeProfilePage() {
         <Button
           variant="outline"
           size="lg"
-          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
           render={<Link to="/dashboard/employees" />}
         >
           <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
@@ -79,7 +79,7 @@ function EmployeeProfilePage() {
         </Button>
         <Button
           size="lg"
-          className="text-[12px] font-bold gap-2 capitalize"
+          className="text-xs font-bold gap-2 capitalize"
           onClick={() => setIsEditing(!isEditing)}
         >
           <HugeiconsIcon
@@ -480,7 +480,7 @@ function EmployeeProfilePage() {
                               </div>
                             </div>
                             <Button
-                              variant="ghost"
+                              variant="outline"
                               size="icon-sm"
                               className="rounded-lg opacity-0 group-hover/doc:opacity-100 transition-opacity"
                             >
@@ -590,7 +590,7 @@ function EmployeeTabTrigger({
       value={value}
       className="relative flex items-center px-4 py-2.5 rounded-xl transition-all text-left data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm text-muted-foreground/50 hover:text-foreground/80 group overflow-hidden border border-transparent data-[state=active]:border-border/5"
     >
-      <span className="text-[12px] font-semibold tracking-tight">{label}</span>
+      <span className="text-xs font-semibold tracking-tight">{label}</span>
     </TabsTrigger>
   );
 }

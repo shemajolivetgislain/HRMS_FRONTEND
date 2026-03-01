@@ -93,14 +93,14 @@ function ReportsPage() {
           <Button
             variant="outline"
             size="lg"
-            className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+            className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
           >
             <HugeiconsIcon icon={FilterIcon} size={14} strokeWidth={2} />
             Filter
           </Button>
           <Button
             size="lg"
-            className="text-[12px] font-bold gap-2 capitalize"
+            className="text-xs font-bold gap-2 capitalize"
           >
             <HugeiconsIcon icon={Analytics01Icon} size={14} strokeWidth={2} />
             Generate New
@@ -172,12 +172,12 @@ function ReportsPage() {
                           </div>
                         </TableCell>
                         <TableCell className="px-2">
-                          <span className="text-[12px] font-medium text-foreground/60">
+                          <span className="text-xs font-medium text-foreground/60">
                             {report.type}
                           </span>
                         </TableCell>
                         <TableCell className="px-2">
-                          <span className="text-[12px] font-bold text-muted-foreground/40 tabular-nums">
+                          <span className="text-xs font-bold text-muted-foreground/40 tabular-nums">
                             {report.date}
                           </span>
                         </TableCell>
@@ -199,7 +199,7 @@ function ReportsPage() {
                           <div className="flex items-center justify-end gap-1">
                             {report.status === "ready" && (
                               <Button
-                                variant="ghost"
+                                variant="outline"
                                 size="icon-sm"
                                 className="rounded-lg hover:bg-primary/5 hover:text-primary"
                               >
@@ -210,7 +210,7 @@ function ReportsPage() {
                               </Button>
                             )}
                             <Button
-                              variant="ghost"
+                              variant="outline"
                               size="icon-sm"
                               className="rounded-lg opacity-40 group-hover:opacity-100 transition-opacity"
                             >

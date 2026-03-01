@@ -8,11 +8,9 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   DashboardSquare01Icon,
@@ -28,6 +26,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { NavMain } from "./nav-main";
 import { CompanySwitcher } from "./company-switcher";
+import { Logo } from "@/components/logo";
 
 const defaultData = {
   user: {
@@ -115,13 +114,20 @@ export function AppSidebar({ customNav, ...props }: AppSidebarProps) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
+      <SidebarHeader className="pt-4 px-2 border-b border-border/5">
+        <div className="flex items-center gap-2 px-2 mb-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+          <Logo className="size-8" />
+          <span className="text-xl font-bold tracking-tighter uppercase leading-none text-foreground group-data-[collapsible=icon]:hidden">
+            HRMS
+          </span>
+        </div>
+        <Separator className="bg-border/10 mb-2" />
         <CompanySwitcher companies={defaultData.companies} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navItems} />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="border-t border-border/5">
         <NavUser user={defaultData.user} />
       </SidebarFooter>
       <SidebarRail />

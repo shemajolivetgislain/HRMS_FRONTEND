@@ -62,7 +62,7 @@ function LeavesPage() {
       >
         <Button
           size="lg"
-          className="text-[12px] font-bold shadow-sm gap-2 capitalize"
+          className="text-xs font-bold shadow-sm gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           Request Leave
@@ -117,11 +117,11 @@ function LeavesPage() {
                                 <UserAvatar name={req.employeeName} size="sm" />
                               </TableCell>
                               <TableCell className="px-2">
-                                <Badge variant="muted" className="bg-muted/10 border-none font-bold text-[9px] uppercase tracking-wider">
+                                <Badge variant="muted" className="bg-muted/10 border-none font-bold text-xs uppercase tracking-wider">
                                   {req.type}
                                 </Badge>
                               </TableCell>
-                              <TableCell className="px-2 text-[12px] font-medium text-muted-foreground/60 tabular-nums">
+                              <TableCell className="px-2 text-xs font-medium text-muted-foreground/60 tabular-nums">
                                 {formatDate(req.startDate)} — {formatDate(req.endDate)}
                               </TableCell>
                               <TableCell className="px-2 text-center text-sm font-bold text-foreground/80 tabular-nums">{req.days}</TableCell>
@@ -173,9 +173,9 @@ function LeaveTabTrigger({ value, label, count }: { value: string; label: string
       value={value}
       className="relative flex items-center justify-between px-4 py-2.5 rounded-xl transition-all text-left data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm text-muted-foreground/50 hover:text-foreground/80 group overflow-hidden border border-transparent data-[state=active]:border-border/5"
     >
-      <span className="text-[12px] font-semibold tracking-tight">{label}</span>
+      <span className="text-xs font-semibold tracking-tight">{label}</span>
       {count !== undefined && (
-        <Badge variant="muted" className="h-5 min-w-[20px] px-1.5 bg-muted/10 border-none font-bold text-[9px] group-data-[state=active]:bg-primary/10 group-data-[state=active]:text-primary">
+        <Badge variant="muted" className="h-5 min-w-[20px] px-1.5 bg-muted/10 border-none font-bold text-xs group-data-[state=active]:bg-primary/10 group-data-[state=active]:text-primary">
           {count}
         </Badge>
       )}

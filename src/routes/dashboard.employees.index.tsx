@@ -87,14 +87,14 @@ function EmployeesPage() {
         <Button
           variant="outline"
           size="lg"
-          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Export List
         </Button>
         <Button
           size="lg"
-          className="text-[12px] font-bold gap-2 capitalize"
+          className="text-xs font-bold gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           Add Employee
@@ -255,7 +255,7 @@ function EmployeesPage() {
                           </TableCell>
                           <TableCell className="px-2">
                             <div className="w-24 space-y-1.5">
-                              <div className="flex items-center justify-between text-[9px] font-bold text-muted-foreground/40 uppercase">
+                              <div className="flex items-center justify-between text-xs font-bold text-muted-foreground/40 uppercase">
                                 <span>Track</span>
                                 <span>{user.onboardingProgress}%</span>
                               </div>
@@ -285,12 +285,12 @@ function EmployeesPage() {
                                   <Button
                                     variant="ghost"
                                     size="icon-sm"
-                                    className="rounded-lg   transition-opacity"
+                                    className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5 shadow-xs"
                                     aria-label="Employee actions"
                                   >
                                     <HugeiconsIcon
                                       icon={MoreHorizontalIcon}
-                                      className="size-4 opacity-50"
+                                      className="size-4 text-muted-foreground/60"
                                     />
                                   </Button>
                                 }

@@ -254,7 +254,7 @@ function RegisterPage() {
         )}
 
         <div className="pt-4 border-t border-border/5 text-center">
-          <p className="text-[12px] font-medium text-muted-foreground/60">
+          <p className="text-xs font-medium text-muted-foreground/60">
             Already have an account?{" "}
             <Link
               to="/auth/login"

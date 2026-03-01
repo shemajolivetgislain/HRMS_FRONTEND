@@ -51,7 +51,7 @@ export const StatCard = React.memo(function StatCard({
             <Badge
               variant="muted"
               className={cn(
-                "border-none px-1.5 py-0.5 rounded-md font-bold text-[9px] uppercase tracking-widest",
+                "border-none px-1.5 py-0.5 rounded-md font-bold text-xs uppercase tracking-widest",
                 up ? "text-success bg-success/10" : "text-destructive bg-destructive/10"
               )}
             >

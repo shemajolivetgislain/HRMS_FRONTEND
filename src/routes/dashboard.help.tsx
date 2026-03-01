@@ -173,7 +173,7 @@ function HelpPage() {
                             <p className="text-[14px] font-semibold text-foreground/90 group-hover:text-primary transition-colors">
                               {faq.q}
                             </p>
-                            <p className="text-[12px] font-medium text-muted-foreground/60 leading-relaxed">
+                            <p className="text-xs font-medium text-muted-foreground/60 leading-relaxed">
                               {faq.a}
                             </p>
                           </div>
@@ -208,7 +208,7 @@ function HelpPage() {
                   <Badge
                     variant="success"
                     showDot
-                    className="h-5 px-2 rounded-md font-bold text-[9px] uppercase tracking-widest border-none"
+                    className="h-5 px-2 rounded-md font-bold text-xs uppercase tracking-widest border-none"
                   >
                     Operational
                   </Badge>
@@ -293,7 +293,7 @@ function SupportCard({
           <h4 className="text-[15px] font-semibold text-foreground/90 tracking-tight">
             {title}
           </h4>
-          <p className="text-[12px] font-medium text-muted-foreground/50 leading-relaxed">
+          <p className="text-xs font-medium text-muted-foreground/50 leading-relaxed">
             {description}
           </p>
         </div>
@@ -312,7 +312,7 @@ function SupportCard({
 function StatusItem({ label, status }: { label: string; status: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-[12px] font-medium text-foreground/60">
+      <span className="text-xs font-medium text-foreground/60">
         {label}
       </span>
       <span className="text-xs font-bold text-success capitalize">

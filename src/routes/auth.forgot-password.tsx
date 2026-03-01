@@ -90,7 +90,7 @@ function ForgotPasswordPage() {
                   <span className="flex-shrink-0 w-4 h-4 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center text-xs font-bold text-primary">
                     {i + 1}
                   </span>
-                  <span className="text-[12px] font-medium text-muted-foreground/60 leading-tight">
+                  <span className="text-xs font-medium text-muted-foreground/60 leading-tight">
                     {step}
                   </span>
                 </li>

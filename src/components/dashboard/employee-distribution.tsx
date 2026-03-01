@@ -144,7 +144,7 @@ export const EmployeeDistribution = React.memo(function EmployeeDistribution() {
                           <tspan
                             x={viewBox.cx}
                             y={(viewBox.cy || 0) + 24}
-                            className="fill-muted-foreground/40 text-[9px] capitalize tracking-widest font-semibold"
+                            className="fill-muted-foreground/40 text-xs capitalize tracking-widest font-semibold"
                           >
                             {selectedData ? selectedData.type : "Total"}
                           </tspan>

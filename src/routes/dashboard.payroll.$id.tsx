@@ -52,7 +52,7 @@ function PayrollDetailsPage() {
         <Button
           variant="outline"
           size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          className="h-9 px-4 rounded-lg text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
           render={<Link to="/dashboard/payroll" />}
         >
           <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
@@ -60,7 +60,7 @@ function PayrollDetailsPage() {
         </Button>
         <Button
           size="sm"
-          className="h-9 px-4 rounded-lg text-[12px] font-bold shadow-sm gap-2 capitalize"
+          className="h-9 px-4 rounded-lg text-xs font-bold shadow-sm gap-2 capitalize"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Receipt
@@ -90,7 +90,7 @@ function PayrollDetailsPage() {
                           <Badge
                             variant={statusVariant}
                             showDot
-                            className="h-6 px-2.5 rounded-md font-bold text-[9px]"
+                            className="h-6 px-2.5 rounded-md font-bold text-xs"
                           >
                             {data.status}
                           </Badge>
@@ -139,7 +139,7 @@ function PayrollDetailsPage() {
                 </FrameContent>
                 <FrameFooter className="bg-success/[0.02] border-success/5">
                   <div className="flex items-center justify-between">
-                    <span className="text-[12px] font-bold text-success capitalize">
+                    <span className="text-xs font-bold text-success capitalize">
                       Total Gross
                     </span>
                     <span className="text-[14px] font-bold text-success tabular-nums">
@@ -180,7 +180,7 @@ function PayrollDetailsPage() {
                 </FrameContent>
                 <FrameFooter className="bg-destructive/[0.02] border-destructive/5">
                   <div className="flex items-center justify-between">
-                    <span className="text-[12px] font-bold text-destructive capitalize">
+                    <span className="text-xs font-bold text-destructive capitalize">
                       Total Deductions
                     </span>
                     <span className="text-[14px] font-bold text-destructive tabular-nums">
@@ -292,12 +292,12 @@ function LineItem({
 }) {
   return (
     <div className="flex items-center justify-between px-1">
-      <span className="text-[12px] font-medium text-foreground/60">
+      <span className="text-xs font-medium text-foreground/60">
         {label}
       </span>
       <span
         className={cn(
-          "text-[12px] font-semibold tabular-nums",
+          "text-xs font-semibold tabular-nums",
           negative ? "text-destructive/80" : "text-foreground/80",
         )}
       >
@@ -343,7 +343,7 @@ function TimelineStep({
       <div className="space-y-1 pt-0.5">
         <p
           className={cn(
-            "text-[12px] font-semibold leading-none",
+            "text-xs font-semibold leading-none",
             active ? "text-foreground/80" : "text-muted-foreground/40",
           )}
         >

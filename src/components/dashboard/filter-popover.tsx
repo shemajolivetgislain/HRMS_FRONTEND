@@ -29,7 +29,7 @@ export function FilterPopover() {
           <Button
             variant="outline"
             size="sm"
-            className="h-9 px-4 rounded-lg text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+            className="h-9 px-4 rounded-lg text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
           >
             <HugeiconsIcon icon={FilterIcon} size={14} strokeWidth={2} />
             Filter
@@ -88,7 +88,7 @@ export function FilterPopover() {
                   />
                   <label
                     htmlFor={dept}
-                    className="text-[12px] font-medium text-foreground/70 cursor-pointer group-hover:text-foreground transition-colors"
+                    className="text-xs font-medium text-foreground/70 cursor-pointer group-hover:text-foreground transition-colors"
                   >
                     {dept}
                   </label>

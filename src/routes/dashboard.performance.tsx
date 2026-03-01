@@ -64,7 +64,7 @@ function PerformancePage() {
                   <FrameTitle>Balanced Scorecard</FrameTitle>
                   <FrameDescription>Measurement targets by organizational perspective</FrameDescription>
                 </div>
-                <Badge variant="info" className="h-6 px-3 rounded-md font-bold text-[9px] uppercase tracking-widest">
+                <Badge variant="info" className="h-6 px-3 rounded-md font-bold text-xs uppercase tracking-widest">
                   Status: {activeReview.status}
                 </Badge>
               </FrameHeader>
@@ -75,13 +75,13 @@ function PerformancePage() {
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                         <div className="space-y-1.5 flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <Badge variant="muted" className="h-5 px-1.5 bg-primary/5 text-primary border-primary/10 text-[9px] font-bold uppercase">
+                            <Badge variant="muted" className="h-5 px-1.5 bg-primary/5 text-primary border-primary/10 text-xs font-bold uppercase">
                               {goal.perspective}
                             </Badge>
                             <span className="text-xs font-bold text-muted-foreground/30 tracking-widest">WEIGHT: {goal.weight}%</span>
                           </div>
                           <h4 className="text-[14px] font-semibold text-foreground/90 truncate">{goal.objective}</h4>
-                          <p className="text-[12px] text-muted-foreground/60 flex items-center gap-1.5">
+                          <p className="text-xs text-muted-foreground/60 flex items-center gap-1.5">
                             <HugeiconsIcon icon={TargetIcon} size={12} strokeWidth={2.5} />
                             Target: {goal.target}
                           </p>
@@ -89,7 +89,7 @@ function PerformancePage() {
 
                         <div className="flex items-center gap-8 shrink-0">
                           <div className="text-right space-y-1.5">
-                            <p className="text-[9px] font-bold text-muted-foreground/30 uppercase tracking-widest">Rating</p>
+                            <p className="text-xs font-bold text-muted-foreground/30 uppercase tracking-widest">Rating</p>
                             <div className="flex items-center gap-1">
                               {[1, 2, 3, 4].map((star) => (
                                 <div 
@@ -124,7 +124,7 @@ function PerformancePage() {
                   <p className="text-xs font-bold text-muted-foreground/40 uppercase tracking-[0.2em]">Overall Score</p>
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl font-light tracking-tighter text-primary">3.5</span>
-                    <span className="text-[12px] font-bold text-muted-foreground/40 uppercase">/ 4.0</span>
+                    <span className="text-xs font-bold text-muted-foreground/40 uppercase">/ 4.0</span>
                   </div>
                 </div>
                 <div className="space-y-2">

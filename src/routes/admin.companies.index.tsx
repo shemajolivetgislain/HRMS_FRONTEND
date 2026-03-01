@@ -34,11 +34,13 @@ import {
   PencilEdit02Icon,
   Cancel01Icon,
   Tick01Icon,
+  DashboardSquare01Icon,
 } from "@hugeicons/core-free-icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
@@ -71,14 +73,14 @@ function CompaniesManagementPage() {
         <Button
           variant="outline"
           size="lg"
-          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Export Data
         </Button>
         <Button
           size="lg"
-          className="text-[12px] font-bold gap-2 capitalize"
+          className="text-xs font-bold gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           Register New
@@ -154,10 +156,10 @@ function CompaniesManagementPage() {
                           </div>
                         </TableCell>
                         <TableCell className="px-2">
-                          <span className="text-[12px] font-bold text-foreground/60 tabular-nums">{company.tin}</span>
+                          <span className="text-xs font-bold text-foreground/60 tabular-nums">{company.tin}</span>
                         </TableCell>
                         <TableCell className="px-2">
-                          <Badge variant="muted" className="bg-muted/10 border-none font-bold text-[9px] uppercase tracking-wider">
+                          <Badge variant="muted" className="bg-muted/10 border-none font-bold text-xs uppercase tracking-wider">
                             {company.sector}
                           </Badge>
                         </TableCell>
@@ -173,20 +175,25 @@ function CompaniesManagementPage() {
                           <DropdownMenu>
                             <DropdownMenuTrigger
                               render={
-                                <Button variant="ghost" size="icon-sm" className="  transition-opacity">
-                                  <HugeiconsIcon icon={MoreHorizontalIcon} size={16} className="text-muted-foreground/40" />
+                                <Button variant="ghost" size="icon-sm" className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5 shadow-xs">
+                                  <HugeiconsIcon icon={MoreHorizontalIcon} size={16} className="text-muted-foreground/60" />
                                 </Button>
                               }
                             />
-                            <DropdownMenuContent align="end" className="w-48 rounded-xl border-border/40 shadow-xl">
+                            <DropdownMenuContent align="end" className="w-52 rounded-xl border-border/40 shadow-xl">
                               <DropdownMenuItem render={<Link to="/admin/companies/$id" params={{ id: company.id }} />}>
                                 <HugeiconsIcon icon={ViewIcon} className="size-4 mr-2" />
                                 <span>View Details</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem render={<Link to="/dashboard" />}>
+                                <HugeiconsIcon icon={DashboardSquare01Icon} className="size-4 mr-2" />
+                                <span>Go to Dashboard</span>
                               </DropdownMenuItem>
                               <DropdownMenuItem>
                                 <HugeiconsIcon icon={PencilEdit02Icon} className="size-4 mr-2" />
                                 <span>Edit Profile</span>
                               </DropdownMenuItem>
+                              <DropdownMenuSeparator className="bg-border/5" />
                               {company.status === "active" ? (
                                 <DropdownMenuItem className="text-destructive focus:bg-destructive/10">
                                   <HugeiconsIcon icon={Cancel01Icon} className="size-4 mr-2" />

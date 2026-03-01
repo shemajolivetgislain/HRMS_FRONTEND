@@ -108,7 +108,7 @@ function SystemLogsPage() {
                     {filtered.map((log) => (
                       <TableRow key={log.id} className="border-border/5 hover:bg-muted/5 transition-colors group">
                         <TableCell className="pl-6 py-4">
-                          <span className="text-[12px] font-bold text-muted-foreground/40 tabular-nums">{log.timestamp}</span>
+                          <span className="text-xs font-bold text-muted-foreground/40 tabular-nums">{log.timestamp}</span>
                         </TableCell>
                         <TableCell className="px-2">
                           <Badge 
@@ -131,7 +131,7 @@ function SystemLogsPage() {
                             <div className="size-6 rounded-lg bg-muted/10 flex items-center justify-center text-muted-foreground/40">
                               <HugeiconsIcon icon={InformationCircleIcon} size={12} />
                             </div>
-                            <span className="text-[12px] font-bold text-foreground/60">{log.actor}</span>
+                            <span className="text-xs font-bold text-foreground/60">{log.actor}</span>
                           </div>
                         </TableCell>
                         <TableCell className="text-right pr-6">

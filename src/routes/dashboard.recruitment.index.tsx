@@ -110,14 +110,14 @@ function RecruitmentPage() {
         <Button
           variant="outline"
           size="lg"
-          className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Report
         </Button>
         <Button
           size="lg"
-          className="text-[12px] font-bold gap-2 capitalize"
+          className="text-xs font-bold gap-2 capitalize"
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
           New Opening
@@ -272,12 +272,12 @@ function RecruitmentPage() {
                                   <Button
                                     variant="ghost"
                                     size="icon-sm"
-                                    className="rounded-lg   transition-opacity"
+                                    className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5 shadow-xs"
                                     aria-label="Job actions"
                                   >
                                     <HugeiconsIcon
                                       icon={MoreHorizontalIcon}
-                                      className="size-4 opacity-50"
+                                      className="size-4 text-muted-foreground/60"
                                     />
                                   </Button>
                                 }
@@ -331,7 +331,7 @@ function RecruitmentPage() {
                     Showing {filteredJobs.length} total active pipelines
                   </p>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     className="text-xs font-bold capitalize text-primary/80 hover:text-primary h-7"
                   >
@@ -372,7 +372,7 @@ function RecruitmentPage() {
                             <p className="text-sm font-semibold text-foreground/90 leading-tight truncate">
                               {candidate.name}
                             </p>
-                            <span className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest shrink-0 whitespace-nowrap mt-0.5">
+                            <span className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest shrink-0 whitespace-nowrap mt-0.5">
                               {candidate.time}
                             </span>
                           </div>
@@ -420,7 +420,7 @@ function RecruitmentPage() {
                 </div>
               </div>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="icon-sm"
                 className="rounded-lg text-primary hover:bg-primary/10"
               >

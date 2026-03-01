@@ -132,20 +132,20 @@ function DocumentsPage() {
                           </div>
                         </TableCell>
                         <TableCell className="px-2">
-                          <Badge variant="muted" className="bg-muted/10 border-none font-bold text-[9px] uppercase tracking-wider">
+                          <Badge variant="muted" className="bg-muted/10 border-none font-bold text-xs uppercase tracking-wider">
                             {doc.type}
                           </Badge>
                         </TableCell>
                         <TableCell className="px-2 text-sm font-medium text-foreground/70">{doc.employeeName}</TableCell>
-                        <TableCell className="px-2 text-[12px] font-bold text-muted-foreground/40 tabular-nums">
+                        <TableCell className="px-2 text-xs font-bold text-muted-foreground/40 tabular-nums">
                           {formatDate(doc.uploadedAt)}
                         </TableCell>
                         <TableCell className="text-right pr-6">
                           <div className="flex items-center justify-end gap-1">
-                            <Button variant="ghost" size="icon-sm" className="  transition-opacity" aria-label="Download">
+                            <Button variant="outline" size="icon-sm" className="  transition-opacity" aria-label="Download">
                               <HugeiconsIcon icon={Download01Icon} size={16} className="text-muted-foreground/40" />
                             </Button>
-                            <Button variant="ghost" size="icon-sm" className="  transition-opacity" aria-label="More">
+                            <Button variant="outline" size="icon-sm" className="  transition-opacity" aria-label="More">
                               <HugeiconsIcon icon={MoreHorizontalIcon} size={16} className="text-muted-foreground/40" />
                             </Button>
                           </div>

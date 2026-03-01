@@ -81,14 +81,14 @@ function AnalyticsPage() {
           <Button
             variant="outline"
             size="lg"
-            className="text-[12px] font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+            className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
           >
             <HugeiconsIcon icon={Calendar01Icon} size={14} strokeWidth={2} />
             H1 2024
           </Button>
           <Button
             size="lg"
-            className="text-[12px] font-bold gap-2 capitalize"
+            className="text-xs font-bold gap-2 capitalize"
           >
             <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
             Export Data
@@ -124,7 +124,7 @@ function AnalyticsPage() {
                   <div className="flex items-center gap-2">
                     <Badge
                       variant="success"
-                      className="h-5 rounded-md text-[9px] font-bold"
+                      className="h-5 rounded-md text-xs font-bold"
                     >
                       LATEST UPDATE
                     </Badge>
