@@ -100,7 +100,7 @@ function DocumentsPage() {
                     className="pl-9 h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-xs"
                   />
                 </div>
-                <Button variant="outline" size="sm" className="gap-2 font-bold text-[11px]">
+                <Button variant="outline" size="sm" className="gap-2 font-bold text-xs">
                   <HugeiconsIcon icon={Sorting05Icon} size={14} />
                   Category
                 </Button>
@@ -110,11 +110,11 @@ function DocumentsPage() {
                 <Table>
                   <TableHeader className="bg-muted/10">
                     <TableRow className="hover:bg-transparent border-border/5">
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">Document</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Type</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Owner</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Uploaded</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">Action</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">Document</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Type</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Owner</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Uploaded</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">Action</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -126,8 +126,8 @@ function DocumentsPage() {
                               <HugeiconsIcon icon={File02Icon} size={16} />
                             </div>
                             <div>
-                              <p className="text-[13px] font-semibold text-foreground/90 leading-none">{doc.fileName}</p>
-                              <p className="text-[11px] font-medium text-muted-foreground/40 mt-1 uppercase tracking-tight">{doc.fileSize}</p>
+                              <p className="text-sm font-semibold text-foreground/90 leading-none">{doc.fileName}</p>
+                              <p className="text-xs font-medium text-muted-foreground/40 mt-1 uppercase tracking-tight">{doc.fileSize}</p>
                             </div>
                           </div>
                         </TableCell>
@@ -136,16 +136,16 @@ function DocumentsPage() {
                             {doc.type}
                           </Badge>
                         </TableCell>
-                        <TableCell className="px-2 text-[13px] font-medium text-foreground/70">{doc.employeeName}</TableCell>
+                        <TableCell className="px-2 text-sm font-medium text-foreground/70">{doc.employeeName}</TableCell>
                         <TableCell className="px-2 text-[12px] font-bold text-muted-foreground/40 tabular-nums">
                           {formatDate(doc.uploadedAt)}
                         </TableCell>
                         <TableCell className="text-right pr-6">
                           <div className="flex items-center justify-end gap-1">
-                            <Button variant="ghost" size="icon-sm" className="opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Download">
+                            <Button variant="ghost" size="icon-sm" className="  transition-opacity" aria-label="Download">
                               <HugeiconsIcon icon={Download01Icon} size={16} className="text-muted-foreground/40" />
                             </Button>
-                            <Button variant="ghost" size="icon-sm" className="opacity-0 group-hover:opacity-100 transition-opacity" aria-label="More">
+                            <Button variant="ghost" size="icon-sm" className="  transition-opacity" aria-label="More">
                               <HugeiconsIcon icon={MoreHorizontalIcon} size={16} className="text-muted-foreground/40" />
                             </Button>
                           </div>
@@ -156,7 +156,7 @@ function DocumentsPage() {
                 </Table>
               </FrameContent>
               <FrameFooter>
-                <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+                <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
                   Secure storage audited daily
                 </span>
               </FrameFooter>

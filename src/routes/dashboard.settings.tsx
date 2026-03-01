@@ -81,7 +81,7 @@ function SettingsPage() {
         >
           <div className="w-[240px] flex flex-col bg-muted/5 border-r border-border/5">
             <div className="px-6 py-6 border-b border-border/5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
                 System Settings
               </p>
             </div>
@@ -91,14 +91,14 @@ function SettingsPage() {
               <SettingsTabTrigger value="appearance" icon={Layout01Icon} title="Appearance" />
               <SettingsTabTrigger value="notifications" icon={Notification01Icon} title="Notifications" />
               <div className="px-4 py-4 mt-2">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
                   Business Logic
                 </p>
               </div>
               <SettingsTabTrigger value="tax" icon={Coins01Icon} title="Tax & Finance" />
               <SettingsTabTrigger value="policy" icon={File02Icon} title="Policies" />
               <div className="px-4 py-4 mt-2">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
                   Security & Team
                 </p>
               </div>
@@ -114,10 +114,10 @@ function SettingsPage() {
                 <div className="space-y-6">
                   <div className="space-y-1">
                     <h3 className="text-lg font-semibold text-foreground/90">Company Profile</h3>
-                    <p className="text-[13px] font-medium text-muted-foreground/50">Manage organizational identity and branding.</p>
+                    <p className="text-sm font-medium text-muted-foreground/50">Manage organizational identity and branding.</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <SettingsField label="Legal Entity Name" defaultValue="Acme Global Inc." />
+                    <SettingsField label="Legal Entity Name" defaultValue="Igihe Logistics Inc." />
                     <SettingsField label="TIN Number" defaultValue="123-456-789" />
                   </div>
                 </div>
@@ -128,15 +128,15 @@ function SettingsPage() {
                 <section className="space-y-6">
                   <div className="space-y-1">
                     <h3 className="text-lg font-semibold text-foreground/90">Tax Brackets (RRA)</h3>
-                    <p className="text-[13px] font-medium text-muted-foreground/50">Income tax tiers for localized payroll calculation.</p>
+                    <p className="text-sm font-medium text-muted-foreground/50">Income tax tiers for localized payroll calculation.</p>
                   </div>
                   <div className="border border-border/5 rounded-2xl overflow-hidden">
                     <table className="w-full text-left text-sm">
                       <thead className="bg-muted/10 border-b border-border/5">
                         <tr>
-                          <th className="px-6 py-3 font-bold text-[10px] uppercase tracking-widest text-muted-foreground/40">Tier</th>
-                          <th className="px-6 py-3 font-bold text-[10px] uppercase tracking-widest text-muted-foreground/40">Range (USD)</th>
-                          <th className="px-6 py-3 font-bold text-[10px] uppercase tracking-widest text-muted-foreground/40">Rate</th>
+                          <th className="px-6 py-3 font-bold text-xs uppercase tracking-widest text-muted-foreground/40">Tier</th>
+                          <th className="px-6 py-3 font-bold text-xs uppercase tracking-widest text-muted-foreground/40">Range (USD)</th>
+                          <th className="px-6 py-3 font-bold text-xs uppercase tracking-widest text-muted-foreground/40">Rate</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border/5">
@@ -157,7 +157,7 @@ function SettingsPage() {
                 <section className="pt-10 border-t border-border/5 space-y-6">
                   <div className="space-y-1">
                     <h3 className="text-lg font-semibold text-foreground/90">Statutory Deductions</h3>
-                    <p className="text-[13px] font-medium text-muted-foreground/50">Configure pension and healthcare contribution rates.</p>
+                    <p className="text-sm font-medium text-muted-foreground/50">Configure pension and healthcare contribution rates.</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <SettingsField label="RSSB Pension (Employee)" defaultValue={`${taxConfig.rssbEmployee}%`} />
@@ -172,7 +172,7 @@ function SettingsPage() {
               <TabsContent value="policy" className="mt-0 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
                 <div className="space-y-1">
                   <h3 className="text-lg font-semibold text-foreground/90">Compliance Policies</h3>
-                  <p className="text-[13px] font-medium text-muted-foreground/50">Define mandatory documents required for employee status.</p>
+                  <p className="text-sm font-medium text-muted-foreground/50">Define mandatory documents required for employee status.</p>
                 </div>
                 <div className="divide-y divide-border/5 border-y border-border/5">
                   <ToggleRow icon={File02Icon} title="Onboarding Policy" description="Enforce CV, ID, Contract, Criminal Record, and Medical Report for all new hires." defaultChecked />
@@ -184,7 +184,7 @@ function SettingsPage() {
               <TabsContent value="appearance" className="mt-0">
                 <div className="space-y-1">
                   <h3 className="text-lg font-semibold text-foreground/90">Interface Theme</h3>
-                  <p className="text-[13px] font-medium text-muted-foreground/50">Customize the dashboard aesthetic.</p>
+                  <p className="text-sm font-medium text-muted-foreground/50">Customize the dashboard aesthetic.</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                   <ThemeCard active={theme === "light"} onClick={() => setTheme("light")} icon={Sun01Icon} title="Light" description="Clean & sharp" />
@@ -197,17 +197,17 @@ function SettingsPage() {
                 <div className="flex items-end justify-between">
                   <div className="space-y-1">
                     <h3 className="text-lg font-semibold text-foreground/90">Administrator Team</h3>
-                    <p className="text-[13px] font-medium text-muted-foreground/50">Manage users with elevated system permissions.</p>
+                    <p className="text-sm font-medium text-muted-foreground/50">Manage users with elevated system permissions.</p>
                   </div>
-                  <Button size="sm" className="h-8 px-4 text-[11px] font-bold rounded-lg shadow-sm">Invite Admin</Button>
+                  <Button size="sm" className="h-8 px-4 text-xs font-bold rounded-lg shadow-sm">Invite Admin</Button>
                 </div>
                 <div className="divide-y divide-border/5 border-y border-border/5">
                   <div className="flex items-center justify-between py-4">
                     <div className="flex items-center gap-4">
                       <UserAvatar name="Admin User" size="sm" />
                       <div>
-                        <p className="text-[13px] font-semibold text-foreground/90 leading-none">Admin User</p>
-                        <p className="text-[11px] font-medium text-muted-foreground/40 mt-1">admin@acme.com</p>
+                        <p className="text-sm font-semibold text-foreground/90 leading-none">Admin User</p>
+                        <p className="text-xs font-medium text-muted-foreground/40 mt-1">admin@igihe.rw</p>
                       </div>
                     </div>
                     <Badge variant="success" showDot className="h-5 px-2 text-[9px] uppercase font-bold border-none">Active</Badge>
@@ -226,7 +226,7 @@ function SettingsTabTrigger({ value, icon: Icon, title }: { value: string; icon:
   return (
     <TabsTrigger
       value={value}
-      className="relative w-full flex items-center gap-3 px-4 py-2 rounded-md transition-all text-left data-[state=active]:text-primary text-muted-foreground/50 hover:text-foreground/80 group overflow-hidden"
+      className="relative w-full flex items-center justify-start gap-3 px-4 py-2 rounded-md transition-all text-left data-[state=active]:text-primary text-muted-foreground/50 hover:text-foreground/80 group overflow-hidden"
     >
       <HugeiconsIcon
         icon={Icon}
@@ -234,7 +234,7 @@ function SettingsTabTrigger({ value, icon: Icon, title }: { value: string; icon:
         strokeWidth={2}
         className="group-data-[state=active]:text-primary transition-colors"
       />
-      <span className="text-[13px] font-semibold tracking-tight">{title}</span>
+      <span className="text-sm font-semibold tracking-tight">{title}</span>
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-full opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
     </TabsTrigger>
   );
@@ -243,7 +243,7 @@ function SettingsTabTrigger({ value, icon: Icon, title }: { value: string; icon:
 function SettingsField({ label, defaultValue, type = "text", prefix, icon: Icon, className }: { label: string; defaultValue: string; type?: string; prefix?: string; icon?: any; className?: string }) {
   return (
     <div className={cn("space-y-2", className)}>
-      <Label className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/40">{label}</Label>
+      <Label className="text-xs font-bold uppercase tracking-[0.15em] text-muted-foreground/40">{label}</Label>
       <div className="relative group/input">
         {prefix && (
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] font-bold text-muted-foreground/30">{prefix}</span>
@@ -251,7 +251,7 @@ function SettingsField({ label, defaultValue, type = "text", prefix, icon: Icon,
         <Input
           defaultValue={defaultValue}
           type={type}
-          className={cn("h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-[13px] font-medium shadow-none", prefix ? "pl-16" : "pl-3")}
+          className={cn("h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-sm font-medium shadow-none", prefix ? "pl-16" : "pl-3")}
         />
         {Icon && (
           <HugeiconsIcon icon={Icon} size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/20 group-hover/input:text-muted-foreground/40 transition-colors" />
@@ -288,8 +288,8 @@ function ThemeCard({ active, onClick, icon: Icon, title, description }: { active
         <HugeiconsIcon icon={Icon} size={18} strokeWidth={2} />
       </div>
       <div>
-        <p className={cn("text-[13px] font-semibold leading-none", active ? "text-foreground" : "text-muted-foreground/70")}>{title}</p>
-        <p className="text-[11px] font-medium text-muted-foreground/40 mt-1.5">{description}</p>
+        <p className={cn("text-sm font-semibold leading-none", active ? "text-foreground" : "text-muted-foreground/70")}>{title}</p>
+        <p className="text-xs font-medium text-muted-foreground/40 mt-1.5">{description}</p>
       </div>
     </button>
   );

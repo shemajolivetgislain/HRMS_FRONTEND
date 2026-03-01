@@ -102,12 +102,12 @@ function LeavesPage() {
                       <Table>
                         <TableHeader className="bg-muted/10">
                           <TableRow className="hover:bg-transparent border-border/5">
-                            <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">Employee</TableHead>
-                            <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Type</TableHead>
-                            <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Duration</TableHead>
-                            <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-center">Days</TableHead>
-                            <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Status</TableHead>
-                            <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">Action</TableHead>
+                            <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">Employee</TableHead>
+                            <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Type</TableHead>
+                            <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Duration</TableHead>
+                            <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-center">Days</TableHead>
+                            <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Status</TableHead>
+                            <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">Action</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -124,7 +124,7 @@ function LeavesPage() {
                               <TableCell className="px-2 text-[12px] font-medium text-muted-foreground/60 tabular-nums">
                                 {formatDate(req.startDate)} — {formatDate(req.endDate)}
                               </TableCell>
-                              <TableCell className="px-2 text-center text-[13px] font-bold text-foreground/80 tabular-nums">{req.days}</TableCell>
+                              <TableCell className="px-2 text-center text-sm font-bold text-foreground/80 tabular-nums">{req.days}</TableCell>
                               <TableCell className="px-2">
                                 <Badge variant={req.status === "approved" ? "success" : req.status === "pending" ? "warning" : "destructive"} showDot>
                                   {req.status}
@@ -141,7 +141,7 @@ function LeavesPage() {
                                     </Button>
                                   </div>
                                 ) : (
-                                  <Button variant="ghost" size="icon-sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <Button variant="ghost" size="icon-sm" className="  transition-opacity">
                                     <HugeiconsIcon icon={InformationCircleIcon} size={14} className="text-muted-foreground/40" />
                                   </Button>
                                 )}
@@ -152,7 +152,7 @@ function LeavesPage() {
                       </Table>
                     </FrameContent>
                     <FrameFooter>
-                      <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+                      <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
                         Total {requests.length} records processed
                       </span>
                     </FrameFooter>

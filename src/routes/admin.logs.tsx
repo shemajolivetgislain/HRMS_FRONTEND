@@ -87,7 +87,7 @@ function SystemLogsPage() {
                     className="pl-9 h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-xs"
                   />
                 </div>
-                <Button variant="outline" size="sm" className="gap-2 font-bold text-[11px]">
+                <Button variant="outline" size="sm" className="gap-2 font-bold text-xs">
                   <HugeiconsIcon icon={FilterIcon} size={14} />
                   Levels
                 </Button>
@@ -97,11 +97,11 @@ function SystemLogsPage() {
                 <Table>
                   <TableHeader className="bg-muted/10">
                     <TableRow className="hover:bg-transparent border-border/5">
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">Timestamp</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Level</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Event</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Actor</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">IP Address</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">Timestamp</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Level</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Event</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Actor</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">IP Address</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -124,7 +124,7 @@ function SystemLogsPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="px-2">
-                          <p className="text-[13px] font-medium text-foreground/80 leading-relaxed max-w-md">{log.event}</p>
+                          <p className="text-sm font-medium text-foreground/80 leading-relaxed max-w-md">{log.event}</p>
                         </TableCell>
                         <TableCell className="px-2">
                           <div className="flex items-center gap-2">
@@ -135,7 +135,7 @@ function SystemLogsPage() {
                           </div>
                         </TableCell>
                         <TableCell className="text-right pr-6">
-                          <span className="text-[11px] font-mono text-muted-foreground/30 tabular-nums">{log.ipAddress}</span>
+                          <span className="text-xs font-mono text-muted-foreground/30 tabular-nums">{log.ipAddress}</span>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -145,7 +145,7 @@ function SystemLogsPage() {
               <FrameFooter>
                 <div className="flex items-center gap-2 text-muted-foreground/40">
                   <HugeiconsIcon icon={Shield01Icon} size={14} />
-                  <span className="text-[10px] font-bold capitalize tracking-widest">Signed & Verified by Secure Engine</span>
+                  <span className="text-xs font-bold capitalize tracking-widest">Signed & Verified by Secure Engine</span>
                 </div>
               </FrameFooter>
             </FramePanel>

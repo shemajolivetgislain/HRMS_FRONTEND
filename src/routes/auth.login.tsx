@@ -36,7 +36,7 @@ function LoginPage() {
         <div className="space-y-2">
           <Label
             htmlFor="email"
-            className="text-[11px] font-semibold text-muted-foreground/60 capitalize"
+            className="text-xs font-semibold text-muted-foreground/60 capitalize"
           >
             Email
           </Label>
@@ -52,13 +52,13 @@ function LoginPage() {
           <div className="flex items-center justify-between">
             <Label
               htmlFor="password"
-              className="text-[11px] font-semibold text-muted-foreground/60 capitalize"
+              className="text-xs font-semibold text-muted-foreground/60 capitalize"
             >
               Password
             </Label>
             <Link
               to="/auth/forgot-password"
-              className="text-[11px] text-primary font-semibold hover:underline"
+              className="text-xs text-primary font-semibold hover:underline"
             >
               Forgot?
             </Link>
@@ -115,7 +115,7 @@ function LoginPage() {
           <button
             type="button"
             onClick={() => setIsAdmin(!isAdmin)}
-            className="text-[11px] font-semibold text-muted-foreground/40 hover:text-primary transition-all flex items-center gap-2 bg-muted/5 px-4 py-1.5 rounded-full"
+            className="text-xs font-semibold text-muted-foreground/40 hover:text-primary transition-all flex items-center gap-2 bg-muted/5 px-4 py-1.5 rounded-full"
           >
             <HugeiconsIcon
               icon={isAdmin ? UserCircle02Icon : Shield01Icon}

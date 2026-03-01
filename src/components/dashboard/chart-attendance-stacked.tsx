@@ -59,7 +59,7 @@ export const ChartAttendanceStacked = React.memo(function ChartAttendanceStacked
                   className="h-1.5 w-1.5 rounded-full shrink-0"
                   style={{ background: cfg.color }}
                 />
-                <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+                <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
                   {cfg.label}
                 </span>
               </div>

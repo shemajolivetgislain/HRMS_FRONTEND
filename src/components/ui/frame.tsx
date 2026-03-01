@@ -46,7 +46,7 @@ function FrameTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "text-[13px] font-semibold text-foreground/80 tracking-tight leading-none capitalize",
+        "text-sm font-semibold text-foreground/80 tracking-tight leading-none capitalize",
         className,
       )}
       data-slot="frame-panel-title"
@@ -62,7 +62,7 @@ function FrameDescription({
   return (
     <div
       className={cn(
-        "text-[11px] text-muted-foreground/50 font-medium mt-1.5 leading-none tracking-tight",
+        "text-xs text-muted-foreground/50 font-medium mt-1.5 leading-none tracking-tight",
         className,
       )}
       data-slot="frame-panel-description"

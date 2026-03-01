@@ -80,18 +80,18 @@ function RegisterPage() {
             }}
           >
             <div className="space-y-2">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40">
+              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                 Legal Entity Name
               </Label>
               <Input
-                placeholder="e.g. Acme Global Inc."
+                placeholder="e.g. Igihe Logistics Inc."
                 className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all shadow-none text-sm"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                   TIN Number
                 </Label>
                 <Input
@@ -100,7 +100,7 @@ function RegisterPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                   Sector
                 </Label>
                 <Select>
@@ -118,7 +118,7 @@ function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40">
+              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                 Company Unique Password
               </Label>
               <div className="relative">
@@ -138,7 +138,7 @@ function RegisterPage() {
                   />
                 </button>
               </div>
-              <p className="text-[10px] text-muted-foreground/40 font-medium leading-tight pt-1 italic">
+              <p className="text-xs text-muted-foreground/40 font-medium leading-tight pt-1 italic">
                 * This will be required for all staff members during initial
                 setup.
               </p>
@@ -168,7 +168,7 @@ function RegisterPage() {
             }}
           >
             <div className="space-y-2">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40">
+              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                 Full Name
               </Label>
               <Input
@@ -177,7 +177,7 @@ function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40">
+              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                 Work Email
               </Label>
               <Input
@@ -187,7 +187,7 @@ function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40">
+              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                 Personal Admin Password
               </Label>
               <div className="relative">
@@ -238,7 +238,7 @@ function RegisterPage() {
               <h3 className="text-lg font-semibold text-foreground/90">
                 Setup Successful
               </h3>
-              <p className="text-[13px] font-medium text-muted-foreground/50 leading-relaxed px-4">
+              <p className="text-sm font-medium text-muted-foreground/50 leading-relaxed px-4">
                 Your organization account has been submitted. Check your email
                 for a verification link to activate your dashboard.
               </p>
@@ -295,12 +295,12 @@ function Step({
         {completed ? (
           <HugeiconsIcon icon={Tick01Icon} size={12} strokeWidth={3} />
         ) : (
-          <span className="text-[11px] font-bold tabular-nums">{number}</span>
+          <span className="text-xs font-bold tabular-nums">{number}</span>
         )}
       </div>
       <span
         className={cn(
-          "text-[10px] font-bold uppercase tracking-tight",
+          "text-xs font-bold uppercase tracking-tight",
           active ? "text-foreground/80" : "text-muted-foreground/30",
         )}
       >

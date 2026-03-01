@@ -78,7 +78,7 @@ export const EmployeeDistribution = React.memo(function EmployeeDistribution() {
               <ToggleGroupItem
                 key={d.code}
                 value={d.code}
-                className="flex-1 text-[10px] h-7 px-2 font-semibold capitalize tracking-tight data-[state=on]:bg-background data-[state=on]:shadow-xs"
+                className="flex-1 text-xs h-7 px-2 font-semibold capitalize tracking-tight data-[state=on]:bg-background data-[state=on]:shadow-xs"
               >
                 {d.code}
               </ToggleGroupItem>
@@ -177,7 +177,7 @@ export const EmployeeDistribution = React.memo(function EmployeeDistribution() {
               />
               <span
                 className={cn(
-                  "text-[10px] font-semibold capitalize tracking-tight truncate transition-colors duration-300",
+                  "text-xs font-semibold capitalize tracking-tight truncate transition-colors duration-300",
                   selected === item.code
                     ? "text-foreground/80"
                     : "text-muted-foreground/30",

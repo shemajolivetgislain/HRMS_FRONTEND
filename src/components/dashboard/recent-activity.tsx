@@ -15,42 +15,42 @@ import { UserAvatar } from "@/components/dashboard/user-avatar";
 
 const activities = [
   {
-    user: "Sarah Jenkins",
-    avatar: "/avatars/01.png",
-    action: "approved a new company registration for",
-    target: "TechFlow Solutions",
+    user: "System Admin",
+    avatar: "",
+    action: "approved onboarding for",
+    target: "Igihe Logistics",
     time: "2m ago",
     status: "online" as const,
   },
   {
-    user: "Michael Chen",
-    avatar: "/avatars/02.png",
-    action: "updated billing settings for",
-    target: "Acme Corp",
+    user: "HR Manager",
+    avatar: "",
+    action: "processed monthly payroll for",
+    target: "Vision Finance",
     time: "15m ago",
     status: "away" as const,
   },
   {
-    user: "Emma Davis",
-    avatar: "/avatars/03.png",
-    action: "resolved a support ticket for",
-    target: "Global Industries",
+    user: "System",
+    avatar: "",
+    action: "generated tax compliance report for",
+    target: "Kivu Heights",
     time: "1h ago",
     status: "online" as const,
   },
   {
-    user: "System",
-    avatar: "/avatars/04.png",
-    action: "automatically rotated API keys for",
-    target: "Payment Gateway",
+    user: "Recruitment Team",
+    avatar: "",
+    action: "shortlisted 5 candidates for",
+    target: "Igihe Logistics",
     time: "3h ago",
     status: "online" as const,
   },
   {
-    user: "David Wilson",
-    avatar: "/avatars/05.png",
-    action: "suspended user account in",
-    target: "Healthcare Plus",
+    user: "System Admin",
+    avatar: "",
+    action: "suspended user access for",
+    target: "Vision Finance",
     time: "5h ago",
     status: "offline" as const,
   },
@@ -89,7 +89,7 @@ export const RecentActivity = React.memo(function RecentActivity() {
                   className="shrink-0 mt-0.5 rounded-lg shadow-sm"
                 />
                 <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                  <p className="text-[13px] leading-relaxed text-muted-foreground/70">
+                  <p className="text-sm leading-relaxed text-muted-foreground/70">
                     <span className="font-semibold text-foreground/90">
                       {activity.user}
                     </span>{" "}
@@ -98,7 +98,7 @@ export const RecentActivity = React.memo(function RecentActivity() {
                       {activity.target}
                     </span>
                   </p>
-                  <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-[0.1em] mt-1 tabular-nums">
+                  <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-[0.1em] mt-1 tabular-nums">
                     {activity.time}
                   </span>
                 </div>
@@ -108,7 +108,7 @@ export const RecentActivity = React.memo(function RecentActivity() {
         </FrameContent>
 
         <FrameFooter>
-          <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+          <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
             Showing {activities.length} of 128 events
           </span>
         </FrameFooter>

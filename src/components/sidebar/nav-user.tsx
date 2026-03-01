@@ -63,7 +63,7 @@ export function NavUser({
               <span className="truncate font-semibold tracking-tight text-foreground/90">
                 {user.name}
               </span>
-              <span className="truncate text-[11px] font-medium text-muted-foreground/70">
+              <span className="truncate text-xs font-medium text-muted-foreground/70">
                 {user.email}
               </span>
             </div>
@@ -89,7 +89,7 @@ export function NavUser({
                   />
                   <div className="grid flex-1 text-start text-sm leading-tight">
                     <span className="truncate font-semibold">{user.name}</span>
-                    <span className="text-muted-foreground truncate text-[11px]">
+                    <span className="text-muted-foreground truncate text-xs">
                       {user.email}
                     </span>
                   </div>
@@ -113,7 +113,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuLabel className="px-2 py-1.5 text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
+              <DropdownMenuLabel className="px-2 py-1.5 text-xs font-bold text-muted-foreground/40 uppercase tracking-widest">
                 Theme
               </DropdownMenuLabel>
               <DropdownMenuItem onClick={() => setTheme("light")}>

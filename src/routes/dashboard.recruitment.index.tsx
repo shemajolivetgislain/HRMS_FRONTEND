@@ -186,7 +186,7 @@ function RecruitmentPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-9 px-4 rounded-lg border-border/40 gap-2 text-[11px] font-bold flex-1 sm:flex-none"
+                      className="h-9 px-4 rounded-lg border-border/40 gap-2 text-xs font-bold flex-1 sm:flex-none"
                     >
                       <HugeiconsIcon icon={FilterIcon} size={14} />
                       Filter Roles
@@ -198,16 +198,16 @@ function RecruitmentPage() {
                   <Table>
                     <TableHeader className="bg-muted/10">
                       <TableRow className="hover:bg-transparent border-border/5">
-                        <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-6 w-[300px]">
+                        <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest pl-6 w-[300px]">
                           Role Details
                         </TableHead>
-                        <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
+                        <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
                           Pipeline
                         </TableHead>
-                        <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
+                        <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
                           Status
                         </TableHead>
-                        <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">
+                        <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">
                           Action
                         </TableHead>
                       </TableRow>
@@ -220,10 +220,10 @@ function RecruitmentPage() {
                         >
                           <TableCell className="pl-6 py-4">
                             <div>
-                              <p className="text-[13px] font-semibold text-foreground/90 leading-none">
+                              <p className="text-sm font-semibold text-foreground/90 leading-none">
                                 {job.title}
                               </p>
-                              <div className="flex items-center gap-3 mt-2 text-[11px] font-medium text-muted-foreground/60">
+                              <div className="flex items-center gap-3 mt-2 text-xs font-medium text-muted-foreground/60">
                                 <span className="flex items-center gap-1">
                                   <HugeiconsIcon
                                     icon={Briefcase01Icon}
@@ -243,10 +243,10 @@ function RecruitmentPage() {
                           </TableCell>
                           <TableCell className="px-2">
                             <div className="flex items-center gap-3">
-                              <div className="flex items-center justify-center h-8 w-12 rounded-lg bg-primary/5 text-primary text-[13px] font-bold tabular-nums border border-primary/10">
+                              <div className="flex items-center justify-center h-8 w-12 rounded-lg bg-primary/5 text-primary text-sm font-bold tabular-nums border border-primary/10">
                                 {job.applicants}
                               </div>
-                              <span className="text-[11px] font-medium text-muted-foreground/50">
+                              <span className="text-xs font-medium text-muted-foreground/50">
                                 Candidates
                               </span>
                             </div>
@@ -272,7 +272,7 @@ function RecruitmentPage() {
                                   <Button
                                     variant="ghost"
                                     size="icon-sm"
-                                    className="rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="rounded-lg   transition-opacity"
                                     aria-label="Job actions"
                                   >
                                     <HugeiconsIcon
@@ -327,13 +327,13 @@ function RecruitmentPage() {
                 </FrameContent>
 
                 <FrameFooter className="flex items-center justify-between border-t border-border/5">
-                  <p className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+                  <p className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
                     Showing {filteredJobs.length} total active pipelines
                   </p>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-[10px] font-bold capitalize text-primary/80 hover:text-primary h-7"
+                    className="text-xs font-bold capitalize text-primary/80 hover:text-primary h-7"
                   >
                     View Archive
                   </Button>
@@ -369,20 +369,20 @@ function RecruitmentPage() {
                         />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-2">
-                            <p className="text-[13px] font-semibold text-foreground/90 leading-tight truncate">
+                            <p className="text-sm font-semibold text-foreground/90 leading-tight truncate">
                               {candidate.name}
                             </p>
                             <span className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest shrink-0 whitespace-nowrap mt-0.5">
                               {candidate.time}
                             </span>
                           </div>
-                          <p className="text-[11px] font-medium text-muted-foreground/60 mt-1 truncate">
+                          <p className="text-xs font-medium text-muted-foreground/60 mt-1 truncate">
                             {candidate.role}
                           </p>
                           <div className="mt-3">
                             <Badge
                               variant={candidate.status as any}
-                              className="h-5 rounded-md px-2 text-[10px]"
+                              className="h-5 rounded-md px-2 text-xs"
                             >
                               {candidate.stage}
                             </Badge>
@@ -396,7 +396,7 @@ function RecruitmentPage() {
               <FrameFooter className="border-t border-border/5">
                 <Button
                   variant="outline"
-                  className="w-full h-8 text-[11px] font-bold rounded-lg border-border/40 text-muted-foreground/70 hover:text-foreground"
+                  className="w-full h-8 text-xs font-bold rounded-lg border-border/40 text-muted-foreground/70 hover:text-foreground"
                 >
                   View Talent Pool
                 </Button>
@@ -411,10 +411,10 @@ function RecruitmentPage() {
                   <HugeiconsIcon icon={UserAdd01Icon} size={20} />
                 </div>
                 <div>
-                  <p className="text-[13px] font-semibold text-foreground/90 leading-none mb-1">
+                  <p className="text-sm font-semibold text-foreground/90 leading-none mb-1">
                     External Agency
                   </p>
-                  <p className="text-[11px] font-medium text-muted-foreground/50">
+                  <p className="text-xs font-medium text-muted-foreground/50">
                     Invite recruiters to collaborate
                   </p>
                 </div>
@@ -488,18 +488,18 @@ const RecruitmentStatCard = React.memo(function RecruitmentStatCard({
                 : "text-destructive bg-destructive/10",
             )}
           >
-            <span className="text-[10px]">{change}</span>
+            <span className="text-xs">{change}</span>
           </Badge>
         </div>
         <div className="mt-6">
           <h3 className="text-2xl font-semibold tracking-tight text-foreground/90 tabular-nums leading-none mb-1.5">
             {value}
           </h3>
-          <div className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+          <div className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
             {label}
           </div>
           {sub ? (
-            <p className="text-[10px] text-muted-foreground/30 font-medium mt-1 tracking-tight">
+            <p className="text-xs text-muted-foreground/30 font-medium mt-1 tracking-tight">
               {sub}
             </p>
           ) : null}

@@ -85,7 +85,7 @@ export const ChartAreaInteractive = React.memo(function ChartAreaInteractive() {
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center relative z-10 w-full mb-6">
           <div className="flex flex-col gap-1.5">
-            <h3 className="text-[11px] font-medium text-muted-foreground tracking-widest uppercase">
+            <h3 className="text-xs font-medium text-muted-foreground tracking-widest uppercase">
               Platform Activity
             </h3>
             <div className="text-2xl font-light tracking-tight text-foreground">

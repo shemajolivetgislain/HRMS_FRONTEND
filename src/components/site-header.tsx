@@ -4,8 +4,9 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Search02Icon, Notification01Icon } from "@hugeicons/core-free-icons";
-import { useLocation } from "@tanstack/react-router";
+import { Search02Icon, Notification01Icon, Settings02Icon, Moon01Icon, Sun01Icon } from "@hugeicons/core-free-icons";
+import { useLocation, Link } from "@tanstack/react-router";
+import { useTheme } from "next-themes";
 
 const routeLabels: Record<string, string> = {
   dashboard: "Overview",
@@ -22,6 +23,7 @@ const routeLabels: Record<string, string> = {
 export function SiteHeader() {
   const { pathname } = useLocation();
   const segments = pathname.split("/").filter(Boolean);
+  const { theme, setTheme } = useTheme();
 
   const labels = segments.map((s) => routeLabels[s] || s);
   const currentLabel = labels[labels.length - 1] || "Dashboard";
@@ -36,7 +38,7 @@ export function SiteHeader() {
           className="mx-2 h-4 data-vertical:self-auto bg-border/40"
         />
         <div className="flex items-center gap-2">
-          <div className="hidden sm:flex items-center gap-2 text-[13px] font-medium text-muted-foreground/60 tracking-wide">
+          <div className="hidden sm:flex items-center gap-2 text-sm font-medium text-muted-foreground/60 tracking-wide">
             {parentLabel && (
               <>
                 <span className="hover:text-foreground cursor-pointer transition-colors capitalize">
@@ -70,13 +72,27 @@ export function SiteHeader() {
             className="h-9 w-64 rounded-xl border border-border/40 bg-muted/10 pl-9 pr-12 text-sm outline-none transition-all placeholder:text-muted-foreground/50 hover:bg-muted/30 hover:border-border/60 focus:border-primary/30 focus:bg-background focus:ring-4 focus:ring-primary/5"
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-2">
-            <kbd className="hidden sm:inline-flex h-5 items-center gap-0.5 rounded-lg border border-border/40 bg-muted/5 px-2 font-sans text-[10px] font-medium text-muted-foreground/70">
+            <kbd className="hidden sm:inline-flex h-5 items-center gap-0.5 rounded-lg border border-border/40 bg-muted/5 px-2 font-sans text-xs font-medium text-muted-foreground/70">
               <span className="text-xs leading-none">⌘</span>K
             </kbd>
           </div>
         </div>
 
         <div className="flex items-center gap-0.5 pl-2">
+          <Button
+            variant="ghost"
+            size="icon-lg"
+            className="relative text-muted-foreground/70"
+            aria-label="Theme toggle"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          >
+            <HugeiconsIcon
+              icon={theme === "dark" ? Sun01Icon : Moon01Icon}
+              className="size-5 group-hover/button:scale-105 transition-transform"
+              strokeWidth={1.5}
+            />
+          </Button>
+
           <Button
             variant="ghost"
             size="icon-lg"
@@ -89,6 +105,20 @@ export function SiteHeader() {
               strokeWidth={1.5}
             />
             <span className="absolute top-2 right-2.5 size-1.5 rounded-full bg-destructive shadow-[0_0_4px_--theme(--color-destructive)] animate-pulse" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon-lg"
+            className="relative text-muted-foreground/70"
+            aria-label="Settings"
+            render={<Link to="/dashboard/settings" />}
+          >
+            <HugeiconsIcon
+              icon={Settings02Icon}
+              className="size-5 group-hover/button:scale-105 transition-transform"
+              strokeWidth={1.5}
+            />
           </Button>
         </div>
       </div>

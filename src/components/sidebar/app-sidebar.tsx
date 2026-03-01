@@ -11,6 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
 } from "@/components/ui/sidebar";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -21,8 +22,12 @@ import {
   Coins01Icon,
   ChartBarLineIcon,
   JobShareIcon,
+  Building03Icon,
+  Building04Icon,
+  GlobeIcon,
 } from "@hugeicons/core-free-icons";
 import { NavMain } from "./nav-main";
+import { CompanySwitcher } from "./company-switcher";
 
 const defaultData = {
   user: {
@@ -30,6 +35,23 @@ const defaultData = {
     email: "admin@hrms.com",
     avatar: "/avatars/admin.jpg",
   },
+  companies: [
+    {
+      name: "Igihe Logistics",
+      logo: Building03Icon,
+      plan: "Enterprise",
+    },
+    {
+      name: "Vision Finance",
+      logo: Building04Icon,
+      plan: "Growth",
+    },
+    {
+      name: "Kivu Heights",
+      logo: GlobeIcon,
+      plan: "Standard",
+    },
+  ],
   navMain: [
     {
       title: "Dashboard",
@@ -93,16 +115,8 @@ export function AppSidebar({ customNav, ...props }: AppSidebarProps) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="py-2">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton className="data-[slot=sidebar-menu-button]:p-1.5! hover:bg-transparent! flex items-center cursor-default">
-              <span className="text-xl font-bold tracking-tighter uppercase leading-none text-foreground">
-                HRMS
-              </span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+      <SidebarHeader>
+        <CompanySwitcher companies={defaultData.companies} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navItems} />
@@ -110,6 +124,7 @@ export function AppSidebar({ customNav, ...props }: AppSidebarProps) {
       <SidebarFooter>
         <NavUser user={defaultData.user} />
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }

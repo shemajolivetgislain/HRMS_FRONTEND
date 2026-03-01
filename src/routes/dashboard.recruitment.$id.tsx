@@ -91,7 +91,7 @@ function RecruitmentDetailsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="font-bold text-[10px] uppercase tracking-widest gap-2"
+                  className="font-bold text-xs uppercase tracking-widest gap-2"
                 >
                   <HugeiconsIcon icon={Sorting05Icon} size={14} />
                   Ranking
@@ -115,7 +115,7 @@ function RecruitmentDetailsPage() {
                             <p className="text-[14px] font-semibold text-foreground/90 leading-tight">
                               {can.firstName} {can.lastName}
                             </p>
-                            <p className="text-[11px] font-medium text-muted-foreground/50 mt-1.5">
+                            <p className="text-xs font-medium text-muted-foreground/50 mt-1.5">
                               Applied {can.appliedAt}
                             </p>
                           </div>
@@ -126,7 +126,7 @@ function RecruitmentDetailsPage() {
                             <p className="text-[9px] font-bold text-muted-foreground/30 uppercase tracking-widest">
                               Score
                             </p>
-                            <p className="text-[13px] font-bold text-foreground/80 tabular-nums">
+                            <p className="text-sm font-bold text-foreground/80 tabular-nums">
                               {can.score.toFixed(1)}
                             </p>
                           </div>
@@ -146,7 +146,7 @@ function RecruitmentDetailsPage() {
                             {can.stage === "Offer Sent" ? (
                               <Button
                                 size="sm"
-                                className="bg-success hover:bg-success/90 text-white font-bold text-[10px] uppercase gap-1.5 h-8 px-3"
+                                className="bg-success hover:bg-success/90 text-white font-bold text-xs uppercase gap-1.5 h-8 px-3"
                               >
                                 <HugeiconsIcon icon={Tick01Icon} size={12} strokeWidth={3} />
                                 Hire
@@ -155,7 +155,7 @@ function RecruitmentDetailsPage() {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="font-bold text-[10px] uppercase h-8 px-3"
+                                className="font-bold text-xs uppercase h-8 px-3"
                               >
                                 Review
                               </Button>
@@ -180,13 +180,13 @@ function RecruitmentDetailsPage() {
                 </div>
               </FrameContent>
               <FrameFooter className="flex items-center justify-between py-4">
-                <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+                <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
                   Showing {candidates.length} of {role.applicants} applicants
                 </span>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 text-[10px] font-bold text-primary/60 hover:text-primary capitalize"
+                  className="h-7 text-xs font-bold text-primary/60 hover:text-primary capitalize"
                 >
                   Download Resumes
                 </Button>
@@ -205,7 +205,7 @@ function RecruitmentDetailsPage() {
               <FrameContent className="space-y-5">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+                    <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
                       Status
                     </p>
                     <Badge
@@ -217,10 +217,10 @@ function RecruitmentDetailsPage() {
                     </Badge>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+                    <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
                       Dept
                     </p>
-                    <p className="text-[13px] font-semibold text-foreground/80">
+                    <p className="text-sm font-semibold text-foreground/80">
                       {role.dept}
                     </p>
                   </div>
@@ -247,7 +247,7 @@ function RecruitmentDetailsPage() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="w-full font-bold capitalize gap-2 text-[11px] hover:bg-muted/50"
+                  className="w-full font-bold capitalize gap-2 text-xs hover:bg-muted/50"
                 >
                   <HugeiconsIcon icon={Download01Icon} size={14} />
                   Job Description
@@ -258,7 +258,7 @@ function RecruitmentDetailsPage() {
 
           <Frame>
             <FramePanel className="p-5 bg-card">
-              <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest mb-4">
+              <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest mb-4">
                 Hiring Team
               </p>
               <div className="flex items-center gap-3">
@@ -299,10 +299,10 @@ function MetaItem({
         <HugeiconsIcon icon={Icon} size={14} strokeWidth={2.5} />
       </div>
       <div>
-        <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest leading-none mb-1.5">
+        <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest leading-none mb-1.5">
           {label}
         </p>
-        <p className="text-[13px] font-semibold text-foreground/80">{value}</p>
+        <p className="text-sm font-semibold text-foreground/80">{value}</p>
       </div>
     </div>
   );

@@ -63,11 +63,11 @@ export const StatCard = React.memo(function StatCard({
           <h3 className="text-2xl font-semibold tracking-tight text-foreground/90 tabular-nums leading-none mb-1.5">
             {value}
           </h3>
-          <p className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+          <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
             {label}
           </p>
           {sub && (
-            <p className="text-[10px] font-medium text-muted-foreground/30 mt-1 uppercase tracking-tighter">
+            <p className="text-xs font-medium text-muted-foreground/30 mt-1 uppercase tracking-tighter">
               {sub}
             </p>
           )}

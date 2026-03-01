@@ -133,19 +133,19 @@ function ReportsPage() {
                 <Table>
                   <TableHeader className="bg-muted/10">
                     <TableRow className="hover:bg-transparent border-border/5">
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">
                         Report Name
                       </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
                         Type
                       </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
                         Date
                       </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
                         Status
                       </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">
                         Actions
                       </TableHead>
                     </TableRow>
@@ -162,10 +162,10 @@ function ReportsPage() {
                               <HugeiconsIcon icon={File02Icon} size={16} />
                             </div>
                             <div>
-                              <p className="text-[13px] font-semibold text-foreground/90 leading-none">
+                              <p className="text-sm font-semibold text-foreground/90 leading-none">
                                 {report.name}
                               </p>
-                              <p className="text-[11px] font-bold text-muted-foreground/30 tabular-nums uppercase tracking-tight mt-1">
+                              <p className="text-xs font-bold text-muted-foreground/30 tabular-nums uppercase tracking-tight mt-1">
                                 {report.id}
                               </p>
                             </div>
@@ -227,7 +227,7 @@ function ReportsPage() {
                 </Table>
               </FrameContent>
               <FrameFooter>
-                <p className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+                <p className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
                   Showing latest 5 of 48 reports
                 </p>
               </FrameFooter>

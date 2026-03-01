@@ -24,7 +24,7 @@ function AuthLayout() {
           <Outlet />
         </div>
 
-        <div className="flex items-center justify-between text-[10px] font-semibold text-muted-foreground/20 uppercase tracking-widest">
+        <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground/20 uppercase tracking-widest">
           <p>© 2026 HRMS</p>
           <div className="flex items-center gap-4">
             <Link to="/" className="hover:text-primary transition-colors">
@@ -61,7 +61,7 @@ function AuthLayout() {
         </div>
 
         <div className="absolute bottom-12 left-20 right-20 flex items-center justify-between">
-          <p className="text-[10px] font-bold text-muted-foreground/20 uppercase tracking-[0.3em]">
+          <p className="text-xs font-bold text-muted-foreground/20 uppercase tracking-[0.3em]">
             Precision Interface v4.2
           </p>
         </div>

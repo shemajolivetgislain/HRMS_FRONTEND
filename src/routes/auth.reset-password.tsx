@@ -93,10 +93,10 @@ function ResetPasswordPage() {
               <HugeiconsIcon icon={Tick01Icon} size={20} />
             </div>
             <div>
-              <p className="text-[13px] font-semibold text-foreground/80 leading-none">
+              <p className="text-sm font-semibold text-foreground/80 leading-none">
                 Password Reset
               </p>
-              <p className="text-[11px] font-medium text-muted-foreground/50 mt-1.5 leading-relaxed">
+              <p className="text-xs font-medium text-muted-foreground/50 mt-1.5 leading-relaxed">
                 You can now sign in to your workspace with your new credentials.
               </p>
             </div>
@@ -136,7 +136,7 @@ function ResetPasswordPage() {
         <div className="space-y-2">
           <Label
             htmlFor="password"
-            className="text-[11px] font-semibold text-muted-foreground/60 capitalize"
+            className="text-xs font-semibold text-muted-foreground/60 capitalize"
           >
             New Password
           </Label>
@@ -166,7 +166,7 @@ function ResetPasswordPage() {
             </button>
           </div>
           {errors.password && (
-            <p className="text-[11px] font-medium text-destructive mt-1">
+            <p className="text-xs font-medium text-destructive mt-1">
               {errors.password}
             </p>
           )}
@@ -180,7 +180,7 @@ function ResetPasswordPage() {
         <div className="space-y-2">
           <Label
             htmlFor="confirmPassword"
-            className="text-[11px] font-semibold text-muted-foreground/60 capitalize"
+            className="text-xs font-semibold text-muted-foreground/60 capitalize"
           >
             Confirm Password
           </Label>
@@ -212,7 +212,7 @@ function ResetPasswordPage() {
             </button>
           </div>
           {errors.confirmPassword && (
-            <p className="text-[11px] font-medium text-destructive mt-1">
+            <p className="text-xs font-medium text-destructive mt-1">
               {errors.confirmPassword}
             </p>
           )}

@@ -17,31 +17,31 @@ import { UserMultiple02Icon } from "@hugeicons/core-free-icons";
 
 const topCompanies = [
   {
-    name: "Acme Corp",
+    name: "Igihe Logistics",
     employees: "1,248",
     plan: "Enterprise",
     status: "Active",
   },
   {
-    name: "Global Industries",
+    name: "Vision Finance",
     employees: "892",
-    plan: "Enterprise",
-    status: "Active",
-  },
-  {
-    name: "TechFlow Solutions",
-    employees: "450",
     plan: "Growth",
     status: "Active",
   },
   {
-    name: "Healthcare Plus",
+    name: "Kivu Heights",
+    employees: "450",
+    plan: "Standard",
+    status: "Suspended",
+  },
+  {
+    name: "Precision Corp",
     employees: "312",
     plan: "Growth",
     status: "Pending",
   },
   {
-    name: "Nexus Innovations",
+    name: "Global Tech",
     employees: "155",
     plan: "Startup",
     status: "Active",
@@ -78,7 +78,7 @@ export const TopCompanies = React.memo(function TopCompanies() {
             {["#", "Company", "Plan", "Status"].map((h) => (
               <span
                 key={h}
-                className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest"
+                className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest"
               >
                 {h}
               </span>
@@ -93,14 +93,14 @@ export const TopCompanies = React.memo(function TopCompanies() {
                   key={i}
                   className="grid grid-cols-[32px_1fr_80px_72px] items-center px-6 py-4 hover:bg-muted/10 transition-colors group"
                 >
-                  <span className="text-[11px] font-mono text-muted-foreground/30 tabular-nums">
+                  <span className="text-xs font-mono text-muted-foreground/30 tabular-nums">
                     {(i + 1).toString().padStart(2, "0")}
                   </span>
                   <div className="flex flex-col gap-0.5 min-w-0">
-                    <span className="text-[13px] font-semibold text-foreground/90 leading-tight truncate group-hover:text-foreground transition-colors">
+                    <span className="text-sm font-semibold text-foreground/90 leading-tight truncate group-hover:text-foreground transition-colors">
                       {company.name}
                     </span>
-                    <span className="text-[11px] text-muted-foreground/50 flex items-center gap-1 font-medium tabular-nums">
+                    <span className="text-xs text-muted-foreground/50 flex items-center gap-1 font-medium tabular-nums">
                       <HugeiconsIcon
                         icon={UserMultiple02Icon}
                         strokeWidth={2}
@@ -128,7 +128,7 @@ export const TopCompanies = React.memo(function TopCompanies() {
         </FrameContent>
 
         <FrameFooter>
-          <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+          <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
             Showing {topCompanies.length} of 42 companies
           </span>
         </FrameFooter>

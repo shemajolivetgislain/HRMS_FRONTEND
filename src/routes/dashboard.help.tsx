@@ -102,7 +102,7 @@ function HelpPage() {
                   <h3 className="text-xl font-semibold text-foreground/90">
                     How can we help you today?
                   </h3>
-                  <p className="text-[13px] font-medium text-muted-foreground/50">
+                  <p className="text-sm font-medium text-muted-foreground/50">
                     Search our comprehensive guides, API docs, and community
                     forums.
                   </p>
@@ -225,7 +225,7 @@ function HelpPage() {
                       size={14}
                       className="text-muted-foreground/40"
                     />
-                    <span className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+                    <span className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
                       Global Status Page
                     </span>
                   </div>
@@ -242,14 +242,14 @@ function HelpPage() {
                   <p className="text-[14px] font-semibold text-foreground/90">
                     API Documentation
                   </p>
-                  <p className="text-[11px] font-medium text-muted-foreground/50">
+                  <p className="text-xs font-medium text-muted-foreground/50">
                     Build custom workflows with our GraphQL endpoint.
                   </p>
                 </div>
                 <Button
                   variant="outline"
                   size="lg"
-                  className="w-full border-primary/20 text-primary font-bold text-[11px] uppercase tracking-widest bg-transparent"
+                  className="w-full border-primary/20 text-primary font-bold text-xs uppercase tracking-widest bg-transparent"
                 >
                   View Reference
                 </Button>
@@ -300,7 +300,7 @@ function SupportCard({
         <Button
           variant="outline"
           size="sm"
-          className="font-bold text-[10px] uppercase tracking-widest w-full hover:bg-muted/50"
+          className="font-bold text-xs uppercase tracking-widest w-full hover:bg-muted/50"
         >
           {label}
         </Button>
@@ -315,7 +315,7 @@ function StatusItem({ label, status }: { label: string; status: string }) {
       <span className="text-[12px] font-medium text-foreground/60">
         {label}
       </span>
-      <span className="text-[11px] font-bold text-success capitalize">
+      <span className="text-xs font-bold text-success capitalize">
         {status}
       </span>
     </div>

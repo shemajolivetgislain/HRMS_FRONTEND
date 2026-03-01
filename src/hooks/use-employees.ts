@@ -25,7 +25,7 @@ export function useEmployees(initialEmployees: Employee[]) {
     return ["all", ...new Set(initialEmployees.map((u) => u.department))];
   }, [initialEmployees]);
 
-  const statuses = ["all", "active", "inactive", "pending"];
+  const statuses = ["all", "active", "probation", "resigned", "terminated"];
 
   const toggleSelectAll = () => {
     if (selectedIds.size === filteredEmployees.length && filteredEmployees.length > 0) {

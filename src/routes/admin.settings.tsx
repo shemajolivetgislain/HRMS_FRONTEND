@@ -20,8 +20,8 @@ import {
   GlobalIcon,
   DatabaseIcon,
   AlertCircleIcon,
-  } from "@hugeicons/core-free-icons";
-  import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+  Clock01Icon,
+  } from "@hugeicons/core-free-icons";  import { DashboardHeader } from "@/components/dashboard/dashboard-header";
   import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
@@ -73,7 +73,7 @@ function AdminSettingsPage() {
           {/* Sidebar Column */}
           <div className="w-[240px] flex flex-col bg-muted/5 border-r border-border/5">
             <div className="px-6 py-6 border-b border-border/5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
                 System Config
               </p>
             </div>
@@ -95,7 +95,7 @@ function AdminSettingsPage() {
                 title="Appearance"
               />
               <div className="px-4 py-4 mt-2">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
                   Operations
                 </p>
               </div>
@@ -130,7 +130,7 @@ function AdminSettingsPage() {
                     <h3 className="text-lg font-semibold text-foreground/90">
                       Platform Identity
                     </h3>
-                    <p className="text-[13px] font-medium text-muted-foreground/50">
+                    <p className="text-sm font-medium text-muted-foreground/50">
                       Manage the global brand and support contacts.
                     </p>
                   </div>
@@ -167,7 +167,7 @@ function AdminSettingsPage() {
                     <h3 className="text-lg font-semibold text-foreground/90">
                       Tenant Defaults
                     </h3>
-                    <p className="text-[13px] font-medium text-muted-foreground/50">
+                    <p className="text-sm font-medium text-muted-foreground/50">
                       Set default limits for new company registrations.
                     </p>
                   </div>
@@ -202,7 +202,7 @@ function AdminSettingsPage() {
                       <Badge
                         key={s}
                         variant="muted"
-                        className="bg-muted/10 border-border/5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider"
+                        className="bg-muted/10 border-border/5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
                       >
                         {s}
                       </Badge>
@@ -227,7 +227,7 @@ function AdminSettingsPage() {
                   <h3 className="text-lg font-semibold text-foreground/90">
                     System-Wide Theme
                   </h3>
-                  <p className="text-[13px] font-medium text-muted-foreground/50">
+                  <p className="text-sm font-medium text-muted-foreground/50">
                     Override or set the default theme for all tenants.
                   </p>
                 </div>
@@ -265,7 +265,7 @@ function AdminSettingsPage() {
                   <h3 className="text-lg font-semibold text-foreground/90">
                     Global Security Matrix
                   </h3>
-                  <p className="text-[13px] font-medium text-muted-foreground/50">
+                  <p className="text-sm font-medium text-muted-foreground/50">
                     Enforce security standards across all organizations.
                   </p>
                 </div>
@@ -300,7 +300,7 @@ function AdminSettingsPage() {
                     <h3 className="text-lg font-semibold text-foreground/90">
                       Database Backups
                     </h3>
-                    <p className="text-[13px] font-medium text-muted-foreground/50">
+                    <p className="text-sm font-medium text-muted-foreground/50">
                       Configure automated cloud synchronization and recovery.
                     </p>
                   </div>
@@ -317,7 +317,7 @@ function AdminSettingsPage() {
                   </div>
                   <Button
                     variant="outline"
-                    className="font-bold text-[11px] uppercase tracking-widest gap-2"
+                    className="font-bold text-xs uppercase tracking-widest gap-2"
                   >
                     <HugeiconsIcon icon={DatabaseIcon} size={14} />
                     Run Manual Backup
@@ -335,13 +335,13 @@ function AdminSettingsPage() {
                     <h3 className="text-lg font-semibold text-foreground/90">
                       System Announcements
                     </h3>
-                    <p className="text-[13px] font-medium text-muted-foreground/50">
+                    <p className="text-sm font-medium text-muted-foreground/50">
                       Broadcast messages to all tenants.
                     </p>
                   </div>
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40">
+                      <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                         Announcement Text
                       </Label>
                       <Input
@@ -349,7 +349,7 @@ function AdminSettingsPage() {
                         className="h-12 bg-muted/5 border-border/40 focus:bg-background"
                       />
                     </div>
-                    <Button className="font-bold text-[11px] uppercase tracking-widest bg-primary text-primary-foreground">
+                    <Button className="font-bold text-xs uppercase tracking-widest bg-primary text-primary-foreground">
                       Publish to All
                     </Button>
                   </div>
@@ -360,7 +360,7 @@ function AdminSettingsPage() {
                       <h3 className="text-lg font-semibold text-foreground/90 text-destructive">
                         Maintenance Mode
                       </h3>
-                      <p className="text-[13px] font-medium text-muted-foreground/50">
+                      <p className="text-sm font-medium text-muted-foreground/50">
                         Disable platform access for all users during updates.
                       </p>
                     </div>
@@ -388,7 +388,7 @@ function SettingsTabTrigger({
   return (
     <TabsTrigger
       value={value}
-      className="relative w-full flex items-center gap-3 px-4 py-2 rounded-md transition-all text-left data-[state=active]:text-primary text-muted-foreground/50 hover:text-foreground/80 group overflow-hidden"
+      className="relative w-full flex items-center justify-start gap-3 px-4 py-2 rounded-md transition-all text-left data-[state=active]:text-primary text-muted-foreground/50 hover:text-foreground/80 group overflow-hidden"
     >
       <HugeiconsIcon
         icon={Icon}
@@ -396,7 +396,7 @@ function SettingsTabTrigger({
         strokeWidth={2}
         className="group-data-[state=active]:text-primary transition-colors"
       />
-      <span className="text-[13px] font-semibold tracking-tight">{title}</span>
+      <span className="text-sm font-semibold tracking-tight">{title}</span>
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-full opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
     </TabsTrigger>
   );
@@ -419,7 +419,7 @@ function SettingsField({
 }) {
   return (
     <div className={cn("space-y-2", className)}>
-      <Label className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/40">
+      <Label className="text-xs font-bold uppercase tracking-[0.15em] text-muted-foreground/40">
         {label}
       </Label>
       <div className="relative group/input">
@@ -432,7 +432,7 @@ function SettingsField({
           defaultValue={defaultValue}
           type={type}
           className={cn(
-            "h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-[13px] font-medium shadow-none",
+            "h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-sm font-medium shadow-none",
             prefix ? "pl-16" : "pl-3",
           )}
         />
@@ -515,13 +515,13 @@ function ThemeCard({
       <div>
         <p
           className={cn(
-            "text-[13px] font-semibold leading-none",
+            "text-sm font-semibold leading-none",
             active ? "text-foreground" : "text-muted-foreground/70",
           )}
         >
           {title}
         </p>
-        <p className="text-[11px] font-medium text-muted-foreground/40 mt-1.5">
+        <p className="text-xs font-medium text-muted-foreground/40 mt-1.5">
           {description}
         </p>
       </div>

@@ -94,7 +94,7 @@ function PayrollDetailsPage() {
                           >
                             {data.status}
                           </Badge>
-                          <span className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest flex items-center gap-1.5 border-l border-border/5 pl-3">
+                          <span className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest flex items-center gap-1.5 border-l border-border/5 pl-3">
                             <HugeiconsIcon
                               icon={Note01Icon}
                               size={12}
@@ -105,7 +105,7 @@ function PayrollDetailsPage() {
                         </div>
                       </div>
                       <div className="text-center md:text-right bg-muted/5 p-4 rounded-2xl border border-border/5 min-w-[160px]">
-                        <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest mb-1">
+                        <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest mb-1">
                           Net Disbursement
                         </p>
                         <p className="text-2xl font-semibold text-primary tabular-nums tracking-tight">
@@ -206,11 +206,11 @@ function PayrollDetailsPage() {
                     <HugeiconsIcon icon={CreditCardIcon} size={18} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest mb-1">
+                    <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest mb-1">
                       Payment Method
                     </p>
-                    <p className="text-[13px] font-semibold text-foreground/80">{data.method}</p>
-                    <p className="text-[11px] font-medium text-muted-foreground/60 mt-0.5">
+                    <p className="text-sm font-semibold text-foreground/80">{data.method}</p>
+                    <p className="text-xs font-medium text-muted-foreground/60 mt-0.5">
                       {data.account || "No account details"}
                     </p>
                   </div>
@@ -221,10 +221,10 @@ function PayrollDetailsPage() {
                     <HugeiconsIcon icon={Calendar01Icon} size={18} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest mb-1">
+                    <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest mb-1">
                       Executed On
                     </p>
-                    <p className="text-[13px] font-semibold text-foreground/80">
+                    <p className="text-sm font-semibold text-foreground/80">
                       {formatDate(data.date)}
                     </p>
                   </div>
@@ -268,7 +268,7 @@ function PayrollDetailsPage() {
                     size={14}
                     className="text-muted-foreground/40"
                   />
-                  <span className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+                  <span className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
                     Audited by System
                   </span>
                 </div>
@@ -349,7 +349,7 @@ function TimelineStep({
         >
           {title}
         </p>
-        <p className="text-[10px] font-medium text-muted-foreground/40 mt-1">
+        <p className="text-xs font-medium text-muted-foreground/40 mt-1">
           {date}
         </p>
       </div>

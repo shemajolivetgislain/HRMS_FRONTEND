@@ -66,10 +66,10 @@ function ForgotPasswordPage() {
               <HugeiconsIcon icon={Mail01Icon} size={20} />
             </div>
             <div>
-              <p className="text-[13px] font-semibold text-foreground/80 leading-none">
+              <p className="text-sm font-semibold text-foreground/80 leading-none">
                 Link Sent
               </p>
-              <p className="text-[11px] font-medium text-muted-foreground/50 mt-1.5 leading-relaxed">
+              <p className="text-xs font-medium text-muted-foreground/50 mt-1.5 leading-relaxed">
                 Reset link sent to{" "}
                 <span className="text-foreground/70 font-bold">{email}</span>
               </p>
@@ -77,7 +77,7 @@ function ForgotPasswordPage() {
           </div>
 
           <div className="p-5 bg-muted/5 rounded-xl border border-border/40 space-y-3">
-            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground/40">
+            <p className="text-xs font-bold uppercase tracking-[0.1em] text-muted-foreground/40">
               Next Steps
             </p>
             <ul className="space-y-2.5">
@@ -87,7 +87,7 @@ function ForgotPasswordPage() {
                 "Sign in with your new credentials",
               ].map((step, i) => (
                 <li key={i} className="flex items-start gap-2.5">
-                  <span className="flex-shrink-0 w-4 h-4 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">
+                  <span className="flex-shrink-0 w-4 h-4 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center text-xs font-bold text-primary">
                     {i + 1}
                   </span>
                   <span className="text-[12px] font-medium text-muted-foreground/60 leading-tight">
@@ -145,7 +145,7 @@ function ForgotPasswordPage() {
         <div className="space-y-2">
           <Label
             htmlFor="email"
-            className="text-[11px] font-semibold text-muted-foreground/60 capitalize"
+            className="text-xs font-semibold text-muted-foreground/60 capitalize"
           >
             Email Address
           </Label>
@@ -163,7 +163,7 @@ function ForgotPasswordPage() {
             }`}
           />
           {errors && (
-            <p className="text-[11px] font-medium text-destructive mt-1">
+            <p className="text-xs font-medium text-destructive mt-1">
               {errors}
             </p>
           )}

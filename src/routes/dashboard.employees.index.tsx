@@ -113,7 +113,7 @@ function EmployeesPage() {
                   </FrameDescription>
                 </div>
                 <div className="flex items-center gap-3">
-                  <p className="text-[11px] font-bold text-muted-foreground/30 capitalize tracking-widest mr-2">
+                  <p className="text-xs font-bold text-muted-foreground/30 capitalize tracking-widest mr-2">
                     {filteredEmployees.length} Records
                   </p>
                 </div>
@@ -140,7 +140,7 @@ function EmployeesPage() {
                 >
                   <SelectTrigger className="h-9 rounded-lg border-border/40 bg-muted/5">
                     <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground/40 text-[10px] font-bold uppercase tracking-wider">
+                      <span className="text-muted-foreground/40 text-xs font-bold uppercase tracking-wider">
                         Dept:
                       </span>
                       <SelectValue
@@ -164,7 +164,7 @@ function EmployeesPage() {
                 >
                   <SelectTrigger className="h-9 rounded-lg border-border/40 bg-muted/5">
                     <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground/40 text-[10px] font-bold uppercase tracking-wider">
+                      <span className="text-muted-foreground/40 text-xs font-bold uppercase tracking-wider">
                         Status:
                       </span>
                       <SelectValue
@@ -201,19 +201,19 @@ function EmployeesPage() {
                           className="size-4 rounded-sm border-border/60"
                         />
                       </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
                         Employee
                       </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
                         Compliance
                       </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
                         Onboarding
                       </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
                         Status
                       </TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">
                         Actions
                       </TableHead>
                     </TableRow>
@@ -236,12 +236,11 @@ function EmployeesPage() {
                             <div className="flex items-center gap-3">
                               <UserAvatar
                                 name={user.name}
-                                email={user.email}
                                 size="sm"
                               />
                               <div className="hidden sm:block">
-                                <p className="text-[13px] font-semibold text-foreground/90">{user.name}</p>
-                                <p className="text-[11px] text-muted-foreground/50">{user.department}</p>
+                                <p className="text-sm font-semibold text-foreground/90">{user.name}</p>
+                                <p className="text-xs text-muted-foreground/50">{user.department}</p>
                               </div>
                             </div>
                           </TableCell>
@@ -268,9 +267,11 @@ function EmployeesPage() {
                               variant={
                                 user.status === "active"
                                   ? "success"
-                                  : user.status === "pending"
+                                  : user.status === "probation"
                                     ? "warning"
-                                    : "destructive"
+                                    : user.status === "resigned"
+                                      ? "muted"
+                                      : "destructive"
                               }
                               className="capitalize"
                             >
@@ -284,7 +285,7 @@ function EmployeesPage() {
                                   <Button
                                     variant="ghost"
                                     size="icon-sm"
-                                    className="rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="rounded-lg   transition-opacity"
                                     aria-label="Employee actions"
                                   >
                                     <HugeiconsIcon
@@ -343,14 +344,14 @@ function EmployeesPage() {
               </FrameContent>
 
               <FrameFooter className="flex items-center justify-between border-t border-border/5">
-                <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+                <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
                   {filteredEmployees.length} Records Total
                 </span>
                 <div className="flex items-center gap-1.5">
                   <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors border border-transparent hover:border-border/40" aria-label="Previous">
                     <HugeiconsIcon icon={ArrowLeft01Icon} size={12} strokeWidth={2.5} />
                   </button>
-                  <button className="h-7 w-7 flex items-center justify-center rounded-md bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold">1</button>
+                  <button className="h-7 w-7 flex items-center justify-center rounded-md bg-primary/10 text-primary border border-primary/20 text-xs font-bold">1</button>
                   <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors border border-transparent hover:border-border/40" aria-label="Next">
                     <HugeiconsIcon icon={ArrowRight01Icon} size={12} strokeWidth={2.5} />
                   </button>

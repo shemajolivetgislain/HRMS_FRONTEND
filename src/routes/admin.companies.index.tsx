@@ -120,7 +120,7 @@ function CompaniesManagementPage() {
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" className="gap-2 font-bold text-[11px]">
+                  <Button variant="outline" size="sm" className="gap-2 font-bold text-xs">
                     <HugeiconsIcon icon={Sorting05Icon} size={14} />
                     Sector
                   </Button>
@@ -131,12 +131,12 @@ function CompaniesManagementPage() {
                 <Table>
                   <TableHeader className="bg-muted/10">
                     <TableRow className="hover:bg-transparent border-border/5">
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">Company</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">TIN Number</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Sector</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-center">Employees</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Status</TableHead>
-                      <TableHead className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">Action</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">Company</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">TIN Number</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Sector</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-center">Employees</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">Status</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">Action</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -148,8 +148,8 @@ function CompaniesManagementPage() {
                               <HugeiconsIcon icon={Building03Icon} size={20} />
                             </div>
                             <div>
-                              <p className="text-[13px] font-semibold text-foreground/90 leading-none">{company.name}</p>
-                              <p className="text-[11px] font-medium text-muted-foreground/40 mt-1">{company.email}</p>
+                              <p className="text-sm font-semibold text-foreground/90 leading-none">{company.name}</p>
+                              <p className="text-xs font-medium text-muted-foreground/40 mt-1">{company.email}</p>
                             </div>
                           </div>
                         </TableCell>
@@ -162,7 +162,7 @@ function CompaniesManagementPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="px-2 text-center">
-                          <span className="text-[13px] font-bold text-foreground/80 tabular-nums">{company.employeeCount}</span>
+                          <span className="text-sm font-bold text-foreground/80 tabular-nums">{company.employeeCount}</span>
                         </TableCell>
                         <TableCell className="px-2">
                           <Badge variant={company.status === "active" ? "success" : "destructive"} showDot>
@@ -173,7 +173,7 @@ function CompaniesManagementPage() {
                           <DropdownMenu>
                             <DropdownMenuTrigger
                               render={
-                                <Button variant="ghost" size="icon-sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Button variant="ghost" size="icon-sm" className="  transition-opacity">
                                   <HugeiconsIcon icon={MoreHorizontalIcon} size={16} className="text-muted-foreground/40" />
                                 </Button>
                               }
@@ -207,7 +207,7 @@ function CompaniesManagementPage() {
                 </Table>
               </FrameContent>
               <FrameFooter>
-                <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+                <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
                   Showing {filtered.length} organizations
                 </span>
               </FrameFooter>

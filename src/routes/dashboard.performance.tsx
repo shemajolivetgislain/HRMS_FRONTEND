@@ -44,7 +44,7 @@ function PerformancePage() {
         description="Balanced Scorecard and quarterly appraisal console"
       >
         <div className="flex items-center gap-2">
-          <Badge variant="muted" className="h-9 px-4 bg-muted/20 border-border/10 text-[11px] font-bold uppercase tracking-widest">
+          <Badge variant="muted" className="h-9 px-4 bg-muted/20 border-border/10 text-xs font-bold uppercase tracking-widest">
             {activeReview.quarter} {activeReview.year}
           </Badge>
           <Button size="lg" className="font-bold gap-2">
@@ -78,7 +78,7 @@ function PerformancePage() {
                             <Badge variant="muted" className="h-5 px-1.5 bg-primary/5 text-primary border-primary/10 text-[9px] font-bold uppercase">
                               {goal.perspective}
                             </Badge>
-                            <span className="text-[10px] font-bold text-muted-foreground/30 tracking-widest">WEIGHT: {goal.weight}%</span>
+                            <span className="text-xs font-bold text-muted-foreground/30 tracking-widest">WEIGHT: {goal.weight}%</span>
                           </div>
                           <h4 className="text-[14px] font-semibold text-foreground/90 truncate">{goal.objective}</h4>
                           <p className="text-[12px] text-muted-foreground/60 flex items-center gap-1.5">
@@ -100,12 +100,12 @@ function PerformancePage() {
                                   )}
                                 />
                               ))}
-                              <span className="ml-2 text-[13px] font-bold text-foreground/80 tabular-nums">
+                              <span className="ml-2 text-sm font-bold text-foreground/80 tabular-nums">
                                 {goal.rating || "-"}.0
                               </span>
                             </div>
                           </div>
-                          <Button variant="ghost" size="icon-sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button variant="ghost" size="icon-sm" className="  transition-opacity">
                             <HugeiconsIcon icon={InformationCircleIcon} size={16} className="text-muted-foreground/40" />
                           </Button>
                         </div>
@@ -121,14 +121,14 @@ function PerformancePage() {
             <Frame>
               <FramePanel className="p-6 bg-primary/[0.02] border-primary/10 space-y-6">
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.2em]">Overall Score</p>
+                  <p className="text-xs font-bold text-muted-foreground/40 uppercase tracking-[0.2em]">Overall Score</p>
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl font-light tracking-tighter text-primary">3.5</span>
                     <span className="text-[12px] font-bold text-muted-foreground/40 uppercase">/ 4.0</span>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider text-muted-foreground/60">
+                  <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground/60">
                     <span>Performance Tier</span>
                     <span className="text-success">Meets Expectation</span>
                   </div>
@@ -143,11 +143,11 @@ function PerformancePage() {
                   <FrameTitle>Manager Feedback</FrameTitle>
                 </FrameHeader>
                 <FrameContent className="p-6">
-                  <div className="p-4 rounded-xl bg-muted/5 border border-border/5 relative italic text-[13px] text-muted-foreground/80 leading-relaxed">
+                  <div className="p-4 rounded-xl bg-muted/5 border border-border/5 relative italic text-sm text-muted-foreground/80 leading-relaxed">
                     "Excellent progress on technical objectives this quarter. Communication with stakeholders has improved significantly. Focus on mentoring junior staff in Q2."
                     <div className="mt-4 flex items-center gap-2 not-italic">
                       <UserAvatar name="Alice" size="sm" className="size-5" />
-                      <span className="text-[11px] font-bold text-foreground/60">Alice Johnson (Manager)</span>
+                      <span className="text-xs font-bold text-foreground/60">Alice Johnson (Manager)</span>
                     </div>
                   </div>
                 </FrameContent>

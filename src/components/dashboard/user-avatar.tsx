@@ -65,10 +65,10 @@ export function UserAvatar({
       <div className="flex items-center gap-3">
         {avatarContent}
         <div className="flex flex-col min-w-0">
-          <p className="text-[13px] font-semibold text-foreground/90 leading-tight truncate">
+          <p className="text-sm font-semibold text-foreground/90 leading-tight truncate">
             {name}
           </p>
-          <p className="text-[11px] text-muted-foreground truncate mt-0.5">
+          <p className="text-xs text-muted-foreground truncate mt-0.5">
             {email}
           </p>
         </div>

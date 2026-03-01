@@ -79,10 +79,10 @@ export const QuickActions = React.memo(function QuickActions() {
                   />
                 </div>
                 <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                  <span className="text-[13px] font-semibold text-foreground/90 leading-tight group-hover/btn:text-foreground transition-colors">
+                  <span className="text-sm font-semibold text-foreground/90 leading-tight group-hover/btn:text-foreground transition-colors">
                     {action.title}
                   </span>
-                  <span className="text-[11px] text-muted-foreground/60 font-medium">
+                  <span className="text-xs text-muted-foreground/60 font-medium">
                     {action.description}
                   </span>
                 </div>
@@ -98,7 +98,7 @@ export const QuickActions = React.memo(function QuickActions() {
         </FrameContent>
 
         <FrameFooter>
-          <span className="text-[10px] text-muted-foreground/40 font-bold capitalize tracking-widest">
+          <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
             {actions.length} shortcuts available
           </span>
         </FrameFooter>

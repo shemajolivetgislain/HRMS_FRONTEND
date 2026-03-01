@@ -93,16 +93,16 @@ function CompanyDetailsPage() {
           <div className="space-y-6">
             <Frame>
               <FramePanel className="p-6 bg-primary/[0.02] border-primary/10 space-y-4">
-                <h4 className="text-[11px] font-bold text-muted-foreground/40 uppercase tracking-widest">Platform Usage</h4>
+                <h4 className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest">Platform Usage</h4>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-[13px] font-medium text-foreground/70">Storage Used</span>
-                    <span className="text-[13px] font-bold tabular-nums">4.2 GB / 10 GB</span>
+                    <span className="text-sm font-medium text-foreground/70">Storage Used</span>
+                    <span className="text-sm font-bold tabular-nums">4.2 GB / 10 GB</span>
                   </div>
                   <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
                     <div className="h-full bg-primary w-[42%]" />
                   </div>
-                  <p className="text-[11px] text-muted-foreground/50 leading-relaxed italic">
+                  <p className="text-xs text-muted-foreground/50 leading-relaxed italic">
                     This company has used 42% of its provisioned cloud document storage.
                   </p>
                 </div>
@@ -120,7 +120,7 @@ function DetailItem({ label, value, icon: Icon }: { label: string; value: string
     <div className="space-y-2">
       <div className="flex items-center gap-2 text-muted-foreground/40">
         <HugeiconsIcon icon={Icon} size={14} strokeWidth={2.5} />
-        <span className="text-[10px] font-bold uppercase tracking-widest">{label}</span>
+        <span className="text-xs font-bold uppercase tracking-widest">{label}</span>
       </div>
       <p className="text-[14px] font-semibold text-foreground/80 pl-5.5">{value}</p>
     </div>

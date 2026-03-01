@@ -56,7 +56,7 @@ export function NavMain({
                   </div>
                   <span
                     className={cn(
-                      "text-[13px] font-semibold tracking-tight transition-colors duration-300",
+                      "text-sm font-semibold tracking-tight transition-colors duration-300",
                       isActive ? "text-primary" : "text-inherit",
                     )}
                   >

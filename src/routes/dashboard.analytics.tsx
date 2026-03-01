@@ -115,7 +115,7 @@ function AnalyticsPage() {
               <FrameContent className="pt-0">
                 <div className="space-y-4">
                   <div className="p-3.5 rounded-xl bg-background border border-primary/5 shadow-sm">
-                    <p className="text-[13px] font-medium text-foreground/80 leading-relaxed italic">
+                    <p className="text-sm font-medium text-foreground/80 leading-relaxed italic">
                       “Headcount is trending 4% above target. Retention in
                       Engineering has reached an all-time high of 98% this
                       quarter.”
@@ -128,7 +128,7 @@ function AnalyticsPage() {
                     >
                       LATEST UPDATE
                     </Badge>
-                    <span className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+                    <span className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
                       2 hours ago
                     </span>
                   </div>
@@ -180,13 +180,13 @@ function AnalyticsPage() {
                 <div className="flex items-center gap-6">
                   <div className="flex items-center gap-2">
                     <div className="size-1.5 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" />
-                    <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
+                    <span className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest">
                       Actual Growth
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="size-1.5 rounded-full bg-chart-2 opacity-50" />
-                    <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
+                    <span className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest">
                       Target Baseline
                     </span>
                   </div>
@@ -413,7 +413,7 @@ function AnalyticsStatCard({
                 : "text-destructive bg-destructive/10",
             )}
           >
-            <span className="text-[10px]">
+            <span className="text-xs">
               {up ? "↑" : "↓"} {change}
             </span>
           </Badge>
@@ -422,10 +422,10 @@ function AnalyticsStatCard({
           <h3 className="text-2xl font-semibold tracking-tight text-foreground/90 tabular-nums leading-none">
             {value}
           </h3>
-          <p className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest mt-2">
+          <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest mt-2">
             {label}
           </p>
-          <p className="text-[10px] font-medium text-muted-foreground/30 mt-1 flex items-center gap-1">
+          <p className="text-xs font-medium text-muted-foreground/30 mt-1 flex items-center gap-1">
             <HugeiconsIcon
               icon={InformationCircleIcon}
               size={10}

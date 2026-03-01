@@ -104,10 +104,10 @@ function EmployeeProfilePage() {
                   />
                 </div>
                 <div>
-                  <p className="text-[13px] font-bold leading-none mb-1">
+                  <p className="text-sm font-bold leading-none mb-1">
                     Onboarding Policy Gap
                   </p>
-                  <p className="text-[11px] font-medium opacity-70">
+                  <p className="text-xs font-medium opacity-70">
                     Mandatory identity documents (Criminal Record, Medical
                     Report) are missing from this profile.
                   </p>
@@ -116,7 +116,7 @@ function EmployeeProfilePage() {
               <Button
                 size="sm"
                 variant="outline"
-                className="h-8 border-destructive/20 text-destructive hover:bg-destructive/5 font-bold text-[10px] uppercase tracking-widest"
+                className="h-8 border-destructive/20 text-destructive hover:bg-destructive/5 font-bold text-xs uppercase tracking-widest"
               >
                 Resolve Policy
               </Button>
@@ -164,7 +164,7 @@ function EmployeeProfilePage() {
                         >
                           {formData.status}
                         </Badge>
-                        <span className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest flex items-center gap-1.5 ml-1">
+                        <span className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest flex items-center gap-1.5 ml-1">
                           <HugeiconsIcon
                             icon={Briefcase01Icon}
                             size={12}
@@ -316,21 +316,21 @@ function EmployeeProfilePage() {
                     <Frame>
                       <FramePanel className="p-6 space-y-6 bg-card">
                         <div className="space-y-1">
-                          <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+                          <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
                             Emergency Contact
                           </p>
-                          <p className="text-[13px] font-semibold text-foreground/80">
+                          <p className="text-sm font-semibold text-foreground/80">
                             Jane Doe (Spouse)
                           </p>
-                          <p className="text-[11px] font-medium text-muted-foreground/60">
+                          <p className="text-xs font-medium text-muted-foreground/60">
                             +1 (555) 987-6543
                           </p>
                         </div>
                         <div className="pt-4 border-t border-border/5 space-y-1">
-                          <p className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+                          <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
                             Timezone
                           </p>
-                          <p className="text-[13px] font-semibold text-foreground/80">
+                          <p className="text-sm font-semibold text-foreground/80">
                             Pacific Standard Time (PST)
                           </p>
                         </div>
@@ -471,10 +471,10 @@ function EmployeeProfilePage() {
                                 <HugeiconsIcon icon={File02Icon} size={18} />
                               </div>
                               <div>
-                                <p className="text-[13px] font-semibold text-foreground/80">
+                                <p className="text-sm font-semibold text-foreground/80">
                                   {doc.name}
                                 </p>
-                                <p className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest mt-0.5">
+                                <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest mt-0.5">
                                   {doc.date} • {doc.size}
                                 </p>
                               </div>
@@ -553,10 +553,10 @@ function EmployeeProfilePage() {
                               />
                             </div>
                             <div className="space-y-1 pt-0.5">
-                              <p className="text-[13px] font-semibold text-foreground/80 leading-none">
+                              <p className="text-sm font-semibold text-foreground/80 leading-none">
                                 {log.action}
                               </p>
-                              <p className="text-[11px] font-medium text-muted-foreground/50">
+                              <p className="text-xs font-medium text-muted-foreground/50">
                                 {log.date} by{" "}
                                 <span className="text-foreground/60">
                                   {log.user}
@@ -610,17 +610,17 @@ function Field({
 }) {
   return (
     <div className={cn("space-y-2", className)}>
-      <Label className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/40">
+      <Label className="text-xs font-bold uppercase tracking-[0.15em] text-muted-foreground/40">
         {label}
       </Label>
       {isEditing && typeof value === "string" ? (
         <Input
           type={type}
           defaultValue={value}
-          className="h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-[13px]"
+          className="h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-sm"
         />
       ) : (
-        <div className="text-[13px] font-semibold text-foreground/80 leading-snug min-h-[20px]">
+        <div className="text-sm font-semibold text-foreground/80 leading-snug min-h-[20px]">
           {value}
         </div>
       )}

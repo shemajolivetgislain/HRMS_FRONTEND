@@ -116,7 +116,7 @@ function DocsPage() {
             </div>
 
             <div className="bg-muted/10 border border-border/5 p-6 rounded-2xl space-y-4">
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
                 What's covered:
               </p>
               <ul className="space-y-3">

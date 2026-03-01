@@ -98,7 +98,7 @@ function PayrollPage() {
                 </div>
                 <Badge
                   variant="warning"
-                  className="h-6 px-3 rounded-md font-bold text-[10px] uppercase"
+                  className="h-6 px-3 rounded-md font-bold text-xs uppercase"
                 >
                   Step {currentStep} of 6
                 </Badge>
@@ -135,7 +135,7 @@ function PayrollPage() {
                       <div className="text-center">
                         <p
                           className={cn(
-                            "text-[10px] font-bold uppercase tracking-widest",
+                            "text-xs font-bold uppercase tracking-widest",
                             currentStep === s.id
                               ? "text-primary"
                               : "text-muted-foreground/30",
@@ -214,7 +214,7 @@ function PayrollPage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-[11px] font-bold text-primary gap-2"
+                  className="text-xs font-bold text-primary gap-2"
                 >
                   <HugeiconsIcon icon={InformationCircleIcon} size={14} />
                   View Logic
@@ -236,7 +236,7 @@ function PayrollPage() {
                   Compliance Note
                 </h4>
               </div>
-              <p className="text-[13px] text-muted-foreground/70 leading-relaxed italic">
+              <p className="text-sm text-muted-foreground/70 leading-relaxed italic">
                 “Statutory deductions are automatically calculated based on the
                 RRA 2024 brackets and RSSB pension contributions (6% Employee,
                 8% Employer).”
@@ -259,7 +259,7 @@ function PayrollPage() {
                   {[1, 2, 3].map((i) => (
                     <div
                       key={i}
-                      className="size-7 rounded-full border-2 border-card bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground/60"
+                      className="size-7 rounded-full border-2 border-card bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground/60"
                     >
                       DP
                     </div>

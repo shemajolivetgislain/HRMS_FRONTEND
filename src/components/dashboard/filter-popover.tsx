@@ -44,7 +44,7 @@ export function FilterPopover() {
           <PopoverTitle className="text-sm font-semibold tracking-tight">
             Dashboard Filters
           </PopoverTitle>
-          <PopoverDescription className="text-[11px] font-medium opacity-50">
+          <PopoverDescription className="text-xs font-medium opacity-50">
             Refine the data displayed across your dashboard
           </PopoverDescription>
         </PopoverHeader>
@@ -52,7 +52,7 @@ export function FilterPopover() {
         <div className="p-5 space-y-6">
           {/* Time Range */}
           <div className="space-y-2.5">
-            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+            <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60">
               Time Range
             </Label>
             <Select defaultValue="this-month">
@@ -73,7 +73,7 @@ export function FilterPopover() {
 
           {/* Department */}
           <div className="space-y-2.5">
-            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+            <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60">
               Department
             </Label>
             <div className="grid grid-cols-2 gap-2">
@@ -99,7 +99,7 @@ export function FilterPopover() {
 
           {/* Status */}
           <div className="space-y-2.5">
-            <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+            <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60">
               Employee Status
             </Label>
             <Select defaultValue="all">

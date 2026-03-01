@@ -57,8 +57,7 @@ const upcomingEvents = [
     title: "New Hire Onboarding",
     time: "09:00 AM",
     type: "Onboarding",
-    location: "Kigali Tech Hub",
-    attendees: ["Moses Mugisha"],
+    location: "Igihe Logistics",    attendees: ["Moses Mugisha"],
     color: "var(--chart-4)",
   },
 ];
@@ -148,13 +147,13 @@ function CalendarPage() {
                             <p className="text-[14px] font-semibold text-foreground/90 leading-tight">
                               {event.title}
                             </p>
-                            <p className="text-[11px] font-bold text-muted-foreground/30 uppercase tracking-widest mt-1">
+                            <p className="text-xs font-bold text-muted-foreground/30 uppercase tracking-widest mt-1">
                               {event.type}
                             </p>
                           </div>
                           
                           <div className="flex flex-col gap-1.5">
-                            <div className="flex items-center gap-4 text-[11px] font-medium text-muted-foreground/60 capitalize tracking-tight">
+                            <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground/60 capitalize tracking-tight">
                               <span className="flex items-center gap-1.5">
                                 <HugeiconsIcon
                                   icon={Clock01Icon}
@@ -210,10 +209,10 @@ function CalendarPage() {
                   <HugeiconsIcon icon={Calendar03Icon} size={20} />
                 </div>
                 <div>
-                  <p className="text-[13px] font-semibold text-foreground/80 leading-none mb-1">
+                  <p className="text-sm font-semibold text-foreground/80 leading-none mb-1">
                     Team Availability
                   </p>
-                  <p className="text-[11px] font-bold text-muted-foreground/40 capitalize tracking-widest">
+                  <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
                     84% On-Site
                   </p>
                 </div>

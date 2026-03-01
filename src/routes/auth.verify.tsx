@@ -43,13 +43,13 @@ function VerifyPage() {
             <HugeiconsIcon icon={Mail01Icon} size={20} />
           </div>
           <div>
-            <p className="text-[13px] font-semibold text-foreground/80 leading-none">
+            <p className="text-sm font-semibold text-foreground/80 leading-none">
               Code Sent
             </p>
-            <p className="text-[11px] font-medium text-muted-foreground/50 mt-1.5 leading-relaxed">
+            <p className="text-xs font-medium text-muted-foreground/50 mt-1.5 leading-relaxed">
               We've sent a 6-digit code to{" "}
               <span className="text-foreground/70 font-bold">
-                admin@acme.com
+                admin@igihe.rw
               </span>
             </p>
           </div>
@@ -57,7 +57,7 @@ function VerifyPage() {
 
         <div className="space-y-4">
           <div className="space-y-2 text-center">
-            <Label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
+            <Label className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
               Enter Security Code
             </Label>
             <div className="flex justify-center pt-2">
@@ -81,14 +81,14 @@ function VerifyPage() {
 
           <div className="text-center">
             {timer > 0 ? (
-              <p className="text-[11px] font-medium text-muted-foreground/40">
+              <p className="text-xs font-medium text-muted-foreground/40">
                 Resend code in{" "}
                 <span className="text-foreground/60 font-bold tabular-nums">
                   {timer}s
                 </span>
               </p>
             ) : (
-              <button className="text-[11px] font-bold text-primary hover:underline">
+              <button className="text-xs font-bold text-primary hover:underline">
                 Resend Code
               </button>
             )}
