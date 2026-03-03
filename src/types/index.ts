@@ -1,22 +1,22 @@
 export type Role = "SYSTEM_ADMIN" | "COMPANY_ADMIN" | "EMPLOYEE";
 
-export type Status = 
-  | "active" 
-  | "inactive" 
-  | "pending" 
-  | "suspended" 
-  | "paid" 
-  | "processing" 
-  | "delayed" 
-  | "published" 
-  | "draft" 
+export type Status =
+  | "active"
+  | "inactive"
+  | "pending"
+  | "suspended"
+  | "paid"
+  | "processing"
+  | "delayed"
+  | "published"
+  | "draft"
   | "on-hold"
   | "approved"
   | "rejected"
   | "compliant"
   | "non-compliant";
 
-export type RecruitmentStage = 
+export type RecruitmentStage =
   | "New Applied"
   | "Screening"
   | "Online Assessment"
@@ -29,14 +29,14 @@ export type RecruitmentStage =
   | "Reserved"
   | "Shortlisted";
 
-export type DocumentType = 
-  | "CV" 
-  | "ID" 
-  | "CONTRACT" 
-  | "CRIMINAL_CERTIFICATE" 
-  | "MEDICAL_REPORT" 
-  | "RESIGNATION_LETTER" 
-  | "EXPERIENCE_LETTER" 
+export type DocumentType =
+  | "CV"
+  | "ID"
+  | "CONTRACT"
+  | "CRIMINAL_CERTIFICATE"
+  | "MEDICAL_REPORT"
+  | "RESIGNATION_LETTER"
+  | "EXPERIENCE_LETTER"
   | "CLEARENCE_LETTER"
   | "POLICY_MANUAL"
   | "TEMPLATE";
@@ -64,13 +64,31 @@ export interface User {
   status: "online" | "away" | "offline";
 }
 
+export interface PayrollDetails {
+  baseSalary: number;
+  currency: string;
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
+  taxId: string;
+}
+
 export interface Employee {
   id: string;
   name: string;
+  firstName: string;
+  lastName: string;
+  idNumber: string;
   email: string;
   department: string;
   position: string;
-  status: "active" | "inactive" | "pending" | "probation" | "resigned" | "terminated";
+  status:
+    | "active"
+    | "inactive"
+    | "pending"
+    | "probation"
+    | "resigned"
+    | "terminated";
   hireDate: string;
   avatar?: string;
   phone?: string;
@@ -82,6 +100,7 @@ export interface Employee {
   zipCode?: string;
   complianceStatus: "compliant" | "non-compliant";
   onboardingProgress: number;
+  payroll?: PayrollDetails;
 }
 
 export interface EmployeeDocument {
@@ -103,6 +122,42 @@ export interface SystemLog {
   actor: string;
   companyId?: string;
   ipAddress: string;
+}
+
+export interface Department {
+  id: string;
+  name: string;
+  description: string;
+  status: "active" | "inactive";
+  employeeCount: number;
+}
+
+export interface JobTitle {
+  id: string;
+  title: string;
+  departmentId: string;
+  status: "active" | "inactive";
+  employeeCount: number;
+}
+
+export interface PolicyCompliance {
+  onboarding: {
+    compliant: number;
+    nonCompliant: number;
+    total: number;
+    nonCompliantEmployees: { id: string; name: string; missingDoc: string }[];
+  };
+  offboarding: {
+    compliant: number;
+    nonCompliant: number;
+    total: number;
+    nonCompliantEmployees: { id: string; name: string; missingDoc: string }[];
+  };
+}
+
+export interface ApplicantPipelineStage {
+  stage: RecruitmentStage;
+  count: number;
 }
 
 export interface Applicant {
@@ -216,6 +271,7 @@ export interface JobOpening {
   dept: string;
   type: string;
   location: string;
+  description?: string;
   applicants: number;
   status: "published" | "draft" | "on-hold";
   date: string;

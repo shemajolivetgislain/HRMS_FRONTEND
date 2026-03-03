@@ -1,165 +1,326 @@
-import { Button } from "#/components/ui/button";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  BookOpen01Icon,
+  Briefcase02Icon,
+  UserMultiple02Icon,
+  Building03Icon,
+  GlobalIcon,
+  ArrowRight01Icon,
+  CheckmarkCircle01Icon,
+  DashboardSquare01Icon,
+  HelpCircleIcon,
+  ArrowLeft01Icon,
+} from "@hugeicons/core-free-icons";
+import { Logo } from "@/components/logo";
+import {
+  Frame,
+  FramePanel,
+  FrameHeader,
+  FrameTitle,
+  FrameDescription,
+  FrameContent,
+  FrameFooter,
+} from "@/components/ui/frame";
 
 export const Route = createFileRoute("/docs")({
   component: DocsPage,
 });
 
 function DocsPage() {
-  const modules = [
+  const navigate = useNavigate();
+
+  const sections = [
     {
-      title: "1. System Admin (Platform Console)",
-      desc: "The global view for platform owners. Manage all registered tenants (e.g., Igihe Logistics, Vision Finance) from a single control center.",
-      features: [
-        "Company Registry: A complete list of every company using the app, including their TIN, sector, and employee count.",
-        "Tenant Control: Instantly suspend, activate, or deactivate platform access for any company.",
-        "System Logs: Comprehensive security trails recording major events (e.g., new tenant onboarding, compliance suspensions).",
-        "Company Setup: Register new companies, assign their unique master password, and provision company admin accounts.",
-      ],
-      links: [
-        { label: "Platform Overview", to: "/admin" },
-        { label: "Manage Companies", to: "/admin/companies" },
-        { label: "Security Logs", to: "/admin/logs" },
-      ],
-    },
-    {
-      title: "2. Company Admin Setup",
-      desc: "The localized control panel for an individual company's HR manager to configure their specific workspace.",
-      features: [
-        "Department & Title Management: Configure organizational structures like 'Operations' or 'Engineering' and define roles.",
-        "Policy Configuration: Set mandatory onboarding documents (CV, ID, Medical Report) and offboarding requirements (Resignation Letter).",
-        "Theme & Appearance: Customize the dashboard aesthetic (Light, Dark, System) for the company.",
-      ],
-      links: [
-        { label: "Company Settings", to: "/dashboard/settings" },
-      ],
-    },
-    {
-      title: "3. Employee & Compliance Records",
-      desc: "The digital source of truth for the workforce, handling the entire employment lifecycle.",
-      features: [
-        "Status Tracking: Manage employees across different lifecycle states: Active, Probation, Resigned, and Terminated.",
-        "Onboarding Tracker: Track mandatory documents and setup processes for new hires to ensure full legal compliance.",
-        "Detailed Profiles: Store rich data including Line Managers, Dates of Birth, contact info, and digital document vaults.",
-      ],
-      links: [
-        { label: "Employee Directory", to: "/dashboard/employees" },
+      category: "Platform Administration",
+      icon: GlobalIcon,
+      modules: [
         {
-          label: "View Employee Profile",
-          to: "/dashboard/employees/$id",
-          params: { id: "EMP-001" },
+          title: "System Admin Workspace",
+          desc: "Global view for platform owners managing multiple tenants (companies).",
+          features: [
+            "Company Database: View and manage all registered companies.",
+            "Registration Flow: Multi-step wizard for provisioning new companies.",
+            "Security Audits: Immutable system-level logs tracking critical actions.",
+          ],
+          links: [
+            { label: "Admin Console", to: "/admin" },
+            { label: "Tenants List", to: "/admin/companies" },
+            { label: "Register Company", to: "/admin/companies/register" },
+            { label: "Audit Logs", to: "/admin/logs" },
+            { label: "Platform Settings", to: "/admin/settings" },
+          ],
         },
-        { label: "Browse Document Vault", to: "/dashboard/documents" },
+        {
+          title: "Authentication & Security",
+          desc: "Comprehensive identity management for all platform users.",
+          features: [
+            "Secure Gateway: Role-based access control (RBAC) for different tiers.",
+            "Recovery Flows: Automated password reset and email verification.",
+          ],
+          links: [
+            { label: "Login Portal", to: "/auth/login" },
+            { label: "Join Platform", to: "/auth/register" },
+            { label: "Forgot Password", to: "/auth/forgot-password" },
+            { label: "Account Verify", to: "/auth.verify" },
+          ],
+        },
       ],
     },
     {
-      title: "4. The Payroll Engine",
-      desc: "A compliant, step-by-step wizard ensuring accurate compensation and statutory deductions.",
-      features: [
-        "6-Step Verification: Enforces a strict pipeline from Attendance Sheets -> HR Check -> Approval -> Salary Prep -> Final Verification.",
-        "RRA Tax Brackets: Automatically applies Rwanda Revenue Authority rates: 0% (0-60k), 10% (60k-100k), 20% (100k-200k), and 30% (200k+).",
-        "Statutory Deductions: Handles RSSB Pension (6% employee / 8% employer), CBHI (0.5%), and Maternity funds.",
-      ],
-      links: [
-        { label: "Run Monthly Payroll", to: "/dashboard/payroll" },
+      category: "Organization & Structure",
+      icon: Building03Icon,
+      modules: [
+        {
+          title: "Department Management",
+          desc: "Define the organizational structure and hierarchies within a company.",
+          features: [
+            "Department CRUD: Manage Engineering, Sales, and other units.",
+            "Metrics at a Glance: View active employee counts directly on cards.",
+            "Job Titling: Map specific roles to designated departments.",
+          ],
+          links: [{ label: "Department Hub", to: "/dashboard/departments" }],
+        },
       ],
     },
     {
-      title: "5. Leave & Time-Off Management",
-      desc: "Automated tracking for employee absences based on configured company policies.",
-      features: [
-        "Statutory Accruals: Handles standard allowances like 1.5 days of annual leave per month.",
-        "Specialized Leaves: Pre-configured for Sick Leave (5 days/year) and Maternity Leave (3 months and 2 weeks).",
-        "Approval Workflows: Line managers and HR can review, approve, or reject employee requests with comments.",
+      category: "Employee Lifecycle",
+      icon: UserMultiple02Icon,
+      modules: [
+        {
+          title: "Onboarding Automation",
+          desc: "A frictionless 3-step wizard to register and induct new hires.",
+          features: [
+            "Personal Data: Safely capture PII and identification.",
+            "Compliance Docs: Enforce collection of mandatory files.",
+          ],
+          links: [
+            { label: "Directory", to: "/dashboard/employees" },
+            { label: "Launch Onboarding", to: "/dashboard/employees/onboard" },
+          ],
+        },
+        {
+          title: "Offboarding & Resignation",
+          desc: "Formalize the exit process ensuring full compliance.",
+          features: [
+            "Resignation Logging: Record notice periods and exit reasons.",
+            "State Updates: Automatically switches employee state to 'Resigned'.",
+          ],
+          links: [
+            { label: "Process Resignation", to: "/dashboard/employees/resign" },
+          ],
+        },
       ],
-      links: [{ label: "Manage Team Leaves", to: "/dashboard/leaves" }],
     },
     {
-      title: "6. Performance (Balanced Scorecard)",
-      desc: "Strategic performance management aligning employee goals with company objectives.",
-      features: [
-        "4 Perspectives: Goals are categorized into Financial, Customer, Internal Process, and Growth.",
-        "Standardized Rating: Uses a 1-4 scale (1: Does not meet, 2: Almost meets, 3: Meets, 4: Exceeds).",
-        "Appraisal Process: Involves self-review, manager review, and a final appraisal meeting for documentation.",
+      category: "Recruitment & ATS",
+      icon: Briefcase02Icon,
+      modules: [
+        {
+          title: "Applicant Tracking System",
+          desc: "End-to-end recruitment pipelines to source and hire top talent.",
+          features: [
+            "Job Requisitions: Create and publish new Job Openings.",
+            "External Apply: Branded application forms for candidates.",
+            "Kanban Pipelines: Move candidates through custom stages.",
+          ],
+          links: [
+            { label: "Recruitment HQ", to: "/dashboard/recruitment" },
+            { label: "Public Apply Form", to: "/apply/JOB-101" },
+          ],
+        },
       ],
-      links: [{ label: "Staff Appraisals", to: "/dashboard/performance" }],
     },
     {
-      title: "7. Recruitment Pipeline",
-      desc: "An integrated ATS (Applicant Tracking System) to move candidates from application to contract.",
-      features: [
-        "Rigorous Stages: Track candidates through: Shortlisted, Online Assessment, First Interview, Second and Final Interview, Reserved, or Rejected.",
-        "Seamless Onboarding: Approved candidates can be converted directly into active Employees within the system.",
+      category: "Finance & Operations",
+      icon: DashboardSquare01Icon,
+      modules: [
+        {
+          title: "Statutory Payroll Engine",
+          desc: "Compliant payroll processing honoring local tax laws.",
+          features: [
+            "Tax Calculations: Hardcoded RRA brackets (0% - 30%).",
+            "Guided Execution: 6-step wizard taking payroll from draft to bank transfer.",
+          ],
+          links: [{ label: "Payroll Dashboard", to: "/dashboard/payroll" }],
+        },
+        {
+          title: "Leave & Performance",
+          desc: "Continuous evaluation and absence tracking modules.",
+          features: [
+            "Leave Vault: Automated accruals and request processing.",
+            "Balanced Scorecard: Target tracking for periodic reviews.",
+          ],
+          links: [
+            { label: "Leaves Hub", to: "/dashboard/leaves" },
+            { label: "Appraisals", to: "/dashboard/performance" },
+          ],
+        },
+        {
+          title: "Intelligence & Assets",
+          desc: "Data-driven insights and centralized record keeping.",
+          features: [
+            "Document Vault: Secure file repository with version control.",
+            "Advanced Analytics: Workforce trajectory and morale reporting.",
+          ],
+          links: [
+            { label: "Analytics", to: "/dashboard/analytics" },
+            { label: "Documents", to: "/dashboard/documents" },
+            { label: "Calendar", to: "/dashboard/calendar" },
+            { label: "Standard Reports", to: "/dashboard/reports" },
+          ],
+        },
       ],
-      links: [{ label: "Hiring Command Center", to: "/dashboard/recruitment" }],
+    },
+    {
+      category: "Support & Config",
+      icon: HelpCircleIcon,
+      modules: [
+        {
+          title: "System Maintenance",
+          desc: "Configuration and support tools for daily operations.",
+          features: [
+            "Help Desk: Frequently asked questions and system status.",
+            "Preferences: User and company-level settings configuration.",
+          ],
+          links: [
+            { label: "Help Center", to: "/dashboard/help" },
+            { label: "Dashboard Settings", to: "/dashboard/settings" },
+          ],
+        },
+      ],
     },
   ];
 
   return (
-    <div className="p-10 space-y-12 font-sans max-w-5xl bg-background min-h-screen">
-      <header className="space-y-4 border-b border-border/10 pb-8">
-        <h1 className="text-4xl font-bold tracking-tight text-foreground/90">
-          HRMS Documentation
-        </h1>
-        <p className="text-muted-foreground font-medium text-lg max-w-3xl">
-          A comprehensive guide to the Multi-Company Human Resource Management System. Explore the architecture, workflows, and compliance tools available to System and Company Administrators.
-        </p>
-      </header>
-
-      <div className="grid grid-cols-1 gap-12">
-        {modules.map((m, i) => (
-          <div key={i} className="space-y-5 group">
-            <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-primary group-hover:underline transition-all">
-                {m.title}
-              </h2>
-              <p className="text-[15px] font-medium leading-relaxed text-foreground/80">
-                {m.desc}
-              </p>
-            </div>
-
-            <div className="bg-muted/5 border border-border/10 p-6 rounded-2xl space-y-4">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
-                Key Capabilities:
-              </p>
-              <ul className="space-y-3">
-                {m.features.map((f, k) => (
-                  <li
-                    key={k}
-                    className="text-sm text-muted-foreground flex items-start gap-3 leading-relaxed"
-                  >
-                    <span className="size-1.5 rounded-full bg-primary/40 mt-1.5 shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex flex-wrap gap-3 pt-2">
-              {m.links.map((l, j) => (
-                <Button
-                  key={j}
-                  variant="outline"
-                  size="sm"
-                  className="font-semibold shadow-none border-border/60 hover:bg-muted/50"
-                  render={<Link to={l.to} params={l.params} />}
-                >
-                  {l.label}
-                </Button>
-              ))}
-            </div>
+    <div className="min-h-screen bg-muted/20">
+      {/* Top Navigation */}
+      <nav className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2">
+            <Logo className="size-7" />
+            <span className="text-sm font-bold tracking-tight uppercase">
+              HRMS Docs
+            </span>
+          </Link>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => window.history.back()}
+              className="text-xs font-semibold gap-2"
+            >
+              <HugeiconsIcon icon={ArrowLeft01Icon} size={14} />
+              Back
+            </Button>
+            <Button
+              size="sm"
+              className="text-xs font-bold gap-2"
+              onClick={() => navigate({ to: "/dashboard" })}
+            >
+              Enter System
+              <HugeiconsIcon icon={ArrowRight01Icon} size={14} />
+            </Button>
           </div>
-        ))}
-      </div>
+        </div>
+      </nav>
 
-      <div className="pt-12 border-t border-border/10 pb-20">
-        <Link
-          to="/dashboard"
-          className="inline-flex items-center justify-center bg-primary text-primary-foreground px-10 py-4 rounded-xl font-bold shadow-md shadow-primary/10 hover:scale-[1.02] active:scale-95 transition-all"
-        >
-          Enter Main Dashboard
-        </Link>
-      </div>
+      <main className="max-w-6xl mx-auto px-6 py-10">
+        <header className="mb-12 space-y-4">
+          <div className="flex items-center gap-2 text-primary">
+            <HugeiconsIcon icon={BookOpen01Icon} size={18} />
+            <span className="text-xs font-bold uppercase tracking-widest">
+              Architecture Guide
+            </span>
+          </div>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground">
+            System Infrastructure & Modules
+          </h1>
+          <p className="text-muted-foreground text-sm max-w-2xl leading-relaxed">
+            A comprehensive guide to the architecture, workflows, and
+            strict-typed infrastructure powering the HRMS platform.
+          </p>
+        </header>
+
+        <div className="space-y-12">
+          {sections.map((section, idx) => (
+            <div key={idx} className="space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                  <HugeiconsIcon icon={section.icon} size={18} />
+                </div>
+                <h2 className="text-lg font-bold tracking-tight text-foreground/90">
+                  {section.category}
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                {section.modules.map((m, i) => (
+                  <Frame key={i} className="h-full">
+                    <FramePanel className="bg-card flex flex-col h-full">
+                      <FrameHeader>
+                        <div>
+                          <FrameTitle className="text-primary text-base">
+                            {m.title}
+                          </FrameTitle>
+                          <FrameDescription className="text-xs line-clamp-1">
+                            {m.desc}
+                          </FrameDescription>
+                        </div>
+                      </FrameHeader>
+                      <FrameContent className="flex-1 space-y-6">
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {m.desc}
+                        </p>
+
+                        <div className="space-y-3">
+                          <h4 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
+                            Key Capabilities
+                          </h4>
+                          <ul className="space-y-2.5">
+                            {m.features.map((f, k) => (
+                              <li
+                                key={k}
+                                className="text-xs font-medium text-foreground/80 flex items-start gap-2.5 leading-relaxed"
+                              >
+                                <HugeiconsIcon
+                                  icon={CheckmarkCircle01Icon}
+                                  size={14}
+                                  className="text-success mt-0.5 shrink-0"
+                                />
+                                {f}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </FrameContent>
+                      <FrameFooter className="flex flex-wrap gap-2 p-4 bg-muted/5">
+                        {m.links.map((l, j) => (
+                          <Button
+                            key={j}
+                            variant="outline"
+                            size="sm"
+                            className="h-7 px-3 text-[10px] font-bold uppercase tracking-wider gap-1.5"
+                            onClick={() => navigate({ to: l.to as any })}
+                          >
+                            {l.label}
+                            <HugeiconsIcon
+                              icon={ArrowRight01Icon}
+                              size={10}
+                              className="opacity-40"
+                            />
+                          </Button>
+                        ))}
+                      </FrameFooter>
+                    </FramePanel>
+                  </Frame>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
     </div>
   );
 }

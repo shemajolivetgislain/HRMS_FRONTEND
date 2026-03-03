@@ -1,5 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,18 +10,8 @@ import {
   FrameContent,
   FrameFooter,
 } from "@/components/ui/frame";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Search01Icon,
@@ -34,6 +23,7 @@ import {
   ViewIcon,
   ArrowLeft01Icon,
   ArrowRight01Icon,
+  UserMinus01Icon,
 } from "@hugeicons/core-free-icons";
 import {
   Select,
@@ -48,16 +38,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { api } from "@/lib/mock-api";
 import { useEmployees } from "@/hooks/use-employees";
@@ -72,7 +52,7 @@ export const Route = createFileRoute("/dashboard/employees/")({
 
 function EmployeesPage() {
   const initialEmployees = Route.useLoaderData();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
   const {
     searchTerm,
     setSearchTerm,
@@ -80,12 +60,9 @@ function EmployeesPage() {
     setFilterDept,
     filterStatus,
     setFilterStatus,
-    selectedIds,
     filteredEmployees,
     departments,
     statuses,
-    toggleSelectAll,
-    toggleSelect,
   } = useEmployees(initialEmployees);
 
   return (
@@ -103,93 +80,30 @@ function EmployeesPage() {
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Export List
         </Button>
-        
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger
-            render={
-              <Button
-                size="lg"
-                className="text-xs font-bold gap-2 capitalize"
-              >
-                <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
-                Add Employee
-              </Button>
-            }
-          />
-          <DialogContent className="sm:max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle>Onboard New Employee</DialogTitle>
-              <DialogDescription>
-                Register a new member to your organization.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" placeholder="Jean Paul" className="h-9" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" placeholder="Nkurunziza" className="h-9" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="idNumber">ID / Passport Number</Label>
-                  <Input id="idNumber" placeholder="119..." className="h-9" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" type="email" placeholder="jp.nkurunziza@igihe.rw" className="h-9" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="phoneNumber">Phone Number</Label>
-                  <Input id="phoneNumber" placeholder="+250..." className="h-9" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="department">Department</Label>
-                  <Select>
-                    <SelectTrigger id="department" className="h-9 w-full">
-                      <SelectValue placeholder="Select department" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Operations">Operations</SelectItem>
-                      <SelectItem value="Engineering">Engineering</SelectItem>
-                      <SelectItem value="HR">Human Resources</SelectItem>
-                      <SelectItem value="Finance">Finance</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="jobTitle">Job Title</Label>
-                  <Input id="jobTitle" placeholder="Fleet Manager" className="h-9" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="status">Employment Status</Label>
-                  <Select defaultValue="active">
-                    <SelectTrigger id="status" className="h-9 w-full">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="probation">Probation</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-              <Button type="submit" onClick={() => setIsDialogOpen(false)}>Onboard Employee</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="text-xs font-bold gap-2 capitalize shadow-none hover:bg-secondary/80"
+            onClick={() => navigate({ to: "/dashboard/employees/resign" })}
+          >
+            <HugeiconsIcon icon={UserMinus01Icon} size={14} strokeWidth={2} />
+            Resign
+          </Button>
+          <Button
+            size="lg"
+            className="text-xs font-bold gap-2 capitalize"
+            onClick={() => navigate({ to: "/dashboard/employees/onboard" })}
+          >
+            <HugeiconsIcon
+              icon={PlusSignCircleIcon}
+              size={14}
+              strokeWidth={2}
+            />
+            Onboard Employee
+          </Button>
+        </div>
       </DashboardHeader>
 
       <div className="flex flex-col gap-4 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
@@ -278,82 +192,76 @@ function EmployeesPage() {
                 </Select>
               </div>
 
-              <FrameContent className="p-0">
-                <Table>
-                  <TableHeader className="bg-muted/10">
-                    <TableRow className="hover:bg-transparent border-border/5">
-                      <TableHead className="w-[48px] px-6">
-                        <Checkbox
-                          checked={
-                            selectedIds.size === filteredEmployees.length &&
-                            filteredEmployees.length > 0
-                          }
-                          onCheckedChange={toggleSelectAll}
-                          className="size-4 rounded-sm border-border/60"
-                        />
-                      </TableHead>
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Employee
-                      </TableHead>
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Compliance
-                      </TableHead>
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Onboarding
-                      </TableHead>
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Status
-                      </TableHead>
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">
-                        Actions
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredEmployees.length > 0 ? (
-                      filteredEmployees.map((user) => (
-                        <TableRow
-                          key={user.id}
-                          className="border-border/5 hover:bg-muted/5 transition-colors group"
-                        >
-                          <TableCell className="px-6">
-                            <Checkbox
-                              checked={selectedIds.has(user.id)}
-                              onCheckedChange={() => toggleSelect(user.id)}
-                              className="size-4 rounded-sm border-border/60"
+              <FrameContent className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredEmployees.length > 0 ? (
+                    filteredEmployees.map((user) => (
+                      <div
+                        key={user.id}
+                        className="group relative flex flex-col p-5 rounded-2xl border border-border/40 bg-muted/5 hover:bg-background hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 animate-in fade-in zoom-in-95"
+                      >
+                        <div className="absolute top-4 right-4">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger
+                              render={
+                                <Button
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5 shadow-xs"
+                                  aria-label="Employee actions"
+                                >
+                                  <HugeiconsIcon
+                                    icon={MoreHorizontalIcon}
+                                    className="size-4 text-muted-foreground/60"
+                                  />
+                                </Button>
+                              }
                             />
-                          </TableCell>
-                          <TableCell className="px-2 py-4">
-                            <div className="flex items-center gap-3">
-                              <UserAvatar
-                                name={user.name}
-                                size="sm"
-                              />
-                              <div className="hidden sm:block">
-                                <p className="text-sm font-semibold text-foreground/90">{user.name}</p>
-                                <p className="text-xs text-muted-foreground/50">{user.department}</p>
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell className="px-2">
-                            <Badge
-                              variant={user.complianceStatus === "compliant" ? "success" : "destructive"}
-                              showDot
-                              className="h-5 rounded-md"
+                            <DropdownMenuContent
+                              align="end"
+                              className="w-48 rounded-xl border-border/40 shadow-xl"
                             >
-                              {user.complianceStatus}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="px-2">
-                            <div className="w-24 space-y-1.5">
-                              <div className="flex items-center justify-between text-xs font-bold text-muted-foreground/40 uppercase">
-                                <span>Track</span>
-                                <span>{user.onboardingProgress}%</span>
-                              </div>
-                              <Progress value={user.onboardingProgress} className="h-1" />
-                            </div>
-                          </TableCell>
-                          <TableCell className="px-2">
+                              <DropdownMenuItem
+                                render={
+                                  <Link
+                                    to="/dashboard/employees/$id"
+                                    params={{ id: user.id }}
+                                  />
+                                }
+                              >
+                                <HugeiconsIcon
+                                  icon={ViewIcon}
+                                  className="size-4 mr-2"
+                                />
+                                <span>View Profile</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <HugeiconsIcon
+                                  icon={Mail01Icon}
+                                  className="size-4 mr-2"
+                                />
+                                <span>Send Message</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive focus:bg-destructive/10">
+                                <HugeiconsIcon
+                                  icon={Delete02Icon}
+                                  className="size-4 mr-2"
+                                />
+                                <span>Terminate</span>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+
+                        <div className="flex items-start gap-4 mb-6">
+                          <UserAvatar name={user.name} size="default" />
+                          <div className="space-y-1">
+                            <h4 className="text-base font-bold text-foreground/90 group-hover:text-primary transition-colors">
+                              {user.name}
+                            </h4>
+                            <p className="text-xs font-medium text-muted-foreground/60">
+                              {user.position}
+                            </p>
                             <Badge
                               variant={
                                 user.status === "active"
@@ -364,74 +272,82 @@ function EmployeesPage() {
                                       ? "muted"
                                       : "destructive"
                               }
-                              className="capitalize"
+                              className="capitalize h-5 text-[10px] font-bold"
                             >
                               {user.status}
                             </Badge>
-                          </TableCell>
-                          <TableCell className="text-right pr-6">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger
-                                render={
-                                  <Button
-                                    variant="ghost"
-                                    size="icon-sm"
-                                    className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5 shadow-xs"
-                                    aria-label="Employee actions"
-                                  >
-                                    <HugeiconsIcon
-                                      icon={MoreHorizontalIcon}
-                                      className="size-4 text-muted-foreground/60"
-                                    />
-                                  </Button>
-                                }
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-3 mb-6">
+                          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-background/50 border border-border/20">
+                            <div className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-widest w-16">
+                              Staff ID
+                            </div>
+                            <span className="text-xs font-bold text-muted-foreground/80">
+                              {user.idNumber}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-background/50 border border-border/20">
+                            <div className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-widest w-16">
+                              Dept
+                            </div>
+                            <span className="text-xs font-bold text-muted-foreground/80">
+                              {user.department}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mt-auto pt-4 border-t border-border/5 space-y-2">
+                          <div className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground/60">
+                            <HugeiconsIcon
+                              icon={Mail01Icon}
+                              size={14}
+                              className="text-primary/40"
+                            />
+                            {user.email}
+                          </div>
+                          <div className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground/60">
+                            <HugeiconsIcon
+                              icon={Download01Icon}
+                              size={14}
+                              className="text-primary/40 rotate-180"
+                            />
+                            {user.phone}
+                          </div>
+                        </div>
+
+                        {user.onboardingProgress < 100 && (
+                          <div className="mt-4 pt-4 border-t border-border/5">
+                            <div className="flex items-center justify-between mb-1.5">
+                              <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
+                                Setup Progress
+                              </span>
+                              <span className="text-[10px] font-bold text-primary">
+                                {user.onboardingProgress}%
+                              </span>
+                            </div>
+                            <div className="h-1 w-full bg-muted/20 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-primary transition-all duration-500"
+                                style={{ width: `${user.onboardingProgress}%` }}
                               />
-                              <DropdownMenuContent
-                                align="end"
-                                className="w-48 rounded-xl border-border/40 shadow-xl"
-                              >
-                                <DropdownMenuItem
-                                  render={
-                                    <Link
-                                      to="/dashboard/employees/$id"
-                                      params={{ id: user.id }}
-                                    />
-                                  }
-                                >
-                                  <HugeiconsIcon
-                                    icon={ViewIcon}
-                                    className="size-4 mr-2"
-                                  />
-                                  <span>View Profile</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <HugeiconsIcon
-                                    icon={Mail01Icon}
-                                    className="size-4 mr-2"
-                                  />
-                                  <span>Send Message</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="text-destructive focus:bg-destructive/10">
-                                  <HugeiconsIcon
-                                    icon={Delete02Icon}
-                                    className="size-4 mr-2"
-                                  />
-                                  <span>Terminate</span>
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={6} className="h-[300px] text-center">
-                          <p className="text-sm text-muted-foreground">No employees found</p>
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="col-span-full h-64 flex flex-col items-center justify-center text-center space-y-3">
+                      <div className="size-12 rounded-2xl bg-muted/5 flex items-center justify-center text-muted-foreground/20">
+                        <HugeiconsIcon icon={Search01Icon} size={24} />
+                      </div>
+                      <p className="text-sm font-medium text-muted-foreground/40">
+                        No employees found matching your filters
+                      </p>
+                    </div>
+                  )}
+                </div>
               </FrameContent>
 
               <FrameFooter className="flex items-center justify-between border-t border-border/5">
@@ -439,12 +355,33 @@ function EmployeesPage() {
                   {filteredEmployees.length} Records Total
                 </span>
                 <div className="flex items-center gap-1.5">
-                  <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors border border-transparent hover:border-border/40" aria-label="Previous">
-                    <HugeiconsIcon icon={ArrowLeft01Icon} size={12} strokeWidth={2.5} />
+                  <button
+                    type="button"
+                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors border border-transparent hover:border-border/40"
+                    aria-label="Previous"
+                  >
+                    <HugeiconsIcon
+                      icon={ArrowLeft01Icon}
+                      size={12}
+                      strokeWidth={2.5}
+                    />
                   </button>
-                  <button className="h-7 w-7 flex items-center justify-center rounded-md bg-primary/10 text-primary border border-primary/20 text-xs font-bold">1</button>
-                  <button className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors border border-transparent hover:border-border/40" aria-label="Next">
-                    <HugeiconsIcon icon={ArrowRight01Icon} size={12} strokeWidth={2.5} />
+                  <button
+                    type="button"
+                    className="h-7 w-7 flex items-center justify-center rounded-md bg-primary/10 text-primary border border-primary/20 text-xs font-bold"
+                  >
+                    1
+                  </button>
+                  <button
+                    type="button"
+                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors border border-transparent hover:border-border/40"
+                    aria-label="Next"
+                  >
+                    <HugeiconsIcon
+                      icon={ArrowRight01Icon}
+                      size={12}
+                      strokeWidth={2.5}
+                    />
                   </button>
                 </div>
               </FrameFooter>

@@ -19,14 +19,14 @@ export function DashboardHeader({
   className,
 }: DashboardHeaderProps) {
   return (
-    <header className={cn("flex items-end justify-between pt-10 pb-8 px-4 lg:px-6", className)}>
+    <header className={cn("flex items-end justify-between pt-10 pb-8 px-6 lg:px-8", className)}>
       <div className="flex flex-col gap-1.5">
         {category ? (
           <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-[0.2em]">
             {category}
           </p>
         ) : null}
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground/90 leading-tight">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground/90 leading-tight">
           {title}
         </h1>
         {description ? (

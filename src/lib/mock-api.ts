@@ -1,4 +1,21 @@
-import type { Employee, PayrollRecord, JobOpening, Company, LeaveRequest, LeaveBalance, PerformanceReview, TaxConfig, PayrollRun, Applicant, EmployeeDocument, SystemLog } from "@/types";
+import type {
+  Employee,
+  PayrollRecord,
+  JobOpening,
+  Company,
+  LeaveRequest,
+  LeaveBalance,
+  PerformanceReview,
+  TaxConfig,
+  PayrollRun,
+  Applicant,
+  EmployeeDocument,
+  SystemLog,
+  Department,
+  JobTitle,
+  PolicyCompliance,
+  ApplicantPipelineStage,
+} from "@/types";
 
 export const mockCompanies: Company[] = [
   {
@@ -33,13 +50,16 @@ export const mockCompanies: Company[] = [
     status: "suspended",
     registeredAt: "2023-11-20",
     employeeCount: 56,
-  }
+  },
 ];
 
-export const mockEmployees: Employee[] = [
+export let mockEmployees: Employee[] = [
   {
     id: "EMP-001",
     name: "Jean Paul Nkurunziza",
+    firstName: "Jean Paul",
+    lastName: "Nkurunziza",
+    idNumber: "1198580000000012",
     email: "jp.nkurunziza@igihe.rw",
     department: "Operations",
     position: "Fleet Manager",
@@ -53,10 +73,21 @@ export const mockEmployees: Employee[] = [
     country: "Rwanda",
     dob: "1990-05-12",
     manager: "Skylar Calzoni",
+    payroll: {
+      baseSalary: 1200000,
+      currency: "RWF",
+      bankName: "Bank of Kigali",
+      accountName: "Jean Paul Nkurunziza",
+      accountNumber: "0001234567890",
+      taxId: "123456789",
+    },
   },
   {
     id: "EMP-002",
     name: "Divine Uwase",
+    firstName: "Divine",
+    lastName: "Uwase",
+    idNumber: "1199580000000034",
     email: "d.uwase@vision.rw",
     department: "Accounting",
     position: "Senior Accountant",
@@ -70,10 +101,21 @@ export const mockEmployees: Employee[] = [
     country: "Rwanda",
     dob: "1994-11-30",
     manager: "Jean Paul Nkurunziza",
+    payroll: {
+      baseSalary: 1500000,
+      currency: "RWF",
+      bankName: "Equity Bank",
+      accountName: "Divine Uwase",
+      accountNumber: "0009876543210",
+      taxId: "987654321",
+    },
   },
   {
     id: "EMP-003",
     name: "Claude Mugisha",
+    firstName: "Claude",
+    lastName: "Mugisha",
+    idNumber: "1199080000000056",
     email: "c.mugisha@kivuheights.com",
     department: "Sales",
     position: "Sales Representative",
@@ -91,6 +133,9 @@ export const mockEmployees: Employee[] = [
   {
     id: "EMP-004",
     name: "Alice Umutoni",
+    firstName: "Alice",
+    lastName: "Umutoni",
+    idNumber: "1199280000000078",
     email: "a.umutoni@igihe.rw",
     department: "HR",
     position: "HR Specialist",
@@ -104,7 +149,15 @@ export const mockEmployees: Employee[] = [
     country: "Rwanda",
     dob: "1992-08-22",
     manager: "System Admin",
-  }
+    payroll: {
+      baseSalary: 1100000,
+      currency: "RWF",
+      bankName: "I&M Bank",
+      accountName: "Alice Umutoni",
+      accountNumber: "0004444444444",
+      taxId: "444444444",
+    },
+  },
 ];
 
 export const mockDocuments: EmployeeDocument[] = [
@@ -127,7 +180,7 @@ export const mockDocuments: EmployeeDocument[] = [
     fileSize: "850 KB",
     uploadedAt: "2021-03-10",
     status: "active",
-  }
+  },
 ];
 
 export const mockSystemLogs: SystemLog[] = [
@@ -146,7 +199,7 @@ export const mockSystemLogs: SystemLog[] = [
     event: "New tenant 'Igihe Logistics' onboarding initiated",
     actor: "Super Admin",
     ipAddress: "41.216.100.12",
-  }
+  },
 ];
 
 export const mockApplicants: Applicant[] = [
@@ -161,7 +214,7 @@ export const mockApplicants: Applicant[] = [
     stage: "Shortlisted",
     score: 4.8,
     appliedAt: "2024-03-20",
-    history: []
+    history: [],
   },
   {
     id: "CAN-002",
@@ -174,7 +227,7 @@ export const mockApplicants: Applicant[] = [
     stage: "First Interview",
     score: 4.2,
     appliedAt: "2024-03-21",
-    history: []
+    history: [],
   },
   {
     id: "CAN-003",
@@ -187,7 +240,7 @@ export const mockApplicants: Applicant[] = [
     stage: "Online Assessment",
     score: 3.9,
     appliedAt: "2024-03-22",
-    history: []
+    history: [],
   },
   {
     id: "CAN-004",
@@ -200,7 +253,7 @@ export const mockApplicants: Applicant[] = [
     stage: "Second and Final Interview",
     score: 4.9,
     appliedAt: "2024-03-23",
-    history: []
+    history: [],
   },
   {
     id: "CAN-005",
@@ -213,8 +266,8 @@ export const mockApplicants: Applicant[] = [
     stage: "Rejected",
     score: 2.1,
     appliedAt: "2024-03-18",
-    history: []
-  }
+    history: [],
+  },
 ];
 
 export const mockTaxConfig: TaxConfig = {
@@ -254,7 +307,7 @@ export const mockLeaves: LeaveRequest[] = [
     reason: "Holiday in Gisenyi",
     status: "pending",
     appliedAt: "2024-03-28",
-  }
+  },
 ];
 
 export const mockLeaveBalances: LeaveBalance[] = [
@@ -264,7 +317,7 @@ export const mockLeaveBalances: LeaveBalance[] = [
     sick: 5,
     maternity: 0,
     used: 4,
-  }
+  },
 ];
 
 export const mockPerformance: PerformanceReview[] = [
@@ -283,10 +336,10 @@ export const mockPerformance: PerformanceReview[] = [
         target: "5% reduction",
         weight: 30,
         rating: 3,
-      }
+      },
     ],
     selfRating: 3.5,
-  }
+  },
 ];
 
 export const mockPayroll: PayrollRecord[] = [
@@ -298,7 +351,7 @@ export const mockPayroll: PayrollRecord[] = [
     method: "Bank Transfer (BK)",
     date: "2023-12-27",
     status: "paid",
-  }
+  },
 ];
 
 export const mockJobs: JobOpening[] = [
@@ -311,77 +364,295 @@ export const mockJobs: JobOpening[] = [
     applicants: 42,
     status: "published",
     date: "2 days ago",
-  }
+  },
+];
+
+export const mockDepartments: Department[] = [
+  {
+    id: "DEPT-001",
+    name: "Engineering",
+    description: "Software development and IT",
+    status: "active",
+    employeeCount: 42,
+  },
+  {
+    id: "DEPT-002",
+    name: "Sales & Marketing",
+    description: "Revenue generation",
+    status: "active",
+    employeeCount: 28,
+  },
+  {
+    id: "DEPT-003",
+    name: "Human Resources",
+    description: "People and culture",
+    status: "active",
+    employeeCount: 5,
+  },
+  {
+    id: "DEPT-004",
+    name: "Finance",
+    description: "Accounting and payroll",
+    status: "active",
+    employeeCount: 8,
+  },
+  {
+    id: "DEPT-005",
+    name: "Operations",
+    description: "Logistics and supply chain",
+    status: "active",
+    employeeCount: 60,
+  },
+];
+
+export const mockJobTitles: JobTitle[] = [
+  {
+    id: "JOB-001",
+    title: "Senior Frontend Engineer",
+    departmentId: "DEPT-001",
+    status: "active",
+    employeeCount: 8,
+  },
+  {
+    id: "JOB-002",
+    title: "Backend Engineer",
+    departmentId: "DEPT-001",
+    status: "active",
+    employeeCount: 12,
+  },
+  {
+    id: "JOB-003",
+    title: "Sales Representative",
+    departmentId: "DEPT-002",
+    status: "active",
+    employeeCount: 20,
+  },
+  {
+    id: "JOB-004",
+    title: "HR Business Partner",
+    departmentId: "DEPT-003",
+    status: "active",
+    employeeCount: 3,
+  },
+  {
+    id: "JOB-005",
+    title: "Fleet Manager",
+    departmentId: "DEPT-005",
+    status: "active",
+    employeeCount: 15,
+  },
+];
+
+export const mockPolicyCompliance: PolicyCompliance = {
+  onboarding: {
+    compliant: 135,
+    nonCompliant: 8,
+    total: 143,
+    nonCompliantEmployees: [
+      {
+        id: "EMP-045",
+        name: "Divine Uwase",
+        missingDoc: "CRIMINAL_CERTIFICATE",
+      },
+      { id: "EMP-082", name: "Kevin Patrick", missingDoc: "MEDICAL_REPORT" },
+      { id: "EMP-103", name: "Sarah Manzi", missingDoc: "ID" },
+    ],
+  },
+  offboarding: {
+    compliant: 12,
+    nonCompliant: 3,
+    total: 15,
+    nonCompliantEmployees: [
+      { id: "EMP-012", name: "Alice Umutoni", missingDoc: "CLEARENCE_LETTER" },
+      {
+        id: "EMP-033",
+        name: "Claude Mugisha",
+        missingDoc: "EXPERIENCE_LETTER",
+      },
+    ],
+  },
+};
+
+export const mockPipeline: ApplicantPipelineStage[] = [
+  { stage: "New Applied", count: 145 },
+  { stage: "Screening", count: 82 },
+  { stage: "Online Assessment", count: 45 },
+  { stage: "First Interview", count: 24 },
+  { stage: "Second and Final Interview", count: 8 },
+  { stage: "Offer Sent", count: 3 },
+  { stage: "Recruited", count: 1 },
 ];
 
 export const api = {
   getDocuments: async () => {
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return mockDocuments;
   },
   getSystemLogs: async () => {
-    await new Promise(resolve => setTimeout(resolve, 400));
+    await new Promise((resolve) => setTimeout(resolve, 400));
     return mockSystemLogs;
   },
   getApplicants: async (jobId?: string) => {
-    await new Promise(resolve => setTimeout(resolve, 400));
-    if (jobId) return mockApplicants.filter(a => a.jobTitleId === jobId);
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    if (jobId) return mockApplicants.filter((a) => a.jobTitleId === jobId);
     return mockApplicants;
   },
   getApplicant: async (id: string) => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return mockApplicants.find(a => a.id === id) || null;
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return mockApplicants.find((a) => a.id === id) || null;
   },
   getTaxConfig: async () => {
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
     return mockTaxConfig;
   },
   getActivePayrollRun: async () => {
-    await new Promise(resolve => setTimeout(resolve, 400));
+    await new Promise((resolve) => setTimeout(resolve, 400));
     return mockActivePayroll;
   },
   getCompanies: async () => {
-    await new Promise(resolve => setTimeout(resolve, 600));
+    await new Promise((resolve) => setTimeout(resolve, 600));
     return mockCompanies;
   },
   getCompany: async (id: string) => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return mockCompanies.find(c => c.id === id) || null;
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return mockCompanies.find((c) => c.id === id) || null;
   },
   getEmployees: async () => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return mockEmployees;
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return [...mockEmployees];
   },
   getEmployee: async (id: string) => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return mockEmployees.find(e => e.id === id) || null;
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return mockEmployees.find((e) => e.id === id) || null;
+  },
+  addEmployee: async (emp: Employee) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    mockEmployees.push(emp);
+    return emp;
+  },
+  updateEmployee: async (id: string, updates: Partial<Employee>) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const index = mockEmployees.findIndex((e) => e.id === id);
+    if (index !== -1) {
+      mockEmployees[index] = { ...mockEmployees[index], ...updates };
+      return mockEmployees[index];
+    }
+    throw new Error("Employee not found");
+  },
+  deleteEmployee: async (id: string) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    mockEmployees = mockEmployees.filter((e) => e.id !== id);
+    return true;
   },
   getLeaves: async () => {
-    await new Promise(resolve => setTimeout(resolve, 400));
+    await new Promise((resolve) => setTimeout(resolve, 400));
     return mockLeaves;
   },
   getLeaveBalance: async (empId: string) => {
-    await new Promise(resolve => setTimeout(resolve, 200));
-    return mockLeaveBalances.find(b => b.employeeId === empId) || null;
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    return mockLeaveBalances.find((b) => b.employeeId === empId) || null;
   },
   getPerformanceReviews: async () => {
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return mockPerformance;
   },
   getPayroll: async () => {
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return mockPayroll;
   },
   getPayrollRecord: async (id: string) => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return mockPayroll.find(p => p.id === id) || null;
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return mockPayroll.find((p) => p.id === id) || null;
   },
   getJobs: async () => {
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return mockJobs;
   },
   getJob: async (id: string) => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return mockJobs.find(j => j.id === id) || null;
-  }
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return mockJobs.find((j) => j.id === id) || null;
+  },
+  getDepartments: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return mockDepartments;
+  },
+  getJobTitles: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return mockJobTitles;
+  },
+  getPolicyCompliance: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return mockPolicyCompliance;
+  },
+  getRecruitmentPipeline: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return mockPipeline;
+  },
+  addJobOpening: async (
+    job: Omit<JobOpening, "id" | "applicants" | "date">,
+  ) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const newJob: JobOpening = {
+      ...job,
+      id: `JOB-${Math.floor(Math.random() * 1000)}`,
+      applicants: 0,
+      date: new Date().toISOString().split("T")[0],
+    };
+    mockJobs.push(newJob);
+    return newJob;
+  },
+  addDepartment: async (dept: Omit<Department, "id" | "employeeCount">) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const newDept: Department = {
+      ...dept,
+      id: `DEPT-${Math.floor(Math.random() * 1000)}`,
+      employeeCount: 0,
+    };
+    mockDepartments.push(newDept);
+    return newDept;
+  },
+  addCompany: async (
+    company: Omit<Company, "id" | "registeredAt" | "employeeCount">,
+  ) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const newCompany: Company = {
+      ...company,
+      id: `COMP-${Math.floor(Math.random() * 1000)}`,
+      registeredAt: new Date().toISOString().split("T")[0],
+      employeeCount: 0,
+    };
+    mockCompanies.push(newCompany);
+    return newCompany;
+  },
+  addApplicant: async (
+    applicant: Omit<
+      Applicant,
+      | "id"
+      | "applicationReference"
+      | "appliedAt"
+      | "history"
+      | "score"
+      | "stage"
+    >,
+  ) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const newApplicant: Applicant = {
+      ...applicant,
+      id: `CAN-${Math.floor(Math.random() * 1000)}`,
+      applicationReference: `APP-RW-${Math.floor(Math.random() * 1000)}`,
+      stage: "New Applied",
+      score: 0,
+      appliedAt: new Date().toISOString().split("T")[0],
+      history: [
+        {
+          status: "New Applied",
+          doneBy: "System",
+          doneAt: new Date().toISOString(),
+          comment: "Application received via public portal",
+        },
+      ],
+    };
+    mockApplicants.push(newApplicant);
+    return newApplicant;
+  },
 };

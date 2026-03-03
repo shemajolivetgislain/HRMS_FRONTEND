@@ -6,8 +6,7 @@ function Frame({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "relative flex flex-col rounded-[24px] border border-border/5 bg-muted/10 p-1 group/frame",
-        "*:[[data-slot=frame-panel]+[data-slot=frame-panel]]:mt-1",
+        "relative flex flex-col gap-4 group/frame",
         className,
       )}
       data-slot="frame"
@@ -20,7 +19,7 @@ function FramePanel({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "relative rounded-[20px] border border-border/40 bg-card bg-clip-padding p-0 shadow-[0_1px_3px_rgba(0,0,0,0.02)]",
+        "relative rounded-2xl border border-border bg-card bg-clip-padding p-0",
         className,
       )}
       data-slot="frame-panel"
@@ -33,7 +32,7 @@ function FrameHeader({ className, ...props }: React.ComponentProps<"header">) {
   return (
     <header
       className={cn(
-        "flex items-center justify-between px-6 py-5 border-b border-border/5",
+        "flex items-center justify-between px-6 py-5 border-b border-border/50",
         className,
       )}
       data-slot="frame-panel-header"
@@ -46,7 +45,7 @@ function FrameTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "text-sm font-semibold text-foreground/80 tracking-tight leading-none capitalize",
+        "text-base font-bold text-foreground/90 tracking-tight leading-none",
         className,
       )}
       data-slot="frame-panel-title"
@@ -62,7 +61,7 @@ function FrameDescription({
   return (
     <div
       className={cn(
-        "text-xs text-muted-foreground/50 font-medium mt-1.5 leading-none tracking-tight",
+        "text-xs text-muted-foreground font-medium mt-1.5 leading-none tracking-tight",
         className,
       )}
       data-slot="frame-panel-description"
@@ -84,7 +83,7 @@ function FrameContent({ className, ...props }: React.ComponentProps<"div">) {
 function FrameFooter({ className, ...props }: React.ComponentProps<"footer">) {
   return (
     <footer
-      className={cn("px-6 py-4 border-t border-border/5 bg-muted/5", className)}
+      className={cn("px-6 py-4 border-t border-border/50 bg-muted/5", className)}
       data-slot="frame-panel-footer"
       {...props}
     />

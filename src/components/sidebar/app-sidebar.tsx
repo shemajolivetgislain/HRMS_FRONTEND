@@ -10,7 +10,6 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   DashboardSquare01Icon,
@@ -53,14 +52,43 @@ const defaultData = {
   ],
   navMain: [
     {
-      title: "Dashboard",
+      title: "Overview",
       url: "/dashboard",
       icon: <HugeiconsIcon icon={DashboardSquare01Icon} strokeWidth={2} />,
     },
     {
-      title: "Employees",
-      url: "/dashboard/employees",
+      title: "Organization",
+      url: "#",
+      icon: <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />,
+      items: [
+        {
+          title: "Departments",
+          url: "/dashboard/departments",
+        },
+        {
+          title: "Company Settings",
+          url: "/dashboard/settings",
+        },
+      ],
+    },
+    {
+      title: "Workforce",
+      url: "#",
       icon: <HugeiconsIcon icon={UserGroupIcon} strokeWidth={2} />,
+      items: [
+        {
+          title: "All Employees",
+          url: "/dashboard/employees",
+        },
+        {
+          title: "Onboarding",
+          url: "/dashboard/employees/onboard",
+        },
+        {
+          title: "Resignations",
+          url: "/dashboard/employees/resign",
+        },
+      ],
     },
     {
       title: "Recruitment",
@@ -68,19 +96,19 @@ const defaultData = {
       icon: <HugeiconsIcon icon={JobShareIcon} strokeWidth={2} />,
     },
     {
-      title: "Document Vault",
-      url: "/dashboard/documents",
-      icon: <HugeiconsIcon icon={File02Icon} strokeWidth={2} />,
-    },
-    {
-      title: "Leave Management",
-      url: "/dashboard/leaves",
-      icon: <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} />,
-    },
-    {
       title: "Performance",
-      url: "/dashboard/performance",
+      url: "#",
       icon: <HugeiconsIcon icon={ChartBarLineIcon} strokeWidth={2} />,
+      items: [
+        {
+          title: "Staff Appraisals",
+          url: "/dashboard/performance",
+        },
+        {
+          title: "Analytics",
+          url: "/dashboard/analytics",
+        },
+      ],
     },
     {
       title: "Payroll",
@@ -88,19 +116,28 @@ const defaultData = {
       icon: <HugeiconsIcon icon={Coins01Icon} strokeWidth={2} />,
     },
     {
-      title: "Reports",
-      url: "/dashboard/reports",
-      icon: <HugeiconsIcon icon={File02Icon} strokeWidth={2} />,
-    },
-    {
-      title: "Calendar",
-      url: "/dashboard/calendar",
+      title: "Leave Management",
+      url: "/dashboard/leaves",
       icon: <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} />,
     },
     {
-      title: "Analytics",
-      url: "/dashboard/analytics",
-      icon: <HugeiconsIcon icon={ChartBarLineIcon} strokeWidth={2} />,
+      title: "Operations",
+      url: "#",
+      icon: <HugeiconsIcon icon={File02Icon} strokeWidth={2} />,
+      items: [
+        {
+          title: "Document Vault",
+          url: "/dashboard/documents",
+        },
+        {
+          title: "Reports",
+          url: "/dashboard/reports",
+        },
+        {
+          title: "Calendar",
+          url: "/dashboard/calendar",
+        },
+      ],
     },
   ],
 };
@@ -114,20 +151,19 @@ export function AppSidebar({ customNav, ...props }: AppSidebarProps) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="pt-4 px-2 border-b border-border/5">
-        <div className="flex items-center gap-2 px-2 mb-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+      <SidebarHeader className="pt-4 px-2">
+        <div className="flex items-center gap-2 px-2 mb-4 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
           <Logo className="size-8" />
           <span className="text-xl font-bold tracking-tighter uppercase leading-none text-foreground group-data-[collapsible=icon]:hidden">
             HRMS
           </span>
         </div>
-        <Separator className="bg-border/10 mb-2" />
         <CompanySwitcher companies={defaultData.companies} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navItems} />
       </SidebarContent>
-      <SidebarFooter className="border-t border-border/5">
+      <SidebarFooter>
         <NavUser user={defaultData.user} />
       </SidebarFooter>
       <SidebarRail />

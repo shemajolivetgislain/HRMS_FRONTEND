@@ -117,6 +117,38 @@ function RegisterPage() {
               </div>
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
+                  Contact Phone
+                </Label>
+                <Input
+                  placeholder="+250..."
+                  className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all shadow-none text-sm"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
+                  Company Email
+                </Label>
+                <Input
+                  type="email"
+                  placeholder="contact@company.com"
+                  className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all shadow-none text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
+                Company Logo URL
+              </Label>
+              <Input
+                placeholder="https://example.com/logo.png"
+                className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all shadow-none text-sm"
+              />
+            </div>
+
             <div className="space-y-2">
               <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                 Company Unique Password
@@ -167,24 +199,47 @@ function RegisterPage() {
               setStep(3);
             }}
           >
-            <div className="space-y-2">
-              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
-                Full Name
-              </Label>
-              <Input
-                placeholder="Primary Administrator"
-                className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all shadow-none text-sm"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
+                  First Name
+                </Label>
+                <Input
+                  placeholder="e.g. Jean"
+                  className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all shadow-none text-sm"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
+                  Last Name
+                </Label>
+                <Input
+                  placeholder="e.g. Paul"
+                  className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all shadow-none text-sm"
+                />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
-                Work Email
-              </Label>
-              <Input
-                type="email"
-                placeholder="admin@company.com"
-                className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all shadow-none text-sm"
-              />
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
+                  Phone Number
+                </Label>
+                <Input
+                  placeholder="+250..."
+                  className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all shadow-none text-sm"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
+                  Work Email
+                </Label>
+                <Input
+                  type="email"
+                  placeholder="admin@company.com"
+                  className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all shadow-none text-sm"
+                />
+              </div>
             </div>
             <div className="space-y-2">
               <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">

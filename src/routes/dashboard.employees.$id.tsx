@@ -1,405 +1,223 @@
 import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { api } from "@/lib/mock-api";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import {
+  Frame,
+  FramePanel,
+  FrameHeader,
+  FrameTitle,
+  FrameContent,
+} from "@/components/ui/frame";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  PencilEdit02Icon,
+  UserGroupIcon,
+  Building03Icon,
+  Calendar01Icon,
   Mail01Icon,
-  MoreHorizontalIcon,
-  ArrowLeft01Icon,
-  Tick01Icon,
-  CallIcon,
-  Location01Icon,
-  UserCircleIcon,
-  File02Icon,
+  SmartPhone01Icon,
+  Shield01Icon,
+  JobShareIcon,
   Coins01Icon,
+  File02Icon,
+  UserEdit01Icon,
+  ArrowLeft01Icon,
   Settings02Icon,
-  Briefcase01Icon,
 } from "@hugeicons/core-free-icons";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
-import { Badge } from "@/components/ui/badge";
-import { api } from "@/lib/mock-api";
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { DashboardPending } from "@/components/dashboard/dashboard-pending";
+import { ErrorComponent } from "@/components/error-component";
 
 export const Route = createFileRoute("/dashboard/employees/$id")({
-  loader: async ({ params }) => {
-    const employee = await api.getEmployee(params.id);
-    if (!employee) throw new Error("Employee not found");
-    return employee;
-  },
+  loader: async ({ params }) => await api.getEmployee(params.id),
+  errorComponent: ErrorComponent,
+  pendingComponent: DashboardPending,
   component: EmployeeProfilePage,
 });
 
 function EmployeeProfilePage() {
-  const employeeData = Route.useLoaderData();
-  const [formData] = useState(employeeData);
+  const employee = Route.useLoaderData();
+  const navigate = useNavigate();
+
+  if (!employee) return null;
 
   return (
-    <main className="flex flex-1 flex-col gap-0 overflow-hidden bg-muted/20">
+    <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full">
       <DashboardHeader
-        category="Directory"
-        title={formData.name}
-        description={`Employee ID: ${formData.id} • ${formData.position}`}
+        category="directory"
+        title={employee.name}
+        description={`Member of ${employee.department} team`}
       >
-        <Button
-          variant="outline"
-          size="lg"
-          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
-          render={<Link to="/dashboard/employees" />}
-        >
-          <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
-          Directory
-        </Button>
-        <Button size="lg" className="font-bold gap-2">
-          <HugeiconsIcon icon={PencilEdit02Icon} size={14} strokeWidth={2} />
-          Edit Profile
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate({ to: "/dashboard/employees" })}
+            className="text-xs font-bold gap-2"
+          >
+            <HugeiconsIcon icon={ArrowLeft01Icon} size={14} />
+            Back
+          </Button>
+          <Button size="sm" className="text-xs font-bold gap-2">
+            <HugeiconsIcon icon={UserEdit01Icon} size={14} />
+            Edit Profile
+          </Button>
+        </div>
       </DashboardHeader>
 
-      <div className="flex flex-col lg:flex-row gap-6 px-4 lg:px-6 pb-6 flex-1 overflow-auto no-scrollbar">
-        <div className="w-full lg:w-80 flex-shrink-0 space-y-4">
-          <div className="bg-card rounded-[24px] p-8 border border-border/40 shadow-xs flex flex-col items-center text-center">
-            <div className="relative mb-4">
-              <UserAvatar
-                name={formData.name}
-                size="lg"
-                className="w-24 h-24 rounded-full border-4 border-background shadow-md"
-              />
-            </div>
-            <h2 className="text-xl font-bold text-foreground mb-1">
-              {formData.name}
-            </h2>
-            <p className="text-sm font-medium text-muted-foreground/60 mb-4">
-              {formData.position}
-            </p>
-
-            <Badge
-              variant={
-                formData.status === "active"
-                  ? "success"
-                  : formData.status === "probation"
-                    ? "warning"
-                    : formData.status === "resigned"
-                      ? "muted"
-                      : "destructive"
-              }
-              showDot
-              className="px-4 py-1 rounded-lg text-xs font-bold mb-8 uppercase tracking-wider"
-            >
-              {formData.status}
-            </Badge>
-
-            <div className="w-full space-y-4 text-left">
-              <div className="flex items-center gap-3 text-sm">
-                <div className="size-8 rounded-lg bg-muted/5 flex items-center justify-center text-muted-foreground/40 border border-border/5">
-                  <HugeiconsIcon icon={Mail01Icon} size={16} />
-                </div>
-                <span className="text-muted-foreground/70 font-medium truncate flex-1">
-                  {formData.email}
-                </span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <div className="size-8 rounded-lg bg-muted/5 flex items-center justify-center text-muted-foreground/40 border border-border/5">
-                  <HugeiconsIcon icon={CallIcon} size={16} />
-                </div>
-                <span className="text-muted-foreground/70 font-medium">
-                  {formData.phone || "Not provided"}
-                </span>
-              </div>
-            </div>
-
-            <div className="w-full mt-8 pt-8 border-t border-border/5 space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="text-left space-y-1">
-                  <p className="text-xs font-bold text-muted-foreground/30 uppercase tracking-widest">
-                    Department
-                  </p>
-                  <p className="text-sm font-bold text-foreground/80">
-                    {formData.department}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="text-left space-y-1">
-                  <p className="text-xs font-bold text-muted-foreground/30 uppercase tracking-widest">
-                    Line Manager
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <UserAvatar
-                      name={formData.manager || "System Admin"}
-                      size="sm"
-                      className="size-6"
-                    />
-                    <p className="text-sm font-bold text-foreground/80">
-                      {formData.manager || "System Admin"}
-                    </p>
+      <div className="flex-1 overflow-y-auto no-scrollbar px-4 lg:px-6 pb-12">
+        <div className="max-w-6xl mx-auto space-y-8">
+          <div className="flex flex-col md:flex-row gap-8 items-start">
+            <Frame className="w-full md:w-[300px] shrink-0">
+              <FramePanel className="bg-card p-8 flex flex-col items-center text-center">
+                <UserAvatar name={employee.name} size="xl" className="mb-6 h-24 w-24" />
+                <h2 className="text-xl font-bold text-foreground/90">{employee.name}</h2>
+                <p className="text-sm font-semibold text-primary mt-1">{employee.position}</p>
+                <div className="mt-6 w-full pt-6 border-t border-border/5 space-y-4">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground font-bold uppercase tracking-widest">status</span>
+                    <Badge variant={employee.status === "active" ? "success" : "warning"} showDot>{employee.status}</Badge>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground font-bold uppercase tracking-widest">compliance</span>
+                    <Badge variant={employee.complianceStatus === "compliant" ? "success" : "destructive"}>{employee.complianceStatus}</Badge>
                   </div>
                 </div>
-              </div>
-            </div>
+              </FramePanel>
+            </Frame>
 
-            <Button className="w-full mt-8 bg-primary text-primary-foreground font-bold rounded-xl h-12 flex items-center justify-center gap-2 shadow-sm">
-              Quick Actions
-              <HugeiconsIcon icon={MoreHorizontalIcon} size={14} />
-            </Button>
-          </div>
-        </div>
-
-        {/* main content area */}
-        <div className="flex-1 min-w-0">
-          <Tabs defaultValue="job" className="w-full h-full flex flex-col">
-            <div className="bg-card rounded-[24px] border border-border/40 shadow-xs overflow-hidden flex flex-1 flex-col">
-              <div className="px-8 pt-4 bg-muted/5 border-b border-border/5">
-                <TabsList
-                  variant="line"
-                  className="bg-transparent w-full justify-start rounded-none h-auto p-0 gap-8"
-                >
-                  <TabsTrigger
-                    value="general"
-                    className="gap-2 px-0 py-4 text-sm font-bold"
-                  >
-                    <HugeiconsIcon icon={UserCircleIcon} size={16} />
-                    General
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="job"
-                    className="gap-2 px-0 py-4 text-sm font-bold"
-                  >
-                    <HugeiconsIcon icon={Briefcase01Icon} size={16} />
-                    Job Details
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="payroll"
-                    className="gap-2 px-0 py-4 text-sm font-bold"
-                  >
-                    <HugeiconsIcon icon={Coins01Icon} size={16} />
-                    Payroll
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="documents"
-                    className="gap-2 px-0 py-4 text-sm font-bold"
-                  >
-                    <HugeiconsIcon icon={File02Icon} size={16} />
-                    Documents
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="setting"
-                    className="gap-2 px-0 py-4 text-sm font-bold"
-                  >
-                    <HugeiconsIcon icon={Settings02Icon} size={16} />
-                    Settings
-                  </TabsTrigger>
+            <div className="flex-1 w-full min-w-0">
+              <Tabs defaultValue="general" className="w-full">
+                <TabsList className="mb-6 bg-muted/5 border border-border/5 p-1">
+                  <TabsTrigger value="general" className="px-6">Overview</TabsTrigger>
+                  <TabsTrigger value="payroll" className="px-6">Payroll</TabsTrigger>
+                  <TabsTrigger value="documents" className="px-6">Documents</TabsTrigger>
+                  <TabsTrigger value="settings" className="px-6">Settings</TabsTrigger>
                 </TabsList>
-              </div>
 
-              <div className="p-8 flex-1 overflow-auto no-scrollbar bg-background/40">
-                {/* General Information */}
-                <TabsContent
-                  value="general"
-                  className="mt-0 space-y-8 outline-none animate-in fade-in slide-in-from-right-1"
-                >
+                <TabsContent value="general" className="m-0 mt-2 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-6">
-                      <h3 className="text-base font-bold text-foreground/90 flex items-center gap-2">
-                        <HugeiconsIcon
-                          icon={UserCircleIcon}
-                          className="size-4 text-primary"
-                        />
-                        Personal Information
-                      </h3>
-                      <div className="grid grid-cols-1 gap-6 p-6 rounded-2xl border border-border/5 bg-muted/5">
-                        <DetailItem label="Full Name" value={formData.name} />
-                        <DetailItem
-                          label="Email Address"
-                          value={formData.email}
-                        />
-                        <DetailItem
-                          label="Phone Number"
-                          value={formData.phone || "N/A"}
-                        />
-                        <DetailItem
-                          label="Date of Birth"
-                          value={formData.dob || "N/A"}
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-6">
-                      <h3 className="text-base font-bold text-foreground/90 flex items-center gap-2">
-                        <HugeiconsIcon
-                          icon={Location01Icon}
-                          className="size-4 text-primary"
-                        />
-                        Contact & Location
-                      </h3>
-                      <div className="grid grid-cols-1 gap-6 p-6 rounded-2xl border border-border/5 bg-muted/5">
-                        <DetailItem
-                          label="Residential Address"
-                          value={formData.address || "N/A"}
-                        />
-                        <DetailItem
-                          label="City"
-                          value={formData.city || "N/A"}
-                        />
-                        <DetailItem
-                          label="Country"
-                          value={formData.country || "N/A"}
-                        />
-                        <DetailItem
-                          label="Emergency Contact"
-                          value="+250 788 000 000"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
+                    <Frame>
+                      <FramePanel className="bg-card">
+                        <FrameHeader>
+                          <FrameTitle>General Information</FrameTitle>
+                        </FrameHeader>
+                        <FrameContent className="space-y-6">
+                          <InfoRow label="Employee ID" value={employee.id} icon={UserGroupIcon} />
+                          <InfoRow label="Full Name" value={employee.name} icon={UserEdit01Icon} />
+                          <InfoRow label="National ID" value={employee.idNumber} icon={Shield01Icon} />
+                          <InfoRow label="Email" value={employee.email} icon={Mail01Icon} />
+                          <InfoRow label="Phone" value={employee.phone} icon={SmartPhone01Icon} />
+                        </FrameContent>
+                      </FramePanel>
+                    </Frame>
 
-                {/* Job Information */}
-                <TabsContent
-                  value="job"
-                  className="mt-0 space-y-8 outline-none animate-in fade-in slide-in-from-right-1"
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-6">
-                      <h3 className="text-base font-bold text-foreground/90 flex items-center gap-2">
-                        <HugeiconsIcon
-                          icon={Briefcase01Icon}
-                          className="size-4 text-primary"
-                        />
-                        Employment Details
-                      </h3>
-                      <div className="grid grid-cols-1 gap-6 p-6 rounded-2xl border border-border/5 bg-muted/5">
-                        <DetailItem
-                          label="Position"
-                          value={formData.position}
-                        />
-                        <DetailItem
-                          label="Department"
-                          value={formData.department}
-                        />
-                        <DetailItem
-                          label="Join Date"
-                          value={formData.hireDate}
-                        />
-                        <DetailItem label="Employment Type" value="Full-time" />
-                      </div>
-                    </div>
-                    <div className="space-y-6">
-                      <h3 className="text-base font-bold text-foreground/90 flex items-center gap-2">
-                        <HugeiconsIcon
-                          icon={Tick01Icon}
-                          className="size-4 text-primary"
-                        />
-                        Compliance & Status
-                      </h3>
-                      <div className="grid grid-cols-1 gap-6 p-6 rounded-2xl border border-border/5 bg-muted/5">
-                        <div className="space-y-2">
-                          <p className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest">
-                            Compliance Status
-                          </p>
-                          <Badge
-                            variant={
-                              formData.complianceStatus === "compliant"
-                                ? "success"
-                                : "destructive"
-                            }
-                          >
-                            {formData.complianceStatus}
-                          </Badge>
-                        </div>
-                        <DetailItem
-                          label="Onboarding Progress"
-                          value={`${formData.onboardingProgress}%`}
-                        />
-                        <DetailItem label="Last Review" value="Q4 2025" />
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                {/* Payroll Placeholder */}
-                <TabsContent
-                  value="payroll"
-                  className="mt-0 space-y-8 outline-none animate-in fade-in slide-in-from-right-1"
-                >
-                  <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-                    <div className="size-16 rounded-full bg-primary/5 flex items-center justify-center text-primary">
-                      <HugeiconsIcon icon={Coins01Icon} className="size-8" />
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="text-lg font-bold">
-                        Payroll Configuration
-                      </h3>
-                      <p className="text-sm text-muted-foreground max-w-xs">
-                        Financial details and statutory deductions are managed
-                        here.
-                      </p>
-                    </div>
-                    <Button variant="outline" className="font-bold">
-                      View Recent Payslips
-                    </Button>
-                  </div>
-                </TabsContent>
-
-                {/* Documents Placeholder */}
-                <TabsContent
-                  value="documents"
-                  className="mt-0 space-y-8 outline-none animate-in fade-in slide-in-from-right-1"
-                >
-                  <div className="grid grid-cols-1 gap-4">
-                    {[
-                      "Employment_Contract.pdf",
-                      "National_ID.pdf",
-                      "CV_Jean_Paul.pdf",
-                    ].map((doc) => (
-                      <div
-                        key={doc}
-                        className="flex items-center justify-between p-4 rounded-xl border border-border/5 bg-muted/5 hover:bg-muted/10 transition-colors"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                            <HugeiconsIcon
-                              icon={File02Icon}
-                              className="size-5"
-                            />
+                    <Frame>
+                      <FramePanel className="bg-card">
+                        <FrameHeader>
+                          <FrameTitle>Job Information</FrameTitle>
+                        </FrameHeader>
+                        <FrameContent className="space-y-6">
+                          <InfoRow label="Department" value={employee.department} icon={Building03Icon} />
+                          <InfoRow label="Position" value={employee.position} icon={JobShareIcon} />
+                          <InfoRow label="Manager" value={employee.manager} icon={UserGroupIcon} />
+                          <InfoRow label="Hire Date" value={employee.hireDate} icon={Calendar01Icon} />
+                          <div className="flex items-center justify-between pt-2">
+                            <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">employment status</p>
+                            <Badge variant={employee.status === "active" ? "success" : "warning"} showDot>{employee.status}</Badge>
                           </div>
-                          <div>
-                            <p className="text-sm font-bold text-foreground/80">
-                              {doc}
-                            </p>
-                            <p className="text-xs text-muted-foreground/50">
-                              Uploaded on Jan 12, 2026
-                            </p>
-                          </div>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="font-bold text-xs text-primary"
-                        >
-                          Download
-                        </Button>
-                      </div>
-                    ))}
+                        </FrameContent>
+                      </FramePanel>
+                    </Frame>
                   </div>
                 </TabsContent>
-              </div>
+
+                <TabsContent value="payroll" className="m-0 mt-2 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
+                  <Frame>
+                    <FramePanel className="bg-card">
+                      <FrameHeader>
+                        <FrameTitle>Payroll History</FrameTitle>
+                      </FrameHeader>
+                      <FrameContent className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+                        <div className="h-16 w-16 bg-muted/5 flex items-center justify-center rounded-2xl text-muted-foreground/20">
+                          <HugeiconsIcon icon={Coins01Icon} size={32} />
+                        </div>
+                        <div className="space-y-1">
+                          <p className="font-bold text-foreground/80">No payroll records</p>
+                          <p className="text-sm text-muted-foreground font-medium max-w-xs">Recent earnings and statutory deductions will appear here once payroll is processed.</p>
+                        </div>
+                      </FrameContent>
+                    </FramePanel>
+                  </Frame>
+                </TabsContent>
+
+                <TabsContent value="documents" className="m-0 mt-2 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
+                  <Frame>
+                    <FramePanel className="bg-card">
+                      <FrameHeader>
+                        <FrameTitle>Employee Vault</FrameTitle>
+                      </FrameHeader>
+                      <FrameContent className="p-0">
+                        <div className="divide-y divide-border/5">
+                          {["Contract", "CV", "National ID", "Insurance Card"].map((doc) => (
+                            <div key={doc} className="flex items-center justify-between p-6 hover:bg-muted/5 transition-colors group">
+                              <div className="flex items-center gap-4">
+                                <div className="h-10 w-10 rounded-xl bg-muted/10 flex items-center justify-center text-muted-foreground/40 group-hover:text-primary transition-colors">
+                                  <HugeiconsIcon icon={File02Icon} size={20} />
+                                </div>
+                                <div>
+                                  <p className="font-bold text-sm text-foreground/90">{doc}</p>
+                                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">pdf • uploaded feb 2024</p>
+                                </div>
+                              </div>
+                              <Button variant="ghost" size="sm" className="font-bold text-xs">Download</Button>
+                            </div>
+                          ))}
+                        </div>
+                      </FrameContent>
+                    </FramePanel>
+                  </Frame>
+                </TabsContent>
+
+                <TabsContent value="settings" className="m-0 mt-2 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
+                  <Frame>
+                    <FramePanel className="bg-card p-10 flex flex-col items-center justify-center text-center space-y-6">
+                      <div className="h-16 w-16 bg-muted/5 flex items-center justify-center rounded-2xl text-muted-foreground/20">
+                        <HugeiconsIcon icon={Settings02Icon} size={32} />
+                      </div>
+                      <div className="space-y-2">
+                        <h3 className="text-xl font-bold text-foreground/90">Profile Management</h3>
+                        <p className="text-sm text-muted-foreground font-medium max-w-sm">Manage system permissions, account access, and advanced lifecycle states for this employee.</p>
+                      </div>
+                      <div className="flex flex-wrap items-center justify-center gap-3">
+                        <Button variant="outline" className="font-bold text-xs uppercase tracking-widest">reset password</Button>
+                        <Button variant="outline" className="font-bold text-xs uppercase tracking-widest text-destructive hover:bg-destructive/5 border-destructive/20">deactivate account</Button>
+                      </div>
+                    </FramePanel>
+                  </Frame>
+                </TabsContent>
+              </Tabs>
             </div>
-          </Tabs>
+          </div>
         </div>
       </div>
     </main>
   );
 }
 
-function DetailItem({ label, value }: { label: string; value: string }) {
+function InfoRow({ label, value, icon: Icon }: { label: string; value: string; icon: any }) {
   return (
-    <div className="space-y-1.5">
-      <p className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest">
-        {label}
-      </p>
-      <p className="text-sm font-bold text-foreground/80">{value}</p>
+    <div className="flex items-center justify-between group">
+      <div className="flex items-center gap-3">
+        <div className="h-8 w-8 rounded-lg bg-muted/5 flex items-center justify-center text-muted-foreground/30 group-hover:text-primary transition-colors">
+          <HugeiconsIcon icon={Icon} size={16} />
+        </div>
+        <p className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest">{label}</p>
+      </div>
+      <p className="text-sm font-semibold text-foreground/80">{value}</p>
     </div>
   );
 }

@@ -112,10 +112,18 @@ function RecruitmentPage() {
   const jobs = Route.useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newJob, setNewJob] = useState({
+    title: "",
+    dept: "",
+    type: "",
+    location: "",
+    description: "",
+  });
 
-  const filteredJobs = jobs.filter(job => 
-    job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    job.dept.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredJobs = jobs.filter(
+    (job) =>
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.dept.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -133,74 +141,146 @@ function RecruitmentPage() {
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Report
         </Button>
-        
+
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger
             render={
-              <Button
-                size="lg"
-                className="text-xs font-bold gap-2 capitalize"
-              >
-                <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
-                Register Candidate
+              <Button size="lg" className="text-xs font-bold gap-2 capitalize">
+                <HugeiconsIcon
+                  icon={PlusSignCircleIcon}
+                  size={14}
+                  strokeWidth={2}
+                />
+                Create Position
               </Button>
             }
           />
           <DialogContent className="sm:max-w-[600px]">
             <DialogHeader>
-              <DialogTitle>Register New Candidate</DialogTitle>
+              <DialogTitle>Create New Position</DialogTitle>
               <DialogDescription>
-                Add a new applicant to the recruitment pipeline.
+                Publish a new job opening to the recruitment portal.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" placeholder="Moses" className="h-9" />
+                  <Label htmlFor="title">Job Title</Label>
+                  <Input
+                    id="title"
+                    placeholder="e.g. Senior Product Manager"
+                    className="h-9"
+                    value={newJob.title}
+                    onChange={(e) =>
+                      setNewJob({ ...newJob, title: e.target.value })
+                    }
+                  />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" placeholder="Mugisha" className="h-9" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="idNumber">National ID / Passport</Label>
-                  <Input id="idNumber" placeholder="119..." className="h-9" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" type="email" placeholder="m.mugisha@gmail.com" className="h-9" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="phoneNumber">Phone Number</Label>
-                  <Input id="phoneNumber" placeholder="+250..." className="h-9" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="job">Target Role</Label>
-                  <Select>
-                    <SelectTrigger id="job" className="h-9 w-full">
-                      <SelectValue placeholder="Select position" />
+                  <Label htmlFor="dept">Department</Label>
+                  <Select
+                    value={newJob.dept}
+                    onValueChange={(val) =>
+                      setNewJob({ ...newJob, dept: val || "" })
+                    }
+                  >
+                    <SelectTrigger id="dept" className="h-9 w-full">
+                      <SelectValue placeholder="Select department" />
                     </SelectTrigger>
                     <SelectContent>
-                      {jobs.map(job => (
-                        <SelectItem key={job.id} value={job.id}>{job.title}</SelectItem>
-                      ))}
+                      <SelectItem value="Engineering">Engineering</SelectItem>
+                      <SelectItem value="Design">Design</SelectItem>
+                      <SelectItem value="Operations">Operations</SelectItem>
+                      <SelectItem value="Sales">Sales</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="type">Employment Type</Label>
+                  <Select
+                    value={newJob.type}
+                    onValueChange={(val) =>
+                      setNewJob({ ...newJob, type: val || "" })
+                    }
+                  >
+                    <SelectTrigger id="type" className="h-9 w-full">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Full-time">Full-time</SelectItem>
+                      <SelectItem value="Part-time">Part-time</SelectItem>
+                      <SelectItem value="Contract">Contract</SelectItem>
+                      <SelectItem value="Internship">Internship</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location</Label>
+                  <Select
+                    value={newJob.location}
+                    onValueChange={(val) =>
+                      setNewJob({ ...newJob, location: val || "" })
+                    }
+                  >
+                    <SelectTrigger id="location" className="h-9 w-full">
+                      <SelectValue placeholder="Select location" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Remote">Remote</SelectItem>
+                      <SelectItem value="Kigali, Rwanda">
+                        Kigali, Rwanda
+                      </SelectItem>
+                      <SelectItem value="Nairobi, Kenya">
+                        Nairobi, Kenya
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="resume">Resume / CV (PDF)</Label>
-                <Input id="resume" type="file" className="h-9 pt-1.5" />
+                <Label htmlFor="description">Job Description</Label>
+                <textarea
+                  id="description"
+                  className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                  placeholder="Describe the responsibilities and requirements..."
+                  value={newJob.description}
+                  onChange={(e) =>
+                    setNewJob({ ...newJob, description: e.target.value })
+                  }
+                />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-              <Button type="submit" onClick={() => setIsDialogOpen(false)}>Add to Pipeline</Button>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                onClick={async () => {
+                  if (newJob.title && newJob.dept) {
+                    await api.addJobOpening({
+                      title: newJob.title,
+                      dept: newJob.dept,
+                      type: newJob.type || "Full-time",
+                      location: newJob.location || "On-site",
+                      description: newJob.description,
+                      status: "published",
+                    });
+                    setIsDialogOpen(false);
+                    setNewJob({
+                      title: "",
+                      dept: "",
+                      type: "",
+                      location: "",
+                      description: "",
+                    });
+                  }
+                }}
+              >
+                Publish Position
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

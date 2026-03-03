@@ -1,14 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { 
-  Frame, 
-  FramePanel, 
-  FrameHeader, 
-  FrameTitle, 
-  FrameDescription, 
+import {
+  Frame,
+  FramePanel,
+  FrameHeader,
+  FrameTitle,
+  FrameDescription,
   FrameContent,
-  FrameFooter
+  FrameFooter,
 } from "@/components/ui/frame";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -19,30 +19,36 @@ import {
   ArrowRight01Icon,
 } from "@hugeicons/core-free-icons";
 
+import { Link } from "@tanstack/react-router";
+
 const actions = [
   {
-    title: "Register Company",
-    description: "Start new tenant onboarding",
+    title: "Add Department",
+    description: "Manage org structure",
     icon: Building03Icon,
     accent: "var(--chart-1)",
+    href: "/dashboard/settings",
   },
   {
-    title: "Review Approvals",
-    description: "Pending OTP verifications",
+    title: "Register Employee",
+    description: "Start new onboarding",
     icon: UserAdd01Icon,
     accent: "var(--chart-2)",
+    href: "/dashboard/employees",
   },
   {
-    title: "Audit Logs",
-    description: "View system security events",
+    title: "Review Applicants",
+    description: "Pending pipeline stages",
     icon: FolderSecurityIcon,
     accent: "var(--chart-3)",
+    href: "/dashboard/recruitment",
   },
   {
-    title: "Integrations",
-    description: "Manage connected services",
+    title: "Document Vault",
+    description: "Manage employee files",
     icon: Link01Icon,
     accent: "var(--chart-4)",
+    href: "/dashboard/documents",
   },
 ];
 
@@ -59,10 +65,10 @@ export const QuickActions = React.memo(function QuickActions() {
 
         <FrameContent className="p-0 flex-1">
           <div className="divide-y divide-border/5">
-            {actions.map((action, i) => (
-              <button
-                key={i}
-                type="button"
+            {actions.map((action) => (
+              <Link
+                key={action.title}
+                to={action.href}
                 className="group/btn flex w-full items-center gap-4 px-6 py-4 hover:bg-muted/10 transition-colors text-left"
               >
                 <div
@@ -92,7 +98,7 @@ export const QuickActions = React.memo(function QuickActions() {
                   strokeWidth={2.5}
                   className="text-muted-foreground/20 group-hover/btn:text-muted-foreground/60 group-hover/btn:translate-x-0.5 transition-all"
                 />
-              </button>
+              </Link>
             ))}
           </div>
         </FrameContent>

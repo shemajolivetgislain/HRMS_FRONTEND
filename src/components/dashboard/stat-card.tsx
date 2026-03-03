@@ -10,7 +10,14 @@ interface StatCardProps {
   change?: string;
   up?: boolean;
   icon: any;
-  variant?: "primary" | "success" | "warning" | "destructive" | "info" | "accent" | "muted";
+  variant?:
+    | "primary"
+    | "success"
+    | "warning"
+    | "destructive"
+    | "info"
+    | "accent"
+    | "muted";
   sub?: string;
   className?: string;
 }
@@ -37,12 +44,12 @@ export const StatCard = React.memo(function StatCard({
 
   return (
     <Frame className={cn("group/stat h-full", className)}>
-      <FramePanel className="p-5 flex flex-col justify-between h-full bg-card">
+      <FramePanel className="p-6 flex flex-col justify-between h-full bg-card shadow-xs">
         <div className="flex items-center justify-between">
           <div
             className={cn(
               "h-9 w-9 rounded-xl flex items-center justify-center border transition-all duration-300 group-hover/stat:scale-110",
-              variantStyles[variant]
+              variantStyles[variant],
             )}
           >
             <HugeiconsIcon icon={Icon} size={18} strokeWidth={2} />
@@ -51,8 +58,10 @@ export const StatCard = React.memo(function StatCard({
             <Badge
               variant="muted"
               className={cn(
-                "border-none px-1.5 py-0.5 rounded-md font-bold text-xs uppercase tracking-widest",
-                up ? "text-success bg-success/10" : "text-destructive bg-destructive/10"
+                "border-none px-1.5 py-0.5 rounded-md font-bold text-[10px] uppercase tracking-widest",
+                up
+                  ? "text-success bg-success/10"
+                  : "text-destructive bg-destructive/10",
               )}
             >
               {change}
@@ -60,14 +69,14 @@ export const StatCard = React.memo(function StatCard({
           )}
         </div>
         <div className="mt-6">
-          <h3 className="text-2xl font-semibold tracking-tight text-foreground/90 tabular-nums leading-none mb-1.5">
+          <h3 className="text-2xl font-bold tracking-tight text-foreground/90 tabular-nums leading-none mb-1.5">
             {value}
           </h3>
           <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
             {label}
           </p>
           {sub && (
-            <p className="text-xs font-medium text-muted-foreground/30 mt-1 uppercase tracking-tighter">
+            <p className="text-[10px] font-medium text-muted-foreground/30 mt-1 uppercase tracking-tighter">
               {sub}
             </p>
           )}

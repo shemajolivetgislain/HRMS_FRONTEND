@@ -387,16 +387,15 @@ function SettingsTabTrigger({
   return (
     <TabsTrigger
       value={value}
-      className="relative w-full flex items-center justify-start gap-3 px-4 py-2 rounded-md transition-all text-left data-[state=active]:text-primary text-muted-foreground/50 hover:text-foreground/80 group overflow-hidden"
+      className="relative w-full flex items-center justify-start gap-3 px-3 py-2 rounded-md transition-all text-left data-active:bg-primary/10! data-active:text-primary! text-muted-foreground/60 hover:bg-muted/50 hover:text-foreground/80 group overflow-hidden border-none! shadow-none!"
     >
       <HugeiconsIcon
         icon={Icon}
         size={16}
         strokeWidth={2}
-        className="group-data-[state=active]:text-primary transition-colors"
+        className="group-data-active:text-primary! transition-colors"
       />
       <span className="text-sm font-semibold tracking-tight">{title}</span>
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-full opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
     </TabsTrigger>
   );
 }

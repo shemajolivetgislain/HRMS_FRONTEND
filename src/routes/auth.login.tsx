@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +20,7 @@ export const Route = createFileRoute("/auth/login")({
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isAdmin, setIsAdmin] = useState(true);
+  const id = useId();
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -33,15 +34,31 @@ function LoginPage() {
       </div>
 
       <form className="space-y-5">
+        {!isAdmin && (
+          <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
+            <Label
+              htmlFor={`${id}-companyId`}
+              className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest"
+            >
+              Company Identifier
+            </Label>
+            <Input
+              id={`${id}-companyId`}
+              placeholder="e.g. Igihe Logistics"
+              className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all pl-3 shadow-none text-sm"
+            />
+          </div>
+        )}
+
         <div className="space-y-2">
           <Label
-            htmlFor="email"
-            className="text-xs font-semibold text-muted-foreground/60 capitalize"
+            htmlFor={`${id}-email`}
+            className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest"
           >
-            Email
+            Email Address
           </Label>
           <Input
-            id="email"
+            id={`${id}-email`}
             type="email"
             placeholder="name@company.com"
             className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all pl-3 shadow-none text-sm"
@@ -51,8 +68,8 @@ function LoginPage() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label
-              htmlFor="password"
-              className="text-xs font-semibold text-muted-foreground/60 capitalize"
+              htmlFor={`${id}-password`}
+              className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest"
             >
               Password
             </Label>
@@ -65,7 +82,7 @@ function LoginPage() {
           </div>
           <div className="relative group/pass">
             <Input
-              id="password"
+              id={`${id}-password`}
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all pr-10 shadow-none text-sm"
@@ -85,11 +102,11 @@ function LoginPage() {
 
         <div className="flex items-center space-x-2.5 pt-1">
           <Checkbox
-            id="remember"
+            id={`${id}-remember`}
             className="size-4 rounded-md border-border/60"
           />
           <label
-            htmlFor="remember"
+            htmlFor={`${id}-remember`}
             className="text-xs font-medium text-muted-foreground/60 cursor-pointer select-none"
           >
             Remember me
