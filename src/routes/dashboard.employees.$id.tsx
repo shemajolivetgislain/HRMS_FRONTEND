@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { api } from "@/lib/mock-api";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import {
@@ -73,7 +72,7 @@ function EmployeeProfilePage() {
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <Frame className="w-full md:w-[300px] shrink-0">
               <FramePanel className="bg-card p-8 flex flex-col items-center text-center">
-                <UserAvatar name={employee.name} size="xl" className="mb-6 h-24 w-24" />
+                <UserAvatar name={employee.name} size="lg" className="mb-6 h-24 w-24" />
                 <h2 className="text-xl font-bold text-foreground/90">{employee.name}</h2>
                 <p className="text-sm font-semibold text-primary mt-1">{employee.position}</p>
                 <div className="mt-6 w-full pt-6 border-t border-border/5 space-y-4">
@@ -110,7 +109,7 @@ function EmployeeProfilePage() {
                           <InfoRow label="Full Name" value={employee.name} icon={UserEdit01Icon} />
                           <InfoRow label="National ID" value={employee.idNumber} icon={Shield01Icon} />
                           <InfoRow label="Email" value={employee.email} icon={Mail01Icon} />
-                          <InfoRow label="Phone" value={employee.phone} icon={SmartPhone01Icon} />
+                          <InfoRow label="Phone" value={employee.phone || "N/A"} icon={SmartPhone01Icon} />
                         </FrameContent>
                       </FramePanel>
                     </Frame>
@@ -123,7 +122,7 @@ function EmployeeProfilePage() {
                         <FrameContent className="space-y-6">
                           <InfoRow label="Department" value={employee.department} icon={Building03Icon} />
                           <InfoRow label="Position" value={employee.position} icon={JobShareIcon} />
-                          <InfoRow label="Manager" value={employee.manager} icon={UserGroupIcon} />
+                          <InfoRow label="Manager" value={employee.manager || "N/A"} icon={UserGroupIcon} />
                           <InfoRow label="Hire Date" value={employee.hireDate} icon={Calendar01Icon} />
                           <div className="flex items-center justify-between pt-2">
                             <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">employment status</p>

@@ -36,38 +36,36 @@ function DocsPage() {
       category: "Platform Administration",
       icon: GlobalIcon,
       modules: [
-        {
-          title: "System Admin Workspace",
-          desc: "Global view for platform owners managing multiple tenants (companies).",
-          features: [
-            "Company Database: View and manage all registered companies.",
-            "Registration Flow: Multi-step wizard for provisioning new companies.",
-            "Security Audits: Immutable system-level logs tracking critical actions.",
-          ],
-          links: [
-            { label: "Admin Console", to: "/admin" },
-            { label: "Tenants List", to: "/admin/companies" },
-            { label: "Register Company", to: "/admin/companies/register" },
-            { label: "Audit Logs", to: "/admin/logs" },
-            { label: "Platform Settings", to: "/admin/settings" },
-          ],
-        },
-        {
-          title: "Authentication & Security",
-          desc: "Comprehensive identity management for all platform users.",
-          features: [
-            "Secure Gateway: Role-based access control (RBAC) for different tiers.",
-            "Recovery Flows: Automated password reset and email verification.",
-          ],
-          links: [
-            { label: "Login Portal", to: "/auth/login" },
-            { label: "Join Platform", to: "/auth/register" },
-            { label: "Forgot Password", to: "/auth/forgot-password" },
-            { label: "Account Verify", to: "/auth.verify" },
-          ],
-        },
+      {
+      title: "System Admin Workspace",
+      desc: "Global view for platform owners managing multiple tenants (companies).",
+      features: [
+        "Company Database: View and manage all registered companies.",
+        "Managed Provisioning: Administrator-led wizard for creating new companies and lead admins.",
+        "Security Audits: Immutable system-level logs tracking critical actions.",
       ],
-    },
+      links: [
+        { label: "Admin Console", to: "/admin" },
+        { label: "Tenants List", to: "/admin/companies" },
+        { label: "Provision Tenant", to: "/admin/companies/register" },
+        { label: "Audit Logs", to: "/admin/logs" },
+        { label: "Platform Settings", to: "/admin/settings" },
+      ],
+      },
+      {
+      title: "Authentication & Security",
+      desc: "Comprehensive identity management for all platform users.",
+      features: [
+        "Secure Gateway: Role-based access control (RBAC) for different tiers.",
+        "Restricted Access: Self-registration disabled to enforce managed onboarding.",
+      ],
+      links: [
+        { label: "Login Portal", to: "/auth/login" },
+        { label: "Managed Provisioning Info", to: "/auth/register" },
+        { label: "Forgot Password", to: "/auth/forgot-password" },
+      ],
+      },
+      ],    },
     {
       category: "Organization & Structure",
       icon: Building03Icon,
