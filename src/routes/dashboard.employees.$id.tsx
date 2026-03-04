@@ -7,6 +7,7 @@ import {
   FrameHeader,
   FrameTitle,
   FrameContent,
+  FrameDescription,
 } from "@/components/ui/frame";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,10 +26,13 @@ import {
   UserEdit01Icon,
   ArrowLeft01Icon,
   Settings02Icon,
+  Delete02Icon,
+  Key01Icon,
 } from "@hugeicons/core-free-icons";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { ErrorComponent } from "@/components/error-component";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/employees/$id")({
   loader: async ({ params }) => await api.getEmployee(params.id),
@@ -44,130 +48,162 @@ function EmployeeProfilePage() {
   if (!employee) return null;
 
   return (
-    <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full">
+    <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full bg-muted/20">
       <DashboardHeader
-        category="directory"
+        category="Workforce"
         title={employee.name}
-        description={`Member of ${employee.department} team`}
+        description={`Registry profile for ${employee.position} in ${employee.department}`}
       >
-        <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            onClick={() => navigate({ to: "/dashboard/employees" })}
-          >
-            <HugeiconsIcon icon={ArrowLeft01Icon} />
-            Back
-          </Button>
-          <Button>
-            <HugeiconsIcon icon={UserEdit01Icon} />
-            Edit Profile
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          onClick={() => navigate({ to: "/dashboard/employees" })}
+        >
+          <HugeiconsIcon icon={ArrowLeft01Icon} />
+          Directory
+        </Button>
+        <Button>
+          <HugeiconsIcon icon={UserEdit01Icon} />
+          Edit Record
+        </Button>
       </DashboardHeader>
 
       <div className="flex-1 overflow-y-auto no-scrollbar px-4 lg:px-6 pb-12">
         <div className="max-w-6xl mx-auto space-y-8">
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            <Frame className="w-full md:w-[300px] shrink-0">
-              <FramePanel className="bg-card p-8 flex flex-col items-center text-center">
-                <UserAvatar name={employee.name} size="lg" className="mb-6 h-24 w-24" />
-                <h2 className="text-xl font-bold text-foreground/90">{employee.name}</h2>
-                <p className="text-sm font-semibold text-primary mt-1">{employee.position}</p>
-                <div className="mt-6 w-full pt-6 border-t border-border/5 space-y-4">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground font-bold uppercase tracking-widest">status</span>
-                    <Badge variant={employee.status === "active" ? "success" : "warning"} showDot>{employee.status}</Badge>
+          <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 items-start">
+            {/* profile sidebar */}
+            <div className="lg:col-span-4 w-full space-y-6">
+              <Frame>
+                <FramePanel className="bg-card p-8 flex flex-col items-center text-center shadow-xs">
+                  <UserAvatar name={employee.name} size="lg" className="mb-6 h-24 w-24 rounded-2xl ring-4 ring-muted/10 shadow-sm" />
+                  <h2 className="text-xl font-bold text-foreground/90 tracking-tight">{employee.name}</h2>
+                  <p className="text-sm font-semibold text-primary/60 mt-1 uppercase tracking-widest">{employee.position}</p>
+                  
+                  <div className="mt-8 w-full space-y-3 pt-8 border-t border-border/5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Lifecycle</span>
+                      <Badge variant={employee.status === "active" ? "success" : "warning"} showDot className="h-6">{employee.status}</Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Verification</span>
+                      <Badge variant={employee.complianceStatus === "compliant" ? "success" : "destructive"} className="h-6">{employee.complianceStatus}</Badge>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground font-bold uppercase tracking-widest">compliance</span>
-                    <Badge variant={employee.complianceStatus === "compliant" ? "success" : "destructive"}>{employee.complianceStatus}</Badge>
-                  </div>
-                </div>
-              </FramePanel>
-            </Frame>
+                </FramePanel>
+              </Frame>
 
-            <div className="flex-1 w-full min-w-0">
+              <Frame>
+                <FramePanel className="bg-primary/[0.02] border-primary/10 p-6 rounded-2xl">
+                  <div className="flex items-center gap-3 text-primary mb-4">
+                    <HugeiconsIcon icon={Shield01Icon} size={18} strokeWidth={2} />
+                    <span className="text-xs font-bold uppercase tracking-widest">Compliance Status</span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-semibold text-foreground/60">Onboarding Progress</span>
+                      <span className="text-xs font-bold text-primary">100%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                      <div className="h-full bg-primary w-full" />
+                    </div>
+                  </div>
+                </FramePanel>
+              </Frame>
+            </div>
+
+            {/* main content tabs */}
+            <div className="lg:col-span-8 w-full min-w-0">
               <Tabs defaultValue="general" className="w-full">
-                <TabsList className="mb-6 bg-muted/5 border border-border/5 p-1">
-                  <TabsTrigger value="general" className="px-6">Overview</TabsTrigger>
-                  <TabsTrigger value="payroll" className="px-6">Payroll</TabsTrigger>
-                  <TabsTrigger value="documents" className="px-6">Documents</TabsTrigger>
-                  <TabsTrigger value="settings" className="px-6">Settings</TabsTrigger>
+                <TabsList className="mb-8">
+                  <TabsTrigger value="general">Overview</TabsTrigger>
+                  <TabsTrigger value="payroll">Payroll</TabsTrigger>
+                  <TabsTrigger value="documents">Vault</TabsTrigger>
+                  <TabsTrigger value="settings">Managed</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="general" className="m-0 mt-2 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <TabsContent value="general" className="m-0 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Frame>
-                      <FramePanel className="bg-card">
+                      <FramePanel className="bg-card shadow-xs">
                         <FrameHeader>
-                          <FrameTitle>General Information</FrameTitle>
+                          <div>
+                            <FrameTitle>Personal Profile</FrameTitle>
+                            <FrameDescription>Primary identification details</FrameDescription>
+                          </div>
                         </FrameHeader>
                         <FrameContent className="space-y-6">
                           <InfoRow label="Employee ID" value={employee.id} icon={UserGroupIcon} />
-                          <InfoRow label="Full Name" value={employee.name} icon={UserEdit01Icon} />
                           <InfoRow label="National ID" value={employee.idNumber} icon={Shield01Icon} />
-                          <InfoRow label="Email" value={employee.email} icon={Mail01Icon} />
-                          <InfoRow label="Phone" value={employee.phone || "N/A"} icon={SmartPhone01Icon} />
+                          <InfoRow label="Official Email" value={employee.email} icon={Mail01Icon} />
+                          <InfoRow label="Phone Number" value={employee.phone || "N/A"} icon={SmartPhone01Icon} />
                         </FrameContent>
                       </FramePanel>
                     </Frame>
 
                     <Frame>
-                      <FramePanel className="bg-card">
+                      <FramePanel className="bg-card shadow-xs">
                         <FrameHeader>
-                          <FrameTitle>Job Information</FrameTitle>
+                          <div>
+                            <FrameTitle>Work Information</FrameTitle>
+                            <FrameDescription>Organizational unit & hierarchy</FrameDescription>
+                          </div>
                         </FrameHeader>
                         <FrameContent className="space-y-6">
                           <InfoRow label="Department" value={employee.department} icon={Building03Icon} />
-                          <InfoRow label="Position" value={employee.position} icon={JobShareIcon} />
-                          <InfoRow label="Manager" value={employee.manager || "N/A"} icon={UserGroupIcon} />
-                          <InfoRow label="Hire Date" value={employee.hireDate} icon={Calendar01Icon} />
-                          <div className="flex items-center justify-between pt-2">
-                            <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">employment status</p>
-                            <Badge variant={employee.status === "active" ? "success" : "warning"} showDot>{employee.status}</Badge>
-                          </div>
+                          <InfoRow label="Job Title" value={employee.position} icon={JobShareIcon} />
+                          <InfoRow label="Reporting To" value={employee.manager || "System Admin"} icon={UserGroupIcon} />
+                          <InfoRow label="Joined Date" value={employee.hireDate} icon={Calendar01Icon} />
                         </FrameContent>
                       </FramePanel>
                     </Frame>
                   </div>
                 </TabsContent>
 
-                <TabsContent value="payroll" className="m-0 mt-2 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
+                <TabsContent value="payroll" className="m-0 animate-in fade-in slide-in-from-bottom-2 duration-500">
                   <Frame>
-                    <FramePanel className="bg-card">
+                    <FramePanel className="bg-card shadow-xs">
                       <FrameHeader>
-                        <FrameTitle>Payroll History</FrameTitle>
+                        <div>
+                          <FrameTitle>Payroll Records</FrameTitle>
+                          <FrameDescription>Compensations and statutory deductions</FrameDescription>
+                        </div>
                       </FrameHeader>
-                      <FrameContent className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-                        <div className="h-16 w-16 bg-muted/5 flex items-center justify-center rounded-2xl text-muted-foreground/20">
+                      <FrameContent className="flex flex-col items-center justify-center py-24 text-center space-y-4">
+                        <div className="h-16 w-16 bg-muted/5 flex items-center justify-center rounded-2xl text-muted-foreground/20 border border-border/5">
                           <HugeiconsIcon icon={Coins01Icon} size={32} />
                         </div>
                         <div className="space-y-1">
-                          <p className="font-bold text-foreground/80">No payroll records</p>
-                          <p className="text-sm text-muted-foreground font-medium max-w-xs">Recent earnings and statutory deductions will appear here once payroll is processed.</p>
+                          <p className="font-bold text-foreground/80">No payroll cycles processed</p>
+                          <p className="text-sm text-muted-foreground font-medium max-w-xs">Recent earnings will appear here once the next payroll run is finalized.</p>
                         </div>
                       </FrameContent>
                     </FramePanel>
                   </Frame>
                 </TabsContent>
 
-                <TabsContent value="documents" className="m-0 mt-2 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
+                <TabsContent value="documents" className="m-0 animate-in fade-in slide-in-from-bottom-2 duration-500">
                   <Frame>
-                    <FramePanel className="bg-card">
-                      <FrameHeader>
-                        <FrameTitle>Employee Vault</FrameTitle>
+                    <FramePanel className="bg-card shadow-xs overflow-hidden">
+                      <FrameHeader className="border-b-0 pb-2">
+                        <div>
+                          <FrameTitle>Document Vault</FrameTitle>
+                          <FrameDescription>Secure compliance file storage</FrameDescription>
+                        </div>
+                        <Button variant="outline" size="sm">
+                          <HugeiconsIcon icon={File02Icon} />
+                          Upload
+                        </Button>
                       </FrameHeader>
                       <FrameContent className="p-0">
-                        <div className="divide-y divide-border/5">
-                          {["Contract", "CV", "National ID", "Insurance Card"].map((doc) => (
+                        <div className="divide-y divide-border/5 border-t border-border/5">
+                          {["Employment Contract", "Curriculum Vitae", "National ID Copy", "Medical Certificate"].map((doc) => (
                             <div key={doc} className="flex items-center justify-between p-6 hover:bg-muted/5 transition-colors group">
                               <div className="flex items-center gap-4">
-                                <div className="h-10 w-10 rounded-xl bg-muted/10 flex items-center justify-center text-muted-foreground/40 group-hover:text-primary transition-colors">
+                                <div className="h-10 w-10 rounded-xl bg-muted/10 flex items-center justify-center text-muted-foreground/40 group-hover:text-primary transition-colors border border-border/5">
                                   <HugeiconsIcon icon={File02Icon} size={20} />
                                 </div>
                                 <div>
                                   <p className="font-bold text-sm text-foreground/90">{doc}</p>
-                                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">pdf • uploaded feb 2024</p>
+                                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-0.5">pdf • verified registry</p>
                                 </div>
                               </div>
                               <Button variant="ghost" size="sm">Download</Button>
@@ -179,22 +215,48 @@ function EmployeeProfilePage() {
                   </Frame>
                 </TabsContent>
 
-                <TabsContent value="settings" className="m-0 mt-2 space-y-8 animate-in fade-in slide-in-from-right-1 duration-300">
-                  <Frame>
-                    <FramePanel className="bg-card p-10 flex flex-col items-center justify-center text-center space-y-6">
-                      <div className="h-16 w-16 bg-muted/5 flex items-center justify-center rounded-2xl text-muted-foreground/20">
-                        <HugeiconsIcon icon={Settings02Icon} size={32} />
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="text-xl font-bold text-foreground/90">Profile Management</h3>
-                        <p className="text-sm text-muted-foreground font-medium max-w-sm">Manage system permissions, account access, and advanced lifecycle states for this employee.</p>
-                      </div>
-                      <div className="flex flex-wrap items-center justify-center gap-3">
-                        <Button variant="outline">reset password</Button>
-                        <Button variant="outline" className="text-destructive hover:bg-destructive/5 border-destructive/20">deactivate account</Button>
-                      </div>
-                    </FramePanel>
-                  </Frame>
+                <TabsContent value="settings" className="m-0 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <Frame>
+                      <FramePanel className="bg-card shadow-xs">
+                        <FrameHeader>
+                          <div>
+                            <FrameTitle>Security</FrameTitle>
+                            <FrameDescription>Access control and credentials</FrameDescription>
+                          </div>
+                        </FrameHeader>
+                        <FrameContent className="space-y-4">
+                          <p className="text-xs text-muted-foreground font-medium leading-relaxed">
+                            Force a password reset or manage system-wide authentication preferences for this account.
+                          </p>
+                          <Button variant="outline" className="w-full">
+                            <HugeiconsIcon icon={Key01Icon} />
+                            Reset Password
+                          </Button>
+                        </FrameContent>
+                      </FramePanel>
+                    </Frame>
+
+                    <Frame>
+                      <FramePanel className="bg-destructive/[0.02] border-destructive/10">
+                        <FrameHeader>
+                          <div>
+                            <FrameTitle className="text-destructive">Danger Zone</FrameTitle>
+                            <FrameDescription>Irreversible lifecycle actions</FrameDescription>
+                          </div>
+                        </FrameHeader>
+                        <FrameContent className="space-y-4">
+                          <p className="text-xs text-muted-foreground font-medium leading-relaxed">
+                            Deactivating an account will immediately revoke all platform access and halt operational processing.
+                          </p>
+                          <Button variant="destructive" className="w-full">
+                            <HugeiconsIcon icon={Delete02Icon} />
+                            Terminate Access
+                          </Button>
+                        </FrameContent>
+                      </FramePanel>
+                    </Frame>
+                  </div>
                 </TabsContent>
               </Tabs>
             </div>
@@ -209,12 +271,12 @@ function InfoRow({ label, value, icon: Icon }: { label: string; value: string; i
   return (
     <div className="flex items-center justify-between group">
       <div className="flex items-center gap-3">
-        <div className="h-8 w-8 rounded-lg bg-muted/5 flex items-center justify-center text-muted-foreground/30 group-hover:text-primary transition-colors">
+        <div className="h-8 w-8 rounded-lg bg-muted/5 flex items-center justify-center text-muted-foreground/30 group-hover:text-primary transition-colors border border-border/5">
           <HugeiconsIcon icon={Icon} size={16} />
         </div>
-        <p className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest">{label}</p>
+        <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest">{label}</p>
       </div>
-      <p className="text-sm font-semibold text-foreground/80">{value}</p>
+      <p className="text-sm font-bold text-foreground/80">{value}</p>
     </div>
   );
 }
