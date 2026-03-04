@@ -8,10 +8,11 @@ import {
   Building03Icon,
   UserGroupIcon,
   Shield01Icon,
-  ActivityIcon,
   ArrowUpRight01Icon,
   PlusSignCircleIcon,
   MoreHorizontalIcon,
+  ShieldSecurityIcon,
+  File02Icon,
 } from "@hugeicons/core-free-icons";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { api } from "@/lib/mock-api";
@@ -37,18 +38,19 @@ import { UserAvatar } from "@/components/dashboard/user-avatar";
 
 export const Route = createFileRoute("/admin/")({
   loader: async () => {
-    const [users, companies] = await Promise.all([
+    const [users, companies, logs] = await Promise.all([
       api.getUsers(),
       api.getCompanies(),
+      api.getSystemLogs(),
     ]);
-    return { users, companies };
+    return { users, companies, logs };
   },
   pendingComponent: DashboardPending,
   component: AdminDashboard,
 });
 
 function AdminDashboard() {
-  const { users, companies } = Route.useLoaderData();
+  const { users, companies, logs } = Route.useLoaderData();
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full">
@@ -77,8 +79,8 @@ function AdminDashboard() {
 
       <div className="flex-1 overflow-y-auto no-scrollbar px-4 lg:px-6 pb-12 pt-2">
         <div className="flex flex-col gap-8">
-          {/* Shared Stat Cards */}
-          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* shared stat cards (3) */}
+          <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <StatCard
               label="Total Companies"
               value={companies.length}
@@ -104,20 +106,12 @@ function AdminDashboard() {
               variant="success"
               sub="No active incidents"
             />
-            <StatCard
-              label="API Requests"
-              value="1.2M"
-              change="+15%"
-              up
-              icon={ActivityIcon}
-              variant="accent"
-              sub="Last 24 hours"
-            />
           </section>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left Column: Users Overview */}
+            {/* overview column 1 */}
             <div className="lg:col-span-8 space-y-8">
+              {/* users overview */}
               <Frame>
                 <FramePanel className="bg-card">
                   <FrameHeader>
@@ -143,7 +137,7 @@ function AdminDashboard() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {users.map((user) => {
+                        {users.slice(0, 5).map((user) => {
                           const company = companies.find(
                             (c) => c.id === user.companyId,
                           );
@@ -214,9 +208,54 @@ function AdminDashboard() {
                   </FrameContent>
                 </FramePanel>
               </Frame>
+
+              {/* audit logs card (4th overview card) */}
+              <Frame>
+                <FramePanel className="bg-card">
+                  <FrameHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                        <HugeiconsIcon icon={ShieldSecurityIcon} size={18} />
+                      </div>
+                      <div>
+                        <FrameTitle>Security Audit Logs</FrameTitle>
+                        <FrameDescription>Immutable system-level event tracking</FrameDescription>
+                      </div>
+                    </div>
+                    <Button variant="outline" size="sm" className="text-[10px] font-bold uppercase tracking-widest h-7 px-3">
+                      Audit Trail
+                    </Button>
+                  </FrameHeader>
+                  <FrameContent className="p-0">
+                    <div className="divide-y divide-border/5">
+                      {logs.slice(0, 4).map((log) => (
+                        <div key={log.id} className="flex items-center justify-between p-5 hover:bg-muted/5 transition-colors group">
+                          <div className="flex items-start gap-4">
+                            <div className={cn(
+                              "h-10 w-10 rounded-xl flex items-center justify-center border transition-all duration-300",
+                              log.level === "security" ? "bg-destructive/10 text-destructive border-destructive/20" : "bg-info/10 text-info border-info/20"
+                            )}>
+                              <HugeiconsIcon icon={File02Icon} size={20} />
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-sm font-bold text-foreground/90 leading-tight">{log.event}</p>
+                              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                                <span>{log.actor}</span>
+                                <span>•</span>
+                                <span>{log.timestamp}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <Badge variant="muted" className="bg-muted/10 border-none tabular-nums text-[9px]">{log.ipAddress}</Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </FrameContent>
+                </FramePanel>
+              </Frame>
             </div>
 
-            {/* Right Column: Actions & Activity */}
+            {/* overview column 2 */}
             <div className="lg:col-span-4 space-y-8">
               <QuickActions />
               <RecentActivity />

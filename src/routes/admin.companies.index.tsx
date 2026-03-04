@@ -31,6 +31,7 @@ import {
   Sorting05Icon,
   UserGroupIcon,
   Shield01Icon,
+  ActivityIcon,
   PencilEdit02Icon,
   Cancel01Icon,
   Tick01Icon,
@@ -94,7 +95,7 @@ function CompaniesManagementPage() {
 
       <div className="flex flex-col gap-6 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
         {/* Admin Quick Stats */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             label="Total Tenants"
             value={companies.length}
@@ -115,6 +116,15 @@ function CompaniesManagementPage() {
             icon={Shield01Icon}
             variant="success"
             sub="Operational"
+          />
+          <StatCard
+            label="API Traffic"
+            value="1.2M"
+            change="+12%"
+            up
+            icon={ActivityIcon}
+            variant="accent"
+            sub="Last 24 hours"
           />
         </section>
 
