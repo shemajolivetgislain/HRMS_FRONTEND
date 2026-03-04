@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,19 +30,21 @@ import {
   MoreHorizontalIcon,
   UserMultiple02Icon,
   Sorting05Icon,
-  ViewIcon,
   Mail01Icon,
   Briefcase01Icon,
   Location01Icon,
   UserAdd01Icon,
+  Delete02Icon,
+  AiSecurityIcon,
+  ArrowRight01Icon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
-import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -62,9 +64,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { api } from "@/lib/mock-api";
+import { toast } from "sonner";
+import { DashboardPending } from "@/components/dashboard/dashboard-pending";
+import { StatCard } from "@/components/dashboard/stat-card";
+import { Textarea } from "@/components/ui/textarea";
 
-// Sample candidates data (could be moved to mock API later)
+// Sample candidates data
 const recentCandidates = [
   {
     id: 1,
@@ -90,17 +107,7 @@ const recentCandidates = [
     time: "5h ago",
     status: "success",
   },
-  {
-    id: 4,
-    name: "Oliver Queen",
-    role: "QA Engineer",
-    stage: "Offer Sent",
-    time: "1d ago",
-    status: "primary",
-  },
 ];
-
-import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 
 export const Route = createFileRoute("/dashboard/recruitment/")({
   loader: async () => await api.getJobs(),
@@ -126,17 +133,40 @@ function RecruitmentPage() {
       job.dept.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
+  const handlePublishJob = async () => {
+    if (!newJob.title || !newJob.dept) {
+      toast.error("Please provide role title and department");
+      return;
+    }
+    try {
+      await api.addJobOpening({
+        title: newJob.title,
+        dept: newJob.dept,
+        type: newJob.type || "Full-time",
+        location: newJob.location || "On-site",
+        description: newJob.description,
+        status: "published",
+      });
+      toast.success("Job position has been published to the careers portal");
+      setIsDialogOpen(false);
+      setNewJob({ title: "", dept: "", type: "", location: "", description: "" });
+      window.location.reload();
+    } catch (err) {
+      toast.error("Failed to publish job opening");
+    }
+  };
+
   return (
-    <main className="flex flex-1 flex-col gap-0 overflow-hidden">
+    <main className="flex flex-1 flex-col gap-0 overflow-hidden bg-muted/20">
       <DashboardHeader
-        category="Talent"
-        title="Recruitment Command"
-        description="Acquire and manage top-tier talent for your organization"
+        category="Talent Acquisition"
+        title="Recruitment"
+        description="Streamlined sourcing and pipeline management for top-tier talent"
       >
         <Button
           variant="outline"
-          size="lg"
-          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          size="sm"
+          className="text-xs font-bold border-border/40 shadow-none hover:bg-muted/50 gap-2 uppercase tracking-widest h-10 rounded-xl"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Report
@@ -145,31 +175,31 @@ function RecruitmentPage() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger
             render={
-              <Button size="lg" className="text-xs font-bold gap-2 capitalize">
+              <Button size="sm" className="text-xs font-bold gap-2 uppercase tracking-widest h-10 rounded-xl">
                 <HugeiconsIcon
                   icon={PlusSignCircleIcon}
                   size={14}
                   strokeWidth={2}
                 />
-                Create Position
+                Create Role
               </Button>
             }
           />
-          <DialogContent className="sm:max-w-[600px]">
+          <DialogContent className="sm:max-w-[600px] rounded-2xl">
             <DialogHeader>
-              <DialogTitle>Create New Position</DialogTitle>
-              <DialogDescription>
-                Publish a new job opening to the recruitment portal.
+              <DialogTitle className="text-2xl font-bold uppercase tracking-tight">Create New Position</DialogTitle>
+              <DialogDescription className="text-sm font-medium">
+                Define and publish a new job opening to the global recruitment portal.
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-6 py-6">
+              <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="title">Job Title</Label>
+                  <Label htmlFor="title" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">Job Title</Label>
                   <Input
                     id="title"
                     placeholder="e.g. Senior Product Manager"
-                    className="h-9"
+                    className="h-11 bg-muted/5 border-border/40 focus:bg-background"
                     value={newJob.title}
                     onChange={(e) =>
                       setNewJob({ ...newJob, title: e.target.value })
@@ -177,14 +207,14 @@ function RecruitmentPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="dept">Department</Label>
+                  <Label htmlFor="dept" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">Department</Label>
                   <Select
                     value={newJob.dept}
                     onValueChange={(val) =>
                       setNewJob({ ...newJob, dept: val || "" })
                     }
                   >
-                    <SelectTrigger id="dept" className="h-9 w-full">
+                    <SelectTrigger id="dept" className="h-11 bg-muted/5 border-border/40 focus:bg-background">
                       <SelectValue placeholder="Select department" />
                     </SelectTrigger>
                     <SelectContent>
@@ -196,16 +226,16 @@ function RecruitmentPage() {
                   </Select>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="type">Employment Type</Label>
+                  <Label htmlFor="type" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">Employment Type</Label>
                   <Select
                     value={newJob.type}
                     onValueChange={(val) =>
                       setNewJob({ ...newJob, type: val || "" })
                     }
                   >
-                    <SelectTrigger id="type" className="h-9 w-full">
+                    <SelectTrigger id="type" className="h-11 bg-muted/5 border-border/40 focus:bg-background">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -217,34 +247,30 @@ function RecruitmentPage() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="location">Location</Label>
+                  <Label htmlFor="location" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">Location</Label>
                   <Select
                     value={newJob.location}
                     onValueChange={(val) =>
                       setNewJob({ ...newJob, location: val || "" })
                     }
                   >
-                    <SelectTrigger id="location" className="h-9 w-full">
+                    <SelectTrigger id="location" className="h-11 bg-muted/5 border-border/40 focus:bg-background">
                       <SelectValue placeholder="Select location" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Remote">Remote</SelectItem>
-                      <SelectItem value="Kigali, Rwanda">
-                        Kigali, Rwanda
-                      </SelectItem>
-                      <SelectItem value="Nairobi, Kenya">
-                        Nairobi, Kenya
-                      </SelectItem>
+                      <SelectItem value="Kigali, Rwanda">Kigali, Rwanda</SelectItem>
+                      <SelectItem value="Nairobi, Kenya">Nairobi, Kenya</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="description">Job Description</Label>
-                <textarea
+                <Label htmlFor="description" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">Job Description</Label>
+                <Textarea
                   id="description"
-                  className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                   placeholder="Describe the responsibilities and requirements..."
+                  className="min-h-[120px] bg-muted/5 border-border/40 focus:bg-background resize-none"
                   value={newJob.description}
                   onChange={(e) =>
                     setNewJob({ ...newJob, description: e.target.value })
@@ -252,32 +278,14 @@ function RecruitmentPage() {
                 />
               </div>
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+            <DialogFooter className="bg-muted/5 -mx-6 -mb-6 p-6 rounded-b-2xl border-t border-border/5">
+              <Button variant="ghost" onClick={() => setIsDialogOpen(false)} className="font-bold text-xs uppercase tracking-widest">
                 Cancel
               </Button>
               <Button
                 type="submit"
-                onClick={async () => {
-                  if (newJob.title && newJob.dept) {
-                    await api.addJobOpening({
-                      title: newJob.title,
-                      dept: newJob.dept,
-                      type: newJob.type || "Full-time",
-                      location: newJob.location || "On-site",
-                      description: newJob.description,
-                      status: "published",
-                    });
-                    setIsDialogOpen(false);
-                    setNewJob({
-                      title: "",
-                      dept: "",
-                      type: "",
-                      location: "",
-                      description: "",
-                    });
-                  }
-                }}
+                onClick={handlePublishJob}
+                className="font-bold px-8 h-11 rounded-xl"
               >
                 Publish Position
               </Button>
@@ -286,91 +294,91 @@ function RecruitmentPage() {
         </Dialog>
       </DashboardHeader>
 
-      <div className="flex flex-col xl:flex-row gap-6 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
-        <div className="flex-1 min-w-0 space-y-6">
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <RecruitmentStatCard
+      <div className="flex flex-col xl:flex-row gap-8 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
+        <div className="flex-1 min-w-0 space-y-8">
+          <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <StatCard
               label="Active Openings"
-              value={jobs.length.toString()}
-              change="+2"
+              value={jobs.length}
+              change="2"
               up={true}
               icon={JobShareIcon}
               variant="primary"
-              sub="Roles currently published"
+              sub="Roles published"
             />
-            <RecruitmentStatCard
+            <StatCard
               label="Total Applicants"
               value="132"
-              change="+15%"
+              change="15%"
               up={true}
               icon={UserMultiple02Icon}
               variant="info"
-              sub="Across all open roles"
+              sub="Across all roles"
             />
-            <RecruitmentStatCard
+            <StatCard
               label="Time to Hire"
-              value="18 days"
-              change="-4d"
-              up={true}
+              value="18d"
+              change="4d"
+              up={false}
               icon={Sorting05Icon}
               variant="success"
-              sub="Average lifecycle duration"
+              sub="Average duration"
             />
           </section>
 
           <section>
             <Frame className="group/frame">
-              <FramePanel className="p-0 overflow-hidden bg-card">
-                <FrameHeader className="border-b-0 pb-2">
+              <FramePanel className="p-0 overflow-hidden bg-card shadow-sm border-border/40">
+                <FrameHeader className="border-b-0 pb-2 px-8 pt-8">
                   <div>
-                    <FrameTitle>Active Pipelines</FrameTitle>
-                    <FrameDescription>
+                    <FrameTitle className="text-xl font-bold">Active Pipelines</FrameTitle>
+                    <FrameDescription className="text-sm font-medium">
                       Monitor and manage active recruitment cycles
                     </FrameDescription>
                   </div>
                 </FrameHeader>
 
-                <div className="px-6 pb-5 pt-2 flex flex-col sm:flex-row items-center gap-3 border-b border-border/5">
-                  <div className="relative flex-1 w-full">
+                <div className="px-8 pb-6 pt-4 flex flex-col xl:flex-row items-center justify-between gap-4 border-b border-border/5">
+                  <div className="relative flex-1 w-full max-w-xl">
                     <HugeiconsIcon
                       icon={Search01Icon}
-                      className="absolute left-3 top-2.5 size-4 text-muted-foreground/40"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground/40"
                       strokeWidth={2}
                     />
                     <Input
                       placeholder="Search roles or departments…"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-9 h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-xs w-full max-w-sm"
+                      className="pl-9 h-10 rounded-xl border-border/40 bg-muted/5 focus:bg-background transition-all text-sm"
                     />
                   </div>
-                  <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <div className="flex items-center gap-2">
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-9 px-4 rounded-lg border-border/40 gap-2 text-xs font-bold flex-1 sm:flex-none"
+                      className="h-10 px-4 rounded-xl border-border/40 gap-2 text-[10px] font-black uppercase tracking-widest"
                     >
                       <HugeiconsIcon icon={FilterIcon} size={14} />
-                      Filter Roles
+                      Refine Search
                     </Button>
                   </div>
                 </div>
 
                 <FrameContent className="p-0">
                   <Table>
-                    <TableHeader className="bg-muted/10">
+                    <TableHeader className="bg-muted/5">
                       <TableRow className="hover:bg-transparent border-border/5">
-                        <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest pl-6 w-[300px]">
-                          Role Details
+                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-8 py-4 w-[300px]">
+                          Role Specification
                         </TableHead>
-                        <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                          Pipeline
+                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
+                          Pipeline Density
                         </TableHead>
-                        <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                          Status
+                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
+                          Lifecycle Status
                         </TableHead>
-                        <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">
-                          Action
+                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4 text-right pr-8">
+                          Management
                         </TableHead>
                       </TableRow>
                     </TableHeader>
@@ -380,20 +388,21 @@ function RecruitmentPage() {
                           key={job.id}
                           className="border-border/5 hover:bg-muted/5 transition-colors group"
                         >
-                          <TableCell className="pl-6 py-4">
+                          <TableCell className="pl-8 py-5">
                             <div>
-                              <p className="text-sm font-semibold text-foreground/90 leading-none">
+                              <p className="text-base font-bold text-foreground/90 leading-none group-hover:text-primary transition-colors">
                                 {job.title}
                               </p>
-                              <div className="flex items-center gap-3 mt-2 text-xs font-medium text-muted-foreground/60">
-                                <span className="flex items-center gap-1">
+                              <div className="flex items-center gap-3 mt-2.5 text-xs font-semibold text-muted-foreground/40 uppercase tracking-widest">
+                                <span className="flex items-center gap-1.5">
                                   <HugeiconsIcon
                                     icon={Briefcase01Icon}
                                     size={12}
                                   />
                                   {job.dept}
                                 </span>
-                                <span className="flex items-center gap-1">
+                                <span>•</span>
+                                <span className="flex items-center gap-1.5">
                                   <HugeiconsIcon
                                     icon={Location01Icon}
                                     size={12}
@@ -403,17 +412,17 @@ function RecruitmentPage() {
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell className="px-2">
+                          <TableCell className="px-4">
                             <div className="flex items-center gap-3">
-                              <div className="flex items-center justify-center h-8 w-12 rounded-lg bg-primary/5 text-primary text-sm font-bold tabular-nums border border-primary/10">
+                              <div className="flex items-center justify-center h-9 w-14 rounded-xl bg-primary/5 text-primary text-sm font-black tabular-nums border border-primary/10">
                                 {job.applicants}
                               </div>
-                              <span className="text-xs font-medium text-muted-foreground/50">
+                              <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-widest">
                                 Candidates
                               </span>
                             </div>
                           </TableCell>
-                          <TableCell className="px-2">
+                          <TableCell className="px-4">
                             <Badge
                               variant={
                                 job.status === "published"
@@ -423,64 +432,80 @@ function RecruitmentPage() {
                                     : "warning"
                               }
                               showDot
+                              className="font-bold text-[10px] uppercase tracking-widest h-6"
                             >
                               {job.status}
                             </Badge>
                           </TableCell>
-                          <TableCell className="text-right pr-6">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger
+                          <TableCell className="text-right pr-8">
+                            <div className="flex items-center justify-end gap-2">
+                              <Button
+                                variant="ghost"
+                                size="sm"
                                 render={
-                                  <Button
-                                    variant="ghost"
-                                    size="icon-sm"
-                                    className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5 shadow-xs"
-                                    aria-label="Job actions"
-                                  >
-                                    <HugeiconsIcon
-                                      icon={MoreHorizontalIcon}
-                                      className="size-4 text-muted-foreground/60"
-                                    />
-                                  </Button>
+                                  <Link
+                                    to="/dashboard/recruitment/$id"
+                                    params={{ id: job.id }}
+                                  />
                                 }
-                              />
-                              <DropdownMenuContent
-                                align="end"
-                                className="w-48 rounded-xl border-border/40 shadow-xl"
+                                className="h-9 px-3 text-[10px] font-bold uppercase tracking-widest rounded-lg"
                               >
-                                <DropdownMenuItem
+                                Details
+                              </Button>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger
                                   render={
-                                    <Link
-                                      to="/dashboard/recruitment/$id"
-                                      params={{ id: job.id }}
-                                    />
+                                    <Button
+                                      variant="ghost"
+                                      size="icon-sm"
+                                      className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5"
+                                    >
+                                      <HugeiconsIcon
+                                        icon={MoreHorizontalIcon}
+                                        size={16}
+                                        className="text-muted-foreground/60"
+                                      />
+                                    </Button>
                                   }
+                                />
+                                <DropdownMenuContent
+                                  align="end"
+                                  className="w-52 rounded-2xl border-border/40 shadow-2xl p-2"
                                 >
-                                  <HugeiconsIcon
-                                    icon={ViewIcon}
-                                    className="size-4 mr-2"
-                                  />
-                                  <span>View Opening</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <HugeiconsIcon
-                                    icon={Mail01Icon}
-                                    className="size-4 mr-2"
-                                  />
-                                  <span>Share Role</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <HugeiconsIcon
-                                    icon={PlusSignCircleIcon}
-                                    className="size-4 mr-2"
-                                  />
-                                  <span>Add Candidate</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="text-destructive focus:bg-destructive/10">
-                                  <span>Close Opening</span>
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                                  <DropdownMenuItem className="rounded-xl py-2.5 font-semibold text-sm">
+                                    <HugeiconsIcon icon={UserAdd01Icon} className="size-4 mr-3 text-muted-foreground/60" />
+                                    <span>Add Candidate</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem className="rounded-xl py-2.5 font-semibold text-sm">
+                                    <HugeiconsIcon icon={Mail01Icon} className="size-4 mr-3 text-muted-foreground/60" />
+                                    <span>Broadcast</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuSeparator className="bg-border/5 my-1" />
+                                  <AlertDialog>
+                                    <AlertDialogTrigger render={
+                                      <DropdownMenuItem onSelect={e => e.preventDefault()} className="rounded-xl py-2.5 font-semibold text-sm text-destructive focus:bg-destructive/5">
+                                        <HugeiconsIcon icon={Delete02Icon} className="size-4 mr-3" />
+                                        <span>Close Opening</span>
+                                      </DropdownMenuItem>
+                                    } />
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>Close Job Opening?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          This will archive the role and notify all {job.applicants} pending candidates. This action is tracked for recruitment metrics.
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>Keep Open</AlertDialogCancel>
+                                        <AlertDialogAction className="bg-destructive hover:bg-destructive/90">
+                                          Close Role
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -488,63 +513,56 @@ function RecruitmentPage() {
                   </Table>
                 </FrameContent>
 
-                <FrameFooter className="flex items-center justify-between border-t border-border/5">
-                  <p className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
-                    Showing {filteredJobs.length} total active pipelines
+                <FrameFooter className="px-8 py-5 border-t border-border/5">
+                  <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-[0.2em]">
+                    Talent Pipeline: {filteredJobs.length} active requisitions
                   </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-xs font-bold capitalize text-primary/80 hover:text-primary h-7"
-                  >
-                    View Archive
-                  </Button>
                 </FrameFooter>
               </FramePanel>
             </Frame>
           </section>
         </div>
 
-        <div className="w-full xl:w-[380px] space-y-6">
+        <div className="w-full xl:w-[400px] space-y-8">
           <Frame>
-            <FramePanel className="p-0 overflow-hidden bg-card">
-              <FrameHeader>
+            <FramePanel className="p-0 overflow-hidden bg-card border-border/40">
+              <FrameHeader className="px-8 pt-8 border-b-0 pb-2">
                 <div>
-                  <FrameTitle>Recent Candidates</FrameTitle>
-                  <FrameDescription>
-                    Latest movements in your hiring pipelines
+                  <FrameTitle className="text-lg font-bold">Recent Candidates</FrameTitle>
+                  <FrameDescription className="text-sm font-medium">
+                    Latest hiring movements
                   </FrameDescription>
                 </div>
               </FrameHeader>
-              <FrameContent className="p-0">
+              <FrameContent className="p-0 pt-4">
                 <div className="divide-y divide-border/5">
                   {recentCandidates.map((candidate) => (
                     <div
                       key={candidate.id}
-                      className="p-5 hover:bg-muted/5 transition-colors group/candidate cursor-pointer"
+                      className="p-6 hover:bg-muted/5 transition-all group/candidate cursor-pointer"
                     >
                       <div className="flex items-start gap-4">
                         <UserAvatar
                           name={candidate.name}
-                          size="default"
-                          className="shadow-sm border border-border/10 group-hover/candidate:scale-[1.02] transition-transform"
+                          size="lg"
+                          className="rounded-xl ring-4 ring-background shadow-sm group-hover/candidate:scale-105 transition-all"
                         />
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 pt-0.5">
                           <div className="flex items-start justify-between gap-2">
-                            <p className="text-sm font-semibold text-foreground/90 leading-tight truncate">
+                            <p className="text-sm font-bold text-foreground/90 leading-tight truncate">
                               {candidate.name}
                             </p>
-                            <span className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest shrink-0 whitespace-nowrap mt-0.5">
+                            <span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-widest shrink-0 mt-0.5 tabular-nums">
                               {candidate.time}
                             </span>
                           </div>
-                          <p className="text-xs font-medium text-muted-foreground/60 mt-1 truncate">
+                          <p className="text-[11px] font-semibold text-muted-foreground/60 mt-1 truncate uppercase tracking-wider">
                             {candidate.role}
                           </p>
-                          <div className="mt-3">
+                          <div className="mt-4">
                             <Badge
                               variant={candidate.status as any}
-                              className="h-5 rounded-md px-2 text-xs"
+                              className="h-5 rounded-lg px-2 text-[9px] font-black uppercase tracking-widest"
                             >
                               {candidate.stage}
                             </Badge>
@@ -555,38 +573,41 @@ function RecruitmentPage() {
                   ))}
                 </div>
               </FrameContent>
-              <FrameFooter className="border-t border-border/5">
+              <FrameFooter className="border-t border-border/5 px-8 py-6">
                 <Button
                   variant="outline"
-                  className="w-full h-8 text-xs font-bold rounded-lg border-border/40 text-muted-foreground/70 hover:text-foreground"
+                  className="w-full h-10 text-[10px] font-black uppercase tracking-widest rounded-xl border-border/40 text-muted-foreground/70 hover:text-primary transition-all"
                 >
-                  View Talent Pool
+                  View Global Talent Pool
                 </Button>
               </FrameFooter>
             </FramePanel>
           </Frame>
 
           <Frame>
-            <FramePanel className="p-5 flex items-center justify-between bg-primary/[0.02] border-primary/10">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-sm shadow-primary/5">
-                  <HugeiconsIcon icon={UserAdd01Icon} size={20} />
+            <FramePanel className="p-8 flex flex-col gap-6 bg-primary/[0.02] border-primary/10 rounded-[2rem] relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-4 opacity-5 rotate-12 group-hover:scale-110 transition-transform">
+                <HugeiconsIcon icon={AiSecurityIcon} size={80} />
+              </div>
+              <div className="flex items-center gap-4 relative z-10">
+                <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shadow-sm shadow-primary/5">
+                  <HugeiconsIcon icon={UserAdd01Icon} size={24} />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-foreground/90 leading-none mb-1">
-                    External Agency
+                  <p className="text-base font-bold text-foreground/90 leading-none mb-1.5">
+                    External Agencies
                   </p>
-                  <p className="text-xs font-medium text-muted-foreground/50">
-                    Invite recruiters to collaborate
+                  <p className="text-xs font-semibold text-muted-foreground/50 tracking-tight">
+                    Invite collaborators to source talent
                   </p>
                 </div>
               </div>
               <Button
                 variant="outline"
-                size="icon-sm"
-                className="rounded-lg text-primary hover:bg-primary/10"
+                className="w-full h-11 rounded-xl font-bold text-xs uppercase tracking-widest border-primary/20 text-primary hover:bg-primary/5 relative z-10"
               >
-                <HugeiconsIcon icon={MoreHorizontalIcon} size={16} />
+                Provision Access
+                <HugeiconsIcon icon={ArrowRight01Icon} size={14} className="ml-2" />
               </Button>
             </FramePanel>
           </Frame>
@@ -595,78 +616,3 @@ function RecruitmentPage() {
     </main>
   );
 }
-
-const RecruitmentStatCard = React.memo(function RecruitmentStatCard({
-  label,
-  value,
-  change,
-  up,
-  icon: Icon,
-  variant,
-  sub,
-}: {
-  label: string;
-  value: string;
-  change: string;
-  up: boolean;
-  icon: any;
-  variant:
-    | "primary"
-    | "success"
-    | "warning"
-    | "destructive"
-    | "info"
-    | "accent";
-  sub?: string;
-}) {
-  return (
-    <Frame className="group/stat h-full">
-      <FramePanel className="p-5 flex flex-col justify-between h-full bg-card">
-        <div className="flex items-center justify-between">
-          <div
-            className={cn(
-              "h-9 w-9 rounded-xl flex items-center justify-center border border-border/10 transition-colors shadow-sm",
-              variant === "primary" &&
-                "bg-primary/10 text-primary border-primary/20",
-              variant === "success" &&
-                "bg-success/10 text-success border-success/20",
-              variant === "warning" &&
-                "bg-warning/10 text-warning border-warning/20",
-              variant === "destructive" &&
-                "bg-destructive/10 text-destructive border-destructive/20",
-              variant === "info" && "bg-info/10 text-info border-info/20",
-              variant === "accent" &&
-                "bg-accent/10 text-accent border-accent/20",
-            )}
-          >
-            <HugeiconsIcon icon={Icon} size={18} strokeWidth={2} />
-          </div>
-          <Badge
-            variant="muted"
-            className={cn(
-              "border-none px-1.5 py-0.5 rounded-md font-bold",
-              up
-                ? "text-success bg-success/10"
-                : "text-destructive bg-destructive/10",
-            )}
-          >
-            <span className="text-xs">{change}</span>
-          </Badge>
-        </div>
-        <div className="mt-6">
-          <h3 className="text-2xl font-semibold tracking-tight text-foreground/90 tabular-nums leading-none mb-1.5">
-            {value}
-          </h3>
-          <div className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest">
-            {label}
-          </div>
-          {sub ? (
-            <p className="text-xs text-muted-foreground/30 font-medium mt-1 tracking-tight">
-              {sub}
-            </p>
-          ) : null}
-        </div>
-      </FramePanel>
-    </Frame>
-  );
-});

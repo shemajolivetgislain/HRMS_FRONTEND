@@ -32,10 +32,10 @@ import {
   UserGroupIcon,
   Shield01Icon,
   ActivityIcon,
-  PencilEdit02Icon,
   Cancel01Icon,
   Tick01Icon,
   DashboardSquare01Icon,
+  Delete01Icon,
 } from "@hugeicons/core-free-icons";
 import {
   DropdownMenu,
@@ -44,11 +44,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { api } from "@/lib/mock-api";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { StatCard } from "@/components/dashboard/stat-card";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/companies/")({
   loader: async () => await api.getCompanies(),
@@ -67,29 +79,39 @@ function CompaniesManagementPage() {
       c.tin.includes(searchTerm),
   );
 
+  const handleDeleteCompany = async (id: string, name: string) => {
+    try {
+      await api.deleteCompany(id);
+      toast.success(`Organization ${name} has been purged from system records`);
+      window.location.reload();
+    } catch (err) {
+      toast.error("Critical failure during record deletion");
+    }
+  };
+
   return (
-    <main className="flex flex-1 flex-col gap-0 overflow-hidden">
+    <main className="flex flex-1 flex-col gap-0 overflow-hidden bg-muted/20">
       <DashboardHeader
         category="Multi-Tenancy"
-        title="Registered Companies"
-        description="Manage organizational tenants and platform access"
+        title="Organization Registry"
+        description="Manage secure organizational tenants and managed platform access"
       >
         <Button
           variant="outline"
-          size="lg"
-          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          size="sm"
+          className="text-xs font-bold border-border/40 shadow-none hover:bg-muted/50 gap-2 uppercase tracking-widest"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
-          Export Data
+          Export
         </Button>
 
         <Button
-          size="lg"
-          className="text-xs font-bold gap-2 capitalize"
+          size="sm"
+          className="text-xs font-bold gap-2 uppercase tracking-widest"
           onClick={() => navigate({ to: "/admin/companies/register" })}
         >
           <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
-          Register New
+          Provision New
         </Button>
       </DashboardHeader>
 
@@ -120,7 +142,7 @@ function CompaniesManagementPage() {
           <StatCard
             label="API Traffic"
             value="1.2M"
-            change="+12%"
+            change="12%"
             up
             icon={ActivityIcon}
             variant="accent"
@@ -131,62 +153,62 @@ function CompaniesManagementPage() {
         <section>
           <Frame className="group/frame">
             <FramePanel className="p-0 overflow-hidden bg-card">
-              <FrameHeader className="border-b-0 pb-2">
+              <FrameHeader className="border-b-0 pb-2 px-8 pt-8">
                 <div>
-                  <FrameTitle>Tenant Directory</FrameTitle>
-                  <FrameDescription>
+                  <FrameTitle className="text-xl font-bold">Tenant Directory</FrameTitle>
+                  <FrameDescription className="text-sm font-medium">
                     All active and pending company accounts
                   </FrameDescription>
                 </div>
               </FrameHeader>
 
-              <div className="px-6 pb-5 pt-2 flex flex-col sm:flex-row items-center gap-3 border-b border-border/5">
+              <div className="px-8 pb-6 pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-border/5">
                 <div className="relative flex-1 w-full max-w-md">
                   <HugeiconsIcon
                     icon={Search01Icon}
-                    className="absolute left-3 top-2.5 size-4 text-muted-foreground/40"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground/40"
                     strokeWidth={2}
                   />
                   <Input
                     placeholder="Search by name or TIN…"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-9 h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-xs"
+                    className="pl-9 h-10 rounded-xl border-border/40 bg-muted/5 focus:bg-background transition-all text-sm"
                   />
                 </div>
                 <div className="flex items-center gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="gap-2 font-bold text-xs"
+                    className="gap-2 font-bold text-[10px] uppercase tracking-widest h-9 rounded-xl border-border/40"
                   >
                     <HugeiconsIcon icon={Sorting05Icon} size={14} />
-                    Sector
+                    Filter by Sector
                   </Button>
                 </div>
               </div>
 
               <FrameContent className="p-0">
                 <Table>
-                  <TableHeader className="bg-muted/10">
+                  <TableHeader className="bg-muted/5">
                     <TableRow className="hover:bg-transparent border-border/5">
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest pl-6">
-                        Company
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-8 py-4">
+                        Organization
                       </TableHead>
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        TIN Number
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
+                        Registry (TIN)
                       </TableHead>
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Sector
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
+                        Vertical
                       </TableHead>
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-center">
-                        Employees
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4 text-center">
+                        Headcount
                       </TableHead>
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2">
-                        Status
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
+                        Security Status
                       </TableHead>
-                      <TableHead className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest px-2 text-right pr-6">
-                        Action
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4 text-right pr-8">
+                        Management
                       </TableHead>
                     </TableRow>
                   </TableHeader>
@@ -196,40 +218,40 @@ function CompaniesManagementPage() {
                         key={company.id}
                         className="border-border/5 hover:bg-muted/5 transition-colors group"
                       >
-                        <TableCell className="pl-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-xl bg-primary/5 border border-primary/10 flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
-                              <HugeiconsIcon icon={Building03Icon} size={20} />
+                        <TableCell className="pl-8 py-5">
+                          <div className="flex items-center gap-4">
+                            <div className="h-11 w-11 rounded-2xl bg-primary/5 border border-primary/10 flex items-center justify-center text-primary group-hover:scale-105 transition-all duration-500">
+                              <HugeiconsIcon icon={Building03Icon} size={22} />
                             </div>
                             <div>
-                              <p className="text-sm font-semibold text-foreground/90 leading-none">
+                              <p className="text-base font-bold text-foreground/90 leading-none">
                                 {company.name}
                               </p>
-                              <p className="text-xs font-medium text-muted-foreground/40 mt-1">
+                              <p className="text-xs font-semibold text-muted-foreground/40 mt-1.5">
                                 {company.email}
                               </p>
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="px-2">
-                          <span className="text-xs font-bold text-foreground/60 tabular-nums">
+                        <TableCell className="px-4">
+                          <span className="text-sm font-bold text-foreground/60 tabular-nums">
                             {company.tin}
                           </span>
                         </TableCell>
-                        <TableCell className="px-2">
+                        <TableCell className="px-4">
                           <Badge
                             variant="muted"
-                            className="bg-muted/10 border-none font-bold text-xs uppercase tracking-wider"
+                            className="bg-muted/10 border-none font-bold text-[10px] uppercase tracking-widest"
                           >
                             {company.sector}
                           </Badge>
                         </TableCell>
-                        <TableCell className="px-2 text-center">
+                        <TableCell className="px-4 text-center">
                           <span className="text-sm font-bold text-foreground/80 tabular-nums">
                             {company.employeeCount}
                           </span>
                         </TableCell>
-                        <TableCell className="px-2">
+                        <TableCell className="px-4">
                           <Badge
                             variant={
                               company.status === "active"
@@ -237,90 +259,126 @@ function CompaniesManagementPage() {
                                 : "destructive"
                             }
                             showDot
+                            className="font-bold text-[10px] uppercase tracking-widest"
                           >
                             {company.status}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-right pr-6">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger
+                        <TableCell className="text-right pr-8">
+                          <div className="flex items-center justify-end gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
                               render={
-                                <Button
-                                  variant="ghost"
-                                  size="icon-sm"
-                                  className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5 shadow-xs"
+                                <Link
+                                  to="/admin/companies/$id"
+                                  params={{ id: company.id }}
+                                />
+                              }
+                              className="h-9 px-3 text-[10px] font-bold uppercase tracking-widest gap-2 rounded-lg"
+                            >
+                              Details
+                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger
+                                render={
+                                  <Button
+                                    variant="ghost"
+                                    size="icon-sm"
+                                    className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5"
+                                  >
+                                    <HugeiconsIcon
+                                      icon={MoreHorizontalIcon}
+                                      size={16}
+                                      className="text-muted-foreground/60"
+                                    />
+                                  </Button>
+                                }
+                              />
+                              <DropdownMenuContent
+                                align="end"
+                                className="w-56 rounded-2xl border-border/40 shadow-2xl p-2"
+                              >
+                                <DropdownMenuItem
+                                  render={
+                                    <Link
+                                      to="/admin/companies/$id"
+                                      params={{ id: company.id }}
+                                    />
+                                  }
+                                  className="rounded-xl py-2.5 font-semibold text-sm"
                                 >
                                   <HugeiconsIcon
-                                    icon={MoreHorizontalIcon}
-                                    size={16}
-                                    className="text-muted-foreground/60"
+                                    icon={ViewIcon}
+                                    className="size-4 mr-3 text-muted-foreground/60"
                                   />
-                                </Button>
-                              }
-                            />
-                            <DropdownMenuContent
-                              align="end"
-                              className="w-52 rounded-xl border-border/40 shadow-xl"
-                            >
-                              <DropdownMenuItem
-                                render={
-                                  <Link
-                                    to="/admin/companies/$id"
-                                    params={{ id: company.id }}
-                                  />
-                                }
-                              >
-                                <HugeiconsIcon
-                                  icon={ViewIcon}
-                                  className="size-4 mr-2"
-                                />
-                                <span>View Details</span>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                render={<Link to="/dashboard" />}
-                              >
-                                <HugeiconsIcon
-                                  icon={DashboardSquare01Icon}
-                                  className="size-4 mr-2"
-                                />
-                                <span>Go to Dashboard</span>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <HugeiconsIcon
-                                  icon={PencilEdit02Icon}
-                                  className="size-4 mr-2"
-                                />
-                                <span>Edit Profile</span>
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator className="bg-border/5" />
-                              {company.status === "active" ? (
-                                <DropdownMenuItem className="text-destructive focus:bg-destructive/10">
-                                  <HugeiconsIcon
-                                    icon={Cancel01Icon}
-                                    className="size-4 mr-2"
-                                  />
-                                  <span>Suspend Tenant</span>
+                                  <span>Registry Profile</span>
                                 </DropdownMenuItem>
-                              ) : (
-                                <DropdownMenuItem className="text-success focus:bg-success/10">
+                                <DropdownMenuItem
+                                  render={<Link to="/dashboard" />}
+                                  className="rounded-xl py-2.5 font-semibold text-sm"
+                                >
                                   <HugeiconsIcon
-                                    icon={Tick01Icon}
-                                    className="size-4 mr-2"
+                                    icon={DashboardSquare01Icon}
+                                    className="size-4 mr-3 text-muted-foreground/60"
                                   />
-                                  <span>Activate Tenant</span>
+                                  <span>Operations Board</span>
                                 </DropdownMenuItem>
-                              )}
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                                <DropdownMenuSeparator className="bg-border/5 my-1" />
+                                {company.status === "active" ? (
+                                  <DropdownMenuItem className="rounded-xl py-2.5 font-semibold text-sm text-warning focus:bg-warning/5">
+                                    <HugeiconsIcon
+                                      icon={Cancel01Icon}
+                                      className="size-4 mr-3"
+                                    />
+                                    <span>Suspend Tenant</span>
+                                  </DropdownMenuItem>
+                                ) : (
+                                  <DropdownMenuItem className="rounded-xl py-2.5 font-semibold text-sm text-success focus:bg-success/5">
+                                    <HugeiconsIcon
+                                      icon={Tick01Icon}
+                                      className="size-4 mr-3"
+                                    />
+                                    <span>Restore Tenant</span>
+                                  </DropdownMenuItem>
+                                )}
+                                <AlertDialog>
+                                  <AlertDialogTrigger render={
+                                    <DropdownMenuItem onSelect={e => e.preventDefault()} className="rounded-xl py-2.5 font-semibold text-sm text-destructive focus:bg-destructive/5">
+                                      <HugeiconsIcon
+                                        icon={Delete01Icon}
+                                        className="size-4 mr-3"
+                                      />
+                                      <span>Purge Organization</span>
+                                    </DropdownMenuItem>
+                                  } />
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle>Critical Action: Purge Record</AlertDialogTitle>
+                                      <AlertDialogDescription>
+                                        You are about to permanently delete {company.name} and all associated metadata. This operation is recorded in the immutable security audit log.
+                                      </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                      <AlertDialogAction onClick={() => handleDeleteCompany(company.id, company.name)} className="bg-destructive hover:bg-destructive/90">
+                                        Confirm Purge
+                                      </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </FrameContent>
-              <FrameFooter>
-                <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
-                  Showing {filtered.length} organizations
+              <FrameFooter className="px-8 py-5 border-t border-border/5">
+                <span className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-[0.2em]">
+                  Registry Ledger: {filtered.length} active organizational units
                 </span>
               </FrameFooter>
             </FramePanel>

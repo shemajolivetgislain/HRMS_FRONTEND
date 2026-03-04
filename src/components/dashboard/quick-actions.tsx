@@ -6,9 +6,7 @@ import {
   FramePanel,
   FrameHeader,
   FrameTitle,
-  FrameDescription,
   FrameContent,
-  FrameFooter,
 } from "@/components/ui/frame";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -20,34 +18,43 @@ import {
 } from "@hugeicons/core-free-icons";
 
 import { Link } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
 
 const actions = [
   {
-    title: "Add Department",
-    description: "Manage org structure",
+    title: "Departments",
+    description: "Structure",
     icon: Building03Icon,
-    accent: "var(--chart-1)",
-    href: "/dashboard/settings",
+    color: "text-blue-500",
+    bg: "bg-blue-500/10",
+    border: "border-blue-500/20",
+    href: "/dashboard/departments",
   },
   {
-    title: "Register Employee",
-    description: "Start new onboarding",
+    title: "Hire",
+    description: "Onboarding",
     icon: UserAdd01Icon,
-    accent: "var(--chart-2)",
-    href: "/dashboard/employees",
+    color: "text-emerald-500",
+    bg: "bg-emerald-500/10",
+    border: "border-emerald-500/20",
+    href: "/dashboard/employees/onboard",
   },
   {
-    title: "Review Applicants",
-    description: "Pending pipeline stages",
+    title: "Applicants",
+    description: "Review",
     icon: FolderSecurityIcon,
-    accent: "var(--chart-3)",
+    color: "text-amber-500",
+    bg: "bg-amber-500/10",
+    border: "border-amber-500/20",
     href: "/dashboard/recruitment",
   },
   {
-    title: "Document Vault",
-    description: "Manage employee files",
+    title: "Vault",
+    description: "Storage",
     icon: Link01Icon,
-    accent: "var(--chart-4)",
+    color: "text-purple-500",
+    bg: "bg-purple-500/10",
+    border: "border-purple-500/20",
     href: "/dashboard/documents",
   },
 ];
@@ -55,59 +62,61 @@ const actions = [
 export const QuickActions = React.memo(function QuickActions() {
   return (
     <Frame className="h-full group/frame">
-      <FramePanel className="flex flex-col h-full overflow-hidden">
-        <FrameHeader>
+      <FramePanel className="flex flex-col h-full bg-card overflow-hidden relative">
+        {/* Subtle decorative background element */}
+        <div className="absolute top-0 right-0 p-1 opacity-[0.03] pointer-events-none rotate-12 translate-x-4 -translate-y-4">
+          <HugeiconsIcon icon={Building03Icon} size={120} />
+        </div>
+
+        <FrameHeader className="border-b-0 pb-2">
           <div>
-            <FrameTitle>Quick Actions</FrameTitle>
-            <FrameDescription>Common administrative tasks</FrameDescription>
+            <FrameTitle className="text-xs uppercase tracking-[0.2em] text-muted-foreground/50">Shortcuts</FrameTitle>
+            <FrameTitle className="text-lg normal-case mt-1">Quick Actions</FrameTitle>
           </div>
         </FrameHeader>
 
-        <FrameContent className="p-0 flex-1">
-          <div className="divide-y divide-border/5">
+        <FrameContent className="p-6 pt-2">
+          <div className="grid grid-cols-2 gap-3">
             {actions.map((action) => (
               <Link
                 key={action.title}
-                to={action.href}
-                className="group/btn flex w-full items-center gap-4 px-6 py-4 hover:bg-muted/10 transition-colors text-left"
+                to={action.href as any}
+                className={cn(
+                  "group/action flex flex-col items-start p-4 rounded-2xl border transition-all duration-300 relative overflow-hidden",
+                  "bg-muted/5 border-border/40 hover:bg-background hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20",
+                )}
               >
                 <div
-                  className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0 transition-[transform,shadow,background-color] duration-300 group-hover/btn:scale-110 group-hover/btn:shadow-[0_0_15px_-3px_rgba(0,0,0,0.1)] group-hover/btn:shadow-inherit"
-                  style={{
-                    background: `color-mix(in srgb, ${action.accent} 12%, transparent)`,
-                  }}
+                  className={cn(
+                    "size-9 rounded-xl flex items-center justify-center mb-4 transition-transform duration-500 group-hover/action:scale-110 border",
+                    action.bg,
+                    action.color,
+                    action.border
+                  )}
                 >
                   <HugeiconsIcon
                     icon={action.icon}
                     strokeWidth={2}
-                    size={16}
-                    style={{ color: action.accent }}
+                    size={18}
                   />
                 </div>
-                <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                  <span className="text-sm font-semibold text-foreground/90 leading-tight group-hover/btn:text-foreground transition-colors">
+                
+                <div className="space-y-0.5 relative z-10">
+                  <span className="text-[13px] font-bold text-foreground/90 block leading-tight">
                     {action.title}
                   </span>
-                  <span className="text-xs text-muted-foreground/60 font-medium">
+                  <span className="text-[10px] text-muted-foreground/60 font-bold uppercase tracking-widest block">
                     {action.description}
                   </span>
                 </div>
-                <HugeiconsIcon
-                  icon={ArrowRight01Icon}
-                  size={14}
-                  strokeWidth={2.5}
-                  className="text-muted-foreground/20 group-hover/btn:text-muted-foreground/60 group-hover/btn:translate-x-0.5 transition-all"
-                />
+
+                <div className="absolute bottom-3 right-3 opacity-0 group-hover/action:opacity-100 group-hover/action:translate-x-0 translate-x-2 transition-all duration-300">
+                  <HugeiconsIcon icon={ArrowRight01Icon} size={12} className={action.color} />
+                </div>
               </Link>
             ))}
           </div>
         </FrameContent>
-
-        <FrameFooter>
-          <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
-            {actions.length} shortcuts available
-          </span>
-        </FrameFooter>
       </FramePanel>
     </Frame>
   );

@@ -24,6 +24,7 @@ import {
   ArrowLeft01Icon,
   ArrowRight01Icon,
   UserMinus01Icon,
+  CallIcon,
 } from "@hugeicons/core-free-icons";
 import {
   Select,
@@ -36,12 +37,24 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { api } from "@/lib/mock-api";
 import { useEmployees } from "@/hooks/use-employees";
-
+import { toast } from "sonner";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 
 export const Route = createFileRoute("/dashboard/employees/")({
@@ -65,35 +78,45 @@ function EmployeesPage() {
     statuses,
   } = useEmployees(initialEmployees);
 
+  const handleTerminate = async (id: string, name: string) => {
+    try {
+      await api.deleteEmployee(id);
+      toast.success(`Contract for ${name} has been formally terminated`);
+      window.location.reload();
+    } catch (err) {
+      toast.error("Failed to process termination");
+    }
+  };
+
   return (
-    <main className="flex flex-1 flex-col gap-0 overflow-hidden">
+    <main className="flex flex-1 flex-col gap-0 overflow-hidden bg-muted/20">
       <DashboardHeader
         category="Organization"
         title="Employees"
-        description="Manage and monitor your global workforce"
+        description="Manage and monitor your global workforce directory"
       >
         <Button
           variant="outline"
-          size="lg"
-          className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
+          size="sm"
+          className="text-xs font-bold border-border/40 shadow-none hover:bg-muted/50 gap-2 uppercase tracking-widest"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
-          Export List
+          Export
         </Button>
 
         <div className="flex items-center gap-2">
           <Button
             variant="secondary"
-            size="lg"
-            className="text-xs font-bold gap-2 capitalize shadow-none hover:bg-secondary/80"
+            size="sm"
+            className="text-xs font-bold gap-2 uppercase tracking-widest shadow-none hover:bg-secondary/80 h-10 rounded-xl"
             onClick={() => navigate({ to: "/dashboard/employees/resign" })}
           >
             <HugeiconsIcon icon={UserMinus01Icon} size={14} strokeWidth={2} />
             Resign
           </Button>
           <Button
-            size="lg"
-            className="text-xs font-bold gap-2 capitalize"
+            size="sm"
+            className="text-xs font-bold gap-2 uppercase tracking-widest h-10 rounded-xl"
             onClick={() => navigate({ to: "/dashboard/employees/onboard" })}
           >
             <HugeiconsIcon
@@ -101,125 +124,123 @@ function EmployeesPage() {
               size={14}
               strokeWidth={2}
             />
-            Onboard Employee
+            Onboard
           </Button>
         </div>
       </DashboardHeader>
 
-      <div className="flex flex-col gap-4 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
+      <div className="flex flex-col gap-6 pb-12 flex-1 overflow-auto no-scrollbar px-4 lg:px-6">
         <section>
           <Frame className="group/frame">
-            <FramePanel className="p-0 overflow-hidden bg-card">
-              <FrameHeader className="border-b-0 pb-2">
+            <FramePanel className="p-0 overflow-hidden bg-card shadow-sm border-border/40">
+              <FrameHeader className="border-b-0 pb-2 px-8 pt-8">
                 <div>
-                  <FrameTitle>Employee Directory</FrameTitle>
-                  <FrameDescription>
-                    Manage and view all employee profiles
+                  <FrameTitle className="text-xl font-bold">Employee Directory</FrameTitle>
+                  <FrameDescription className="text-sm font-medium">
+                    Centralized management of workforce profiles and lifecycles
                   </FrameDescription>
-                </div>
-                <div className="flex items-center gap-3">
-                  <p className="text-xs font-bold text-muted-foreground/30 capitalize tracking-widest mr-2">
-                    {filteredEmployees.length} Records
-                  </p>
                 </div>
               </FrameHeader>
 
-              <div className="px-6 pb-5 pt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 border-b border-border/5">
-                <div className="relative">
+              <div className="px-8 pb-6 pt-4 flex flex-col xl:flex-row items-center justify-between gap-4 border-b border-border/5">
+                <div className="relative flex-1 w-full max-w-xl">
                   <HugeiconsIcon
                     icon={Search01Icon}
-                    className="absolute left-3 top-2.5 size-4 text-muted-foreground/40"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground/40"
                     strokeWidth={2}
                   />
                   <Input
-                    placeholder="Search employees…"
+                    placeholder="Search by name, ID or position…"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-9 h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-xs"
+                    className="pl-9 h-10 rounded-xl border-border/40 bg-muted/5 focus:bg-background transition-all text-sm"
                   />
                 </div>
 
-                <Select
-                  value={filterDept}
-                  onValueChange={(val) => setFilterDept(val || "all")}
-                >
-                  <SelectTrigger className="h-9 rounded-lg border-border/40 bg-muted/5">
-                    <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground/40 text-xs font-bold uppercase tracking-wider">
-                        Dept:
-                      </span>
-                      <SelectValue
-                        placeholder="All Departments"
-                        className="text-xs"
-                      />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {departments.map((dept) => (
-                      <SelectItem key={dept} value={dept} className="text-xs">
-                        {dept === "all" ? "All Departments" : dept}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
+                  <Select
+                    value={filterDept}
+                    onValueChange={(val) => setFilterDept(val || "all")}
+                  >
+                    <SelectTrigger className="h-10 rounded-xl border-border/40 bg-muted/5 w-full sm:w-48">
+                      <div className="flex items-center gap-2">
+                        <span className="text-muted-foreground/40 text-[10px] font-black uppercase tracking-widest">
+                          Dept:
+                        </span>
+                        <SelectValue
+                          placeholder="All Units"
+                          className="text-sm font-semibold"
+                        />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {departments.map((dept) => (
+                        <SelectItem key={dept} value={dept} className="text-sm font-medium">
+                          {dept === "all" ? "All Departments" : dept}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-                <Select
-                  value={filterStatus}
-                  onValueChange={(val) => setFilterStatus(val || "all")}
-                >
-                  <SelectTrigger className="h-9 rounded-lg border-border/40 bg-muted/5">
-                    <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground/40 text-xs font-bold uppercase tracking-wider">
-                        Status:
-                      </span>
-                      <SelectValue
-                        placeholder="All Status"
-                        className="text-xs"
-                      />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {statuses.map((status) => (
-                      <SelectItem
-                        key={status}
-                        value={status}
-                        className="capitalize text-xs"
-                      >
-                        {status === "all" ? "All Status" : status}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  <Select
+                    value={filterStatus}
+                    onValueChange={(val) => setFilterStatus(val || "all")}
+                  >
+                    <SelectTrigger className="h-10 rounded-xl border-border/40 bg-muted/5 w-full sm:w-40">
+                      <div className="flex items-center gap-2">
+                        <span className="text-muted-foreground/40 text-[10px] font-black uppercase tracking-widest">
+                          Status:
+                        </span>
+                        <SelectValue
+                          placeholder="State"
+                          className="text-sm font-semibold"
+                        />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {statuses.map((status) => (
+                        <SelectItem
+                          key={status}
+                          value={status}
+                          className="capitalize text-sm font-medium"
+                        >
+                          {status === "all" ? "All States" : status}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
-              <FrameContent className="p-6">
+              <FrameContent className="p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredEmployees.length > 0 ? (
                     filteredEmployees.map((user) => (
                       <div
                         key={user.id}
-                        className="group relative flex flex-col p-5 rounded-2xl border border-border/40 bg-muted/5 hover:bg-background hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 animate-in fade-in zoom-in-95"
+                        className="group relative flex flex-col p-6 rounded-2xl border border-border/40 bg-muted/5 hover:bg-background hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 animate-in fade-in zoom-in-95"
                       >
-                        <div className="absolute top-4 right-4">
+                        <div className="absolute top-5 right-5">
                           <DropdownMenu>
                             <DropdownMenuTrigger
                               render={
                                 <Button
                                   variant="ghost"
                                   size="icon-sm"
-                                  className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5 shadow-xs"
+                                  className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5"
                                   aria-label="Employee actions"
                                 >
                                   <HugeiconsIcon
                                     icon={MoreHorizontalIcon}
-                                    className="size-4 text-muted-foreground/60"
+                                    size={16}
+                                    className="text-muted-foreground/60"
                                   />
                                 </Button>
                               }
                             />
                             <DropdownMenuContent
                               align="end"
-                              className="w-48 rounded-xl border-border/40 shadow-xl"
+                              className="w-52 rounded-2xl border-border/40 shadow-2xl p-2"
                             >
                               <DropdownMenuItem
                                 render={
@@ -228,38 +249,64 @@ function EmployeesPage() {
                                     params={{ id: user.id }}
                                   />
                                 }
+                                className="rounded-xl py-2.5 font-semibold text-sm"
                               >
                                 <HugeiconsIcon
                                   icon={ViewIcon}
-                                  className="size-4 mr-2"
+                                  className="size-4 mr-3 text-muted-foreground/60"
                                 />
-                                <span>View Profile</span>
+                                <span>Profile Details</span>
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem className="rounded-xl py-2.5 font-semibold text-sm">
                                 <HugeiconsIcon
                                   icon={Mail01Icon}
-                                  className="size-4 mr-2"
+                                  className="size-4 mr-3 text-muted-foreground/60"
                                 />
-                                <span>Send Message</span>
+                                <span>Messaging</span>
                               </DropdownMenuItem>
-                              <DropdownMenuItem className="text-destructive focus:bg-destructive/10">
-                                <HugeiconsIcon
-                                  icon={Delete02Icon}
-                                  className="size-4 mr-2"
-                                />
-                                <span>Terminate</span>
-                              </DropdownMenuItem>
+                              <DropdownMenuSeparator className="bg-border/5 my-1" />
+                              <AlertDialog>
+                                <AlertDialogTrigger render={
+                                  <DropdownMenuItem 
+                                    onSelect={e => e.preventDefault()} 
+                                    className="rounded-xl py-2.5 font-semibold text-sm text-destructive focus:bg-destructive/5"
+                                  >
+                                    <HugeiconsIcon
+                                      icon={Delete02Icon}
+                                      className="size-4 mr-3"
+                                    />
+                                    <span>Terminate</span>
+                                  </DropdownMenuItem>
+                                } />
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Permanent Termination</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      Are you sure you want to terminate {user.name}'s employment? This will immediately halt payroll and revoke all system access.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Abort</AlertDialogCancel>
+                                    <AlertDialogAction 
+                                      onClick={() => handleTerminate(user.id, user.name)} 
+                                      className="bg-destructive hover:bg-destructive/90"
+                                    >
+                                      Finalize Termination
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </div>
 
-                        <div className="flex items-start gap-4 mb-6">
-                          <UserAvatar name={user.name} size="default" />
+                        <div className="flex items-start gap-4 mb-8">
+                          <UserAvatar name={user.name} size="lg" className="h-12 w-12 rounded-xl" />
                           <div className="space-y-1">
-                            <h4 className="text-base font-bold text-foreground/90 group-hover:text-primary transition-colors">
+                            <h4 className="text-[15px] font-bold text-foreground/90 group-hover:text-primary transition-colors leading-none">
                               {user.name}
                             </h4>
-                            <p className="text-xs font-medium text-muted-foreground/60">
+                            <p className="text-xs font-semibold text-muted-foreground/60">
                               {user.position}
                             </p>
                             <Badge
@@ -272,64 +319,56 @@ function EmployeesPage() {
                                       ? "muted"
                                       : "destructive"
                               }
-                              className="capitalize h-5 text-[10px] font-bold"
+                              className="h-5 text-[9px] font-black uppercase tracking-widest mt-1"
                             >
                               {user.status}
                             </Badge>
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-3 mb-6">
-                          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-background/50 border border-border/20">
-                            <div className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-widest w-16">
-                              Staff ID
-                            </div>
-                            <span className="text-xs font-bold text-muted-foreground/80">
-                              {user.idNumber}
+                        <div className="grid grid-cols-1 gap-2.5 mb-8">
+                          <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-muted/5 border border-border/10 group-hover:border-primary/10 transition-colors">
+                            <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.2em]">ID CODE</span>
+                            <span className="text-xs font-bold text-foreground/70 tabular-nums">
+                              {user.idNumber.slice(-8)}
                             </span>
                           </div>
-                          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-background/50 border border-border/20">
-                            <div className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-widest w-16">
-                              Dept
-                            </div>
-                            <span className="text-xs font-bold text-muted-foreground/80">
+                          <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-muted/5 border border-border/10 group-hover:border-primary/10 transition-colors">
+                            <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.2em]">ORG UNIT</span>
+                            <span className="text-xs font-bold text-foreground/70">
                               {user.department}
                             </span>
                           </div>
                         </div>
 
-                        <div className="mt-auto pt-4 border-t border-border/5 space-y-2">
-                          <div className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground/60">
-                            <HugeiconsIcon
-                              icon={Mail01Icon}
-                              size={14}
-                              className="text-primary/40"
-                            />
-                            {user.email}
+                        <div className="mt-auto space-y-2">
+                          <div className="flex items-center gap-3 text-xs font-semibold text-muted-foreground/60 group-hover:text-foreground/80 transition-colors">
+                            <div className="size-6 rounded-lg bg-muted/10 flex items-center justify-center border border-border/5">
+                              <HugeiconsIcon icon={Mail01Icon} size={12} />
+                            </div>
+                            <span className="truncate">{user.email}</span>
                           </div>
-                          <div className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground/60">
-                            <HugeiconsIcon
-                              icon={Download01Icon}
-                              size={14}
-                              className="text-primary/40 rotate-180"
-                            />
-                            {user.phone}
+                          <div className="flex items-center gap-3 text-xs font-semibold text-muted-foreground/60 group-hover:text-foreground/80 transition-colors">
+                            <div className="size-6 rounded-lg bg-muted/10 flex items-center justify-center border border-border/5">
+                              <HugeiconsIcon icon={CallIcon} size={12} />
+                            </div>
+                            <span>{user.phone}</span>
                           </div>
                         </div>
 
                         {user.onboardingProgress < 100 && (
-                          <div className="mt-4 pt-4 border-t border-border/5">
-                            <div className="flex items-center justify-between mb-1.5">
-                              <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
-                                Setup Progress
+                          <div className="mt-6 pt-6 border-t border-border/5">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest">
+                                Provisioning
                               </span>
-                              <span className="text-[10px] font-bold text-primary">
+                              <span className="text-[10px] font-bold text-primary tabular-nums">
                                 {user.onboardingProgress}%
                               </span>
                             </div>
-                            <div className="h-1 w-full bg-muted/20 rounded-full overflow-hidden">
+                            <div className="h-1.5 w-full bg-muted/20 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-primary transition-all duration-500"
+                                className="h-full bg-primary transition-all duration-1000 ease-out shadow-[0_0_8px_rgba(var(--primary),0.4)]"
                                 style={{ width: `${user.onboardingProgress}%` }}
                               />
                             </div>
@@ -338,51 +377,43 @@ function EmployeesPage() {
                       </div>
                     ))
                   ) : (
-                    <div className="col-span-full h-64 flex flex-col items-center justify-center text-center space-y-3">
-                      <div className="size-12 rounded-2xl bg-muted/5 flex items-center justify-center text-muted-foreground/20">
-                        <HugeiconsIcon icon={Search01Icon} size={24} />
+                    <div className="col-span-full h-80 flex flex-col items-center justify-center text-center space-y-4">
+                      <div className="size-16 rounded-3xl bg-muted/5 flex items-center justify-center text-muted-foreground/20 border border-border/5">
+                        <HugeiconsIcon icon={Search01Icon} size={32} />
                       </div>
-                      <p className="text-sm font-medium text-muted-foreground/40">
-                        No employees found matching your filters
-                      </p>
+                      <div className="space-y-1">
+                        <p className="text-base font-bold text-foreground/80">No results matched</p>
+                        <p className="text-sm font-medium text-muted-foreground/40 max-w-xs">
+                          Adjust your filters or search term to find what you're looking for.
+                        </p>
+                      </div>
                     </div>
                   )}
                 </div>
               </FrameContent>
 
-              <FrameFooter className="flex items-center justify-between border-t border-border/5">
-                <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
-                  {filteredEmployees.length} Records Total
+              <FrameFooter className="px-8 py-6 border-t border-border/5 flex items-center justify-between">
+                <span className="text-[10px] text-muted-foreground/40 font-black uppercase tracking-[0.25em]">
+                  Registry Ledger: {filteredEmployees.length} active records
                 </span>
-                <div className="flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors border border-transparent hover:border-border/40"
-                    aria-label="Previous"
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    className="size-8 rounded-lg text-muted-foreground/40 hover:text-primary transition-colors"
                   >
-                    <HugeiconsIcon
-                      icon={ArrowLeft01Icon}
-                      size={12}
-                      strokeWidth={2.5}
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    className="h-7 w-7 flex items-center justify-center rounded-md bg-primary/10 text-primary border border-primary/20 text-xs font-bold"
-                  >
+                    <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2.5} />
+                  </Button>
+                  <div className="h-8 px-3 rounded-lg bg-primary/10 text-primary border border-primary/20 text-xs font-black flex items-center justify-center">
                     1
-                  </button>
-                  <button
-                    type="button"
-                    className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground/40 hover:bg-muted/50 transition-colors border border-transparent hover:border-border/40"
-                    aria-label="Next"
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    className="size-8 rounded-lg text-muted-foreground/40 hover:text-primary transition-colors"
                   >
-                    <HugeiconsIcon
-                      icon={ArrowRight01Icon}
-                      size={12}
-                      strokeWidth={2.5}
-                    />
-                  </button>
+                    <HugeiconsIcon icon={ArrowRight01Icon} size={14} strokeWidth={2.5} />
+                  </Button>
                 </div>
               </FrameFooter>
             </FramePanel>

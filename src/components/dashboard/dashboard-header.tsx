@@ -19,25 +19,25 @@ export function DashboardHeader({
   className,
 }: DashboardHeaderProps) {
   return (
-    <header className={cn("flex items-end justify-between pt-10 pb-8 px-6 lg:px-8", className)}>
-      <div className="flex flex-col gap-1.5">
+    <header className={cn("flex items-end justify-between pt-12 pb-10 px-6 lg:px-8", className)}>
+      <div className="flex flex-col gap-2">
         {category ? (
-          <p className="text-xs font-bold text-muted-foreground/40 capitalize tracking-[0.2em]">
+          <p className="text-[10px] font-black text-muted-foreground/40 capitalize tracking-[0.25em] mb-1">
             {category}
           </p>
         ) : null}
-        <h1 className="text-3xl font-bold tracking-tight text-foreground/90 leading-tight">
+        <h1 className="text-3xl font-black tracking-tighter text-foreground/90 leading-tight uppercase">
           {title}
         </h1>
         {description ? (
-          <p className="text-sm font-medium text-muted-foreground/50">
+          <p className="text-sm font-medium text-muted-foreground/50 max-w-2xl leading-relaxed">
             {description}
           </p>
         ) : null}
       </div>
 
       {children ? (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3 mb-1">
           {children}
         </div>
       ) : null}

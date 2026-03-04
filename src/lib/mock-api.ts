@@ -549,6 +549,15 @@ export const api = {
     }
     return false;
   },
+  deleteEmployee: async (id: string) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const index = mockEmployees.findIndex((e) => e.id === id);
+    if (index !== -1) {
+      mockEmployees.splice(index, 1);
+      return true;
+    }
+    return false;
+  },
   deleteCompany: async (id: string) => {
     await new Promise((resolve) => setTimeout(resolve, 400));
     const index = mockCompanies.findIndex((c) => c.id === id);
@@ -612,11 +621,6 @@ export const api = {
       return mockEmployees[index];
     }
     throw new Error("Employee not found");
-  },
-  deleteEmployee: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    mockEmployees = mockEmployees.filter((e) => e.id !== id);
-    return true;
   },
   getLeaves: async () => {
     await new Promise((resolve) => setTimeout(resolve, 400));

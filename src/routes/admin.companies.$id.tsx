@@ -55,6 +55,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
@@ -84,11 +95,10 @@ function CompanyDetailsPage() {
   const [newAdmin, setNewAdmin] = useState({ name: "", email: "" });
 
   const handleDeleteCompany = async () => {
-    if (!confirm(`Are you sure you want to PERMANENTLY delete ${company.name}? This action cannot be undone.`)) return;
     setIsDeleting(true);
     try {
       await api.deleteCompany(company.id);
-      toast.success("Organization deleted successfully");
+      toast.success(`Organization ${company.name} deleted successfully`);
       navigate({ to: "/admin/companies" });
     } catch (err) {
       toast.error("Failed to delete company");
@@ -107,7 +117,7 @@ function CompanyDetailsPage() {
         companyId: company.id,
         status: "offline",
       });
-      toast.success("Administrator added successfully");
+      toast.success("Administrator account provisioned successfully");
       setShowAddAdmin(false);
       setNewAdmin({ name: "", email: "" });
       window.location.reload();
@@ -116,11 +126,10 @@ function CompanyDetailsPage() {
     }
   };
 
-  const handleRemoveAdmin = async (userId: string, userName: string) => {
-    if (!confirm(`Remove ${userName} from platform administration?`)) return;
+  const handleRemoveAdmin = async (userId: string) => {
     try {
       await api.deleteUser(userId);
-      toast.success("Administrator removed");
+      toast.success("Administrative access revoked successfully");
       window.location.reload();
     } catch (err) {
       toast.error("Failed to remove administrator");
@@ -128,7 +137,7 @@ function CompanyDetailsPage() {
   };
 
   return (
-    <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full">
+    <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full bg-muted/20">
       <DashboardHeader
         category="Tenant Management"
         title={company.name}
@@ -187,6 +196,7 @@ function CompanyDetailsPage() {
                 </FramePanel>
               </Frame>
 
+              {/* Admin List Section */}
               <Frame>
                 <FramePanel className="bg-card">
                   <FrameHeader>
@@ -245,9 +255,27 @@ function CompanyDetailsPage() {
                               <Badge variant={admin.status === "online" ? "success" : "muted"} showDot className="font-bold text-[9px]">{admin.status}</Badge>
                             </TableCell>
                             <TableCell className="text-right pr-6">
-                              <Button variant="ghost" size="icon-sm" className="text-destructive/40 hover:text-destructive hover:bg-destructive/5" onClick={() => handleRemoveAdmin(admin.id, admin.name)}>
-                                <HugeiconsIcon icon={Delete01Icon} size={16} />
-                              </Button>
+                              <AlertDialog>
+                                <AlertDialogTrigger render={
+                                  <Button variant="ghost" size="icon-sm" className="text-destructive/40 hover:text-destructive hover:bg-destructive/5">
+                                    <HugeiconsIcon icon={Delete01Icon} size={16} />
+                                  </Button>
+                                } />
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Revoke Administrative Access?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This will remove {admin.name} from the platform administration. They will no longer be able to manage {company.name}.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => handleRemoveAdmin(admin.id)} className="bg-destructive hover:bg-destructive/90">
+                                      Revoke Access
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -297,21 +325,39 @@ function CompanyDetailsPage() {
                     </Button>
                     <div className="pt-4 mt-2 border-t border-border/5 space-y-3">
                       <Button variant="outline" className={cn(
-                        "w-full justify-start gap-3 text-xs font-bold uppercase tracking-widest border-border/40",
+                        "w-full justify-start gap-3 text-xs font-bold uppercase tracking-widest border-border/40 transition-colors",
                         company.status === "active" ? "text-warning hover:bg-warning/5" : "text-success hover:bg-success/5"
                       )}>
                         <HugeiconsIcon icon={company.status === "active" ? Cancel01Icon : Tick01Icon} size={16} />
                         {company.status === "active" ? "Suspend Tenant" : "Activate Tenant"}
                       </Button>
-                      <Button 
-                        variant="outline" 
-                        disabled={isDeleting}
-                        onClick={handleDeleteCompany}
-                        className="w-full justify-start gap-3 text-xs font-bold uppercase tracking-widest border-destructive/20 text-destructive hover:bg-destructive/5"
-                      >
-                        <HugeiconsIcon icon={Delete01Icon} size={16} />
-                        Delete Organization
-                      </Button>
+                      
+                      <AlertDialog>
+                        <AlertDialogTrigger render={
+                          <Button 
+                            variant="outline" 
+                            disabled={isDeleting}
+                            className="w-full justify-start gap-3 text-xs font-bold uppercase tracking-widest border-destructive/20 text-destructive hover:bg-destructive/5"
+                          >
+                            <HugeiconsIcon icon={Delete01Icon} size={16} />
+                            Delete Organization
+                          </Button>
+                        } />
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Permanent Deletion</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to PERMANENTLY delete {company.name}? All data, employees, and records will be unrecoverable.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleDeleteCompany} className="bg-destructive hover:bg-destructive/90">
+                              Delete Organization
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </FrameContent>
                 </FramePanel>

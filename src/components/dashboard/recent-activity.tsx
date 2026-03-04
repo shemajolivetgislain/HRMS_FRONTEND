@@ -6,9 +6,7 @@ import {
   FramePanel,
   FrameHeader,
   FrameTitle,
-  FrameDescription,
   FrameContent,
-  FrameFooter,
 } from "@/components/ui/frame";
 import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
@@ -46,61 +44,54 @@ const activities = [
     time: "3h ago",
     status: "online" as const,
   },
-  {
-    user: "System",
-    avatar: "",
-    action: "flagged policy compliance for",
-    target: "3 employees",
-    time: "5h ago",
-    status: "offline" as const,
-  },
 ];
 
 export const RecentActivity = React.memo(function RecentActivity() {
   return (
     <Frame className="h-full group/frame">
-      <FramePanel className="flex flex-col h-full overflow-hidden">
-        <FrameHeader>
+      <FramePanel className="flex flex-col h-full bg-card overflow-hidden">
+        <FrameHeader className="border-b-0 pb-2">
           <div>
-            <FrameTitle>Recent Activity</FrameTitle>
-            <FrameDescription>
-              Latest actions within your company
-            </FrameDescription>
+            <FrameTitle className="text-xs uppercase tracking-[0.2em] text-muted-foreground/50">Activity</FrameTitle>
+            <FrameTitle className="text-lg normal-case mt-1">Recent Events</FrameTitle>
           </div>
           <Button
-            variant="outline"
+            variant="ghost"
             size="sm"
-            className="font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
+            className="text-xs font-bold uppercase tracking-widest text-primary hover:bg-primary/5"
           >
-            History
+            All Logs
           </Button>
         </FrameHeader>
 
-        <FrameContent className="p-0 flex-1">
-          <div className="divide-y divide-border/5">
-            {activities.map((activity) => (
+        <FrameContent className="p-6 pt-4 flex-1">
+          <div className="relative space-y-6 before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-px before:bg-border/40">
+            {activities.map((activity, idx) => (
               <div
-                key={`${activity.user}-${activity.action}-${activity.target}`}
-                className="flex items-start gap-4 px-6 py-4 hover:bg-muted/10 transition-colors group"
+                key={`${activity.user}-${idx}`}
+                className="relative flex items-start gap-4 group/item"
               >
-                <UserAvatar
-                  src={activity.avatar}
-                  name={activity.user}
-                  size="sm"
-                  status={activity.status}
-                  className="shrink-0 mt-0.5 rounded-lg shadow-sm"
-                />
-                <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                  <p className="text-sm leading-relaxed text-muted-foreground/70">
-                    <span className="font-semibold text-foreground/90">
+                <div className="relative z-10">
+                  <UserAvatar
+                    src={activity.avatar}
+                    name={activity.user}
+                    size="sm"
+                    status={activity.status}
+                    className="shrink-0 rounded-lg ring-4 ring-background shadow-sm"
+                  />
+                </div>
+                
+                <div className="flex flex-col gap-1 min-w-0 flex-1 pt-0.5">
+                  <p className="text-[13px] leading-tight text-muted-foreground font-medium">
+                    <span className="font-bold text-foreground transition-colors group-hover/item:text-primary">
                       {activity.user}
                     </span>{" "}
                     {activity.action}{" "}
-                    <span className="font-semibold text-foreground/90">
+                    <span className="font-bold text-foreground/90">
                       {activity.target}
                     </span>
                   </p>
-                  <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-[0.1em] mt-1 tabular-nums">
+                  <span className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest tabular-nums">
                     {activity.time}
                   </span>
                 </div>
@@ -108,12 +99,6 @@ export const RecentActivity = React.memo(function RecentActivity() {
             ))}
           </div>
         </FrameContent>
-
-        <FrameFooter>
-          <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
-            Showing {activities.length} of 128 events
-          </span>
-        </FrameFooter>
       </FramePanel>
     </Frame>
   );

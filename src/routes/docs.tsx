@@ -10,7 +10,6 @@ import {
   ArrowRight01Icon,
   CheckmarkCircle01Icon,
   DashboardSquare01Icon,
-  HelpCircleIcon,
   ArrowLeft01Icon,
 } from "@hugeicons/core-free-icons";
 import { Logo } from "@/components/logo";
@@ -36,36 +35,37 @@ function DocsPage() {
       category: "Platform Administration",
       icon: GlobalIcon,
       modules: [
-      {
-      title: "System Admin Workspace",
-      desc: "Global view for platform owners managing multiple tenants (companies).",
-      features: [
-        "Company Database: View and manage all registered companies.",
-        "Managed Provisioning: Administrator-led wizard for creating new companies and lead admins.",
-        "Security Audits: Immutable system-level logs tracking critical actions.",
+        {
+          title: "System Admin Workspace",
+          desc: "Global view for platform owners managing multiple tenants (companies).",
+          features: [
+            "Company Database: View and manage all registered companies.",
+            "Managed Provisioning: Administrator-led wizard for creating new companies and lead admins.",
+            "Security Audits: Immutable system-level logs tracking critical actions.",
+          ],
+          links: [
+            { label: "Admin Console", to: "/admin" },
+            { label: "Tenants List", to: "/admin/companies" },
+            { label: "Provision Tenant", to: "/admin/companies/register" },
+            { label: "Audit Logs", to: "/admin/logs" },
+            { label: "Platform Settings", to: "/admin/settings" },
+          ],
+        },
+        {
+          title: "Authentication & Security",
+          desc: "Comprehensive identity management for all platform users.",
+          features: [
+            "Secure Gateway: Role-based access control (RBAC) for different tiers.",
+            "Restricted Access: Self-registration disabled to enforce managed onboarding.",
+          ],
+          links: [
+            { label: "Login Portal", to: "/auth/login" },
+            { label: "Managed Provisioning Info", to: "/auth/register" },
+            { label: "Forgot Password", to: "/auth/forgot-password" },
+          ],
+        },
       ],
-      links: [
-        { label: "Admin Console", to: "/admin" },
-        { label: "Tenants List", to: "/admin/companies" },
-        { label: "Provision Tenant", to: "/admin/companies/register" },
-        { label: "Audit Logs", to: "/admin/logs" },
-        { label: "Platform Settings", to: "/admin/settings" },
-      ],
-      },
-      {
-      title: "Authentication & Security",
-      desc: "Comprehensive identity management for all platform users.",
-      features: [
-        "Secure Gateway: Role-based access control (RBAC) for different tiers.",
-        "Restricted Access: Self-registration disabled to enforce managed onboarding.",
-      ],
-      links: [
-        { label: "Login Portal", to: "/auth/login" },
-        { label: "Managed Provisioning Info", to: "/auth/register" },
-        { label: "Forgot Password", to: "/auth/forgot-password" },
-      ],
-      },
-      ],    },
+    },
     {
       category: "Organization & Structure",
       icon: Building03Icon,
@@ -78,7 +78,9 @@ function DocsPage() {
             "Metrics at a Glance: View active employee counts directly on cards.",
             "Job Titling: Map specific roles to designated departments.",
           ],
-          links: [{ label: "Department Hub", to: "/dashboard/departments" }],
+          links: [
+            { label: "Department Hub", to: "/dashboard/departments" },
+          ],
         },
       ],
     },
@@ -141,7 +143,9 @@ function DocsPage() {
             "Tax Calculations: Hardcoded RRA brackets (0% - 30%).",
             "Guided Execution: 6-step wizard taking payroll from draft to bank transfer.",
           ],
-          links: [{ label: "Payroll Dashboard", to: "/dashboard/payroll" }],
+          links: [
+            { label: "Payroll Dashboard", to: "/dashboard/payroll" },
+          ],
         },
         {
           title: "Leave & Performance",
@@ -153,38 +157,6 @@ function DocsPage() {
           links: [
             { label: "Leaves Hub", to: "/dashboard/leaves" },
             { label: "Appraisals", to: "/dashboard/performance" },
-          ],
-        },
-        {
-          title: "Intelligence & Assets",
-          desc: "Data-driven insights and centralized record keeping.",
-          features: [
-            "Document Vault: Secure file repository with version control.",
-            "Advanced Analytics: Workforce trajectory and morale reporting.",
-          ],
-          links: [
-            { label: "Analytics", to: "/dashboard/analytics" },
-            { label: "Documents", to: "/dashboard/documents" },
-            { label: "Calendar", to: "/dashboard/calendar" },
-            { label: "Standard Reports", to: "/dashboard/reports" },
-          ],
-        },
-      ],
-    },
-    {
-      category: "Support & Config",
-      icon: HelpCircleIcon,
-      modules: [
-        {
-          title: "System Maintenance",
-          desc: "Configuration and support tools for daily operations.",
-          features: [
-            "Help Desk: Frequently asked questions and system status.",
-            "Preferences: User and company-level settings configuration.",
-          ],
-          links: [
-            { label: "Help Center", to: "/dashboard/help" },
-            { label: "Dashboard Settings", to: "/dashboard/settings" },
           ],
         },
       ],
@@ -214,7 +186,7 @@ function DocsPage() {
             </Button>
             <Button
               size="sm"
-              className="text-xs font-bold gap-2"
+              className="text-xs font-bold gap-2 uppercase tracking-widest h-9 rounded-xl shadow-none"
               onClick={() => navigate({ to: "/dashboard" })}
             >
               Enter System
@@ -224,90 +196,75 @@ function DocsPage() {
         </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-6 py-10">
-        <header className="mb-12 space-y-4">
+      <main className="max-w-6xl mx-auto px-6 py-12">
+        <header className="mb-16 space-y-4">
           <div className="flex items-center gap-2 text-primary">
             <HugeiconsIcon icon={BookOpen01Icon} size={18} />
-            <span className="text-xs font-bold uppercase tracking-widest">
-              Architecture Guide
-            </span>
+            <span className="text-[10px] font-black uppercase tracking-[0.25em]">System Architecture</span>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
-            System Infrastructure & Modules
+          <h1 className="text-4xl font-black tracking-tighter text-foreground uppercase">
+            Infrastructure & Modules
           </h1>
-          <p className="text-muted-foreground text-sm max-w-2xl leading-relaxed">
-            A comprehensive guide to the architecture, workflows, and
-            strict-typed infrastructure powering the HRMS platform.
+          <p className="text-muted-foreground text-sm max-w-2xl leading-relaxed font-medium">
+            A comprehensive guide to the architecture, workflows, and strict-typed infrastructure powering the HRMS platform.
           </p>
         </header>
 
-        <div className="space-y-12">
+        <div className="space-y-16">
           {sections.map((section, idx) => (
-            <div key={idx} className="space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                  <HugeiconsIcon icon={section.icon} size={18} />
+            <div key={idx} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700" style={{ animationDelay: `${idx * 100}ms` }}>
+              <div className="flex items-center gap-4">
+                <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-sm shadow-primary/5">
+                  <HugeiconsIcon icon={section.icon} size={20} />
                 </div>
-                <h2 className="text-lg font-bold tracking-tight text-foreground/90">
+                <h2 className="text-xl font-bold tracking-tight text-foreground/90 uppercase">
                   {section.category}
                 </h2>
+                <div className="h-px flex-1 bg-border/5 ml-4" />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {section.modules.map((m, i) => (
-                  <Frame key={i} className="h-full">
-                    <FramePanel className="bg-card flex flex-col h-full">
-                      <FrameHeader>
+                  <Frame key={i} className="h-full group/module">
+                    <FramePanel className="bg-card flex flex-col h-full border-border/40 hover:border-primary/20 transition-all duration-500">
+                      <FrameHeader className="border-b-0 px-8 pt-8">
                         <div>
-                          <FrameTitle className="text-primary text-base">
-                            {m.title}
-                          </FrameTitle>
-                          <FrameDescription className="text-xs line-clamp-1">
-                            {m.desc}
-                          </FrameDescription>
+                          <FrameTitle className="text-primary text-base font-bold normal-case">{m.title}</FrameTitle>
+                          <FrameDescription className="text-xs font-semibold line-clamp-1 mt-1 opacity-60 uppercase tracking-widest">{m.desc}</FrameDescription>
                         </div>
                       </FrameHeader>
-                      <FrameContent className="flex-1 space-y-6">
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                      <FrameContent className="flex-1 space-y-8 px-8 py-6">
+                        <p className="text-[13px] text-muted-foreground leading-relaxed font-medium">
                           {m.desc}
                         </p>
-
-                        <div className="space-y-3">
-                          <h4 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
-                            Key Capabilities
+                        
+                        <div className="space-y-4">
+                          <h4 className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-[0.2em]">
+                            Core Capabilities
                           </h4>
-                          <ul className="space-y-2.5">
+                          <ul className="space-y-3">
                             {m.features.map((f, k) => (
-                              <li
-                                key={k}
-                                className="text-xs font-medium text-foreground/80 flex items-start gap-2.5 leading-relaxed"
-                              >
-                                <HugeiconsIcon
-                                  icon={CheckmarkCircle01Icon}
-                                  size={14}
-                                  className="text-success mt-0.5 shrink-0"
-                                />
+                              <li key={k} className="text-xs font-semibold text-foreground/70 flex items-start gap-3 leading-relaxed">
+                                <div className="size-4 rounded-full bg-success/10 flex items-center justify-center mt-0.5 shrink-0">
+                                  <HugeiconsIcon icon={CheckmarkCircle01Icon} size={10} className="text-success" />
+                                </div>
                                 {f}
                               </li>
                             ))}
                           </ul>
                         </div>
                       </FrameContent>
-                      <FrameFooter className="flex flex-wrap gap-2 p-4 bg-muted/5">
+                      <FrameFooter className="flex flex-wrap gap-2 p-6 bg-muted/5 border-t border-border/5">
                         {m.links.map((l, j) => (
                           <Button
                             key={j}
                             variant="outline"
                             size="sm"
-                            className="h-7 px-3 text-[10px] font-bold uppercase tracking-wider gap-1.5"
+                            className="h-8 px-3 text-[10px] font-black uppercase tracking-widest gap-2 rounded-lg border-border/40 hover:bg-muted/50 transition-all"
                             onClick={() => navigate({ to: l.to as any })}
                           >
                             {l.label}
-                            <HugeiconsIcon
-                              icon={ArrowRight01Icon}
-                              size={10}
-                              className="opacity-40"
-                            />
+                            <HugeiconsIcon icon={ArrowRight01Icon} size={10} className="opacity-40" />
                           </Button>
                         ))}
                       </FrameFooter>
@@ -319,6 +276,18 @@ function DocsPage() {
           ))}
         </div>
       </main>
+
+      <footer className="py-20 border-t border-border/5 bg-background/50">
+        <div className="max-w-6xl mx-auto px-6 text-center space-y-8">
+          <div className="flex items-center justify-center gap-3 opacity-30 hover:opacity-100 transition-opacity">
+            <Logo className="size-6 grayscale" />
+            <span className="text-[10px] font-black uppercase tracking-[0.5em]">HRMS Infrastructure</span>
+          </div>
+          <p className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-[0.25em]">
+            &copy; 2024 • Engineered for Operational Excellence • All Rights Reserved
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
