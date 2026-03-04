@@ -3,6 +3,7 @@ import type {
   PayrollRecord,
   JobOpening,
   Company,
+  User,
   LeaveRequest,
   LeaveBalance,
   PerformanceReview,
@@ -483,7 +484,53 @@ export const mockPipeline: ApplicantPipelineStage[] = [
   { stage: "Recruited", count: 1 },
 ];
 
+export const mockUsers: User[] = [
+  {
+    id: "USER-001",
+    name: "Saddy Nkurunziza",
+    email: "saddy@precision.rw",
+    role: "SYSTEM_ADMIN",
+    status: "online",
+  },
+  {
+    id: "USER-002",
+    name: "Jean Paul Nkurunziza",
+    email: "jp.nkurunziza@igihe.rw",
+    role: "COMPANY_ADMIN",
+    companyId: "COMP-001",
+    status: "away",
+  },
+  {
+    id: "USER-003",
+    name: "Divine Uwase",
+    email: "d.uwase@vision.rw",
+    role: "COMPANY_ADMIN",
+    companyId: "COMP-002",
+    status: "online",
+  },
+  {
+    id: "USER-004",
+    name: "Patrick Habimana",
+    email: "p.habimana@kivuheights.com",
+    role: "COMPANY_ADMIN",
+    companyId: "COMP-003",
+    status: "offline",
+  },
+  {
+    id: "USER-005",
+    name: "Alice Umutoni",
+    email: "a.umutoni@igihe.rw",
+    role: "EMPLOYEE",
+    companyId: "COMP-001",
+    status: "online",
+  },
+];
+
 export const api = {
+  getUsers: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    return mockUsers;
+  },
   getDocuments: async () => {
     await new Promise((resolve) => setTimeout(resolve, 500));
     return mockDocuments;
