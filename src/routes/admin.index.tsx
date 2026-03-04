@@ -11,7 +11,7 @@ import {
   ArrowUpRight01Icon,
   PlusSignCircleIcon,
   MoreHorizontalIcon,
-  ShieldSecurityIcon,
+  Shield02Icon,
   File02Icon,
 } from "@hugeicons/core-free-icons";
 import { StatCard } from "@/components/dashboard/stat-card";
@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
+import { cn } from "#/lib/utils";
 
 export const Route = createFileRoute("/admin/")({
   loader: async () => {
@@ -121,7 +122,11 @@ function AdminDashboard() {
                         Recent active administrators and system users
                       </FrameDescription>
                     </div>
-                    <Button variant="ghost" size="sm" className="text-xs font-bold">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-xs font-bold"
+                    >
                       View All
                     </Button>
                   </FrameHeader>
@@ -214,31 +219,43 @@ function AdminDashboard() {
                 <FramePanel className="bg-card">
                   <FrameHeader>
                     <div className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                        <HugeiconsIcon icon={ShieldSecurityIcon} size={18} />
-                      </div>
                       <div>
                         <FrameTitle>Security Audit Logs</FrameTitle>
-                        <FrameDescription>Immutable system-level event tracking</FrameDescription>
+                        <FrameDescription>
+                          Immutable system-level event tracking
+                        </FrameDescription>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" className="text-[10px] font-bold uppercase tracking-widest h-7 px-3">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-[10px] font-bold uppercase tracking-widest h-7 px-3"
+                    >
                       Audit Trail
                     </Button>
                   </FrameHeader>
                   <FrameContent className="p-0">
                     <div className="divide-y divide-border/5">
                       {logs.slice(0, 4).map((log) => (
-                        <div key={log.id} className="flex items-center justify-between p-5 hover:bg-muted/5 transition-colors group">
+                        <div
+                          key={log.id}
+                          className="flex items-center justify-between p-5 hover:bg-muted/5 transition-colors group"
+                        >
                           <div className="flex items-start gap-4">
-                            <div className={cn(
-                              "h-10 w-10 rounded-xl flex items-center justify-center border transition-all duration-300",
-                              log.level === "security" ? "bg-destructive/10 text-destructive border-destructive/20" : "bg-info/10 text-info border-info/20"
-                            )}>
+                            <div
+                              className={cn(
+                                "h-10 w-10 rounded-xl flex items-center justify-center border transition-all duration-300",
+                                log.level === "security"
+                                  ? "bg-destructive/10 text-destructive border-destructive/20"
+                                  : "bg-info/10 text-info border-info/20",
+                              )}
+                            >
                               <HugeiconsIcon icon={File02Icon} size={20} />
                             </div>
                             <div className="space-y-1">
-                              <p className="text-sm font-bold text-foreground/90 leading-tight">{log.event}</p>
+                              <p className="text-sm font-bold text-foreground/90 leading-tight">
+                                {log.event}
+                              </p>
                               <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
                                 <span>{log.actor}</span>
                                 <span>•</span>
@@ -246,7 +263,12 @@ function AdminDashboard() {
                               </div>
                             </div>
                           </div>
-                          <Badge variant="muted" className="bg-muted/10 border-none tabular-nums text-[9px]">{log.ipAddress}</Badge>
+                          <Badge
+                            variant="muted"
+                            className="bg-muted/10 border-none tabular-nums text-[9px]"
+                          >
+                            {log.ipAddress}
+                          </Badge>
                         </div>
                       ))}
                     </div>
