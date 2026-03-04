@@ -529,7 +529,34 @@ export const mockUsers: User[] = [
 export const api = {
   getUsers: async () => {
     await new Promise((resolve) => setTimeout(resolve, 400));
-    return mockUsers;
+    return [...mockUsers];
+  },
+  addUser: async (user: Omit<User, "id">) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const newUser: User = {
+      ...user,
+      id: `USER-${Math.floor(Math.random() * 1000)}`,
+    };
+    mockUsers.push(newUser);
+    return newUser;
+  },
+  deleteUser: async (id: string) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const index = mockUsers.findIndex((u) => u.id === id);
+    if (index !== -1) {
+      mockUsers.splice(index, 1);
+      return true;
+    }
+    return false;
+  },
+  deleteCompany: async (id: string) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const index = mockCompanies.findIndex((c) => c.id === id);
+    if (index !== -1) {
+      mockCompanies.splice(index, 1);
+      return true;
+    }
+    return false;
   },
   getDocuments: async () => {
     await new Promise((resolve) => setTimeout(resolve, 500));

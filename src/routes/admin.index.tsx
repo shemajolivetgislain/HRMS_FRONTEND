@@ -11,7 +11,7 @@ import {
   ArrowUpRight01Icon,
   PlusSignCircleIcon,
   MoreHorizontalIcon,
-  Shield02Icon,
+  AiSecurityIcon,
   File02Icon,
 } from "@hugeicons/core-free-icons";
 import { StatCard } from "@/components/dashboard/stat-card";
@@ -214,11 +214,13 @@ function AdminDashboard() {
                 </FramePanel>
               </Frame>
 
-              {/* audit logs card (4th overview card) */}
               <Frame>
                 <FramePanel className="bg-card">
                   <FrameHeader>
                     <div className="flex items-center gap-3">
+                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                        <HugeiconsIcon icon={AiSecurityIcon} size={18} />
+                      </div>
                       <div>
                         <FrameTitle>Security Audit Logs</FrameTitle>
                         <FrameDescription>
