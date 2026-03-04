@@ -42,9 +42,8 @@ export const RecruitmentPipeline = React.memo(function RecruitmentPipeline() {
           <Button
             variant="outline"
             size="sm"
-            className="font-bold capitalize tracking-wider shadow-none hover:bg-muted/50 gap-2"
           >
-            <HugeiconsIcon icon={UserAdd01Icon} size={14} />
+            <HugeiconsIcon icon={UserAdd01Icon} />
             View All
           </Button>
         </FrameHeader>

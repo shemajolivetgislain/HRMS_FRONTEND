@@ -52,7 +52,6 @@ export const DocumentCompliance = React.memo(function DocumentCompliance() {
           <Button
             variant="outline"
             size="sm"
-            className="font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
           >
             Open Vault
           </Button>

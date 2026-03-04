@@ -96,21 +96,15 @@ function CompaniesManagementPage() {
         title="Organization Registry"
         description="Manage secure organizational tenants and managed platform access"
       >
-        <Button
-          variant="outline"
-          size="sm"
-          className="text-xs font-bold border-border/40 shadow-none hover:bg-muted/50 gap-2 uppercase tracking-widest"
-        >
-          <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
+        <Button variant="outline">
+          <HugeiconsIcon icon={Download01Icon} />
           Export
         </Button>
 
         <Button
-          size="sm"
-          className="text-xs font-bold gap-2 uppercase tracking-widest"
           onClick={() => navigate({ to: "/admin/companies/register" })}
         >
-          <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
+          <HugeiconsIcon icon={PlusSignCircleIcon} />
           Provision New
         </Button>
       </DashboardHeader>
@@ -177,12 +171,8 @@ function CompaniesManagementPage() {
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="gap-2 font-bold text-[10px] uppercase tracking-widest h-9 rounded-xl border-border/40"
-                  >
-                    <HugeiconsIcon icon={Sorting05Icon} size={14} />
+                  <Button variant="outline" size="sm">
+                    <HugeiconsIcon icon={Sorting05Icon} />
                     Filter by Sector
                   </Button>
                 </div>
@@ -275,7 +265,6 @@ function CompaniesManagementPage() {
                                   params={{ id: company.id }}
                                 />
                               }
-                              className="h-9 px-3 text-[10px] font-bold uppercase tracking-widest gap-2 rounded-lg"
                             >
                               Details
                             </Button>
@@ -285,12 +274,9 @@ function CompaniesManagementPage() {
                                   <Button
                                     variant="ghost"
                                     size="icon-sm"
-                                    className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5"
                                   >
                                     <HugeiconsIcon
                                       icon={MoreHorizontalIcon}
-                                      size={16}
-                                      className="text-muted-foreground/60"
                                     />
                                   </Button>
                                 }

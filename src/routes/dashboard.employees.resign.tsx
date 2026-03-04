@@ -123,7 +123,6 @@ function ResignEmployeePage() {
                 </p>
                 <Button
                   onClick={() => navigate({ to: "/dashboard/employees" })}
-                  className="w-full h-11 font-bold rounded-xl"
                 >
                   Return to Directory
                 </Button>
@@ -144,11 +143,9 @@ function ResignEmployeePage() {
       >
         <Button
           variant="outline"
-          size="sm"
           onClick={() => navigate({ to: "/dashboard/employees" })}
-          className="text-xs font-bold gap-2 rounded-lg"
         >
-          <HugeiconsIcon icon={ArrowLeft01Icon} size={14} />
+          <HugeiconsIcon icon={ArrowLeft01Icon} />
           Cancel
         </Button>
       </DashboardHeader>
@@ -277,10 +274,9 @@ function ResignEmployeePage() {
                       <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="font-bold gap-2 px-8 h-10 rounded-xl"
                       >
                         {isSubmitting ? "Processing..." : "Submit Resignation"}
-                        <HugeiconsIcon icon={CheckmarkCircle01Icon} size={18} />
+                        <HugeiconsIcon icon={CheckmarkCircle01Icon} />
                       </Button>
                     </FrameFooter>
                   </FramePanel>

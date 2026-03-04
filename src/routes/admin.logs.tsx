@@ -56,8 +56,8 @@ function SystemLogsPage() {
         title="System Audit Logs"
         description="Real-time trail of administrative actions and automated system events"
       >
-        <Button variant="outline" size="lg" className="font-bold gap-2">
-          <HugeiconsIcon icon={Download01Icon} size={14} />
+        <Button variant="outline">
+          <HugeiconsIcon icon={Download01Icon} />
           Export CSV
         </Button>
       </DashboardHeader>
@@ -87,8 +87,8 @@ function SystemLogsPage() {
                     className="pl-9 h-9 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all text-xs"
                   />
                 </div>
-                <Button variant="outline" size="sm" className="gap-2 font-bold text-xs">
-                  <HugeiconsIcon icon={FilterIcon} size={14} />
+                <Button variant="outline" size="sm">
+                  <HugeiconsIcon icon={FilterIcon} />
                   Levels
                 </Button>
               </div>

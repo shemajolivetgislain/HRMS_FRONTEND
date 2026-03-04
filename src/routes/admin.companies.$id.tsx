@@ -145,24 +145,20 @@ function CompanyDetailsPage() {
       >
         <Button
           variant="outline"
-          size="sm"
-          className="text-xs font-bold border-border/40 shadow-none hover:bg-muted/50 gap-2 uppercase tracking-widest"
           render={<Link to="/admin/companies" />}
         >
-          <HugeiconsIcon icon={ArrowLeft01Icon} size={14} strokeWidth={2} />
+          <HugeiconsIcon icon={ArrowLeft01Icon} />
           Registry
         </Button>
         <Button
           variant="outline"
-          size="sm"
-          className="text-xs font-bold border-border/40 shadow-none hover:bg-muted/50 gap-2 uppercase tracking-widest"
           render={<Link to="/dashboard" />}
         >
-          <HugeiconsIcon icon={DashboardSquare01Icon} size={14} strokeWidth={2} />
+          <HugeiconsIcon icon={DashboardSquare01Icon} />
           Dashboard
         </Button>
-        <Button size="sm" className="text-xs font-bold gap-2 uppercase tracking-widest">
-          <HugeiconsIcon icon={PencilEdit02Icon} size={14} strokeWidth={2} />
+        <Button>
+          <HugeiconsIcon icon={PencilEdit02Icon} />
           Edit
         </Button>
       </DashboardHeader>

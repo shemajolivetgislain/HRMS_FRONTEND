@@ -53,15 +53,13 @@ function EmployeeProfilePage() {
         <div className="flex items-center gap-3">
           <Button
             variant="outline"
-            size="sm"
             onClick={() => navigate({ to: "/dashboard/employees" })}
-            className="text-xs font-bold gap-2"
           >
-            <HugeiconsIcon icon={ArrowLeft01Icon} size={14} />
+            <HugeiconsIcon icon={ArrowLeft01Icon} />
             Back
           </Button>
-          <Button size="sm" className="text-xs font-bold gap-2">
-            <HugeiconsIcon icon={UserEdit01Icon} size={14} />
+          <Button>
+            <HugeiconsIcon icon={UserEdit01Icon} />
             Edit Profile
           </Button>
         </div>
@@ -172,7 +170,7 @@ function EmployeeProfilePage() {
                                   <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">pdf • uploaded feb 2024</p>
                                 </div>
                               </div>
-                              <Button variant="ghost" size="sm" className="font-bold text-xs">Download</Button>
+                              <Button variant="ghost" size="sm">Download</Button>
                             </div>
                           ))}
                         </div>
@@ -192,8 +190,8 @@ function EmployeeProfilePage() {
                         <p className="text-sm text-muted-foreground font-medium max-w-sm">Manage system permissions, account access, and advanced lifecycle states for this employee.</p>
                       </div>
                       <div className="flex flex-wrap items-center justify-center gap-3">
-                        <Button variant="outline" className="font-bold text-xs uppercase tracking-widest">reset password</Button>
-                        <Button variant="outline" className="font-bold text-xs uppercase tracking-widest text-destructive hover:bg-destructive/5 border-destructive/20">deactivate account</Button>
+                        <Button variant="outline">reset password</Button>
+                        <Button variant="outline" className="text-destructive hover:bg-destructive/5 border-destructive/20">deactivate account</Button>
                       </div>
                     </FramePanel>
                   </Frame>

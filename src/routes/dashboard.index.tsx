@@ -32,20 +32,12 @@ function DashboardPage() {
         title="Admin Dashboard"
         description="Monitor workforce operations, recruitment velocity, and organizational compliance"
       >
-        <Button
-          variant="outline"
-          size="sm"
-          className="text-xs font-bold border-border/40 shadow-none hover:bg-muted/50 gap-2 uppercase tracking-widest h-10 rounded-xl"
-        >
-          <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} strokeWidth={2} />
+        <Button variant="outline">
+          <HugeiconsIcon icon={ArrowUpRight01Icon} />
           Export
         </Button>
-        <Button 
-          size="sm" 
-          render={<Link to="/dashboard/employees/onboard" />}
-          className="text-xs font-bold gap-2 uppercase tracking-widest h-10 rounded-xl"
-        >
-          <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
+        <Button render={<Link to="/dashboard/employees/onboard" />}>
+          <HugeiconsIcon icon={PlusSignCircleIcon} />
           Induct
         </Button>
       </DashboardHeader>

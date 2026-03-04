@@ -60,20 +60,12 @@ function AdminDashboard() {
         title="System Overview"
         description="Monitor global platform performance and tenant activity"
       >
-        <Button
-          variant="outline"
-          size="sm"
-          className="text-xs font-bold border-border/40 shadow-none hover:bg-muted/50 gap-2 uppercase tracking-widest"
-        >
-          <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} strokeWidth={2} />
+        <Button variant="outline">
+          <HugeiconsIcon icon={ArrowUpRight01Icon} />
           Reports
         </Button>
-        <Button
-          size="sm"
-          render={<Link to="/admin/companies/register" />}
-          className="text-xs font-bold gap-2 uppercase tracking-widest"
-        >
-          <HugeiconsIcon icon={PlusSignCircleIcon} size={14} strokeWidth={2} />
+        <Button render={<Link to="/admin/companies/register" />}>
+          <HugeiconsIcon icon={PlusSignCircleIcon} />
           New Company
         </Button>
       </DashboardHeader>
@@ -125,7 +117,6 @@ function AdminDashboard() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-xs font-bold"
                     >
                       View All
                     </Button>
@@ -231,7 +222,6 @@ function AdminDashboard() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="text-[10px] font-bold uppercase tracking-widest h-7 px-3"
                     >
                       Audit Trail
                     </Button>

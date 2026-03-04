@@ -162,24 +162,16 @@ function RecruitmentPage() {
         title="Recruitment"
         description="source and manage hiring pipelines"
       >
-        <Button
-          variant="outline"
-          size="sm"
-          className="text-xs font-bold border-border/40 hover:bg-muted/50 gap-2 uppercase tracking-widest"
-        >
-          <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
+        <Button variant="outline">
+          <HugeiconsIcon icon={Download01Icon} />
           Report
         </Button>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger
             render={
-              <Button size="sm" className="text-xs font-bold gap-2 uppercase tracking-widest">
-                <HugeiconsIcon
-                  icon={PlusSignCircleIcon}
-                  size={14}
-                  strokeWidth={2}
-                />
+              <Button>
+                <HugeiconsIcon icon={PlusSignCircleIcon} />
                 Create
               </Button>
             }
@@ -306,12 +298,8 @@ function RecruitmentPage() {
                       className="pl-9 h-10 rounded-xl border-border/40 bg-muted/5 focus:bg-background transition-all text-sm"
                     />
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-10 px-4 rounded-xl border-border/40 gap-2 text-[10px] font-black uppercase tracking-widest"
-                  >
-                    <HugeiconsIcon icon={FilterIcon} size={14} />
+                  <Button variant="outline" size="sm">
+                    <HugeiconsIcon icon={FilterIcon} />
                     Refine
                   </Button>
                 </div>
@@ -400,7 +388,6 @@ function RecruitmentPage() {
                                     params={{ id: job.id }}
                                   />
                                 }
-                                className="h-9 px-3 text-[10px] font-bold uppercase tracking-widest rounded-lg"
                               >
                                 Details
                               </Button>
@@ -410,17 +397,13 @@ function RecruitmentPage() {
                                     <Button
                                       variant="ghost"
                                       size="icon-sm"
-                                      className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5"
                                     >
                                       <HugeiconsIcon
                                         icon={MoreHorizontalIcon}
-                                        size={16}
-                                        className="text-muted-foreground/60"
                                       />
                                     </Button>
                                   }
-                                />
-                                <DropdownMenuContent
+                                />                                <DropdownMenuContent
                                   align="end"
                                   className="w-52 rounded-2xl border-border/40 shadow-2xl p-2"
                                 >
@@ -526,7 +509,7 @@ function RecruitmentPage() {
               <FrameFooter className="border-t border-border/5 px-8 py-6">
                 <Button
                   variant="outline"
-                  className="w-full h-10 text-[10px] font-black uppercase tracking-widest rounded-xl border-border/40 text-muted-foreground/70 hover:text-foreground transition-all"
+                  className="w-full"
                 >
                   View Global Talent Pool
                 </Button>
@@ -551,10 +534,10 @@ function RecruitmentPage() {
               </div>
               <Button
                 variant="outline"
-                className="w-full h-10 rounded-xl font-bold text-xs uppercase tracking-widest border-primary/20 text-primary hover:bg-primary/5 relative z-10"
+                className="w-full"
               >
                 Provision Access
-                <HugeiconsIcon icon={ArrowRight01Icon} size={14} className="ml-2" />
+                <HugeiconsIcon icon={ArrowRight01Icon} />
               </Button>
             </FramePanel>
           </Frame>

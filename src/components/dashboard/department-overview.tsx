@@ -46,7 +46,6 @@ export const DepartmentOverview = React.memo(function DepartmentOverview() {
           <Button
             variant="outline"
             size="sm"
-            className="font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
           >
             Manage
           </Button>

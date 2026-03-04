@@ -42,7 +42,6 @@ export const PolicyComplianceCard = React.memo(function PolicyComplianceCard() {
           <Button
             variant="outline"
             size="sm"
-            className="font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
           >
             Review Flagged
           </Button>
@@ -120,8 +119,8 @@ export const PolicyComplianceCard = React.memo(function PolicyComplianceCard() {
                   </div>
                   <Button
                     variant="outline"
-                    size="sm"
-                    className="h-7 text-xs px-3 shadow-none opacity-0 group-hover:opacity-100 transition-opacity"
+                    size="xs"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     Request
                   </Button>

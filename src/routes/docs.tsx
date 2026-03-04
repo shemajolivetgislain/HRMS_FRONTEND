@@ -179,18 +179,16 @@ function DocsPage() {
               variant="ghost"
               size="sm"
               onClick={() => window.history.back()}
-              className="text-xs font-semibold gap-2"
             >
-              <HugeiconsIcon icon={ArrowLeft01Icon} size={14} />
+              <HugeiconsIcon icon={ArrowLeft01Icon} />
               Back
             </Button>
             <Button
               size="sm"
-              className="text-xs font-bold gap-2 uppercase tracking-widest h-9 rounded-xl shadow-none"
               onClick={() => navigate({ to: "/dashboard" })}
             >
               Enter System
-              <HugeiconsIcon icon={ArrowRight01Icon} size={14} />
+              <HugeiconsIcon icon={ArrowRight01Icon} />
             </Button>
           </div>
         </div>
@@ -259,12 +257,11 @@ function DocsPage() {
                           <Button
                             key={j}
                             variant="outline"
-                            size="sm"
-                            className="h-8 px-3 text-[10px] font-black uppercase tracking-widest gap-2 rounded-lg border-border/40 hover:bg-muted/50 transition-all"
+                            size="xs"
                             onClick={() => navigate({ to: l.to as any })}
                           >
                             {l.label}
-                            <HugeiconsIcon icon={ArrowRight01Icon} size={10} className="opacity-40" />
+                            <HugeiconsIcon icon={ArrowRight01Icon} />
                           </Button>
                         ))}
                       </FrameFooter>

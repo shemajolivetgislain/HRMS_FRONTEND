@@ -436,7 +436,6 @@ function ApplyForJobPage() {
                   <Button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto min-w-[160px]"
                   >
                     {isSubmitting ? "Submitting..." : "Submit Application"}
                   </Button>

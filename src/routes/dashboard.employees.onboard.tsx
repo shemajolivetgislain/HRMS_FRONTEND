@@ -150,7 +150,6 @@ function OnboardEmployeePage() {
                 </p>
                 <Button
                   onClick={() => navigate({ to: "/dashboard/employees" })}
-                  className="w-full h-11 font-bold rounded-xl"
                 >
                   View Directory
                 </Button>
@@ -171,11 +170,9 @@ function OnboardEmployeePage() {
       >
         <Button
           variant="outline"
-          size="sm"
           onClick={() => navigate({ to: "/dashboard/employees" })}
-          className="text-xs font-bold gap-2 rounded-lg"
         >
-          <HugeiconsIcon icon={ArrowLeft01Icon} size={14} />
+          <HugeiconsIcon icon={ArrowLeft01Icon} />
           Abort
         </Button>
       </DashboardHeader>
@@ -436,14 +433,12 @@ function OnboardEmployeePage() {
                   variant="ghost"
                   disabled={step === 1}
                   onClick={() => setStep((s) => Math.max(1, s - 1))}
-                  className="font-bold text-xs uppercase tracking-widest"
                 >
                   Previous
                 </Button>
                 {step < 3 ? (
                   <Button
                     onClick={() => setStep((s) => Math.min(3, s + 1))}
-                    className="font-bold gap-2 px-6 h-10 rounded-xl"
                     disabled={
                       (step === 1 &&
                         (!formData.firstName ||
@@ -453,16 +448,15 @@ function OnboardEmployeePage() {
                     }
                   >
                     Next Stage
-                    <HugeiconsIcon icon={ArrowRight01Icon} size={16} />
+                    <HugeiconsIcon icon={ArrowRight01Icon} />
                   </Button>
                 ) : (
                   <Button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="font-bold gap-2 px-8 h-10 rounded-xl"
                   >
                     {isSubmitting ? "Inducting..." : "Finalize Onboarding"}
-                    <HugeiconsIcon icon={CheckmarkCircle01Icon} size={16} />
+                    <HugeiconsIcon icon={CheckmarkCircle01Icon} />
                   </Button>
                 )}
               </FrameFooter>

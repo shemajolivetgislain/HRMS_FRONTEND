@@ -95,34 +95,24 @@ function EmployeesPage() {
         title="Employees"
         description="Manage and monitor your global workforce directory"
       >
-        <Button
-          variant="outline"
-          size="sm"
-          className="text-xs font-bold border-border/40 shadow-none hover:bg-muted/50 gap-2 uppercase tracking-widest"
-        >
-          <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
+        <Button variant="outline">
+          <HugeiconsIcon icon={Download01Icon} />
           Export
         </Button>
 
         <div className="flex items-center gap-2">
           <Button
             variant="secondary"
-            size="sm"
-            className="text-xs font-bold gap-2 uppercase tracking-widest shadow-none hover:bg-secondary/80 h-10 rounded-xl"
             onClick={() => navigate({ to: "/dashboard/employees/resign" })}
           >
-            <HugeiconsIcon icon={UserMinus01Icon} size={14} strokeWidth={2} />
+            <HugeiconsIcon icon={UserMinus01Icon} />
             Resign
           </Button>
           <Button
-            size="sm"
-            className="text-xs font-bold gap-2 uppercase tracking-widest h-10 rounded-xl"
             onClick={() => navigate({ to: "/dashboard/employees/onboard" })}
           >
             <HugeiconsIcon
               icon={PlusSignCircleIcon}
-              size={14}
-              strokeWidth={2}
             />
             Onboard
           </Button>
@@ -227,13 +217,10 @@ function EmployeesPage() {
                                 <Button
                                   variant="ghost"
                                   size="icon-sm"
-                                  className="rounded-lg bg-muted/20 hover:bg-muted hover:text-foreground transition-all border border-border/5"
                                   aria-label="Employee actions"
                                 >
                                   <HugeiconsIcon
                                     icon={MoreHorizontalIcon}
-                                    size={16}
-                                    className="text-muted-foreground/60"
                                   />
                                 </Button>
                               }
