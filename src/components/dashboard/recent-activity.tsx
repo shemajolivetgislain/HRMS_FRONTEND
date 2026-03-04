@@ -6,6 +6,7 @@ import {
   FramePanel,
   FrameHeader,
   FrameTitle,
+  FrameDescription,
   FrameContent,
 } from "@/components/ui/frame";
 import { Button } from "@/components/ui/button";
@@ -50,21 +51,17 @@ export const RecentActivity = React.memo(function RecentActivity() {
   return (
     <Frame className="h-full group/frame">
       <FramePanel className="flex flex-col h-full bg-card overflow-hidden">
-        <FrameHeader className="border-b-0 pb-2">
+        <FrameHeader>
           <div>
-            <FrameTitle className="text-xs uppercase tracking-[0.2em] text-muted-foreground/50">Activity</FrameTitle>
-            <FrameTitle className="text-lg normal-case mt-1">Recent Events</FrameTitle>
+            <FrameTitle>Recent Events</FrameTitle>
+            <FrameDescription>Activity log across platform</FrameDescription>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-xs font-bold uppercase tracking-widest text-primary hover:bg-primary/5"
-          >
+          <Button variant="ghost" size="sm">
             All Logs
           </Button>
         </FrameHeader>
 
-        <FrameContent className="p-6 pt-4 flex-1">
+        <FrameContent className="p-6 flex-1">
           <div className="relative space-y-6 before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-px before:bg-border/40">
             {activities.map((activity, idx) => (
               <div

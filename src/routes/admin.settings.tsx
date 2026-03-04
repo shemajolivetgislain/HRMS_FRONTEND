@@ -20,8 +20,9 @@ import {
   DatabaseIcon,
   AlertCircleIcon,
   Clock01Icon,
-  } from "@hugeicons/core-free-icons";  import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-  import { useTheme } from "next-themes";
+} from "@hugeicons/core-free-icons";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { ErrorComponent } from "@/components/error-component";
@@ -48,16 +49,11 @@ function AdminSettingsPage() {
         title="Global Settings"
         description="Configure platform-wide parameters and tenant defaults"
       >
-        <Button
-          size="lg"
-          className="text-xs font-bold capitalize gap-2"
-          onClick={handleSave}
-          disabled={isSaving}
-        >
+        <Button onClick={handleSave} disabled={isSaving}>
           {isSaving ? (
             <div className="size-3.5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
           ) : (
-            <HugeiconsIcon icon={Tick01Icon} size={14} strokeWidth={2} />
+            <HugeiconsIcon icon={Tick01Icon} />
           )}
           {isSaving ? "Saving…" : "Save Changes"}
         </Button>
@@ -211,7 +207,7 @@ function AdminSettingsPage() {
                       size="xs"
                       className="rounded-full border border-dashed border-border/40 text-muted-foreground/40 hover:text-primary"
                     >
-                      + Add Sector
+                      Add Sector
                     </Button>
                   </div>
                 </section>

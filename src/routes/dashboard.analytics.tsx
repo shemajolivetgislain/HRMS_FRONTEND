@@ -78,19 +78,12 @@ function AnalyticsPage() {
         description="Data-driven overview of workforce performance and morale"
       >
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="lg"
-            className="text-xs font-semibold border-border/60 shadow-none hover:bg-muted/50 gap-2 capitalize"
-          >
-            <HugeiconsIcon icon={Calendar01Icon} size={14} strokeWidth={2} />
+          <Button variant="outline">
+            <HugeiconsIcon icon={Calendar01Icon} />
             H1 2024
           </Button>
-          <Button
-            size="lg"
-            className="text-xs font-bold gap-2 capitalize"
-          >
-            <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
+          <Button>
+            <HugeiconsIcon icon={Download01Icon} />
             Export Data
           </Button>
         </div>

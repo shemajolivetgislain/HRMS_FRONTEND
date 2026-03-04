@@ -60,14 +60,14 @@ export const QuickActions = React.memo(function QuickActions() {
   return (
     <Frame className="h-full group/frame">
       <FramePanel className="flex flex-col h-full bg-card overflow-hidden">
-        <FrameHeader className="border-b-0 pb-2 px-6 pt-6">
+        <FrameHeader>
           <div>
-            <FrameTitle className="text-sm font-bold text-foreground/90">Quick Actions</FrameTitle>
-            <FrameDescription className="text-xs font-medium">Common administrative shortcuts</FrameDescription>
+            <FrameTitle>Quick Actions</FrameTitle>
+            <FrameDescription>Common administrative shortcuts</FrameDescription>
           </div>
         </FrameHeader>
 
-        <FrameContent className="p-6 pt-2 flex-1">
+        <FrameContent className="p-6 flex-1">
           <div className="grid grid-cols-2 gap-3 h-full">
             {actions.map((action) => (
               <Link

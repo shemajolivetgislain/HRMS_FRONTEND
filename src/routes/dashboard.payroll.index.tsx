@@ -61,15 +61,12 @@ function PayrollPage() {
         description="Localized tax compliance and disbursement management"
       >
         <div className="flex gap-2">
-          <Button variant="outline" size="lg" className="font-bold gap-2">
-            <HugeiconsIcon icon={Download01Icon} size={14} />
+          <Button variant="outline">
+            <HugeiconsIcon icon={Download01Icon} />
             History
           </Button>
-          <Button
-            size="lg"
-            className="font-bold gap-2 bg-success hover:bg-success/90"
-          >
-            <HugeiconsIcon icon={Tick01Icon} size={14} />
+          <Button className="bg-success hover:bg-success/90">
+            <HugeiconsIcon icon={Tick01Icon} />
             Complete Cycle
           </Button>
         </div>
@@ -165,27 +162,17 @@ function PayrollPage() {
                     size="xl"
                     disabled={currentStep === 1}
                     onClick={() => setCurrentStep((prev) => (prev - 1) as any)}
-                    className="rounded-full px-8 font-bold text-muted-foreground/40 hover:text-foreground hover:bg-muted/5 transition-all"
                   >
-                    <HugeiconsIcon
-                      icon={ArrowLeft01Icon}
-                      size={16}
-                      className="mr-2"
-                    />
+                    <HugeiconsIcon icon={ArrowLeft01Icon} />
                     Back
                   </Button>
                   <Button
                     size="xl"
                     disabled={currentStep === 6}
                     onClick={() => setCurrentStep((prev) => (prev + 1) as any)}
-                    className="rounded-full bg-primary text-primary-foreground hover:opacity-95 px-10 font-bold border-2 border-white/10 transition-all active:scale-95"
                   >
                     Next Step
-                    <HugeiconsIcon
-                      icon={ArrowRight01Icon}
-                      size={16}
-                      className="ml-2"
-                    />
+                    <HugeiconsIcon icon={ArrowRight01Icon} />
                   </Button>
                 </div>
               </FrameContent>

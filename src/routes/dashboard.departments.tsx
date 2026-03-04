@@ -81,12 +81,8 @@ function DepartmentsPage() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger
             render={
-              <Button size="lg" className="text-xs font-bold gap-2 capitalize">
-                <HugeiconsIcon
-                  icon={PlusSignCircleIcon}
-                  size={14}
-                  strokeWidth={2}
-                />
+              <Button>
+                <HugeiconsIcon icon={PlusSignCircleIcon} />
                 Add Department
               </Button>
             }
