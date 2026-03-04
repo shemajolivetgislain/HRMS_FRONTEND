@@ -25,14 +25,12 @@ import {
   File02Icon,
   UserEdit01Icon,
   ArrowLeft01Icon,
-  Settings02Icon,
   Delete02Icon,
   Key01Icon,
 } from "@hugeicons/core-free-icons";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { ErrorComponent } from "@/components/error-component";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/employees/$id")({
   loader: async ({ params }) => await api.getEmployee(params.id),

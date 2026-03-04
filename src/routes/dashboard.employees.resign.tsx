@@ -335,10 +335,6 @@ function ResignEmployeePage() {
                             variant="ghost"
                             size="sm"
                             onClick={() => setFormData({ ...formData, [doc.key]: !(formData as any)[doc.key] })}
-                            className={cn(
-                              "h-7 text-[10px] font-black uppercase tracking-widest",
-                              (formData as any)[doc.key] ? "text-primary" : "text-muted-foreground"
-                            )}
                           >
                             {(formData as any)[doc.key] ? "Ready" : "Upload"}
                           </Button>
