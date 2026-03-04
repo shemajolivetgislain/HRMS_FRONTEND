@@ -35,7 +35,6 @@ import {
   Location01Icon,
   UserAdd01Icon,
   Delete02Icon,
-  AiSecurityIcon,
   ArrowRight01Icon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
@@ -81,7 +80,7 @@ import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { Textarea } from "@/components/ui/textarea";
 
-// Sample candidates data
+// sample candidates data
 const recentCandidates = [
   {
     id: 1,
@@ -89,7 +88,7 @@ const recentCandidates = [
     role: "Senior Frontend Engineer",
     stage: "Interview",
     time: "2h ago",
-    status: "info",
+    status: "info" as const,
   },
   {
     id: 2,
@@ -97,7 +96,7 @@ const recentCandidates = [
     role: "Product Designer",
     stage: "Screening",
     time: "4h ago",
-    status: "warning",
+    status: "warning" as const,
   },
   {
     id: 3,
@@ -105,7 +104,7 @@ const recentCandidates = [
     role: "HR Specialist",
     stage: "New Applied",
     time: "5h ago",
-    status: "success",
+    status: "success" as const,
   },
 ];
 
@@ -135,7 +134,7 @@ function RecruitmentPage() {
 
   const handlePublishJob = async () => {
     if (!newJob.title || !newJob.dept) {
-      toast.error("Please provide role title and department");
+      toast.error("provide role title and department");
       return;
     }
     try {
@@ -147,26 +146,26 @@ function RecruitmentPage() {
         description: newJob.description,
         status: "published",
       });
-      toast.success("Job position has been published to the careers portal");
+      toast.success("job position published");
       setIsDialogOpen(false);
       setNewJob({ title: "", dept: "", type: "", location: "", description: "" });
       window.location.reload();
     } catch (err) {
-      toast.error("Failed to publish job opening");
+      toast.error("failed to publish job opening");
     }
   };
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden bg-muted/20">
       <DashboardHeader
-        category="Talent Acquisition"
+        category="talent"
         title="Recruitment"
-        description="Streamlined sourcing and pipeline management for top-tier talent"
+        description="source and manage hiring pipelines"
       >
         <Button
           variant="outline"
           size="sm"
-          className="text-xs font-bold border-border/40 shadow-none hover:bg-muted/50 gap-2 uppercase tracking-widest h-10 rounded-xl"
+          className="text-xs font-bold border-border/40 hover:bg-muted/50 gap-2 uppercase tracking-widest"
         >
           <HugeiconsIcon icon={Download01Icon} size={14} strokeWidth={2} />
           Report
@@ -175,31 +174,31 @@ function RecruitmentPage() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger
             render={
-              <Button size="sm" className="text-xs font-bold gap-2 uppercase tracking-widest h-10 rounded-xl">
+              <Button size="sm" className="text-xs font-bold gap-2 uppercase tracking-widest">
                 <HugeiconsIcon
                   icon={PlusSignCircleIcon}
                   size={14}
                   strokeWidth={2}
                 />
-                Create Role
+                Create
               </Button>
             }
           />
           <DialogContent className="sm:max-w-[600px] rounded-2xl">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold uppercase tracking-tight">Create New Position</DialogTitle>
-              <DialogDescription className="text-sm font-medium">
-                Define and publish a new job opening to the global recruitment portal.
+              <DialogTitle>publish new role</DialogTitle>
+              <DialogDescription>
+                define a new job opening for the global recruitment portal.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-6 py-6">
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="title" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">Job Title</Label>
+                  <Label htmlFor="title" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">title</Label>
                   <Input
                     id="title"
-                    placeholder="e.g. Senior Product Manager"
-                    className="h-11 bg-muted/5 border-border/40 focus:bg-background"
+                    placeholder="e.g. Product Manager"
+                    className="h-10 bg-muted/5 border-border/40 focus:bg-background"
                     value={newJob.title}
                     onChange={(e) =>
                       setNewJob({ ...newJob, title: e.target.value })
@@ -207,15 +206,15 @@ function RecruitmentPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="dept" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">Department</Label>
+                  <Label htmlFor="dept" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">department</Label>
                   <Select
                     value={newJob.dept}
                     onValueChange={(val) =>
                       setNewJob({ ...newJob, dept: val || "" })
                     }
                   >
-                    <SelectTrigger id="dept" className="h-11 bg-muted/5 border-border/40 focus:bg-background">
-                      <SelectValue placeholder="Select department" />
+                    <SelectTrigger id="dept" className="h-10 bg-muted/5 border-border/40 focus:bg-background">
+                      <SelectValue placeholder="select unit" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Engineering">Engineering</SelectItem>
@@ -226,50 +225,11 @@ function RecruitmentPage() {
                   </Select>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="type" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">Employment Type</Label>
-                  <Select
-                    value={newJob.type}
-                    onValueChange={(val) =>
-                      setNewJob({ ...newJob, type: val || "" })
-                    }
-                  >
-                    <SelectTrigger id="type" className="h-11 bg-muted/5 border-border/40 focus:bg-background">
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Full-time">Full-time</SelectItem>
-                      <SelectItem value="Part-time">Part-time</SelectItem>
-                      <SelectItem value="Contract">Contract</SelectItem>
-                      <SelectItem value="Internship">Internship</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="location" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">Location</Label>
-                  <Select
-                    value={newJob.location}
-                    onValueChange={(val) =>
-                      setNewJob({ ...newJob, location: val || "" })
-                    }
-                  >
-                    <SelectTrigger id="location" className="h-11 bg-muted/5 border-border/40 focus:bg-background">
-                      <SelectValue placeholder="Select location" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Remote">Remote</SelectItem>
-                      <SelectItem value="Kigali, Rwanda">Kigali, Rwanda</SelectItem>
-                      <SelectItem value="Nairobi, Kenya">Nairobi, Kenya</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">Job Description</Label>
+                <Label htmlFor="description" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">description</Label>
                 <Textarea
                   id="description"
-                  placeholder="Describe the responsibilities and requirements..."
+                  placeholder="responsibilities and requirements..."
                   className="min-h-[120px] bg-muted/5 border-border/40 focus:bg-background resize-none"
                   value={newJob.description}
                   onChange={(e) =>
@@ -280,14 +240,14 @@ function RecruitmentPage() {
             </div>
             <DialogFooter className="bg-muted/5 -mx-6 -mb-6 p-6 rounded-b-2xl border-t border-border/5">
               <Button variant="ghost" onClick={() => setIsDialogOpen(false)} className="font-bold text-xs uppercase tracking-widest">
-                Cancel
+                cancel
               </Button>
               <Button
                 type="submit"
                 onClick={handlePublishJob}
-                className="font-bold px-8 h-11 rounded-xl"
+                className="font-bold px-8 h-10 rounded-xl"
               >
-                Publish Position
+                Publish Role
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -300,8 +260,6 @@ function RecruitmentPage() {
             <StatCard
               label="Active Openings"
               value={jobs.length}
-              change="2"
-              up={true}
               icon={JobShareIcon}
               variant="primary"
               sub="Roles published"
@@ -309,17 +267,13 @@ function RecruitmentPage() {
             <StatCard
               label="Total Applicants"
               value="132"
-              change="15%"
-              up={true}
               icon={UserMultiple02Icon}
               variant="info"
-              sub="Across all roles"
+              sub="Pipeline across roles"
             />
             <StatCard
               label="Time to Hire"
               value="18d"
-              change="4d"
-              up={false}
               icon={Sorting05Icon}
               variant="success"
               sub="Average duration"
@@ -328,12 +282,12 @@ function RecruitmentPage() {
 
           <section>
             <Frame className="group/frame">
-              <FramePanel className="p-0 overflow-hidden bg-card shadow-sm border-border/40">
+              <FramePanel className="p-0 overflow-hidden bg-card border-border/40">
                 <FrameHeader className="border-b-0 pb-2 px-8 pt-8">
                   <div>
-                    <FrameTitle className="text-xl font-bold">Active Pipelines</FrameTitle>
-                    <FrameDescription className="text-sm font-medium">
-                      Monitor and manage active recruitment cycles
+                    <FrameTitle className="text-lg font-bold">Active Pipelines</FrameTitle>
+                    <FrameDescription className="text-xs font-medium">
+                      Monitor and manage active hiring cycles
                     </FrameDescription>
                   </div>
                 </FrameHeader>
@@ -346,22 +300,20 @@ function RecruitmentPage() {
                       strokeWidth={2}
                     />
                     <Input
-                      placeholder="Search roles or departments…"
+                      placeholder="Search roles or units…"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-9 h-10 rounded-xl border-border/40 bg-muted/5 focus:bg-background transition-all text-sm"
                     />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-10 px-4 rounded-xl border-border/40 gap-2 text-[10px] font-black uppercase tracking-widest"
-                    >
-                      <HugeiconsIcon icon={FilterIcon} size={14} />
-                      Refine Search
-                    </Button>
-                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-10 px-4 rounded-xl border-border/40 gap-2 text-[10px] font-black uppercase tracking-widest"
+                  >
+                    <HugeiconsIcon icon={FilterIcon} size={14} />
+                    Refine
+                  </Button>
                 </div>
 
                 <FrameContent className="p-0">
@@ -369,13 +321,13 @@ function RecruitmentPage() {
                     <TableHeader className="bg-muted/5">
                       <TableRow className="hover:bg-transparent border-border/5">
                         <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-8 py-4 w-[300px]">
-                          Role Specification
+                          Specification
                         </TableHead>
                         <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
-                          Pipeline Density
+                          Density
                         </TableHead>
                         <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
-                          Lifecycle Status
+                          Status
                         </TableHead>
                         <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4 text-right pr-8">
                           Management
@@ -390,10 +342,10 @@ function RecruitmentPage() {
                         >
                           <TableCell className="pl-8 py-5">
                             <div>
-                              <p className="text-base font-bold text-foreground/90 leading-none group-hover:text-primary transition-colors">
+                              <p className="text-sm font-bold text-foreground/90 group-hover:text-primary transition-colors leading-none">
                                 {job.title}
                               </p>
-                              <div className="flex items-center gap-3 mt-2.5 text-xs font-semibold text-muted-foreground/40 uppercase tracking-widest">
+                              <div className="flex items-center gap-3 mt-2 text-xs font-semibold text-muted-foreground/40 uppercase tracking-widest">
                                 <span className="flex items-center gap-1.5">
                                   <HugeiconsIcon
                                     icon={Briefcase01Icon}
@@ -414,11 +366,11 @@ function RecruitmentPage() {
                           </TableCell>
                           <TableCell className="px-4">
                             <div className="flex items-center gap-3">
-                              <div className="flex items-center justify-center h-9 w-14 rounded-xl bg-primary/5 text-primary text-sm font-black tabular-nums border border-primary/10">
+                              <div className="flex items-center justify-center h-8 w-12 rounded-lg bg-primary/5 text-primary text-sm font-black tabular-nums border border-primary/10">
                                 {job.applicants}
                               </div>
                               <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-widest">
-                                Candidates
+                                in queue
                               </span>
                             </div>
                           </TableCell>
@@ -490,15 +442,15 @@ function RecruitmentPage() {
                                     } />
                                     <AlertDialogContent>
                                       <AlertDialogHeader>
-                                        <AlertDialogTitle>Close Job Opening?</AlertDialogTitle>
+                                        <AlertDialogTitle>close job opening?</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                          This will archive the role and notify all {job.applicants} pending candidates. This action is tracked for recruitment metrics.
+                                          this will archive the role and notify pending candidates. this action is recorded for metrics.
                                         </AlertDialogDescription>
                                       </AlertDialogHeader>
                                       <AlertDialogFooter>
-                                        <AlertDialogCancel>Keep Open</AlertDialogCancel>
+                                        <AlertDialogCancel>keep open</AlertDialogCancel>
                                         <AlertDialogAction className="bg-destructive hover:bg-destructive/90">
-                                          Close Role
+                                          Archive Role
                                         </AlertDialogAction>
                                       </AlertDialogFooter>
                                     </AlertDialogContent>
@@ -515,7 +467,7 @@ function RecruitmentPage() {
 
                 <FrameFooter className="px-8 py-5 border-t border-border/5">
                   <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-[0.2em]">
-                    Talent Pipeline: {filteredJobs.length} active requisitions
+                    Registry Ledger: {filteredJobs.length} active requisitions
                   </p>
                 </FrameFooter>
               </FramePanel>
@@ -525,13 +477,11 @@ function RecruitmentPage() {
 
         <div className="w-full xl:w-[400px] space-y-8">
           <Frame>
-            <FramePanel className="p-0 overflow-hidden bg-card border-border/40">
+            <FramePanel className="p-0 overflow-hidden bg-card border-border/40 shadow-sm">
               <FrameHeader className="px-8 pt-8 border-b-0 pb-2">
                 <div>
-                  <FrameTitle className="text-lg font-bold">Recent Candidates</FrameTitle>
-                  <FrameDescription className="text-sm font-medium">
-                    Latest hiring movements
-                  </FrameDescription>
+                  <FrameTitle className="text-base font-bold">Recent Candidates</FrameTitle>
+                  <FrameDescription className="text-xs font-medium uppercase tracking-widest opacity-60">Latest movements</FrameDescription>
                 </div>
               </FrameHeader>
               <FrameContent className="p-0 pt-4">
@@ -545,23 +495,23 @@ function RecruitmentPage() {
                         <UserAvatar
                           name={candidate.name}
                           size="lg"
-                          className="rounded-xl ring-4 ring-background shadow-sm group-hover/candidate:scale-105 transition-all"
+                          className="rounded-xl ring-2 ring-background shadow-sm"
                         />
                         <div className="flex-1 min-w-0 pt-0.5">
                           <div className="flex items-start justify-between gap-2">
-                            <p className="text-sm font-bold text-foreground/90 leading-tight truncate">
+                            <p className="text-sm font-bold text-foreground/90 leading-tight truncate group-hover/candidate:text-primary transition-colors">
                               {candidate.name}
                             </p>
                             <span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-widest shrink-0 mt-0.5 tabular-nums">
                               {candidate.time}
                             </span>
                           </div>
-                          <p className="text-[11px] font-semibold text-muted-foreground/60 mt-1 truncate uppercase tracking-wider">
+                          <p className="text-[10px] font-semibold text-muted-foreground/60 mt-1 truncate uppercase tracking-wider">
                             {candidate.role}
                           </p>
                           <div className="mt-4">
                             <Badge
-                              variant={candidate.status as any}
+                              variant={candidate.status}
                               className="h-5 rounded-lg px-2 text-[9px] font-black uppercase tracking-widest"
                             >
                               {candidate.stage}
@@ -576,7 +526,7 @@ function RecruitmentPage() {
               <FrameFooter className="border-t border-border/5 px-8 py-6">
                 <Button
                   variant="outline"
-                  className="w-full h-10 text-[10px] font-black uppercase tracking-widest rounded-xl border-border/40 text-muted-foreground/70 hover:text-primary transition-all"
+                  className="w-full h-10 text-[10px] font-black uppercase tracking-widest rounded-xl border-border/40 text-muted-foreground/70 hover:text-foreground transition-all"
                 >
                   View Global Talent Pool
                 </Button>
@@ -586,9 +536,6 @@ function RecruitmentPage() {
 
           <Frame>
             <FramePanel className="p-8 flex flex-col gap-6 bg-primary/[0.02] border-primary/10 rounded-[2rem] relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4 opacity-5 rotate-12 group-hover:scale-110 transition-transform">
-                <HugeiconsIcon icon={AiSecurityIcon} size={80} />
-              </div>
               <div className="flex items-center gap-4 relative z-10">
                 <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shadow-sm shadow-primary/5">
                   <HugeiconsIcon icon={UserAdd01Icon} size={24} />
@@ -598,13 +545,13 @@ function RecruitmentPage() {
                     External Agencies
                   </p>
                   <p className="text-xs font-semibold text-muted-foreground/50 tracking-tight">
-                    Invite collaborators to source talent
+                    Invite recruiters to collaborate
                   </p>
                 </div>
               </div>
               <Button
                 variant="outline"
-                className="w-full h-11 rounded-xl font-bold text-xs uppercase tracking-widest border-primary/20 text-primary hover:bg-primary/5 relative z-10"
+                className="w-full h-10 rounded-xl font-bold text-xs uppercase tracking-widest border-primary/20 text-primary hover:bg-primary/5 relative z-10"
               >
                 Provision Access
                 <HugeiconsIcon icon={ArrowRight01Icon} size={14} className="ml-2" />
