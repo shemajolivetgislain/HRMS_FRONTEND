@@ -38,15 +38,9 @@ export function UserAvatar({
     .slice(0, 2)
     .toUpperCase();
 
-  const isBrokenLocalPath = src?.startsWith("/avatars/");
-  const avatarUrl =
-    !src || isBrokenLocalPath
-      ? `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`
-      : src;
-
   const avatarContent = (
     <Avatar size={size} className={className}>
-      <AvatarImage src={avatarUrl} alt={name} />
+      <AvatarImage src={src} alt={name} />
       <AvatarFallback>{initials}</AvatarFallback>
       {status && (
         <AvatarBadge

@@ -14,32 +14,32 @@ import { UserAvatar } from "@/components/dashboard/user-avatar";
 
 const activities = [
   {
-    user: "HR Manager",
-    avatar: "",
+    user: "Alice Umutoni",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&h=120&auto=format&fit=crop",
     action: "added new department:",
     target: "Engineering",
     time: "2m ago",
     status: "online" as const,
   },
   {
-    user: "System Admin",
-    avatar: "",
+    user: "Saddy Nkurunziza",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop",
     action: "assigned job title to",
     target: "Jean Paul Nkurunziza",
     time: "15m ago",
     status: "away" as const,
   },
   {
-    user: "Recruitment Team",
-    avatar: "",
+    user: "Sarah Kwizera",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=120&h=120&auto=format&fit=crop",
     action: "moved applicant to Interview stage:",
     target: "Moses Mugisha",
     time: "1h ago",
     status: "online" as const,
   },
   {
-    user: "System",
-    avatar: "",
+    user: "System Admin",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=120&h=120&auto=format&fit=crop",
     action: "uploaded contract for",
     target: "Divine Uwase",
     time: "3h ago",
@@ -70,7 +70,7 @@ export const RecentActivity = React.memo(function RecentActivity() {
               >
                 <div className="relative z-10">
                   <UserAvatar
-                    src={activity.avatar}
+                    src={activity.image}
                     name={activity.user}
                     size="sm"
                     status={activity.status}

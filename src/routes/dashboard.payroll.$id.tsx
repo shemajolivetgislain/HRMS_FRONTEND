@@ -76,6 +76,7 @@ function PayrollDetailsPage() {
               <FramePanel className="p-6 bg-card">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
                   <UserAvatar
+                    src={data.image}
                     name={data.employee}
                     size="lg"
                     className="w-28 h-28 rounded-2xl shadow-sm border border-border/10"

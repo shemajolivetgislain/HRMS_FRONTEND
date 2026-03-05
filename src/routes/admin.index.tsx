@@ -35,7 +35,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { UserAvatar } from "@/components/dashboard/user-avatar";
-import { cn } from "#/lib/utils";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/admin/")({
   loader: async () => {
@@ -141,7 +141,11 @@ function AdminDashboard() {
                             <TableRow key={user.id}>
                               <TableCell>
                                 <div className="flex items-center gap-3">
-                                  <UserAvatar name={user.name} size="sm" />
+                                  <UserAvatar
+                                    src={user.image}
+                                    name={user.name}
+                                    size="sm"
+                                  />
                                   <div className="flex flex-col">
                                     <span className="font-bold text-foreground/90">
                                       {user.name}

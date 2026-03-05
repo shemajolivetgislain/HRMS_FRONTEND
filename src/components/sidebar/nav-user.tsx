@@ -36,7 +36,7 @@ export function NavUser({
   user: {
     name: string;
     email: string;
-    avatar: string;
+    image: string;
   };
 }) {
   const { isMobile } = useSidebar();
@@ -54,7 +54,7 @@ export function NavUser({
             }
           >
             <UserAvatar 
-              src={user.avatar} 
+              src={user.image} 
               name={user.name} 
               size="sm" 
               className="rounded-lg shadow-xs group-hover:scale-105 transition-transform duration-300" 
@@ -83,7 +83,7 @@ export function NavUser({
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
                   <UserAvatar 
-                    src={user.avatar} 
+                    src={user.image} 
                     name={user.name} 
                     size="sm" 
                   />

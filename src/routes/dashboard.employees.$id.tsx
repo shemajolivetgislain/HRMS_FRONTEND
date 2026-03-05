@@ -73,6 +73,7 @@ function EmployeeProfilePage() {
               <Frame>
                 <FramePanel className="bg-card p-8 flex flex-col items-center text-center shadow-xs">
                   <UserAvatar
+                    src={employee.image}
                     name={employee.name}
                     size="lg"
                     className="mb-6 h-24 w-24 rounded-2xl ring-4 ring-muted/10 shadow-sm"

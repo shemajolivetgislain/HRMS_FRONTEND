@@ -60,7 +60,7 @@ export interface User {
   email: string;
   role: Role;
   companyId?: string;
-  avatar?: string;
+  image?: string;
   status: "online" | "away" | "offline";
 }
 
@@ -90,7 +90,7 @@ export interface Employee {
     | "resigned"
     | "terminated";
   hireDate: string;
-  avatar?: string;
+  image?: string;
   phone?: string;
   manager?: string;
   dob?: string;
@@ -166,6 +166,7 @@ export interface Applicant {
   lastName: string;
   email: string;
   phone: string;
+  image?: string;
   jobTitleId: string;
   applicationReference: string;
   stage: RecruitmentStage;
@@ -183,6 +184,7 @@ export interface LeaveRequest {
   id: string;
   employeeId: string;
   employeeName: string;
+  image?: string;
   type: "Annual" | "Sick" | "Maternity" | "Paternity" | "Unpaid";
   startDate: string;
   endDate: string;
@@ -214,6 +216,7 @@ export interface PerformanceReview {
   id: string;
   employeeId: string;
   employeeName: string;
+  image?: string;
   quarter: "Q1" | "Q2" | "Q3" | "Q4";
   year: number;
   status: "draft" | "submitted" | "reviewed" | "completed";
@@ -252,6 +255,7 @@ export interface PayrollRun {
 export interface PayrollRecord {
   id: string;
   employee: string;
+  image?: string;
   role: string;
   amount: number;
   method: string;
@@ -279,7 +283,7 @@ export interface JobOpening {
 
 export interface Activity {
   user: string;
-  avatar?: string;
+  image?: string;
   action: string;
   target: string;
   time: string;

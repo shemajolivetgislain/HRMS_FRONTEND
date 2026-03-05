@@ -108,11 +108,11 @@ function ResignEmployeePage() {
           title="Offboarding Initialized"
           description="The employee record has been transitioned to resigned state."
         />
-        <div className="flex-1 flex items-center justify-center p-6">
+        <div className="flex-1 overflow-y-auto no-scrollbar px-6 lg:px-8 pb-20 pt-2 text-start">
           <Frame className="max-w-md w-full">
             <FramePanel className="bg-card">
-              <FrameContent className="p-10 text-center">
-                <div className="h-20 w-20 bg-success/10 text-success rounded-2xl flex items-center justify-center mx-auto mb-8 animate-in zoom-in duration-500">
+              <FrameContent className="p-10">
+                <div className="h-20 w-20 bg-success/10 text-success rounded-2xl flex items-center justify-center mb-8 animate-in zoom-in duration-500">
                   <HugeiconsIcon icon={CheckmarkCircle01Icon} size={40} />
                 </div>
                 <h2 className="text-2xl font-bold tracking-tight mb-3">
@@ -150,8 +150,8 @@ function ResignEmployeePage() {
         </Button>
       </DashboardHeader>
 
-      <div className="flex-1 overflow-y-auto no-scrollbar px-4 lg:px-6 pb-20 pt-2">
-        <div className="max-w-4xl mx-auto w-full">
+      <div className="flex-1 overflow-y-auto no-scrollbar px-6 lg:px-8 pb-20 pt-2">
+        <div className="max-w-4xl w-full">
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Column: Form Details */}

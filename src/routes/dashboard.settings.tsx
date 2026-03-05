@@ -456,9 +456,12 @@ function SettingsPage() {
                 <div className="divide-y divide-border/5 border-y border-border/5">
                   <div className="flex items-center justify-between py-4">
                     <div className="flex items-center gap-4">
-                      <UserAvatar name="Admin User" size="sm" />
-                      <div>
-                        <p className="text-sm font-semibold text-foreground/90 leading-none">
+                      <UserAvatar
+                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop"
+                        name="Admin User"
+                        size="sm"
+                      />
+                      <div>                        <p className="text-sm font-semibold text-foreground/90 leading-none">
                           Admin User
                         </p>
                         <p className="text-xs font-medium text-muted-foreground/40 mt-1">

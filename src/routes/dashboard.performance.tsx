@@ -183,7 +183,12 @@ function PerformancePage() {
                     Communication with stakeholders has improved significantly.
                     Focus on mentoring junior staff in Q2."
                     <div className="mt-4 flex items-center gap-2 not-italic">
-                      <UserAvatar name="Alice" size="sm" className="size-5" />
+                      <UserAvatar
+                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=120&h=120&auto=format&fit=crop"
+                        name="Alice"
+                        size="sm"
+                        className="size-5"
+                      />
                       <span className="text-xs font-bold text-foreground/60">
                         Alice Johnson (Manager)
                       </span>

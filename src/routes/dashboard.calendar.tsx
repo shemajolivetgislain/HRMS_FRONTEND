@@ -30,7 +30,10 @@ const upcomingEvents = [
     time: "10:00 AM",
     type: "Meeting",
     location: "Conference Room A",
-    attendees: ["Jean Paul Nkurunziza", "Divine Uwase"],
+    attendees: [
+      { name: "Jean Paul Nkurunziza", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop" },
+      { name: "Divine Uwase", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=120&h=120&auto=format&fit=crop" }
+    ],
     color: "var(--chart-1)",
   },
   {
@@ -39,7 +42,9 @@ const upcomingEvents = [
     time: "1:30 PM",
     type: "Workshop",
     location: "Online",
-    attendees: ["Emma Davis"],
+    attendees: [
+      { name: "Emma Davis", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&h=120&auto=format&fit=crop" }
+    ],
     color: "var(--chart-2)",
   },
   {
@@ -56,7 +61,10 @@ const upcomingEvents = [
     title: "New Hire Onboarding",
     time: "09:00 AM",
     type: "Onboarding",
-    location: "Igihe Logistics",    attendees: ["Moses Mugisha"],
+    location: "Igihe Logistics",
+    attendees: [
+      { name: "Moses Mugisha", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=120&h=120&auto=format&fit=crop" }
+    ],
     color: "var(--chart-4)",
   },
 ];
@@ -172,13 +180,13 @@ function CalendarPage() {
                                 </span>
                               )}
                             </div>
-
                             {event.attendees.length > 0 && (
                               <div className="flex items-center gap-1.5 pt-1">
-                                {event.attendees.map((name, i) => (
+                                {event.attendees.map((person, i) => (
                                   <UserAvatar
                                     key={i}
-                                    name={name}
+                                    src={person.image}
+                                    name={person.name}
                                     size="sm"
                                     className="size-5 border-2 border-card"
                                   />

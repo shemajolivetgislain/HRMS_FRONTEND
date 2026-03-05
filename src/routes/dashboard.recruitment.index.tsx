@@ -89,6 +89,7 @@ const recentCandidates = [
     stage: "Interview",
     time: "2h ago",
     status: "info" as const,
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=120&h=120&auto=format&fit=crop",
   },
   {
     id: 2,
@@ -97,6 +98,7 @@ const recentCandidates = [
     stage: "Screening",
     time: "4h ago",
     status: "warning" as const,
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop",
   },
   {
     id: 3,
@@ -105,6 +107,7 @@ const recentCandidates = [
     stage: "New Applied",
     time: "5h ago",
     status: "success" as const,
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&h=120&auto=format&fit=crop",
   },
 ];
 
@@ -477,6 +480,7 @@ function RecruitmentPage() {
                       <div className="flex items-start gap-4">
                         <UserAvatar
                           name={candidate.name}
+                          src={candidate.image}
                           size="lg"
                           className="rounded-xl ring-2 ring-background shadow-sm"
                         />

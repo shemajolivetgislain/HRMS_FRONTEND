@@ -233,7 +233,8 @@ function EmployeesPage() {
                             <div className="flex items-center gap-3">
                               <UserAvatar
                                 name={user.name}
-                                size="md"
+                                src={user.image}
+                                size="default"
                                 className="h-10 w-10 rounded-xl"
                               />
                               <div className="flex flex-col gap-0.5">

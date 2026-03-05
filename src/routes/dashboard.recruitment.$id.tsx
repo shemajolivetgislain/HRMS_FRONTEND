@@ -102,6 +102,7 @@ function RecruitmentDetailsPage() {
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                         <div className="flex items-center gap-4 min-w-0">
                           <UserAvatar
+                            src={can.image}
                             name={`${can.firstName} ${can.lastName}`}
                             size="default"
                             className="shadow-sm border border-border/10"
@@ -258,11 +259,13 @@ function RecruitmentDetailsPage() {
               </p>
               <div className="flex items-center gap-3">
                 <UserAvatar
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=120&h=120&auto=format&fit=crop"
                   name="Sarah"
                   size="sm"
                   className="border border-border/10"
                 />
                 <UserAvatar
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=120&h=120&auto=format&fit=crop"
                   name="Michael"
                   size="sm"
                   className="border border-border/10"

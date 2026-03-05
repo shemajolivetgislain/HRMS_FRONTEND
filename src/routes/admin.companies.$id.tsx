@@ -240,7 +240,11 @@ function CompanyDetailsPage() {
                           <TableRow key={admin.id}>
                             <TableCell>
                               <div className="flex items-center gap-3">
-                                <UserAvatar name={admin.name} size="sm" />
+                                <UserAvatar
+                                  src={admin.image}
+                                  name={admin.name}
+                                  size="sm"
+                                />
                                 <div className="flex flex-col">
                                   <span className="font-bold text-foreground/90">{admin.name}</span>
                                   <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{admin.email}</span>
