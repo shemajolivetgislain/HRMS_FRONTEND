@@ -107,7 +107,7 @@ function SystemLogsPage() {
                   <TableBody>
                     {filtered.map((log) => (
                       <TableRow key={log.id} className="border-border/5 hover:bg-muted/5 transition-colors group">
-                        <TableCell className="pl-6 py-4">
+                        <TableCell className="pl-6 py-3">
                           <span className="text-xs font-bold text-muted-foreground/40 tabular-nums">{log.timestamp}</span>
                         </TableCell>
                         <TableCell className="px-2">

@@ -100,7 +100,7 @@ export function CompanySwitcher({
               <DropdownMenuItem
                 onClick={switchToAdmin}
                 className={cn(
-                  "gap-3 p-2.5 rounded-xl mb-1 cursor-pointer transition-colors font-semibold text-sm",
+                  "gap-3 px-2.5 py-1.5 rounded-xl mb-1 cursor-pointer transition-colors font-semibold text-sm",
                   isAdmin ? "bg-primary/5 text-primary" : "focus:bg-primary/5 focus:text-primary"
                 )}
               >
@@ -129,7 +129,7 @@ export function CompanySwitcher({
                   key={company.name}
                   onClick={() => handleCompanySelect(company)}
                   className={cn(
-                    "gap-3 p-2.5 rounded-xl cursor-pointer transition-colors font-semibold text-sm",
+                    "gap-3 px-2.5 py-1.5 rounded-xl cursor-pointer transition-colors font-semibold text-sm",
                     !isAdmin && activeCompany.name === company.name ? "bg-primary/5 text-primary" : "focus:bg-primary/5 focus:text-primary"
                   )}
                 >
@@ -154,7 +154,7 @@ export function CompanySwitcher({
               ))}
             </DropdownMenuGroup>
             <DropdownMenuSeparator className="bg-border/5 my-1.5" />
-            <DropdownMenuItem className="gap-3 p-2.5 focus:bg-primary/5 focus:text-primary rounded-xl cursor-pointer transition-all border border-transparent hover:border-border/40">
+            <DropdownMenuItem className="gap-3 px-2.5 py-1.5 focus:bg-primary/5 focus:text-primary rounded-xl cursor-pointer transition-all border border-transparent hover:border-border/40">
               <div className="flex size-7 items-center justify-center rounded-lg border border-dashed border-border/60 bg-muted/5 group-hover:bg-primary/5 transition-colors">
                 <HugeiconsIcon icon={PlusSignIcon} className="size-4 text-muted-foreground/60" />
               </div>

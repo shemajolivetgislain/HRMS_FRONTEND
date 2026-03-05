@@ -112,7 +112,7 @@ function LeavesPage() {
                         <TableBody>
                           {requests.map((req) => (
                             <TableRow key={req.id} className="border-border/5 hover:bg-muted/5 transition-colors group">
-                              <TableCell className="pl-6 py-4">
+                              <TableCell className="pl-6 py-3">
                                 <UserAvatar name={req.employeeName} size="sm" />
                               </TableCell>
                               <TableCell className="px-2">

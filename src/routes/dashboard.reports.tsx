@@ -156,7 +156,7 @@ function ReportsPage() {
                         key={report.id}
                         className="border-border/5 hover:bg-muted/5 transition-colors group"
                       >
-                        <TableCell className="pl-6 py-4">
+                        <TableCell className="pl-6 py-3">
                           <div className="flex items-center gap-3">
                             <div className="h-9 w-9 rounded-xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
                               <HugeiconsIcon icon={File02Icon} size={16} />

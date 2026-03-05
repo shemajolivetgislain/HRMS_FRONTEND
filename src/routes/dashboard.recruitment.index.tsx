@@ -308,16 +308,16 @@ function RecruitmentPage() {
                   <Table>
                     <TableHeader className="bg-muted/5">
                       <TableRow className="hover:bg-transparent border-border/5">
-                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-8 py-4 w-[300px]">
+                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-8 py-3 w-[300px]">
                           Specification
                         </TableHead>
-                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
+                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
                           Density
                         </TableHead>
-                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
+                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
                           Status
                         </TableHead>
-                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4 text-right pr-8">
+                        <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3 text-right pr-8">
                           Management
                         </TableHead>
                       </TableRow>
@@ -407,18 +407,18 @@ function RecruitmentPage() {
                                   align="end"
                                   className="w-52 rounded-2xl border-border/40 shadow-2xl p-2"
                                 >
-                                  <DropdownMenuItem className="rounded-xl py-2.5 font-semibold text-sm">
+                                  <DropdownMenuItem className="rounded-xl py-1.5 font-semibold text-sm">
                                     <HugeiconsIcon icon={UserAdd01Icon} className="size-4 mr-3 text-muted-foreground/60" />
                                     <span>Add Candidate</span>
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem className="rounded-xl py-2.5 font-semibold text-sm">
+                                  <DropdownMenuItem className="rounded-xl py-1.5 font-semibold text-sm">
                                     <HugeiconsIcon icon={Mail01Icon} className="size-4 mr-3 text-muted-foreground/60" />
                                     <span>Broadcast</span>
                                   </DropdownMenuItem>
                                   <DropdownMenuSeparator className="bg-border/5 my-1" />
                                   <AlertDialog>
                                     <AlertDialogTrigger render={
-                                      <DropdownMenuItem onSelect={e => e.preventDefault()} className="rounded-xl py-2.5 font-semibold text-sm text-destructive focus:bg-destructive/5">
+                                      <DropdownMenuItem onSelect={e => e.preventDefault()} className="rounded-xl py-1.5 font-semibold text-sm text-destructive focus:bg-destructive/5">
                                         <HugeiconsIcon icon={Delete02Icon} className="size-4 mr-3" />
                                         <span>Close Opening</span>
                                       </DropdownMenuItem>

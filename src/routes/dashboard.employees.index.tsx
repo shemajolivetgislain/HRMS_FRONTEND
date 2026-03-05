@@ -51,6 +51,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { api } from "@/lib/mock-api";
 import { useEmployees } from "@/hooks/use-employees";
@@ -202,181 +210,207 @@ function EmployeesPage() {
                 </div>
               </div>
 
-              <FrameContent className="p-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredEmployees.length > 0 ? (
-                    filteredEmployees.map((user) => (
-                      <div
-                        key={user.id}
-                        className="group relative flex flex-col p-6 rounded-2xl border border-border/40 bg-muted/5 hover:bg-background hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 animate-in fade-in zoom-in-95"
-                      >
-                        <div className="absolute top-5 right-5">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger
-                              render={
-                                <Button
-                                  variant="ghost"
-                                  size="icon-sm"
-                                  aria-label="Employee actions"
-                                >
-                                  <HugeiconsIcon
-                                    icon={MoreHorizontalIcon}
-                                  />
-                                </Button>
-                              }
-                            />
-                            <DropdownMenuContent
-                              align="end"
-                              className="w-52 rounded-2xl border-border/40 shadow-2xl p-2"
-                            >
-                              <DropdownMenuItem
-                                render={
-                                  <Link
-                                    to="/dashboard/employees/$id"
-                                    params={{ id: user.id }}
-                                  />
+              <FrameContent className="p-0">
+                {filteredEmployees.length > 0 ? (
+                  <Table>
+                    <TableHeader className="bg-muted/5">
+                      <TableRow className="hover:bg-transparent border-border/5">
+                        <TableHead className="pl-8 py-3">Employee</TableHead>
+                        <TableHead className="px-4 py-3">Status & Onboarding</TableHead>
+                        <TableHead className="px-4 py-3">Contact Detail</TableHead>
+                        <TableHead className="px-4 py-3">Department</TableHead>
+                        <TableHead className="px-4 py-3">ID Reference</TableHead>
+                        <TableHead className="pr-8 py-3 text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredEmployees.map((user) => (
+                        <TableRow
+                          key={user.id}
+                          className="border-border/5 group transition-colors"
+                        >
+                          <TableCell className="pl-8 py-3">
+                            <div className="flex items-center gap-3">
+                              <UserAvatar
+                                name={user.name}
+                                size="md"
+                                className="h-10 w-10 rounded-xl"
+                              />
+                              <div className="flex flex-col gap-0.5">
+                                <span className="text-sm font-bold text-foreground/90 group-hover:text-primary transition-colors">
+                                  {user.name}
+                                </span>
+                                <span className="text-[11px] font-semibold text-muted-foreground/50">
+                                  {user.position}
+                                </span>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell className="px-4 py-3">
+                            <div className="flex flex-col gap-2 min-w-[140px]">
+                              <Badge
+                                variant={
+                                  user.status === "active"
+                                    ? "success"
+                                    : user.status === "probation"
+                                      ? "warning"
+                                      : user.status === "resigned"
+                                        ? "muted"
+                                        : "destructive"
                                 }
-                                className="rounded-xl py-2.5 font-semibold text-sm"
+                                className="h-5 text-[9px] font-black uppercase tracking-widest w-fit"
                               >
-                                <HugeiconsIcon
-                                  icon={ViewIcon}
-                                  className="size-4 mr-3 text-muted-foreground/60"
-                                />
-                                <span>Profile Details</span>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem className="rounded-xl py-2.5 font-semibold text-sm">
-                                <HugeiconsIcon
-                                  icon={Mail01Icon}
-                                  className="size-4 mr-3 text-muted-foreground/60"
-                                />
-                                <span>Messaging</span>
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator className="bg-border/5 my-1" />
-                              <AlertDialog>
-                                <AlertDialogTrigger render={
-                                  <DropdownMenuItem 
-                                    onSelect={e => e.preventDefault()} 
-                                    className="rounded-xl py-2.5 font-semibold text-sm text-destructive focus:bg-destructive/5"
-                                  >
-                                    <HugeiconsIcon
-                                      icon={Delete02Icon}
-                                      className="size-4 mr-3"
+                                {user.status}
+                              </Badge>
+                              {user.onboardingProgress < 100 && (
+                                <div className="space-y-1.5 w-full">
+                                  <div className="flex items-center justify-between text-[9px] font-bold text-muted-foreground/40">
+                                    <span>Setup: {user.onboardingProgress}%</span>
+                                  </div>
+                                  <div className="h-1 w-full bg-muted/20 rounded-full overflow-hidden">
+                                    <div
+                                      className="h-full bg-primary transition-all duration-1000 ease-out shadow-[0_0_8px_rgba(var(--primary),0.4)]"
+                                      style={{
+                                        width: `${user.onboardingProgress}%`,
+                                      }}
                                     />
-                                    <span>Terminate</span>
-                                  </DropdownMenuItem>
-                                } />
-                                <AlertDialogContent>
-                                  <AlertDialogHeader>
-                                    <AlertDialogTitle>Permanent Termination</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                      Are you sure you want to terminate {user.name}'s employment? This will immediately halt payroll and revoke all system access.
-                                    </AlertDialogDescription>
-                                  </AlertDialogHeader>
-                                  <AlertDialogFooter>
-                                    <AlertDialogCancel>Abort</AlertDialogCancel>
-                                    <AlertDialogAction 
-                                      onClick={() => handleTerminate(user.id, user.name)} 
-                                      className="bg-destructive hover:bg-destructive/90"
-                                    >
-                                      Finalize Termination
-                                    </AlertDialogAction>
-                                  </AlertDialogFooter>
-                                </AlertDialogContent>
-                              </AlertDialog>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-
-                        <div className="flex items-start gap-4 mb-8">
-                          <UserAvatar name={user.name} size="lg" className="h-12 w-12 rounded-xl" />
-                          <div className="space-y-1">
-                            <h4 className="text-[15px] font-bold text-foreground/90 group-hover:text-primary transition-colors leading-none">
-                              {user.name}
-                            </h4>
-                            <p className="text-xs font-semibold text-muted-foreground/60">
-                              {user.position}
-                            </p>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="px-4 py-3">
+                            <div className="flex flex-col gap-1">
+                              <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground/60">
+                                <HugeiconsIcon icon={Mail01Icon} size={12} />
+                                <span className="truncate max-w-[160px]">
+                                  {user.email}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground/60">
+                                <HugeiconsIcon icon={CallIcon} size={12} />
+                                <span>{user.phone}</span>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell className="px-4 py-3">
                             <Badge
-                              variant={
-                                user.status === "active"
-                                  ? "success"
-                                  : user.status === "probation"
-                                    ? "warning"
-                                    : user.status === "resigned"
-                                      ? "muted"
-                                      : "destructive"
-                              }
-                              className="h-5 text-[9px] font-black uppercase tracking-widest mt-1"
+                              variant="muted"
+                              className="bg-muted/10 border-none font-bold text-[10px] uppercase tracking-widest"
                             >
-                              {user.status}
+                              {user.department}
                             </Badge>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-2.5 mb-8">
-                          <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-muted/5 border border-border/10 group-hover:border-primary/10 transition-colors">
-                            <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.2em]">ID CODE</span>
-                            <span className="text-xs font-bold text-foreground/70 tabular-nums">
+                          </TableCell>
+                          <TableCell className="px-4 py-3">
+                            <span className="text-xs font-bold text-foreground/60 tabular-nums">
                               {user.idNumber.slice(-8)}
                             </span>
-                          </div>
-                          <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-muted/5 border border-border/10 group-hover:border-primary/10 transition-colors">
-                            <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.2em]">ORG UNIT</span>
-                            <span className="text-xs font-bold text-foreground/70">
-                              {user.department}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="mt-auto space-y-2">
-                          <div className="flex items-center gap-3 text-xs font-semibold text-muted-foreground/60 group-hover:text-foreground/80 transition-colors">
-                            <div className="size-6 rounded-lg bg-muted/10 flex items-center justify-center border border-border/5">
-                              <HugeiconsIcon icon={Mail01Icon} size={12} />
+                          </TableCell>
+                          <TableCell className="pr-8 py-3 text-right">
+                            <div className="flex items-center justify-end">
+                              <DropdownMenu>
+                                <DropdownMenuTrigger
+                                  render={
+                                    <Button
+                                      variant="ghost"
+                                      size="icon-sm"
+                                      aria-label="Employee actions"
+                                    >
+                                      <HugeiconsIcon icon={MoreHorizontalIcon} />
+                                    </Button>
+                                  }
+                                />
+                                <DropdownMenuContent
+                                  align="end"
+                                  className="w-52 rounded-2xl border-border/40 shadow-2xl p-2"
+                                >
+                                  <DropdownMenuItem
+                                    render={
+                                      <Link
+                                        to="/dashboard/employees/$id"
+                                        params={{ id: user.id }}
+                                      />
+                                    }
+                                    className="rounded-xl py-1.5 font-semibold text-sm"
+                                  >
+                                    <HugeiconsIcon
+                                      icon={ViewIcon}
+                                      className="size-4 mr-3 text-muted-foreground/60"
+                                    />
+                                    <span>Profile Details</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem className="rounded-xl py-1.5 font-semibold text-sm">
+                                    <HugeiconsIcon
+                                      icon={Mail01Icon}
+                                      className="size-4 mr-3 text-muted-foreground/60"
+                                    />
+                                    <span>Messaging</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuSeparator className="bg-border/5 my-1" />
+                                  <AlertDialog>
+                                    <AlertDialogTrigger
+                                      render={
+                                        <DropdownMenuItem
+                                          onSelect={(e) => e.preventDefault()}
+                                          className="rounded-xl py-1.5 font-semibold text-sm text-destructive focus:bg-destructive/5"
+                                        >
+                                          <HugeiconsIcon
+                                            icon={Delete02Icon}
+                                            className="size-4 mr-3"
+                                          />
+                                          <span>Terminate</span>
+                                        </DropdownMenuItem>
+                                      }
+                                    />
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>
+                                          Permanent Termination
+                                        </AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          Are you sure you want to terminate{" "}
+                                          {user.name}'s employment? This will
+                                          immediately halt payroll and revoke all
+                                          system access.
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>Abort</AlertDialogCancel>
+                                        <AlertDialogAction
+                                          onClick={() =>
+                                            handleTerminate(user.id, user.name)
+                                          }
+                                          className="bg-destructive hover:bg-destructive/90"
+                                        >
+                                          Finalize Termination
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                             </div>
-                            <span className="truncate">{user.email}</span>
-                          </div>
-                          <div className="flex items-center gap-3 text-xs font-semibold text-muted-foreground/60 group-hover:text-foreground/80 transition-colors">
-                            <div className="size-6 rounded-lg bg-muted/10 flex items-center justify-center border border-border/5">
-                              <HugeiconsIcon icon={CallIcon} size={12} />
-                            </div>
-                            <span>{user.phone}</span>
-                          </div>
-                        </div>
-
-                        {user.onboardingProgress < 100 && (
-                          <div className="mt-6 pt-6 border-t border-border/5">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest">
-                                Provisioning
-                              </span>
-                              <span className="text-[10px] font-bold text-primary tabular-nums">
-                                {user.onboardingProgress}%
-                              </span>
-                            </div>
-                            <div className="h-1.5 w-full bg-muted/20 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-primary transition-all duration-1000 ease-out shadow-[0_0_8px_rgba(var(--primary),0.4)]"
-                                style={{ width: `${user.onboardingProgress}%` }}
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))
-                  ) : (
-                    <div className="col-span-full h-80 flex flex-col items-center justify-center text-center space-y-4">
-                      <div className="size-16 rounded-3xl bg-muted/5 flex items-center justify-center text-muted-foreground/20 border border-border/5">
-                        <HugeiconsIcon icon={Search01Icon} size={32} />
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-base font-bold text-foreground/80">No results matched</p>
-                        <p className="text-sm font-medium text-muted-foreground/40 max-w-xs">
-                          Adjust your filters or search term to find what you're looking for.
-                        </p>
-                      </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <div className="h-80 flex flex-col items-center justify-center text-center space-y-4">
+                    <div className="size-16 rounded-3xl bg-muted/5 flex items-center justify-center text-muted-foreground/20 border border-border/5">
+                      <HugeiconsIcon icon={Search01Icon} size={32} />
                     </div>
-                  )}
-                </div>
+                    <div className="space-y-1">
+                      <p className="text-base font-bold text-foreground/80">
+                        No results matched
+                      </p>
+                      <p className="text-sm font-medium text-muted-foreground/40 max-w-xs">
+                        Adjust your filters or search term to find what you're
+                        looking for.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </FrameContent>
 
               <FrameFooter className="px-8 py-6 border-t border-border/5 flex items-center justify-between">

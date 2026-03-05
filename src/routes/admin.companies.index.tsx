@@ -182,22 +182,22 @@ function CompaniesManagementPage() {
                 <Table>
                   <TableHeader className="bg-muted/5">
                     <TableRow className="hover:bg-transparent border-border/5">
-                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-8 py-4">
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-8 py-3">
                         Organization
                       </TableHead>
-                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
                         Registry (TIN)
                       </TableHead>
-                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
                         Vertical
                       </TableHead>
-                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4 text-center">
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3 text-center">
                         Headcount
                       </TableHead>
-                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4">
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
                         Security Status
                       </TableHead>
-                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-4 text-right pr-8">
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3 text-right pr-8">
                         Management
                       </TableHead>
                     </TableRow>
@@ -292,7 +292,7 @@ function CompaniesManagementPage() {
                                       params={{ id: company.id }}
                                     />
                                   }
-                                  className="rounded-xl py-2.5 font-semibold text-sm"
+                                  className="rounded-xl py-1.5 font-semibold text-sm"
                                 >
                                   <HugeiconsIcon
                                     icon={ViewIcon}
@@ -302,7 +302,7 @@ function CompaniesManagementPage() {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                   render={<Link to="/dashboard" />}
-                                  className="rounded-xl py-2.5 font-semibold text-sm"
+                                  className="rounded-xl py-1.5 font-semibold text-sm"
                                 >
                                   <HugeiconsIcon
                                     icon={DashboardSquare01Icon}
@@ -312,7 +312,7 @@ function CompaniesManagementPage() {
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator className="bg-border/5 my-1" />
                                 {company.status === "active" ? (
-                                  <DropdownMenuItem className="rounded-xl py-2.5 font-semibold text-sm text-warning focus:bg-warning/5">
+                                  <DropdownMenuItem className="rounded-xl py-1.5 font-semibold text-sm text-warning focus:bg-warning/5">
                                     <HugeiconsIcon
                                       icon={Cancel01Icon}
                                       className="size-4 mr-3"
@@ -320,7 +320,7 @@ function CompaniesManagementPage() {
                                     <span>Suspend Tenant</span>
                                   </DropdownMenuItem>
                                 ) : (
-                                  <DropdownMenuItem className="rounded-xl py-2.5 font-semibold text-sm text-success focus:bg-success/5">
+                                  <DropdownMenuItem className="rounded-xl py-1.5 font-semibold text-sm text-success focus:bg-success/5">
                                     <HugeiconsIcon
                                       icon={Tick01Icon}
                                       className="size-4 mr-3"
@@ -330,7 +330,7 @@ function CompaniesManagementPage() {
                                 )}
                                 <AlertDialog>
                                   <AlertDialogTrigger render={
-                                    <DropdownMenuItem onSelect={e => e.preventDefault()} className="rounded-xl py-2.5 font-semibold text-sm text-destructive focus:bg-destructive/5">
+                                    <DropdownMenuItem onSelect={e => e.preventDefault()} className="rounded-xl py-1.5 font-semibold text-sm text-destructive focus:bg-destructive/5">
                                       <HugeiconsIcon
                                         icon={Delete01Icon}
                                         className="size-4 mr-3"

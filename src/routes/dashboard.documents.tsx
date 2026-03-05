@@ -120,7 +120,7 @@ function DocumentsPage() {
                   <TableBody>
                     {filtered.map((doc) => (
                       <TableRow key={doc.id} className="border-border/5 hover:bg-muted/5 transition-colors group">
-                        <TableCell className="pl-6 py-4">
+                        <TableCell className="pl-6 py-3">
                           <div className="flex items-center gap-3">
                             <div className="size-9 rounded-xl bg-muted/5 border border-border/10 flex items-center justify-center text-muted-foreground/40 group-hover:text-primary transition-colors">
                               <HugeiconsIcon icon={File02Icon} size={16} />
