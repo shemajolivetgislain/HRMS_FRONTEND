@@ -11,27 +11,25 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { store } from "@/lib/redux/store";
-
 import { getCookie } from "@/lib/cookies";
 
 export const Route = createFileRoute("/admin")({
   beforeLoad: ({ location }) => {
+    // Only redirect on the client. On the server, we don't have access to cookies easily in this context
+    // without more complex setup. Skipping here prevents the bounce to login on refresh.
+    if (typeof window === "undefined") return;
+
+    const token = getCookie("auth_token");
     const state = store.getState();
-    const { user, token: storeToken } = state.auth;
-    
-    // Check Redux, then Cookie (SSR safe), then LocalStorage (Client fallback)
-    const token =
-      storeToken ||
-      getCookie("auth_token") ||
-      (typeof window !== "undefined" ? localStorage.getItem("auth_token") : null);
+    const { user } = state.auth;
 
     if (!token) {
-      throw redirect({ to: "/auth/login", search: { redirect: location.href } });
+      throw redirect({
+        to: "/auth/login",
+        search: { redirect: location.href },
+      });
     }
 
-    // Note: On the server, 'user' might be null until hydration.
-    // To fully fix the flash, we would need to populate the Redux store on the server.
-    // For now, this cookie check at least prevents the incorrect login redirect during SSR.
     if (user) {
       const isVerified = user.status === "ACTIVE";
       const needsPasswordChange =
@@ -57,6 +55,7 @@ export const Route = createFileRoute("/admin")({
       }
     }
   },
+
   errorComponent: ErrorComponent,
   component: AdminLayout,
 });

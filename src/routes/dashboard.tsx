@@ -10,17 +10,17 @@ import { getCookie } from "@/lib/cookies";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: ({ location }) => {
+    if (typeof window === "undefined") return;
+
+    const token = getCookie("auth_token");
     const state = store.getState();
-    const { user, token: storeToken } = state.auth;
-    
-    // Check Redux, then Cookie (SSR safe), then LocalStorage (Client fallback)
-    const token =
-      storeToken ||
-      getCookie("auth_token") ||
-      (typeof window !== "undefined" ? localStorage.getItem("auth_token") : null);
+    const { user } = state.auth;
 
     if (!token) {
-      throw redirect({ to: "/auth/login", search: { redirect: location.href } });
+      throw redirect({
+        to: "/auth/login",
+        search: { redirect: location.href },
+      });
     }
 
     if (user) {

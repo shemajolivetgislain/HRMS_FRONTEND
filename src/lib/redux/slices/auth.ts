@@ -11,6 +11,8 @@ interface AuthState {
 }
 
 const loadInitialState = (): AuthState => {
+  // On server, we can't easily access document.cookie here without extra plumbing.
+  // But TanStack Start will run this on both.
   if (typeof window === "undefined") {
     return {
       user: null,
@@ -22,7 +24,8 @@ const loadInitialState = (): AuthState => {
   }
 
   try {
-    const token = localStorage.getItem("auth_token") || getCookie("auth_token");
+    // Rely ONLY on cookie for token stability
+    const token = getCookie("auth_token");
     const userStr = localStorage.getItem("auth_user");
     const user = userStr ? (JSON.parse(userStr) as AuthUser) : null;
     const activeCompanyId = localStorage.getItem("active_company_id");
@@ -65,11 +68,11 @@ export const authSlice = createSlice({
       state.isAuthenticated = true;
       state.activeCompanyId = user.company?.id || null;
 
-      // Sync with localStorage & Cookies
+      // Token goes ONLY to cookie for SSR reliability
+      setCookie("auth_token", token);
+      
       if (typeof window !== "undefined") {
-        localStorage.setItem("auth_token", token);
         localStorage.setItem("auth_user", JSON.stringify(user));
-        setCookie("auth_token", token);
         if (state.activeCompanyId) {
           localStorage.setItem("active_company_id", state.activeCompanyId);
         }
@@ -81,12 +84,10 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       state.activeCompanyId = null;
 
-      // Clear localStorage & Cookies
+      removeCookie("auth_token");
       if (typeof window !== "undefined") {
-        localStorage.removeItem("auth_token");
         localStorage.removeItem("auth_user");
         localStorage.removeItem("active_company_id");
-        removeCookie("auth_token");
       }
     },
     updateUser: (state, action: PayloadAction<Partial<AuthUser>>) => {
@@ -95,10 +96,11 @@ export const authSlice = createSlice({
 
         if (action.payload.company) {
           state.activeCompanyId = action.payload.company.id;
-          localStorage.setItem("active_company_id", state.activeCompanyId);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("active_company_id", state.activeCompanyId);
+          }
         }
 
-        // Sync with localStorage
         if (typeof window !== "undefined") {
           localStorage.setItem("auth_user", JSON.stringify(state.user));
         }

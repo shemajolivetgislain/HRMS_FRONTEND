@@ -16,14 +16,11 @@ import { getCookie } from "@/lib/cookies";
 
 export const Route = createFileRoute("/")({
   beforeLoad: () => {
-    const state = store.getState();
-    const { user, token: storeToken } = state.auth;
+    if (typeof window === "undefined") return;
 
-    // Check Redux, then Cookie (SSR safe), then LocalStorage (Client fallback)
-    const token =
-      storeToken ||
-      getCookie("auth_token") ||
-      (typeof window !== "undefined" ? localStorage.getItem("auth_token") : null);
+    const token = getCookie("auth_token");
+    const state = store.getState();
+    const { user } = state.auth;
 
     if (token && user) {
       if (user.role === "ADMIN") {
@@ -84,7 +81,6 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-      {/* Header */}
       <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">

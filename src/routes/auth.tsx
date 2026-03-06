@@ -1,18 +1,21 @@
-import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+} from "@tanstack/react-router";
 import { store } from "@/lib/redux/store";
 
 import { getCookie } from "@/lib/cookies";
 
 export const Route = createFileRoute("/auth")({
   beforeLoad: ({ location }) => {
-    const state = store.getState();
-    const { user, token: storeToken } = state.auth;
+    // Only redirect on the client.
+    if (typeof window === "undefined") return;
 
-    // Check Redux, then Cookie (SSR safe), then LocalStorage (Client fallback)
-    const token =
-      storeToken ||
-      getCookie("auth_token") ||
-      (typeof window !== "undefined" ? localStorage.getItem("auth_token") : null);
+    const token = getCookie("auth_token");
+    const state = store.getState();
+    const { user } = state.auth;
 
     if (token && user) {
       const isVerified = user.status === "ACTIVE";
@@ -25,8 +28,6 @@ export const Route = createFileRoute("/auth")({
 
       // Fully set up users: go to their dashboard
       if (isVerified && !needsPasswordChange) {
-        // If they are ALREADY heading to a dashboard, let them through (although they shouldn't be under /auth)
-        // This is mainly to prevent loops if /auth is a parent of everything (which it isn't here)
         if (user.role === "ADMIN") {
           throw redirect({ to: "/admin" });
         }
@@ -42,7 +43,11 @@ export const Route = createFileRoute("/auth")({
       }
 
       // Needs password change: can only be on /auth/change-password
-      if (isVerified && needsPasswordChange && path !== "/auth/change-password") {
+      if (
+        isVerified &&
+        needsPasswordChange &&
+        path !== "/auth/change-password"
+      ) {
         throw redirect({
           to: "/auth/change-password",
           search: { email: user.email },
