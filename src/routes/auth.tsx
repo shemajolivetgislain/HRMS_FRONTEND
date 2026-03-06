@@ -23,10 +23,8 @@ export const Route = createFileRoute("/auth")({
         (user.role === "COMPANY_ADMIN" || user.role === "EMPLOYEE") &&
         !user.passwordResetAt;
 
-      // Current normalized path
       const path = location.pathname.replace(/\/$/, "");
 
-      // Fully set up users: go to their dashboard
       if (isVerified && !needsPasswordChange) {
         if (user.role === "ADMIN") {
           throw redirect({ to: "/admin" });
@@ -34,7 +32,6 @@ export const Route = createFileRoute("/auth")({
         throw redirect({ to: "/dashboard" });
       }
 
-      // Not verified: can only be on /auth/verify
       if (!isVerified && path !== "/auth/verify") {
         throw redirect({
           to: "/auth/verify",
@@ -42,7 +39,6 @@ export const Route = createFileRoute("/auth")({
         });
       }
 
-      // Needs password change: can only be on /auth/change-password
       if (
         isVerified &&
         needsPasswordChange &&
@@ -60,8 +56,8 @@ export const Route = createFileRoute("/auth")({
 
 function AuthLayout() {
   return (
-    <div className="grid min-h-svh lg:grid-cols-[1fr_1.1fr] bg-background selection:bg-primary/10 selection:text-primary">
-      <div className="flex flex-col p-8 md:p-12 lg:p-20 justify-between">
+    <div className="fixed inset-0 grid lg:grid-cols-[1fr_1.1fr] bg-background selection:bg-primary/10 selection:text-primary overflow-hidden">
+      <div className="flex flex-col p-8 md:p-12 lg:p-20 justify-between h-full overflow-y-auto no-scrollbar">
         <div className="flex justify-start">
           <Link to="/" className="flex items-center gap-2.5 group">
             <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shadow-sm shadow-primary/10 transition-transform duration-500">
@@ -90,32 +86,38 @@ function AuthLayout() {
         </div>
       </div>
 
-      <div className="relative hidden lg:flex flex-col bg-muted/10 overflow-hidden border-l border-border/5">
-        <div className="absolute inset-0 z-0 pointer-events-none select-none">
-          <div className="absolute top-0 right-0 h-[1000px] w-[1000px] bg-primary/[0.03] blur-[160px] rounded-full translate-x-1/4 -translate-y-1/4" />
-          <div className="absolute bottom-0 left-0 h-[600px] w-[600px] bg-primary/[0.01] blur-[120px] rounded-full -translate-x-1/4 translate-y-1/4" />
+      <div className="relative hidden lg:flex flex-col h-full overflow-hidden border-l border-border/10 bg-muted">
+        <img
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2000&auto=format&fit=crop"
+          alt="Modern team collaboration"
+          className="absolute inset-0 object-cover w-full h-full select-none pointer-events-none"
+        />
 
-          <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-        </div>
+        <div className="relative z-30 flex flex-col h-full p-20 justify-center bg-black/30 backdrop-blur-[2px]">
+          <div className="max-w-md space-y-8">
+            <div className="space-y-3">
+              <span className="text-primary font-black text-[10px] uppercase tracking-[0.5em] drop-shadow-sm">
+                Enterprise HRMS
+              </span>
+              <h2 className="text-6xl font-bold leading-[1.05] tracking-tight text-white drop-shadow-2xl">
+                Empowering
+                <br />
+                your workforce.
+              </h2>
+            </div>
 
-        <div className="relative z-10 flex flex-col h-full p-20 justify-center">
-          <div className="max-w-md space-y-6">
-            <h2 className="text-5xl font-semibold leading-[1.1] tracking-tight text-foreground/90">
-              Work better,
-              <br />
-              together.
-            </h2>
-            <div className="h-px w-12 bg-primary/20" />
-            <p className="text-xl font-medium text-muted-foreground/50 leading-relaxed">
-              The modern standard for high-performance organizations to manage
-              their global workforce.
+            <div className="h-1.5 w-16 bg-primary rounded-full shadow-lg shadow-primary/20" />
+
+            <p className="text-xl font-medium text-white/90 leading-relaxed max-w-[360px] drop-shadow-lg">
+              The unified platform for human capital, automated payroll, and
+              strategic workforce planning.
             </p>
           </div>
         </div>
 
-        <div className="absolute bottom-12 left-20 right-20 flex items-center justify-between">
-          <p className="text-xs font-bold text-muted-foreground/20 uppercase tracking-[0.3em]">
-            Precision Interface v4.2
+        <div className="absolute bottom-12 left-20 right-20 z-30 flex items-center justify-between">
+          <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em] drop-shadow-md">
+            System
           </p>
         </div>
       </div>
