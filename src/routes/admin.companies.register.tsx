@@ -72,7 +72,11 @@ const registrationSchema = z
     categoryId: z.string().min(1, "Category is required"),
     ownershipType: z.enum(["PRIVATE", "PUBLIC", "GOVERNMENT_OWNED"]),
     type: z.enum(["LIMITED_BY_SHARES", "PARTNERSHIP", "SOLE_TRADER"]),
-    villageId: z.string().optional(),
+    provinceId: z.string().min(1, "Province is required"),
+    districtId: z.string().min(1, "District is required"),
+    sectorId: z.string().min(1, "Sector is required"),
+    cellId: z.string().min(1, "Cell is required"),
+    villageId: z.string().min(1, "Village is required"),
     adminFirstName: z.string().optional(),
     adminLastName: z.string().optional(),
     adminEmail: z.string().email("Invalid email").optional().or(z.literal("")),
@@ -121,8 +125,6 @@ function RegisterCompanyPage() {
 
   const { data: categoriesData, isLoading: categoriesLoading } =
     useGetCompanyCategoriesQuery(undefined);
-  const { data: locationsData, isLoading: locationsLoading } =
-    useGetLocationsQuery({ type: "VILLAGE" });
 
   const [createCompanyApi] = useCreateCompanyMutation();
   const [createUserApi] = useCreateUserMutation();
@@ -143,6 +145,10 @@ function RegisterCompanyPage() {
       categoryId: "",
       ownershipType: "PRIVATE",
       type: "LIMITED_BY_SHARES",
+      provinceId: "",
+      districtId: "",
+      sectorId: "",
+      cellId: "",
       villageId: "",
       adminFirstName: "",
       adminLastName: "",
@@ -159,8 +165,68 @@ function RegisterCompanyPage() {
     formState: { errors, isSubmitting },
   } = form;
 
-  const regMode = watch("regMode");
   const formData = watch();
+  const regMode = formData.regMode;
+
+  // Location Fetching
+  const { data: provincesData } = useGetLocationsQuery({ type: "PROVINCE" });
+  const { data: districtsData } = useGetLocationsQuery({ type: "DISTRICT" });
+  const { data: sectorsData } = useGetLocationsQuery({ type: "SECTOR" });
+  const { data: cellsData } = useGetLocationsQuery({ type: "CELL" });
+  const { data: villagesData } = useGetLocationsQuery({ type: "VILLAGE" });
+
+  const selectedProvince = provincesData?.items.find(
+    (p) => p.id === formData.provinceId,
+  );
+  const selectedDistrict = districtsData?.items.find(
+    (d) => d.id === formData.districtId,
+  );
+  const selectedSector = sectorsData?.items.find(
+    (s) => s.id === formData.sectorId,
+  );
+  const selectedCell = cellsData?.items.find((c) => c.id === formData.cellId);
+
+  const provinces = provincesData?.items || [];
+
+  const districts = React.useMemo(() => {
+    if (!selectedProvince) return [];
+    const pCode = selectedProvince.code.replace(/^0+/, "");
+    return (
+      districtsData?.items.filter((d) =>
+        d.code.replace(/^0+/, "").startsWith(pCode),
+      ) || []
+    );
+  }, [selectedProvince, districtsData]);
+
+  const sectors = React.useMemo(() => {
+    if (!selectedDistrict) return [];
+    const dCode = selectedDistrict.code.replace(/^0+/, "");
+    return (
+      sectorsData?.items.filter((s) =>
+        s.code.replace(/^0+/, "").startsWith(dCode),
+      ) || []
+    );
+  }, [selectedDistrict, sectorsData]);
+
+  const cells = React.useMemo(() => {
+    if (!selectedSector) return [];
+    const sCode = selectedSector.code.replace(/^0+/, "");
+    return (
+      cellsData?.items.filter((c) =>
+        c.code.replace(/^0+/, "").startsWith(sCode),
+      ) || []
+    );
+  }, [selectedSector, cellsData]);
+
+  const villages = React.useMemo(() => {
+    if (!selectedCell) return [];
+    const cCode = selectedCell.code.replace(/^0+/, "");
+    return (
+      villagesData?.items.filter((v) =>
+        v.code.replace(/^0+/, "").startsWith(cCode),
+      ) || []
+    );
+  }, [selectedCell, villagesData]);
 
   React.useEffect(() => {
     setMounted(true);
@@ -171,7 +237,6 @@ function RegisterCompanyPage() {
     setStep(1);
   };
 
-  // per-step validation fields
   const step1Fields: (keyof RegistrationFormValues)[] = [
     "name",
     "tin",
@@ -179,6 +244,10 @@ function RegisterCompanyPage() {
     "categoryId",
     "ownershipType",
     "type",
+    "provinceId",
+    "districtId",
+    "sectorId",
+    "cellId",
     "villageId",
   ];
   const step2Fields: (keyof RegistrationFormValues)[] = [
@@ -228,7 +297,7 @@ function RegisterCompanyPage() {
         categoryId: data.categoryId,
         ownershipType: data.ownershipType,
         type: data.type,
-        villageId: data.villageId || "c07551a8-e736-4de1-a048-ad066a619dbc", // placeholder for empty api
+        villageId: data.villageId,
       }).unwrap();
 
       if (regMode === "with_admin" && data.adminEmail) {
@@ -275,7 +344,6 @@ function RegisterCompanyPage() {
     }
   };
 
-  // --- success screen ---
   if (isSuccess) {
     return (
       <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full">
@@ -324,7 +392,6 @@ function RegisterCompanyPage() {
     );
   }
 
-  // --- hydration guard ---
   if (!mounted) {
     return (
       <main className="flex flex-1 flex-col h-full bg-background animate-pulse">
@@ -336,7 +403,6 @@ function RegisterCompanyPage() {
     );
   }
 
-  // --- mode select ---
   if (step === 0) {
     return (
       <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full">
@@ -408,7 +474,6 @@ function RegisterCompanyPage() {
     );
   }
 
-  // --- step indicator ---
   const isLastStep = steps.indexOf(step) === steps.length - 1;
 
   return (
@@ -497,7 +562,6 @@ function RegisterCompanyPage() {
                 </FrameHeader>
 
                 <FrameContent className="p-8">
-                  {/* step 1 — company details */}
                   {step === 1 && (
                     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
                       <FormField
@@ -577,11 +641,16 @@ function RegisterCompanyPage() {
                               </FormLabel>
                               <FormControl>
                                 <Select
+                                  value={field.value}
                                   onValueChange={field.onChange}
-                                  defaultValue={field.value}
                                 >
                                   <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
-                                    <SelectValue placeholder="Select Type" />
+                                    <SelectValue placeholder="Select Type">
+                                      {field.value === "PRIVATE" && "Private"}
+                                      {field.value === "PUBLIC" && "Public"}
+                                      {field.value === "GOVERNMENT_OWNED" &&
+                                        "Government Owned"}
+                                    </SelectValue>
                                   </SelectTrigger>
                                   <SelectContent>
                                     <SelectItem value="PRIVATE">
@@ -611,11 +680,18 @@ function RegisterCompanyPage() {
                               </FormLabel>
                               <FormControl>
                                 <Select
+                                  value={field.value}
                                   onValueChange={field.onChange}
-                                  defaultValue={field.value}
                                 >
                                   <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
-                                    <SelectValue placeholder="Select Type" />
+                                    <SelectValue placeholder="Select Type">
+                                      {field.value === "LIMITED_BY_SHARES" &&
+                                        "Limited by Shares"}
+                                      {field.value === "PARTNERSHIP" &&
+                                        "Partnership"}
+                                      {field.value === "SOLE_TRADER" &&
+                                        "Sole Trader"}
+                                    </SelectValue>
                                   </SelectTrigger>
                                   <SelectContent>
                                     <SelectItem value="LIMITED_BY_SHARES">
@@ -636,40 +712,226 @@ function RegisterCompanyPage() {
                         />
                       </div>
 
+                      <div className="grid grid-cols-2 gap-6">
+                        <FormField
+                          control={form.control as any}
+                          name="provinceId"
+                          render={({ field }) => (
+                            <FormItem className="space-y-1.5">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                Province
+                              </FormLabel>
+                              <FormControl>
+                                <Select
+                                  value={field.value}
+                                  onValueChange={(val) => {
+                                    field.onChange(val);
+                                    setValue("districtId", "");
+                                    setValue("sectorId", "");
+                                    setValue("cellId", "");
+                                    setValue("villageId", "");
+                                  }}
+                                >
+                                  <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
+                                    <SelectValue placeholder="Select Province">
+                                      {
+                                        provinces.find(
+                                          (p) => p.id === field.value,
+                                        )?.name
+                                      }
+                                    </SelectValue>
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {provinces.map((loc) => (
+                                      <SelectItem key={loc.id} value={loc.id}>
+                                        {loc.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                              <FormMessage className="text-[11px] font-medium" />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control as any}
+                          name="districtId"
+                          render={({ field }) => (
+                            <FormItem className="space-y-1.5">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                District
+                              </FormLabel>
+                              <FormControl>
+                                <Select
+                                  value={field.value}
+                                  disabled={!formData.provinceId}
+                                  onValueChange={(val) => {
+                                    field.onChange(val);
+                                    setValue("sectorId", "");
+                                    setValue("cellId", "");
+                                    setValue("villageId", "");
+                                  }}
+                                >
+                                  <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
+                                    <SelectValue
+                                      placeholder={
+                                        !formData.provinceId
+                                          ? "Select Province First"
+                                          : "Select District"
+                                      }
+                                    >
+                                      {
+                                        districts.find(
+                                          (d) => d.id === field.value,
+                                        )?.name
+                                      }
+                                    </SelectValue>
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {districts.map((loc) => (
+                                      <SelectItem key={loc.id} value={loc.id}>
+                                        {loc.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                              <FormMessage className="text-[11px] font-medium" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-6">
+                        <FormField
+                          control={form.control as any}
+                          name="sectorId"
+                          render={({ field }) => (
+                            <FormItem className="space-y-1.5">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                Sector
+                              </FormLabel>
+                              <FormControl>
+                                <Select
+                                  value={field.value}
+                                  disabled={!formData.districtId}
+                                  onValueChange={(val) => {
+                                    field.onChange(val);
+                                    setValue("cellId", "");
+                                    setValue("villageId", "");
+                                  }}
+                                >
+                                  <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
+                                    <SelectValue
+                                      placeholder={
+                                        !formData.districtId
+                                          ? "Select District First"
+                                          : "Select Sector"
+                                      }
+                                    >
+                                      {
+                                        sectors.find(
+                                          (s) => s.id === field.value,
+                                        )?.name
+                                      }
+                                    </SelectValue>
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {sectors.map((loc) => (
+                                      <SelectItem key={loc.id} value={loc.id}>
+                                        {loc.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                              <FormMessage className="text-[11px] font-medium" />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control as any}
+                          name="cellId"
+                          render={({ field }) => (
+                            <FormItem className="space-y-1.5">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                Cell
+                              </FormLabel>
+                              <FormControl>
+                                <Select
+                                  value={field.value}
+                                  disabled={!formData.sectorId}
+                                  onValueChange={(val) => {
+                                    field.onChange(val);
+                                    setValue("villageId", "");
+                                  }}
+                                >
+                                  <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
+                                    <SelectValue
+                                      placeholder={
+                                        !formData.sectorId
+                                          ? "Select Sector First"
+                                          : "Select Cell"
+                                      }
+                                    >
+                                      {
+                                        cells.find((c) => c.id === field.value)
+                                          ?.name
+                                      }
+                                    </SelectValue>
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {cells.map((loc) => (
+                                      <SelectItem key={loc.id} value={loc.id}>
+                                        {loc.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                              <FormMessage className="text-[11px] font-medium" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
                       <FormField
                         control={form.control as any}
                         name="villageId"
                         render={({ field }) => (
                           <FormItem className="space-y-1.5">
                             <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                              Village / Location
+                              Village
                             </FormLabel>
                             <FormControl>
                               <Select
+                                value={field.value}
+                                disabled={!formData.cellId}
                                 onValueChange={field.onChange}
-                                defaultValue={field.value}
                               >
                                 <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
                                   <SelectValue
                                     placeholder={
-                                      locationsLoading
-                                        ? "Loading..."
+                                      !formData.cellId
+                                        ? "Select Cell First"
                                         : "Select Village"
                                     }
-                                  />
+                                  >
+                                    {
+                                      villages.find((v) => v.id === field.value)
+                                        ?.name
+                                    }
+                                  </SelectValue>
                                 </SelectTrigger>
                                 <SelectContent>
-                                  {locationsData?.items.map((loc) => (
+                                  {villages.map((loc) => (
                                     <SelectItem key={loc.id} value={loc.id}>
                                       {loc.name}
                                     </SelectItem>
                                   ))}
-                                  {!locationsLoading &&
-                                    !locationsData?.items.length && (
-                                      <div className="px-3 py-2 text-xs text-muted-foreground">
-                                        No locations found
-                                      </div>
-                                    )}
                                 </SelectContent>
                               </Select>
                             </FormControl>
@@ -822,7 +1084,6 @@ function RegisterCompanyPage() {
                     </div>
                   )}
 
-                  {/* step 2 — admin (only in with_admin mode) */}
                   {step === 2 && (
                     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
                       <div className="grid grid-cols-2 gap-6">
@@ -910,7 +1171,6 @@ function RegisterCompanyPage() {
                     </div>
                   )}
 
-                  {/* step 3 — confirmation */}
                   {step === 3 && (
                     <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
                       <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10">

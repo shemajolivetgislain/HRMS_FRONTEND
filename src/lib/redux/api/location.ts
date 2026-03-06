@@ -4,21 +4,21 @@ export interface Location {
   id: string;
   name: string;
   type: string; // PROVINCE, DISTRICT, SECTOR, CELL, VILLAGE
-  parentId: string | null;
+  code: string;
 }
 
 export const locationApi = hrmsApi.injectEndpoints({
   endpoints: (builder) => ({
     getLocations: builder.query<
       { items: Location[]; meta: { totalItems: number } },
-      { parentId?: string; type?: string; page?: number; limit?: number } | undefined
+      { type?: string; page?: number; limit?: number } | undefined
     >({
       query: (params) => ({
         url: "/locations",
         params: {
-          ...params,
+          type: params?.type || "PROVINCE",
           page: params?.page ?? 1,
-          limit: params?.limit ?? 100,
+          limit: params?.limit ?? 5000,
         },
       }),
     }),
