@@ -12,16 +12,18 @@ import {
   Globe02Icon,
 } from "@hugeicons/core-free-icons";
 import { store } from "@/lib/redux/store";
+import { getCookie } from "@/lib/cookies";
 
 export const Route = createFileRoute("/")({
   beforeLoad: () => {
     const state = store.getState();
-    const user = state.auth.user;
+    const { user, token: storeToken } = state.auth;
+
+    // Check Redux, then Cookie (SSR safe), then LocalStorage (Client fallback)
     const token =
-      state.auth.token ||
-      (typeof window !== "undefined"
-        ? localStorage.getItem("auth_token")
-        : null);
+      storeToken ||
+      getCookie("auth_token") ||
+      (typeof window !== "undefined" ? localStorage.getItem("auth_token") : null);
 
     if (token && user) {
       if (user.role === "ADMIN") {

@@ -6,12 +6,17 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ErrorComponent } from "@/components/error-component";
 import { store } from "@/lib/redux/store";
 
+import { getCookie } from "@/lib/cookies";
+
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: ({ location }) => {
     const state = store.getState();
     const { user, token: storeToken } = state.auth;
+    
+    // Check Redux, then Cookie (SSR safe), then LocalStorage (Client fallback)
     const token =
       storeToken ||
+      getCookie("auth_token") ||
       (typeof window !== "undefined" ? localStorage.getItem("auth_token") : null);
 
     if (!token) {
@@ -19,7 +24,7 @@ export const Route = createFileRoute("/dashboard")({
     }
 
     if (user) {
-      const isVerified = !!user.isEmailVerified;
+      const isVerified = user.status === "ACTIVE";
       const needsPasswordChange =
         (user.role === "COMPANY_ADMIN" || user.role === "EMPLOYEE") &&
         !user.passwordResetAt;

@@ -7,10 +7,22 @@ export const userApi = hrmsApi.injectEndpoints({
       ApiPaginatedResponse<User>,
       { page?: number; limit?: number; searchTerm?: string; role?: string; companyId?: string; status?: string } | undefined
     >({
-      query: (params) => ({
-        url: "/users",
-        params,
-      }),
+      query: (params) => {
+        const queryParams: Record<string, any> = {
+          page: params?.page ?? 1,
+          limit: params?.limit ?? 20,
+        };
+
+        if (params?.searchTerm) queryParams.searchTerm = params.searchTerm;
+        if (params?.role) queryParams.role = params.role;
+        if (params?.companyId) queryParams.companyId = params.companyId;
+        if (params?.status) queryParams.status = params.status;
+
+        return {
+          url: "/users",
+          params: queryParams,
+        };
+      },
       providesTags: ["User"],
     }),
     createUser: builder.mutation({

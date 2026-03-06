@@ -61,9 +61,7 @@ import {
   useGetLocationsQuery,
 } from "@/lib/redux/api";
 import { cn } from "@/lib/utils";
-import { DashboardHeader } from "#/components/dashboard/dashboard-header";
-
-// --- schemas ---
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 
 const registrationSchema = z
   .object({
@@ -123,7 +121,7 @@ function RegisterCompanyPage() {
 
   const { data: categoriesData, isLoading: categoriesLoading } =
     useGetCompanyCategoriesQuery(undefined);
-  const { data: locationsData, isLoading: locationsLoading } = 
+  const { data: locationsData, isLoading: locationsLoading } =
     useGetLocationsQuery({ type: "VILLAGE" });
 
   const [createCompanyApi] = useCreateCompanyMutation();
@@ -230,7 +228,7 @@ function RegisterCompanyPage() {
         categoryId: data.categoryId,
         ownershipType: data.ownershipType,
         type: data.type,
-        villageId: data.villageId || undefined,
+        villageId: data.villageId || "c07551a8-e736-4de1-a048-ad066a619dbc", // placeholder for empty api
       }).unwrap();
 
       if (regMode === "with_admin" && data.adminEmail) {
@@ -308,16 +306,15 @@ function RegisterCompanyPage() {
                     </span>{" "}
                     has been created.{" "}
                     <span className="text-primary font-bold">
-                      They must verify their email using the OTP sent to them before logging in.
+                      They must verify their email using the OTP sent to them
+                      before logging in.
                     </span>
                   </>
                 ) : (
                   "You can now proceed to manage its settings."
                 )}
               </p>
-              <Button
-                onClick={() => navigate({ to: "/admin/companies" })}
-              >
+              <Button onClick={() => navigate({ to: "/admin/companies" })}>
                 Go to Company List
               </Button>
             </FramePanel>
@@ -417,555 +414,592 @@ function RegisterCompanyPage() {
   return (
     <Form {...form}>
       <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full">
-      <DashboardHeader
-        category="administration"
-        title="Register New Company"
-        description={
-          regMode === "only_company"
-            ? "Provision a new tenant."
-            : "Provision a new tenant and its initial master administrator."
-        }
-      >
-        <Button
-          variant="outline"
-          onClick={() => {
-            setStep(0);
-            setValue("regMode", "only_company");
-          }}
+        <DashboardHeader
+          category="administration"
+          title="Register New Company"
+          description={
+            regMode === "only_company"
+              ? "Provision a new tenant."
+              : "Provision a new tenant and its initial master administrator."
+          }
         >
-          <HugeiconsIcon icon={ArrowLeft01Icon} />
-          Change Method
-        </Button>
-      </DashboardHeader>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setStep(0);
+              setValue("regMode", "only_company");
+            }}
+          >
+            <HugeiconsIcon icon={ArrowLeft01Icon} />
+            Change Method
+          </Button>
+        </DashboardHeader>
 
-      <div className="flex-1 overflow-y-auto no-scrollbar px-6 lg:px-8 pb-20 pt-2">
-        <div className="max-w-3xl w-full">
-          <div className="flex items-center gap-3 mb-10 max-w-3xl">
-            {steps.map((s, idx) => (
-              <div key={s} className="flex-1 flex items-center gap-2">
-                <div
-                  className={cn(
-                    "h-1.5 flex-1 rounded-full transition-all duration-500",
-                    step === s
-                      ? "bg-primary shadow-[0_0_10px_rgba(var(--primary),0.3)]"
-                      : steps.indexOf(step) > idx
-                        ? "bg-primary/40"
-                        : "bg-border/40",
-                  )}
-                />
-              </div>
-            ))}
-          </div>
-
-          {globalError && (
-            <Alert
-              variant="destructive"
-              className="mb-6 animate-in fade-in slide-in-from-top-2"
-            >
-              <HugeiconsIcon icon={Alert01Icon} />
-              <AlertTitle>Registration Failed</AlertTitle>
-              <AlertDescription>{globalError}</AlertDescription>
-            </Alert>
-          )}
-
-          <Frame>
-            <FramePanel className="bg-card">
-              <FrameHeader>
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <HugeiconsIcon
-                      icon={
-                        step === 1
-                          ? Building03Icon
-                          : step === 2
-                            ? UserEdit01Icon
-                            : Shield01Icon
-                      }
-                      size={18}
-                    />
-                  </div>
-                  <div>
-                    <FrameTitle>
-                      {step === 1
-                        ? "Organization Profile"
-                        : step === 2
-                          ? "Initial Administrator"
-                          : "Confirm & Submit"}
-                    </FrameTitle>
-                    <FrameDescription>
-                      Step {steps.indexOf(step) + 1} of {steps.length}
-                    </FrameDescription>
-                  </div>
-                </div>
-              </FrameHeader>
-
-              <FrameContent className="p-8">
-                {/* step 1 — company details */}
-                {step === 1 && (
-                  <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-                    <FormField
-                      control={form.control as any}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem className="space-y-1.5">
-                          <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                            Legal Entity Name
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="e.g. Igihe Logistics Inc."
-                              className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage className="text-[11px] font-medium" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="grid grid-cols-2 gap-6">
-                      <FormField
-                        control={form.control as any}
-                        name="tin"
-                        render={({ field }) => (
-                          <FormItem className="space-y-1.5">
-                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                              TIN Number
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="9+ digits"
-                                className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage className="text-[11px] font-medium" />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control as any}
-                        name="identificationNumber"
-                        render={({ field }) => (
-                          <FormItem className="space-y-1.5">
-                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                              Identification Number
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="number"
-                                placeholder="e.g. 12345"
-                                className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
-                                {...field}
-                                onChange={(e) => field.onChange(e.target.value)}
-                              />
-                            </FormControl>
-                            <FormMessage className="text-[11px] font-medium" />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-6">
-                      <FormField
-                        control={form.control as any}
-                        name="ownershipType"
-                        render={({ field }) => (
-                          <FormItem className="space-y-1.5">
-                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                              Ownership Type
-                            </FormLabel>
-                            <FormControl>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
-                                  <SelectValue placeholder="Select Type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="PRIVATE">Private</SelectItem>
-                                  <SelectItem value="PUBLIC">Public</SelectItem>
-                                  <SelectItem value="GOVERNMENT_OWNED">Government Owned</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </FormControl>
-                            <FormMessage className="text-[11px] font-medium" />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control as any}
-                        name="type"
-                        render={({ field }) => (
-                          <FormItem className="space-y-1.5">
-                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                              Legal Type
-                            </FormLabel>
-                            <FormControl>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
-                                  <SelectValue placeholder="Select Type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="LIMITED_BY_SHARES">Limited by Shares</SelectItem>
-                                  <SelectItem value="PARTNERSHIP">Partnership</SelectItem>
-                                  <SelectItem value="SOLE_TRADER">Sole Trader</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </FormControl>
-                            <FormMessage className="text-[11px] font-medium" />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <FormField
-                      control={form.control as any}
-                      name="villageId"
-                      render={({ field }) => (
-                        <FormItem className="space-y-1.5">
-                          <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                            Village / Location
-                          </FormLabel>
-                          <FormControl>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
-                                <SelectValue placeholder={locationsLoading ? "Loading..." : "Select Village"} />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {locationsData?.map(loc => (
-                                  <SelectItem key={loc.id} value={loc.id}>{loc.name}</SelectItem>
-                                ))}
-                                {(!locationsLoading && !locationsData?.length) && (
-                                  <div className="px-3 py-2 text-xs text-muted-foreground">No locations found</div>
-                                )}
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
-                          <FormMessage className="text-[11px] font-medium" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control as any}
-                      name="categoryId"
-                      render={({ field }) => (
-                        <FormItem className="space-y-1.5">
-                          <div className="flex items-center justify-between gap-4">
-                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                              Company Category
-                            </FormLabel>
-
-                            <Dialog
-                              open={catDialogOpen}
-                              onOpenChange={setCatDialogOpen}
-                            >
-                              <DialogTrigger
-                                render={
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="h-7 text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary hover:bg-primary/5"
-                                  >
-                                    <HugeiconsIcon
-                                      icon={PlusSignIcon}
-                                      size={12}
-                                      className="mr-1"
-                                    />
-                                    Add Category
-                                  </Button>
-                                }
-                              />
-                              <DialogContent>
-                                <DialogHeader>
-                                  <DialogTitle>
-                                    Create Company Category
-                                  </DialogTitle>
-                                  <DialogDescription>
-                                    Add a new category to group similar
-                                    organizations.
-                                  </DialogDescription>
-                                </DialogHeader>
-                                <div className="space-y-4 py-4">
-                                  <div className="space-y-2">
-                                    <Label htmlFor={`${id}-cat-name`}>
-                                      Category Name
-                                    </Label>
-                                    <Input
-                                      id={`${id}-cat-name`}
-                                      value={newCatName}
-                                      onChange={(e) =>
-                                        setNewCatName(e.target.value)
-                                      }
-                                      placeholder="e.g. Healthcare, Manufacturing"
-                                    />
-                                  </div>
-                                  <div className="space-y-2">
-                                    <Label htmlFor={`${id}-cat-desc`}>
-                                      Description (Optional)
-                                    </Label>
-                                    <Input
-                                      id={`${id}-cat-desc`}
-                                      value={newCatDesc}
-                                      onChange={(e) =>
-                                        setNewCatDesc(e.target.value)
-                                      }
-                                      placeholder="Briefly describe this category"
-                                    />
-                                  </div>
-                                </div>
-                                <DialogFooter>
-                                  <Button
-                                    variant="outline"
-                                    onClick={() => setCatDialogOpen(false)}
-                                  >
-                                    Cancel
-                                  </Button>
-                                  <Button
-                                    onClick={handleCreateCategory}
-                                    disabled={isAddingCat}
-                                  >
-                                    {isAddingCat
-                                      ? "Creating..."
-                                      : "Create Category"}
-                                  </Button>
-                                </DialogFooter>
-                              </DialogContent>
-                            </Dialog>
-                          </div>
-                          <FormControl>
-                            <Select
-                              value={field.value as string}
-                              onValueChange={(val) => {
-                                try {
-                                  field.onChange(val);
-                                } catch (err) {
-                                  console.error("Error setting category:", err);
-                                }
-                              }}
-                            >
-                              <SelectTrigger
-                                id={`${id}-categoryId`}
-                                className={cn(
-                                  "h-11 bg-muted/5 border-border/40 focus:bg-background",
-                                  errors.categoryId &&
-                                    "border-destructive/50 ring-destructive/20",
-                                )}
-                              >
-                                <SelectValue
-                                  placeholder={
-                                    categoriesLoading
-                                      ? "Loading categories..."
-                                      : "Select Category"
-                                  }
-                                >
-                                  {field.value &&
-                                    categoriesData?.items.find(
-                                      (c) => c.id === field.value,
-                                    )?.name}
-                                </SelectValue>
-                              </SelectTrigger>
-                              <SelectContent>
-                                {categoriesData?.items.map((cat) => (
-                                  <SelectItem key={cat.id} value={cat.id}>
-                                    {cat.name}
-                                  </SelectItem>
-                                ))}
-                                {!categoriesLoading &&
-                                  !categoriesData?.items.length && (
-                                    <div className="px-3 py-2 text-xs text-muted-foreground">
-                                      No categories found
-                                    </div>
-                                  )}
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
-                          <FormMessage className="text-[11px] font-medium" />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
-
-                {/* step 2 — admin (only in with_admin mode) */}
-                {step === 2 && (
-                  <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-                    <div className="grid grid-cols-2 gap-6">
-                      <FormField
-                        control={form.control as any}
-                        name="adminFirstName"
-                        render={({ field }) => (
-                          <FormItem className="space-y-1.5">
-                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                              First Name
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="e.g. Jean"
-                                className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage className="text-[11px] font-medium" />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control as any}
-                        name="adminLastName"
-                        render={({ field }) => (
-                          <FormItem className="space-y-1.5">
-                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                              Last Name
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="e.g. Paul"
-                                className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage className="text-[11px] font-medium" />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <FormField
-                      control={form.control as any}
-                      name="adminEmail"
-                      render={({ field }) => (
-                        <FormItem className="space-y-1.5">
-                          <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                            Work Email (Login)
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="email"
-                              placeholder="admin@company.com"
-                              className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage className="text-[11px] font-medium" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control as any}
-                      name="adminPhone"
-                      render={({ field }) => (
-                        <FormItem className="space-y-1.5">
-                          <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                            Phone Number
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="+250..."
-                              className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage className="text-[11px] font-medium" />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
-
-                {/* step 3 — confirmation */}
-                {step === 3 && (
-                  <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                    <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10">
-                      <h4 className="text-sm font-bold mb-2">
-                        Review & Confirm
-                      </h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        Please review the details below before finalizing the
-                        registration.
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 rounded-xl border border-border/40 bg-muted/5">
-                        <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1">
-                          Organization
-                        </p>
-                        <p className="text-sm font-bold truncate">
-                          {formData.name || "N/A"}
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-border/40 bg-muted/5">
-                        <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1">
-                          TIN
-                        </p>
-                        <p className="text-sm font-bold">
-                          {formData.tin || "N/A"}
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-border/40 bg-muted/5">
-                        <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1">
-                          Lead Admin
-                        </p>
-                        <p className="text-sm font-bold truncate">
-                          {formData.regMode === "with_admin"
-                            ? `${formData.adminFirstName ?? ""} ${formData.adminLastName ?? ""}`.trim() ||
-                              "—"
-                            : "To be added later"}
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl border border-border/40 bg-muted/5">
-                        <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1">
-                          Admin Email
-                        </p>
-                        <p className="text-sm font-bold truncate">
-                          {formData.regMode === "with_admin"
-                            ? formData.adminEmail || "—"
-                            : "—"}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </FrameContent>
-
-              <FrameFooter className="p-6 bg-muted/5 flex items-center justify-between">
-                <Button type="button" variant="ghost" onClick={handlePrev}>
-                  Previous
-                </Button>
-
-                {!isLastStep ? (
-                  <Button type="button" onClick={handleNext}>
-                    Next Stage
-                    <HugeiconsIcon icon={ArrowRight01Icon} />
-                  </Button>
-                ) : (
-                  <Button
-                    type="button"
-                    onClick={() => form.handleSubmit(onSubmit as any)()}
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Spinner className="mr-2" />
-                        Provisioning...
-                      </>
-                    ) : (
-                      <>
-                        Finalize Setup
-                        <HugeiconsIcon icon={CheckmarkCircle01Icon} />
-                      </>
+        <div className="flex-1 overflow-y-auto no-scrollbar px-6 lg:px-8 pb-20 pt-2">
+          <div className="max-w-3xl w-full">
+            <div className="flex items-center gap-3 mb-10 max-w-3xl">
+              {steps.map((s, idx) => (
+                <div key={s} className="flex-1 flex items-center gap-2">
+                  <div
+                    className={cn(
+                      "h-1.5 flex-1 rounded-full transition-all duration-500",
+                      step === s
+                        ? "bg-primary shadow-[0_0_10px_rgba(var(--primary),0.3)]"
+                        : steps.indexOf(step) > idx
+                          ? "bg-primary/40"
+                          : "bg-border/40",
                     )}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {globalError && (
+              <Alert
+                variant="destructive"
+                className="mb-6 animate-in fade-in slide-in-from-top-2"
+              >
+                <HugeiconsIcon icon={Alert01Icon} />
+                <AlertTitle>Registration Failed</AlertTitle>
+                <AlertDescription>{globalError}</AlertDescription>
+              </Alert>
+            )}
+
+            <Frame>
+              <FramePanel className="bg-card">
+                <FrameHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                      <HugeiconsIcon
+                        icon={
+                          step === 1
+                            ? Building03Icon
+                            : step === 2
+                              ? UserEdit01Icon
+                              : Shield01Icon
+                        }
+                        size={18}
+                      />
+                    </div>
+                    <div>
+                      <FrameTitle>
+                        {step === 1
+                          ? "Organization Profile"
+                          : step === 2
+                            ? "Initial Administrator"
+                            : "Confirm & Submit"}
+                      </FrameTitle>
+                      <FrameDescription>
+                        Step {steps.indexOf(step) + 1} of {steps.length}
+                      </FrameDescription>
+                    </div>
+                  </div>
+                </FrameHeader>
+
+                <FrameContent className="p-8">
+                  {/* step 1 — company details */}
+                  {step === 1 && (
+                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+                      <FormField
+                        control={form.control as any}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1.5">
+                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                              Legal Entity Name
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="e.g. Igihe Logistics Inc."
+                                className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-[11px] font-medium" />
+                          </FormItem>
+                        )}
+                      />
+
+                      <div className="grid grid-cols-2 gap-6">
+                        <FormField
+                          control={form.control as any}
+                          name="tin"
+                          render={({ field }) => (
+                            <FormItem className="space-y-1.5">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                TIN Number
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="9+ digits"
+                                  className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-[11px] font-medium" />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control as any}
+                          name="identificationNumber"
+                          render={({ field }) => (
+                            <FormItem className="space-y-1.5">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                Identification Number
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  placeholder="e.g. 12345"
+                                  className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
+                                  {...field}
+                                  onChange={(e) =>
+                                    field.onChange(e.target.value)
+                                  }
+                                />
+                              </FormControl>
+                              <FormMessage className="text-[11px] font-medium" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-6">
+                        <FormField
+                          control={form.control as any}
+                          name="ownershipType"
+                          render={({ field }) => (
+                            <FormItem className="space-y-1.5">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                Ownership Type
+                              </FormLabel>
+                              <FormControl>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                >
+                                  <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
+                                    <SelectValue placeholder="Select Type" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="PRIVATE">
+                                      Private
+                                    </SelectItem>
+                                    <SelectItem value="PUBLIC">
+                                      Public
+                                    </SelectItem>
+                                    <SelectItem value="GOVERNMENT_OWNED">
+                                      Government Owned
+                                    </SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                              <FormMessage className="text-[11px] font-medium" />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control as any}
+                          name="type"
+                          render={({ field }) => (
+                            <FormItem className="space-y-1.5">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                Legal Type
+                              </FormLabel>
+                              <FormControl>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                >
+                                  <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
+                                    <SelectValue placeholder="Select Type" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="LIMITED_BY_SHARES">
+                                      Limited by Shares
+                                    </SelectItem>
+                                    <SelectItem value="PARTNERSHIP">
+                                      Partnership
+                                    </SelectItem>
+                                    <SelectItem value="SOLE_TRADER">
+                                      Sole Trader
+                                    </SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </FormControl>
+                              <FormMessage className="text-[11px] font-medium" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <FormField
+                        control={form.control as any}
+                        name="villageId"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1.5">
+                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                              Village / Location
+                            </FormLabel>
+                            <FormControl>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <SelectTrigger className="h-11 bg-muted/5 border-border/40 focus:bg-background">
+                                  <SelectValue
+                                    placeholder={
+                                      locationsLoading
+                                        ? "Loading..."
+                                        : "Select Village"
+                                    }
+                                  />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {locationsData?.items.map((loc) => (
+                                    <SelectItem key={loc.id} value={loc.id}>
+                                      {loc.name}
+                                    </SelectItem>
+                                  ))}
+                                  {!locationsLoading &&
+                                    !locationsData?.items.length && (
+                                      <div className="px-3 py-2 text-xs text-muted-foreground">
+                                        No locations found
+                                      </div>
+                                    )}
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                            <FormMessage className="text-[11px] font-medium" />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control as any}
+                        name="categoryId"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1.5">
+                            <div className="flex items-center justify-between gap-4">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                Company Category
+                              </FormLabel>
+
+                              <Dialog
+                                open={catDialogOpen}
+                                onOpenChange={setCatDialogOpen}
+                              >
+                                <DialogTrigger
+                                  render={
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-7 text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary hover:bg-primary/5"
+                                    >
+                                      <HugeiconsIcon
+                                        icon={PlusSignIcon}
+                                        size={12}
+                                        className="mr-1"
+                                      />
+                                      Add Category
+                                    </Button>
+                                  }
+                                />
+                                <DialogContent>
+                                  <DialogHeader>
+                                    <DialogTitle>
+                                      Create Company Category
+                                    </DialogTitle>
+                                    <DialogDescription>
+                                      Add a new category to group similar
+                                      organizations.
+                                    </DialogDescription>
+                                  </DialogHeader>
+                                  <div className="space-y-4 py-4">
+                                    <div className="space-y-2">
+                                      <Label htmlFor={`${id}-cat-name`}>
+                                        Category Name
+                                      </Label>
+                                      <Input
+                                        id={`${id}-cat-name`}
+                                        value={newCatName}
+                                        onChange={(e) =>
+                                          setNewCatName(e.target.value)
+                                        }
+                                        placeholder="e.g. Healthcare, Manufacturing"
+                                      />
+                                    </div>
+                                    <div className="space-y-2">
+                                      <Label htmlFor={`${id}-cat-desc`}>
+                                        Description (Optional)
+                                      </Label>
+                                      <Input
+                                        id={`${id}-cat-desc`}
+                                        value={newCatDesc}
+                                        onChange={(e) =>
+                                          setNewCatDesc(e.target.value)
+                                        }
+                                        placeholder="Briefly describe this category"
+                                      />
+                                    </div>
+                                  </div>
+                                  <DialogFooter>
+                                    <Button
+                                      variant="outline"
+                                      onClick={() => setCatDialogOpen(false)}
+                                    >
+                                      Cancel
+                                    </Button>
+                                    <Button
+                                      onClick={handleCreateCategory}
+                                      disabled={isAddingCat}
+                                    >
+                                      {isAddingCat
+                                        ? "Creating..."
+                                        : "Create Category"}
+                                    </Button>
+                                  </DialogFooter>
+                                </DialogContent>
+                              </Dialog>
+                            </div>
+                            <FormControl>
+                              <Select
+                                value={field.value as string}
+                                onValueChange={(val) => {
+                                  try {
+                                    field.onChange(val);
+                                  } catch (err) {
+                                    console.error(
+                                      "Error setting category:",
+                                      err,
+                                    );
+                                  }
+                                }}
+                              >
+                                <SelectTrigger
+                                  id={`${id}-categoryId`}
+                                  className={cn(
+                                    "h-11 bg-muted/5 border-border/40 focus:bg-background",
+                                    errors.categoryId &&
+                                      "border-destructive/50 ring-destructive/20",
+                                  )}
+                                >
+                                  <SelectValue
+                                    placeholder={
+                                      categoriesLoading
+                                        ? "Loading categories..."
+                                        : "Select Category"
+                                    }
+                                  >
+                                    {field.value &&
+                                      categoriesData?.items.find(
+                                        (c) => c.id === field.value,
+                                      )?.name}
+                                  </SelectValue>
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {categoriesData?.items.map((cat) => (
+                                    <SelectItem key={cat.id} value={cat.id}>
+                                      {cat.name}
+                                    </SelectItem>
+                                  ))}
+                                  {!categoriesLoading &&
+                                    !categoriesData?.items.length && (
+                                      <div className="px-3 py-2 text-xs text-muted-foreground">
+                                        No categories found
+                                      </div>
+                                    )}
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                            <FormMessage className="text-[11px] font-medium" />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+
+                  {/* step 2 — admin (only in with_admin mode) */}
+                  {step === 2 && (
+                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+                      <div className="grid grid-cols-2 gap-6">
+                        <FormField
+                          control={form.control as any}
+                          name="adminFirstName"
+                          render={({ field }) => (
+                            <FormItem className="space-y-1.5">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                First Name
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="e.g. Jean"
+                                  className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-[11px] font-medium" />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control as any}
+                          name="adminLastName"
+                          render={({ field }) => (
+                            <FormItem className="space-y-1.5">
+                              <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                                Last Name
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="e.g. Paul"
+                                  className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage className="text-[11px] font-medium" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <FormField
+                        control={form.control as any}
+                        name="adminEmail"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1.5">
+                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                              Work Email (Login)
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                type="email"
+                                placeholder="admin@company.com"
+                                className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-[11px] font-medium" />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control as any}
+                        name="adminPhone"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1.5">
+                            <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                              Phone Number
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="+250..."
+                                className="h-11 bg-muted/5 border-border/40 focus:bg-background transition-colors"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-[11px] font-medium" />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+
+                  {/* step 3 — confirmation */}
+                  {step === 3 && (
+                    <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
+                      <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10">
+                        <h4 className="text-sm font-bold mb-2">
+                          Review & Confirm
+                        </h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          Please review the details below before finalizing the
+                          registration.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="p-4 rounded-xl border border-border/40 bg-muted/5">
+                          <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1">
+                            Organization
+                          </p>
+                          <p className="text-sm font-bold truncate">
+                            {formData.name || "N/A"}
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-border/40 bg-muted/5">
+                          <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1">
+                            TIN
+                          </p>
+                          <p className="text-sm font-bold">
+                            {formData.tin || "N/A"}
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-border/40 bg-muted/5">
+                          <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1">
+                            Lead Admin
+                          </p>
+                          <p className="text-sm font-bold truncate">
+                            {formData.regMode === "with_admin"
+                              ? `${formData.adminFirstName ?? ""} ${formData.adminLastName ?? ""}`.trim() ||
+                                "—"
+                              : "To be added later"}
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-border/40 bg-muted/5">
+                          <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1">
+                            Admin Email
+                          </p>
+                          <p className="text-sm font-bold truncate">
+                            {formData.regMode === "with_admin"
+                              ? formData.adminEmail || "—"
+                              : "—"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </FrameContent>
+
+                <FrameFooter className="p-6 bg-muted/5 flex items-center justify-between">
+                  <Button type="button" variant="ghost" onClick={handlePrev}>
+                    Previous
                   </Button>
-                )}
-              </FrameFooter>
-            </FramePanel>
-          </Frame>
+
+                  {!isLastStep ? (
+                    <Button type="button" onClick={handleNext}>
+                      Next Stage
+                      <HugeiconsIcon icon={ArrowRight01Icon} />
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      onClick={() => form.handleSubmit(onSubmit as any)()}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Spinner className="mr-2" />
+                          Provisioning...
+                        </>
+                      ) : (
+                        <>
+                          Finalize Setup
+                          <HugeiconsIcon icon={CheckmarkCircle01Icon} />
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </FrameFooter>
+              </FramePanel>
+            </Frame>
+          </div>
         </div>
-      </div>
       </main>
     </Form>
   );

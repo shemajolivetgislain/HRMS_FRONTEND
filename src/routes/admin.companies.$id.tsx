@@ -67,7 +67,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useGetCompanyQuery } from "@/lib/redux/api";
+import { useGetCompanyQuery, useGetUsersQuery } from "@/lib/redux/api";
+import { Spinner } from "@/components/ui/spinner";
 
 export const Route = createFileRoute("/admin/companies/$id")({
   pendingComponent: DashboardPending,
@@ -78,19 +79,18 @@ export const Route = createFileRoute("/admin/companies/$id")({
 function CompanyDetailsPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const { data: company, isLoading, isError, refetch } = useGetCompanyQuery(id);
+  const { data: company, isLoading: companyLoading, isError, refetch } = useGetCompanyQuery(id);
+  const { data: usersData, isLoading: usersLoading } = useGetUsersQuery({ companyId: id, role: "COMPANY_ADMIN" });
   
   const [isDeleting, setIsDeleting] = useState(false);
   const [showAddAdmin, setShowAddAdmin] = useState(false);
   const [newAdmin, setNewAdmin] = useState({ name: "", email: "" });
 
-  // Temporary mock for users until endpoint is ready
-  const companyAdmins: any[] = [];
+  const companyAdmins = usersData?.items ?? [];
 
   const handleDeleteCompany = async () => {
     setIsDeleting(true);
     try {
-      // await api.deleteCompany(id);
       toast.info("Deletion is currently disabled.");
       toast.success(`Organization deletion request recorded`);
       navigate({ to: "/admin/companies" });
@@ -120,7 +120,7 @@ function CompanyDetailsPage() {
     }
   };
 
-  if (isLoading) return <DashboardPending />;
+  if (companyLoading) return <DashboardPending />;
   if (isError || !company) return <ErrorComponent error={new Error("Company not found")} reset={() => refetch()} />;
 
   return (
@@ -217,31 +217,31 @@ function CompanyDetailsPage() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Administrator</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="text-right pr-6">Action</TableHead>
+                          <TableHead className="pl-6 py-3">Administrator</TableHead>
+                          <TableHead className="py-3">Status</TableHead>
+                          <TableHead className="text-right pr-6 py-3">Action</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {companyAdmins.map((admin) => (
-                          <TableRow key={admin.id}>
-                            <TableCell>
+                        {!usersLoading && companyAdmins.map((admin: any) => (
+                          <TableRow key={admin.id} className="hover:bg-muted/5 border-border/5">
+                            <TableCell className="pl-6 py-4">
                               <div className="flex items-center gap-3">
                                 <UserAvatar
-                                  src={admin.image}
-                                  name={admin.name}
+                                  src={admin.profilePicture || ""}
+                                  name={`${admin.firstName} ${admin.lastName}`}
                                   size="sm"
                                 />
                                 <div className="flex flex-col">
-                                  <span className="font-bold text-foreground/90">{admin.name}</span>
+                                  <span className="font-bold text-foreground/90">{admin.firstName} {admin.lastName}</span>
                                   <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{admin.email}</span>
                                 </div>
                               </div>
                             </TableCell>
-                            <TableCell>
-                              <Badge variant={admin.status === "online" ? "success" : "muted"} showDot className="font-bold text-[9px]">{admin.status}</Badge>
+                            <TableCell className="py-4">
+                              <Badge variant={admin.status === "ACTIVE" ? "success" : "muted"} showDot className="font-bold text-[9px] uppercase tracking-widest">{admin.status}</Badge>
                             </TableCell>
-                            <TableCell className="text-right pr-6">
+                            <TableCell className="text-right pr-6 py-4">
                               <AlertDialog>
                                 <AlertDialogTrigger render={
                                   <Button variant="ghost" size="icon-sm" className="text-destructive/40 hover:text-destructive hover:bg-destructive/5">
@@ -252,7 +252,7 @@ function CompanyDetailsPage() {
                                   <AlertDialogHeader>
                                     <AlertDialogTitle>Revoke Administrative Access?</AlertDialogTitle>
                                     <AlertDialogDescription>
-                                      This will remove {admin.name} from the platform administration. They will no longer be able to manage {company.name}.
+                                      This will remove {admin.firstName} from the platform administration. They will no longer be able to manage {company.name}.
                                     </AlertDialogDescription>
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
@@ -266,7 +266,14 @@ function CompanyDetailsPage() {
                             </TableCell>
                           </TableRow>
                         ))}
-                        {companyAdmins.length === 0 && (
+                        {usersLoading && (
+                           <TableRow>
+                              <TableCell colSpan={3} className="text-center py-10">
+                                 <Spinner className="mx-auto" />
+                              </TableCell>
+                           </TableRow>
+                        )}
+                        {!usersLoading && companyAdmins.length === 0 && (
                            <TableRow>
                               <TableCell colSpan={3} className="text-center py-10 text-muted-foreground text-sm font-medium">
                                  No administrative accounts assigned to this tenant
@@ -304,7 +311,7 @@ function CompanyDetailsPage() {
               </Frame>
 
               <Frame>
-                <FramePanel className="bg-card">
+                <FramePanel className="bg-card border-border/40">
                   <FrameHeader>
                     <FrameTitle className="text-xs uppercase tracking-widest">Management Actions</FrameTitle>
                   </FrameHeader>

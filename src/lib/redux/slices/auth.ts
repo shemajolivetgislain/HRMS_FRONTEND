@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { AuthUser } from "@/types";
+import { setCookie, getCookie, removeCookie } from "@/lib/cookies";
 
 interface AuthState {
   user: AuthUser | null;
@@ -21,7 +22,7 @@ const loadInitialState = (): AuthState => {
   }
 
   try {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("auth_token") || getCookie("auth_token");
     const userStr = localStorage.getItem("auth_user");
     const user = userStr ? (JSON.parse(userStr) as AuthUser) : null;
     const activeCompanyId = localStorage.getItem("active_company_id");
@@ -64,10 +65,11 @@ export const authSlice = createSlice({
       state.isAuthenticated = true;
       state.activeCompanyId = user.company?.id || null;
 
-      // Sync with localStorage
+      // Sync with localStorage & Cookies
       if (typeof window !== "undefined") {
         localStorage.setItem("auth_token", token);
         localStorage.setItem("auth_user", JSON.stringify(user));
+        setCookie("auth_token", token);
         if (state.activeCompanyId) {
           localStorage.setItem("active_company_id", state.activeCompanyId);
         }
@@ -79,11 +81,12 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       state.activeCompanyId = null;
 
-      // Clear localStorage
+      // Clear localStorage & Cookies
       if (typeof window !== "undefined") {
         localStorage.removeItem("auth_token");
         localStorage.removeItem("auth_user");
         localStorage.removeItem("active_company_id");
+        removeCookie("auth_token");
       }
     },
     updateUser: (state, action: PayloadAction<Partial<AuthUser>>) => {

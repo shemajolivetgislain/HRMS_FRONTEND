@@ -9,6 +9,7 @@ import { store } from "@/lib/redux/store";
 import appCss from "../styles.css?url";
 
 import { siteConfig } from "@/lib/site-config";
+import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -52,7 +53,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           disableTransitionOnChange
         >
           <Provider store={store}>
-            <TooltipProvider>{children}</TooltipProvider>
+            <TooltipProvider>
+              {children}
+              <Toaster />
+            </TooltipProvider>
           </Provider>
         </ThemeProvider>
 

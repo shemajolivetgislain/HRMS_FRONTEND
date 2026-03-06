@@ -24,8 +24,8 @@ import {
 } from "@hugeicons/core-free-icons";
 
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { Badge } from "#/components/ui/badge";
-import { cn } from "#/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 
 const faqs = [

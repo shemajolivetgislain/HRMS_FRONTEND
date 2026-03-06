@@ -168,11 +168,11 @@ function AdminDashboard() {
                                 </TableCell>
                                 <TableCell>
                                   <Badge
-                                    variant="success"
+                                    variant={company.status === "active" ? "success" : "muted"}
                                     showDot
-                                    className="font-bold text-[9px]"
+                                    className="font-bold text-[9px] uppercase"
                                   >
-                                    active
+                                    {company.status}
                                   </Badge>
                                 </TableCell>
                                 <TableCell>

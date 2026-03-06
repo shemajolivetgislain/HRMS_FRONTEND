@@ -1,16 +1,21 @@
 import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
 import { store } from "@/lib/redux/store";
 
+import { getCookie } from "@/lib/cookies";
+
 export const Route = createFileRoute("/auth")({
   beforeLoad: ({ location }) => {
     const state = store.getState();
     const { user, token: storeToken } = state.auth;
+
+    // Check Redux, then Cookie (SSR safe), then LocalStorage (Client fallback)
     const token =
       storeToken ||
+      getCookie("auth_token") ||
       (typeof window !== "undefined" ? localStorage.getItem("auth_token") : null);
 
     if (token && user) {
-      const isVerified = !!user.isEmailVerified;
+      const isVerified = user.status === "ACTIVE";
       const needsPasswordChange =
         (user.role === "COMPANY_ADMIN" || user.role === "EMPLOYEE") &&
         !user.passwordResetAt;

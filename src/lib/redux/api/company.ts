@@ -7,17 +7,22 @@ export const companyApi = hrmsApi.injectEndpoints({
       { items: Company[]; meta: { totalItems: number } },
       { page?: number; limit?: number; searchTerm?: string; ownershipType?: string; type?: string; status?: string } | undefined
     >({
-      query: (params) => ({
-        url: "/company",
-        params: {
+      query: (params) => {
+        const queryParams: Record<string, any> = {
           page: params?.page ?? 1,
           limit: params?.limit ?? 50,
-          searchTerm: params?.searchTerm,
-          ownershipType: params?.ownershipType,
-          type: params?.type,
-          status: params?.status,
-        },
-      }),
+        };
+
+        if (params?.searchTerm) queryParams.searchTerm = params.searchTerm;
+        if (params?.ownershipType) queryParams.ownershipType = params.ownershipType;
+        if (params?.type) queryParams.type = params.type;
+        if (params?.status) queryParams.status = params.status;
+
+        return {
+          url: "/company",
+          params: queryParams,
+        };
+      },
       providesTags: (result) =>
         result
           ? [
