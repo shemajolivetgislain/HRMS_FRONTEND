@@ -67,7 +67,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useGetCompanyQuery, useGetUsersQuery } from "@/lib/redux/api";
+import { useGetUsersQuery, useGetCompaniesQuery } from "@/lib/redux/api";
 import { Spinner } from "@/components/ui/spinner";
 
 export const Route = createFileRoute("/admin/companies/$id")({
@@ -79,14 +79,17 @@ export const Route = createFileRoute("/admin/companies/$id")({
 function CompanyDetailsPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const { data: company, isLoading: companyLoading, isError, refetch } = useGetCompanyQuery(id);
+  
+  // Use list query as primary source because detail endpoint (/company/{id}) might be missing
+  const { data: companiesData, isLoading: listLoading, isError: listError, refetch: refetchList } = useGetCompaniesQuery({ limit: 100 });
   const { data: usersData, isLoading: usersLoading } = useGetUsersQuery({ companyId: id, role: "COMPANY_ADMIN" });
+  
+  const company = companiesData?.items.find(c => c.id === id);
+  const companyAdmins = usersData?.items ?? [];
   
   const [isDeleting, setIsDeleting] = useState(false);
   const [showAddAdmin, setShowAddAdmin] = useState(false);
   const [newAdmin, setNewAdmin] = useState({ name: "", email: "" });
-
-  const companyAdmins = usersData?.items ?? [];
 
   const handleDeleteCompany = async () => {
     setIsDeleting(true);
@@ -120,8 +123,8 @@ function CompanyDetailsPage() {
     }
   };
 
-  if (companyLoading) return <DashboardPending />;
-  if (isError || !company) return <ErrorComponent error={new Error("Company not found")} reset={() => refetch()} />;
+  if (listLoading) return <DashboardPending />;
+  if (listError || !company) return <ErrorComponent error={new Error("Company not found in registry")} reset={() => refetchList()} />;
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full bg-muted/20">
