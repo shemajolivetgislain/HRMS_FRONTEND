@@ -20,11 +20,34 @@ import { PolicyComplianceCard } from "@/components/dashboard/policy-compliance";
 import { EmploymentStatusChart } from "@/components/dashboard/employment-status-chart";
 import { DocumentCompliance } from "@/components/dashboard/document-compliance";
 
+import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
+import { useGetCompanyStatsQuery, useGetCompaniesQuery } from "@/lib/redux/api";
+import { setActiveCompany } from "@/lib/redux/slices/auth";
+import { useEffect } from "react";
+
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardPage,
 });
 
 function DashboardPage() {
+  const dispatch = useAppDispatch();
+  const { activeCompanyId, user } = useAppSelector((state) => state.auth);
+  const isAdmin = user?.role === "ADMIN";
+
+  const { data: companiesData } = useGetCompaniesQuery(undefined, {
+    skip: !isAdmin || !!activeCompanyId,
+  });
+
+  useEffect(() => {
+    if (isAdmin && !activeCompanyId && companiesData?.items.length) {
+      dispatch(setActiveCompany(companiesData.items[0].id));
+    }
+  }, [isAdmin, activeCompanyId, companiesData, dispatch]);
+
+  const { data: stats, isLoading } = useGetCompanyStatsQuery(activeCompanyId!, {
+    skip: !activeCompanyId,
+  });
+
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden bg-muted/20">
       <DashboardHeader
@@ -47,7 +70,7 @@ function DashboardPage() {
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             label="Active Employees"
-            value="138"
+            value={isLoading ? "..." : stats?.activeEmployees.toString() || "0"}
             change="4"
             up={true}
             icon={UserGroupIcon}
@@ -56,7 +79,7 @@ function DashboardPage() {
           />
           <StatCard
             label="Departments"
-            value="5"
+            value={isLoading ? "..." : stats?.departments.toString() || "0"}
             change="Stable"
             up={true}
             icon={Building03Icon}
@@ -65,7 +88,7 @@ function DashboardPage() {
           />
           <StatCard
             label="Open Positions"
-            value="1"
+            value={isLoading ? "..." : stats?.openPositions.toString() || "0"}
             change="2"
             up={false}
             icon={Briefcase02Icon}
@@ -74,7 +97,9 @@ function DashboardPage() {
           />
           <StatCard
             label="Pending applicants"
-            value="145"
+            value={
+              isLoading ? "..." : stats?.pendingApplicants.toString() || "0"
+            }
             change="12"
             up={true}
             icon={UserAdd01Icon}

@@ -1,4 +1,4 @@
-export type Role = "SYSTEM_ADMIN" | "COMPANY_ADMIN" | "EMPLOYEE";
+export type Role = "ADMIN" | "COMPANY_ADMIN" | "EMPLOYEE";
 
 export type Status =
   | "active"
@@ -44,11 +44,14 @@ export type DocumentType =
 export interface Company {
   id: string;
   name: string;
-  sector: string;
   tin: string;
+  identificationNumber: number;
+  categoryId: string;
+  ownershipType: "PRIVATE" | "PUBLIC" | "GOVERNMENT_OWNED";
+  type: "LIMITED_BY_SHARES" | "PARTNERSHIP" | "SOLE_TRADER";
   logoUrl?: string;
-  phone: string;
-  email: string;
+  phone?: string;
+  email?: string;
   status: "active" | "suspended" | "inactive";
   registeredAt: string;
   employeeCount: number;
@@ -62,6 +65,42 @@ export interface User {
   companyId?: string;
   image?: string;
   status: "online" | "away" | "offline";
+}
+
+export interface AuthUser {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  role: Role;
+  status: string;
+  profilePicture: string | null;
+  isPhonenNumberVerified: boolean;
+  isEmailVerified: boolean;
+  lastLoginAt: string | null;
+  passwordResetAt: string | null;
+  passwordResetExpires: string | null;
+  company: Company | null;
+}
+
+export interface LoginResponse {
+  accessToken: string;
+  user: AuthUser;
+}
+
+export interface ApiPaginatedResponse<T> {
+  meta: {
+    itemCount: number;
+    totalItems: number;
+    itemsPerPage: number;
+    totalPages: number;
+    currentPage: number;
+  };
+  items: T[];
 }
 
 export interface PayrollDetails {

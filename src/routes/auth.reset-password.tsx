@@ -1,16 +1,34 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Alert01Icon,
+  ArrowRight01Icon,
+  Tick01Icon,
+  ViewIcon,
+  ViewOffIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import React, { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { PasswordStrengthIndicator } from "@/components/auth/password-strength-indicator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PasswordStrengthIndicator } from "@/components/auth/password-strength-indicator";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  ViewIcon,
-  ViewOffIcon,
-  ArrowRight01Icon,
-  Tick01Icon,
-} from "@hugeicons/core-free-icons";
+import { useResetPasswordMutation } from "@/lib/redux/api";
+
+const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(8, "Please confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
 export const Route = createFileRoute("/auth/reset-password")({
   component: ResetPasswordPage,
@@ -19,58 +37,48 @@ export const Route = createFileRoute("/auth/reset-password")({
 function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [resetComplete, setResetComplete] = useState(false);
+  const [globalError, setGlobalError] = useState<string | null>(null);
+  const [resetPassword] = useResetPasswordMutation();
+  const id = React.useId();
 
-  const [formData, setFormData] = useState({
-    password: "",
-    confirmPassword: "",
+  const search: any = useSearch({ from: "/auth/reset-password" });
+  const token = search?.token || "";
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<ResetPasswordValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: { password: "", confirmPassword: "" },
   });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const passwordValue = watch("password");
+  const confirmPasswordValue = watch("confirmPassword");
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-    if (errors[field]) {
-      setErrors((prev) => ({
-        ...prev,
-        [field]: "",
-      }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+  const onSubmit = async (data: ResetPasswordValues) => {
+    setGlobalError(null);
+    if (!token) {
+      setGlobalError(
+        "Invalid or missing reset token. Please request a new link.",
+      );
+      return;
     }
 
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password";
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      setIsLoading(true);
-
-      // simulate api call
-      setTimeout(() => {
-        setIsLoading(false);
-        setResetComplete(true);
-      }, 1500);
+    try {
+      await resetPassword({
+        token,
+        newPassword: data.password,
+      }).unwrap();
+      setResetComplete(true);
+    } catch (error: any) {
+      setGlobalError(
+        error?.data?.message ||
+          error?.message ||
+          "Failed to reset password. The link might be expired.",
+      );
     }
   };
 
@@ -131,21 +139,31 @@ function ResetPasswordPage() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      {globalError && (
+        <Alert
+          variant="destructive"
+          className="animate-in fade-in slide-in-from-top-2"
+        >
+          <HugeiconsIcon icon={Alert01Icon} />
+          <AlertTitle>Reset Failed</AlertTitle>
+          <AlertDescription>{globalError}</AlertDescription>
+        </Alert>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div className="space-y-2">
           <Label
-            htmlFor="password"
+            htmlFor={`${id}-password`}
             className="text-xs font-semibold text-muted-foreground/60 capitalize"
           >
             New Password
           </Label>
           <div className="relative">
             <Input
-              id="password"
+              id={`${id}-password`}
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
-              value={formData.password}
-              onChange={(e) => handleInputChange("password", e.target.value)}
+              {...register("password")}
               className={`h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all pl-3 pr-10 shadow-none text-sm ${
                 errors.password
                   ? "border-destructive/50 ring-destructive/20"
@@ -166,32 +184,29 @@ function ResetPasswordPage() {
           </div>
           {errors.password && (
             <p className="text-xs font-medium text-destructive mt-1">
-              {errors.password}
+              {errors.password.message}
             </p>
           )}
-          {formData.password && (
+          {passwordValue && (
             <div className="pt-1">
-              <PasswordStrengthIndicator password={formData.password} />
+              <PasswordStrengthIndicator password={passwordValue} />
             </div>
           )}
         </div>
 
         <div className="space-y-2">
           <Label
-            htmlFor="confirmPassword"
+            htmlFor={`${id}-confirmPassword`}
             className="text-xs font-semibold text-muted-foreground/60 capitalize"
           >
             Confirm Password
           </Label>
           <div className="relative">
             <Input
-              id="confirmPassword"
+              id={`${id}-confirmPassword`}
               type={showConfirmPassword ? "text" : "password"}
               placeholder="••••••••"
-              value={formData.confirmPassword}
-              onChange={(e) =>
-                handleInputChange("confirmPassword", e.target.value)
-              }
+              {...register("confirmPassword")}
               className={`h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all pl-3 pr-10 shadow-none text-sm ${
                 errors.confirmPassword
                   ? "border-destructive/50 ring-destructive/20"
@@ -212,7 +227,7 @@ function ResetPasswordPage() {
           </div>
           {errors.confirmPassword && (
             <p className="text-xs font-medium text-destructive mt-1">
-              {errors.confirmPassword}
+              {errors.confirmPassword.message}
             </p>
           )}
         </div>
@@ -220,13 +235,11 @@ function ResetPasswordPage() {
         <Button
           type="submit"
           size="xl"
-          disabled={
-            !formData.password || !formData.confirmPassword || isLoading
-          }
+          disabled={!passwordValue || !confirmPasswordValue || isSubmitting}
           className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group"
         >
-          {isLoading ? "Updating…" : "Update Password"}
-          {!isLoading && (
+          {isSubmitting ? "Updating…" : "Update Password"}
+          {!isSubmitting && (
             <HugeiconsIcon
               icon={ArrowRight01Icon}
               size={16}

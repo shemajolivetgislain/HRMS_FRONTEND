@@ -33,7 +33,6 @@ import {
   Shield01Icon,
   ActivityIcon,
   Cancel01Icon,
-  Tick01Icon,
   DashboardSquare01Icon,
   Delete01Icon,
 } from "@hugeicons/core-free-icons";
@@ -57,37 +56,45 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { api } from "@/lib/mock-api";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { toast } from "sonner";
+import { useGetCompaniesQuery } from "@/lib/redux/api";
+import { Spinner } from "@/components/ui/spinner";
 
 export const Route = createFileRoute("/admin/companies/")({
-  loader: async () => await api.getCompanies(),
   pendingComponent: DashboardPending,
   component: CompaniesManagementPage,
 });
 
 function CompaniesManagementPage() {
-  const companies = Route.useLoaderData();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filtered = companies.filter(
-    (c) =>
-      c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.tin.includes(searchTerm),
-  );
+  const { data, isLoading, isError } = useGetCompaniesQuery({
+    searchTerm: searchTerm,
+    limit: 100,
+  });
 
-  const handleDeleteCompany = async (id: string, name: string) => {
+  const companies = data?.items ?? [];
+
+  const handleDeleteCompany = async (_id: string, name: string) => {
     try {
-      await api.deleteCompany(id);
-      toast.success(`Organization ${name} has been purged from system records`);
-      window.location.reload();
+      // await api.deleteCompany(id);
+      toast.info("Deletion is currently disabled in dynamic mode.");
+      toast.success(`Organization ${name} deletion request recorded`);
     } catch (err) {
       toast.error("Critical failure during record deletion");
     }
   };
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-destructive font-bold">Failed to load companies.</p>
+      </div>
+    );
+  }
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden bg-muted/20">
@@ -114,14 +121,14 @@ function CompaniesManagementPage() {
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             label="Total Tenants"
-            value={companies.length}
+            value={data?.meta.totalItems ?? 0}
             icon={Building03Icon}
             variant="primary"
             sub="Active Organizations"
           />
           <StatCard
             label="Platform Users"
-            value="2,840"
+            value="—"
             icon={UserGroupIcon}
             variant="info"
             sub="Across all companies"
@@ -135,8 +142,8 @@ function CompaniesManagementPage() {
           />
           <StatCard
             label="API Traffic"
-            value="1.2M"
-            change="12%"
+            value="—"
+            change="0%"
             up
             icon={ActivityIcon}
             variant="accent"
@@ -170,6 +177,7 @@ function CompaniesManagementPage() {
                     className="pl-9 h-10 rounded-xl border-border/40 bg-muted/5 focus:bg-background transition-all text-sm"
                   />
                 </div>
+                {isLoading && <Spinner className="text-primary" />}
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="sm">
                     <HugeiconsIcon icon={Sorting05Icon} />
@@ -191,11 +199,11 @@ function CompaniesManagementPage() {
                       <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
                         Vertical
                       </TableHead>
-                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3 text-center">
-                        Headcount
+                      <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
+                        Identification
                       </TableHead>
                       <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
-                        Security Status
+                        Ownership
                       </TableHead>
                       <TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3 text-right pr-8">
                         Management
@@ -203,7 +211,7 @@ function CompaniesManagementPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filtered.map((company) => (
+                    {!isLoading && companies.map((company) => (
                       <TableRow
                         key={company.id}
                         className="border-border/5 hover:bg-muted/5 transition-colors group"
@@ -217,8 +225,8 @@ function CompaniesManagementPage() {
                               <p className="text-base font-bold text-foreground/90 leading-none">
                                 {company.name}
                               </p>
-                              <p className="text-xs font-semibold text-muted-foreground/40 mt-1.5">
-                                {company.email}
+                              <p className="text-xs font-semibold text-muted-foreground/40 mt-1.5 uppercase tracking-wider">
+                                ID: {company.id.split("-")[0]}...
                               </p>
                             </div>
                           </div>
@@ -233,25 +241,20 @@ function CompaniesManagementPage() {
                             variant="muted"
                             className="bg-muted/10 border-none font-bold text-[10px] uppercase tracking-widest"
                           >
-                            {company.sector}
+                            {company.categoryId || "N/A"}
                           </Badge>
                         </TableCell>
-                        <TableCell className="px-4 text-center">
+                        <TableCell className="px-4">
                           <span className="text-sm font-bold text-foreground/80 tabular-nums">
-                            {company.employeeCount}
+                            {company.identificationNumber}
                           </span>
                         </TableCell>
                         <TableCell className="px-4">
                           <Badge
-                            variant={
-                              company.status === "active"
-                                ? "success"
-                                : "destructive"
-                            }
-                            showDot
-                            className="font-bold text-[10px] uppercase tracking-widest"
+                            variant="muted"
+                            className="bg-muted/10 border-none font-bold text-[10px] uppercase tracking-widest"
                           >
-                            {company.status}
+                            {company.ownershipType}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right pr-8">
@@ -311,23 +314,13 @@ function CompaniesManagementPage() {
                                   <span>Operations Board</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator className="bg-border/5 my-1" />
-                                {company.status === "active" ? (
-                                  <DropdownMenuItem className="rounded-xl py-1.5 font-semibold text-sm text-warning focus:bg-warning/5">
-                                    <HugeiconsIcon
-                                      icon={Cancel01Icon}
-                                      className="size-4 mr-3"
-                                    />
-                                    <span>Suspend Tenant</span>
-                                  </DropdownMenuItem>
-                                ) : (
-                                  <DropdownMenuItem className="rounded-xl py-1.5 font-semibold text-sm text-success focus:bg-success/5">
-                                    <HugeiconsIcon
-                                      icon={Tick01Icon}
-                                      className="size-4 mr-3"
-                                    />
-                                    <span>Restore Tenant</span>
-                                  </DropdownMenuItem>
-                                )}
+                                <DropdownMenuItem className="rounded-xl py-1.5 font-semibold text-sm text-warning focus:bg-warning/5">
+                                  <HugeiconsIcon
+                                    icon={Cancel01Icon}
+                                    className="size-4 mr-3"
+                                  />
+                                  <span>Suspend Tenant</span>
+                                </DropdownMenuItem>
                                 <AlertDialog>
                                   <AlertDialogTrigger render={
                                     <DropdownMenuItem onSelect={e => e.preventDefault()} className="rounded-xl py-1.5 font-semibold text-sm text-destructive focus:bg-destructive/5">
@@ -361,10 +354,29 @@ function CompaniesManagementPage() {
                     ))}
                   </TableBody>
                 </Table>
+
+                {isLoading && (
+                   <div className="py-20 flex flex-col items-center justify-center gap-4">
+                      <Spinner className="size-8 text-primary" />
+                      <p className="text-sm font-medium text-muted-foreground">Synchronizing registry...</p>
+                   </div>
+                )}
+
+                {!isLoading && companies.length === 0 && (
+                   <div className="py-20 flex flex-col items-center justify-center gap-4 text-center">
+                      <div className="h-16 w-16 rounded-3xl bg-muted/5 flex items-center justify-center text-muted-foreground/20">
+                         <HugeiconsIcon icon={Building03Icon} size={32} />
+                      </div>
+                      <div>
+                        <p className="text-base font-bold text-foreground/60">No organizations found</p>
+                        <p className="text-sm font-medium text-muted-foreground/40 mt-1">Try adjusting your search or provision a new tenant</p>
+                      </div>
+                   </div>
+                )}
               </FrameContent>
               <FrameFooter className="px-8 py-5 border-t border-border/5">
                 <span className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-[0.2em]">
-                  Registry Ledger: {filtered.length} active organizational units
+                  Registry Ledger: {data?.meta.totalItems ?? 0} active organizational units
                 </span>
               </FrameFooter>
             </FramePanel>

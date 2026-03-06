@@ -1,6 +1,50 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
+import { store } from "@/lib/redux/store";
 
 export const Route = createFileRoute("/auth")({
+  beforeLoad: ({ location }) => {
+    const state = store.getState();
+    const { user, token: storeToken } = state.auth;
+    const token =
+      storeToken ||
+      (typeof window !== "undefined" ? localStorage.getItem("auth_token") : null);
+
+    if (token && user) {
+      const isVerified = !!user.isEmailVerified;
+      const needsPasswordChange =
+        (user.role === "COMPANY_ADMIN" || user.role === "EMPLOYEE") &&
+        !user.passwordResetAt;
+
+      // Current normalized path
+      const path = location.pathname.replace(/\/$/, "");
+
+      // Fully set up users: go to their dashboard
+      if (isVerified && !needsPasswordChange) {
+        // If they are ALREADY heading to a dashboard, let them through (although they shouldn't be under /auth)
+        // This is mainly to prevent loops if /auth is a parent of everything (which it isn't here)
+        if (user.role === "ADMIN") {
+          throw redirect({ to: "/admin" });
+        }
+        throw redirect({ to: "/dashboard" });
+      }
+
+      // Not verified: can only be on /auth/verify
+      if (!isVerified && path !== "/auth/verify") {
+        throw redirect({
+          to: "/auth/verify",
+          search: { email: user.email },
+        });
+      }
+
+      // Needs password change: can only be on /auth/change-password
+      if (isVerified && needsPasswordChange && path !== "/auth/change-password") {
+        throw redirect({
+          to: "/auth/change-password",
+          search: { email: user.email },
+        });
+      }
+    }
+  },
   component: AuthLayout,
 });
 

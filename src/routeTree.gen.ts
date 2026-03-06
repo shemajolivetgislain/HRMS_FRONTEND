@@ -30,6 +30,7 @@ import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-passw
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
+import { Route as AuthChangePasswordRouteImport } from './routes/auth.change-password'
 import { Route as ApplyJobIdRouteImport } from './routes/apply.$jobId'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminLogsRouteImport } from './routes/admin.logs'
@@ -150,6 +151,11 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthChangePasswordRoute = AuthChangePasswordRouteImport.update({
+  id: '/change-password',
+  path: '/change-password',
+  getParentRoute: () => AuthRoute,
+} as any)
 const ApplyJobIdRoute = ApplyJobIdRouteImport.update({
   id: '/apply/$jobId',
   path: '/apply/$jobId',
@@ -233,6 +239,7 @@ export interface FileRoutesByFullPath {
   '/admin/logs': typeof AdminLogsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/apply/$jobId': typeof ApplyJobIdRoute
+  '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -268,6 +275,7 @@ export interface FileRoutesByTo {
   '/admin/logs': typeof AdminLogsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/apply/$jobId': typeof ApplyJobIdRoute
+  '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -306,6 +314,7 @@ export interface FileRoutesById {
   '/admin/logs': typeof AdminLogsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/apply/$jobId': typeof ApplyJobIdRoute
+  '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -345,6 +354,7 @@ export interface FileRouteTypes {
     | '/admin/logs'
     | '/admin/settings'
     | '/apply/$jobId'
+    | '/auth/change-password'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -380,6 +390,7 @@ export interface FileRouteTypes {
     | '/admin/logs'
     | '/admin/settings'
     | '/apply/$jobId'
+    | '/auth/change-password'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -417,6 +428,7 @@ export interface FileRouteTypes {
     | '/admin/logs'
     | '/admin/settings'
     | '/apply/$jobId'
+    | '/auth/change-password'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -604,6 +616,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/auth/change-password': {
+      id: '/auth/change-password'
+      path: '/change-password'
+      fullPath: '/auth/change-password'
+      preLoaderRoute: typeof AuthChangePasswordRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/apply/$jobId': {
       id: '/apply/$jobId'
       path: '/apply/$jobId'
@@ -726,6 +745,7 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AuthRouteChildren {
+  AuthChangePasswordRoute: typeof AuthChangePasswordRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
@@ -734,6 +754,7 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthChangePasswordRoute: AuthChangePasswordRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,

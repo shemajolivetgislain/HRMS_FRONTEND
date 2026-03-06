@@ -5,26 +5,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const formatCurrency = (amount: number | string) => {
-  const value = typeof amount === "string" ? parseFloat(amount.replace(/[^0-9.-]+/g, "")) : amount
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(value)
-}
-
-export const formatDate = (date: string | Date) => {
-  const value = typeof date === "string" ? new Date(date) : date
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
+export function formatDate(date: string | Date) {
+  return new Intl.DateTimeFormat("en-GB", {
     day: "numeric",
+    month: "short",
     year: "numeric",
-  }).format(value)
+  }).format(new Date(date))
 }
 
-export const formatCompactNumber = (num: number) => {
-  return new Intl.NumberFormat("en-US", {
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(num)
+export function formatCurrency(amount: number) {
+  return new Intl.NumberFormat("en-RW", {
+    style: "currency",
+    currency: "RWF",
+    minimumFractionDigits: 0,
+  }).format(amount)
 }

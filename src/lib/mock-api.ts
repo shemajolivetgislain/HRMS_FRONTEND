@@ -22,731 +22,196 @@ export const mockCompanies: Company[] = [
   {
     id: "COMP-001",
     name: "Igihe Logistics",
-    sector: "Logistics",
     tin: "102938475",
+    identificationNumber: 123,
+    categoryId: "Logistics",
+    ownershipType: "PRIVATE",
+    type: "LIMITED_BY_SHARES",
     email: "ops@igihe.rw",
     phone: "+250 788 100 200",
     status: "active",
     registeredAt: "2024-01-15",
     employeeCount: 143,
   },
-  {
-    id: "COMP-002",
-    name: "Vision Finance",
-    sector: "Finance",
-    tin: "556677889",
-    email: "hr@vision.rw",
-    phone: "+250 788 300 400",
-    status: "active",
-    registeredAt: "2024-02-10",
-    employeeCount: 89,
-  },
-  {
-    id: "COMP-003",
-    name: "Kivu Heights",
-    sector: "Hospitality",
-    tin: "112233445",
-    email: "admin@kivuheights.com",
-    phone: "+250 788 500 600",
-    status: "suspended",
-    registeredAt: "2023-11-20",
-    employeeCount: 56,
-  },
 ];
 
-export let mockEmployees: Employee[] = [
+export const mockEmployees: Employee[] = [
   {
     id: "EMP-001",
     name: "Jean Paul Nkurunziza",
     firstName: "Jean Paul",
     lastName: "Nkurunziza",
-    idNumber: "1198580000000012",
+    idNumber: "1199080012345678",
     email: "jp.nkurunziza@igihe.rw",
     department: "Operations",
     position: "Fleet Manager",
     status: "active",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop",
-    hireDate: "2021-03-15",
+    hireDate: "2024-01-20",
     complianceStatus: "compliant",
     onboardingProgress: 100,
-    phone: "+250 781 000 001",
-    address: "KN 254 St, Kigali",
+    phone: "+250 788 111 222",
+    manager: "Saddy Nkurunziza",
+    dob: "1990-05-15",
+    address: "KN 3 Rd, Kigali",
     city: "Kigali",
     country: "Rwanda",
-    dob: "1990-05-12",
-    manager: "Skylar Calzoni",
+    zipCode: "0000",
     payroll: {
       baseSalary: 1200000,
       currency: "RWF",
-      bankName: "Bank of Kigali",
+      bankName: "BK",
       accountName: "Jean Paul Nkurunziza",
-      accountNumber: "0001234567890",
-      taxId: "123456789",
+      accountNumber: "100012345678",
+      taxId: "102938475",
     },
-  },
-  {
-    id: "EMP-002",
-    name: "Divine Uwase",
-    firstName: "Divine",
-    lastName: "Uwase",
-    idNumber: "1199580000000034",
-    email: "d.uwase@vision.rw",
-    department: "Accounting",
-    position: "Senior Accountant",
-    status: "probation",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=120&h=120&auto=format&fit=crop",
-    hireDate: "2024-01-22",
-    complianceStatus: "non-compliant",
-    onboardingProgress: 85,
-    phone: "+250 781 000 002",
-    address: "KK 312 Ave, Kicukiro",
-    city: "Kigali",
-    country: "Rwanda",
-    dob: "1994-11-30",
-    manager: "Jean Paul Nkurunziza",
-    payroll: {
-      baseSalary: 1500000,
-      currency: "RWF",
-      bankName: "Equity Bank",
-      accountName: "Divine Uwase",
-      accountNumber: "0009876543210",
-      taxId: "987654321",
-    },
-  },
-  {
-    id: "EMP-003",
-    name: "Claude Mugisha",
-    firstName: "Claude",
-    lastName: "Mugisha",
-    idNumber: "1199080000000056",
-    email: "c.mugisha@kivuheights.com",
-    department: "Sales",
-    position: "Sales Representative",
-    status: "terminated",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=120&h=120&auto=format&fit=crop",
-    hireDate: "2022-05-10",
-    complianceStatus: "compliant",
-    onboardingProgress: 100,
-    phone: "+250 781 000 003",
-    address: "Rubavu Waterfront 12",
-    city: "Gisenyi",
-    country: "Rwanda",
-    dob: "1988-02-15",
-    manager: "Divine Uwase",
-  },
-  {
-    id: "EMP-004",
-    name: "Alice Umutoni",
-    firstName: "Alice",
-    lastName: "Umutoni",
-    idNumber: "1199280000000078",
-    email: "a.umutoni@igihe.rw",
-    department: "HR",
-    position: "HR Specialist",
-    status: "resigned",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&h=120&auto=format&fit=crop",
-    hireDate: "2020-11-12",
-    complianceStatus: "compliant",
-    onboardingProgress: 100,
-    phone: "+250 781 000 004",
-    address: "Nyarutarama Close 5",
-    city: "Kigali",
-    country: "Rwanda",
-    dob: "1992-08-22",
-    manager: "System Admin",
-    payroll: {
-      baseSalary: 1100000,
-      currency: "RWF",
-      bankName: "I&M Bank",
-      accountName: "Alice Umutoni",
-      accountNumber: "0004444444444",
-      taxId: "444444444",
-    },
-  },
-];
-
-export const mockDocuments: EmployeeDocument[] = [
-  {
-    id: "DOC-001",
-    employeeId: "EMP-001",
-    employeeName: "Jean Paul Nkurunziza",
-    type: "CONTRACT",
-    fileName: "architect_contract_final.pdf",
-    fileSize: "1.2 MB",
-    uploadedAt: "2021-03-15",
-    status: "active",
-  },
-  {
-    id: "DOC-002",
-    employeeId: "EMP-001",
-    employeeName: "Jean Paul Nkurunziza",
-    type: "ID",
-    fileName: "national_id_card.jpg",
-    fileSize: "850 KB",
-    uploadedAt: "2021-03-10",
-    status: "active",
-  },
-];
-
-export const mockSystemLogs: SystemLog[] = [
-  {
-    id: "LOG-001",
-    timestamp: "2024-03-28 14:30:22",
-    level: "security",
-    event: "Company 'Kivu Heights' suspended for compliance review",
-    actor: "System Admin",
-    ipAddress: "197.243.10.5",
-  },
-  {
-    id: "LOG-002",
-    timestamp: "2024-03-28 12:15:05",
-    level: "info",
-    event: "New tenant 'Igihe Logistics' onboarding initiated",
-    actor: "Super Admin",
-    ipAddress: "41.216.100.12",
-  },
-];
-
-export const mockApplicants: Applicant[] = [
-  {
-    id: "CAN-001",
-    firstName: "Moses",
-    lastName: "Mugisha",
-    email: "m.mugisha@gmail.com",
-    phone: "+250 780 111 222",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=120&h=120&auto=format&fit=crop",
-    jobTitleId: "JOB-101",
-    applicationReference: "APP-RW-001",
-    stage: "Shortlisted",
-    score: 4.8,
-    appliedAt: "2024-03-20",
-    history: [],
-  },
-  {
-    id: "CAN-002",
-    firstName: "Sarah",
-    lastName: "Kwizera",
-    email: "s.kwizera@yahoo.com",
-    phone: "+250 780 333 444",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=120&h=120&auto=format&fit=crop",
-    jobTitleId: "JOB-101",
-    applicationReference: "APP-RW-002",
-    stage: "First Interview",
-    score: 4.2,
-    appliedAt: "2024-03-21",
-    history: [],
-  },
-  {
-    id: "CAN-003",
-    firstName: "Patrick",
-    lastName: "Habimana",
-    email: "p.habimana@gmail.com",
-    phone: "+250 780 555 666",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=120&h=120&auto=format&fit=crop",
-    jobTitleId: "JOB-101",
-    applicationReference: "APP-RW-003",
-    stage: "Online Assessment",
-    score: 3.9,
-    appliedAt: "2024-03-22",
-    history: [],
-  },
-  {
-    id: "CAN-004",
-    firstName: "Gisele",
-    lastName: "Umuhoza",
-    email: "g.umuhoza@gmail.com",
-    phone: "+250 780 777 888",
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=120&h=120&auto=format&fit=crop",
-    jobTitleId: "JOB-101",
-    applicationReference: "APP-RW-004",
-    stage: "Second and Final Interview",
-    score: 4.9,
-    appliedAt: "2024-03-23",
-    history: [],
-  },
-  {
-    id: "CAN-005",
-    firstName: "Eric",
-    lastName: "Gasana",
-    email: "e.gasana@gmail.com",
-    phone: "+250 780 999 000",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=120&h=120&auto=format&fit=crop",
-    jobTitleId: "JOB-101",
-    applicationReference: "APP-RW-005",
-    stage: "Rejected",
-    score: 2.1,
-    appliedAt: "2024-03-18",
-    history: [],
-  },
-];
-
-export const mockTaxConfig: TaxConfig = {
-  rraBrackets: [
-    { min: 0, max: 60000, rate: 0 },
-    { min: 60001, max: 100000, rate: 10 },
-    { min: 100001, max: 200000, rate: 20 },
-    { min: 200001, max: null, rate: 30 },
-  ],
-  rssbEmployee: 6,
-  rssbEmployer: 8,
-  maternityEmployee: 0.3,
-  maternityEmployer: 0.3,
-  cbhiRate: 0.5,
-};
-
-export const mockActivePayroll: PayrollRun = {
-  id: "RUN-2024-03",
-  month: "March",
-  year: 2024,
-  currentStep: 1,
-  status: "draft",
-  totalGross: 12500000,
-  totalDeductions: 3200000,
-  totalNet: 9300000,
-};
-
-export const mockLeaves: LeaveRequest[] = [
-  {
-    id: "LR-101",
-    employeeId: "EMP-001",
-    employeeName: "Jean Paul Nkurunziza",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop",
-    type: "Annual",
-    startDate: "2024-04-10",
-    endDate: "2024-04-15",
-    days: 5,
-    reason: "Holiday in Gisenyi",
-    status: "pending",
-    appliedAt: "2024-03-28",
-  },
-];
-
-export const mockLeaveBalances: LeaveBalance[] = [
-  {
-    employeeId: "EMP-001",
-    annual: 18,
-    sick: 5,
-    maternity: 0,
-    used: 4,
-  },
-];
-
-export const mockPerformance: PerformanceReview[] = [
-  {
-    id: "REV-001",
-    employeeId: "EMP-001",
-    employeeName: "Jean Paul Nkurunziza",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop",
-    quarter: "Q1",
-    year: 2024,
-    status: "submitted",
-    goals: [
-      {
-        id: "G-1",
-        perspective: "Financial",
-        objective: "Cost optimization",
-        target: "5% reduction",
-        weight: 30,
-        rating: 3,
-      },
-    ],
-    selfRating: 3.5,
-  },
-];
-export const mockPayroll: PayrollRecord[] = [
-  {
-    id: "PAY-001",
-    employee: "Jean Paul Nkurunziza",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop",
-    role: "Software Architect",
-    amount: 1500000,
-    method: "Bank Transfer (BK)",
-    date: "2023-12-27",
-    status: "paid",
-  },
-];
-
-export const mockJobs: JobOpening[] = [
-  {
-    id: "JOB-101",
-    title: "Senior Developer",
-    dept: "Engineering",
-    type: "Full-time",
-    location: "Kigali (Remote)",
-    applicants: 42,
-    status: "published",
-    date: "2 days ago",
   },
 ];
 
 export const mockDepartments: Department[] = [
   {
     id: "DEPT-001",
-    name: "Engineering",
-    description: "Software development and IT",
-    status: "active",
-    employeeCount: 42,
-  },
-  {
-    id: "DEPT-002",
-    name: "Sales & Marketing",
-    description: "Revenue generation",
-    status: "active",
-    employeeCount: 28,
-  },
-  {
-    id: "DEPT-003",
-    name: "Human Resources",
-    description: "People and culture",
-    status: "active",
-    employeeCount: 5,
-  },
-  {
-    id: "DEPT-004",
-    name: "Finance",
-    description: "Accounting and payroll",
-    status: "active",
-    employeeCount: 8,
-  },
-  {
-    id: "DEPT-005",
     name: "Operations",
-    description: "Logistics and supply chain",
+    description: "Core business operations and fleet management",
     status: "active",
-    employeeCount: 60,
+    employeeCount: 45,
   },
 ];
 
-export const mockJobTitles: JobTitle[] = [
+export const mockJobOpenings: JobOpening[] = [
   {
-    id: "JOB-001",
-    title: "Senior Frontend Engineer",
-    departmentId: "DEPT-001",
-    status: "active",
-    employeeCount: 8,
-  },
-  {
-    id: "JOB-002",
-    title: "Backend Engineer",
-    departmentId: "DEPT-001",
-    status: "active",
-    employeeCount: 12,
-  },
-  {
-    id: "JOB-003",
-    title: "Sales Representative",
-    departmentId: "DEPT-002",
-    status: "active",
-    employeeCount: 20,
-  },
-  {
-    id: "JOB-004",
-    title: "HR Business Partner",
-    departmentId: "DEPT-003",
-    status: "active",
-    employeeCount: 3,
-  },
-  {
-    id: "JOB-005",
-    title: "Fleet Manager",
-    departmentId: "DEPT-005",
-    status: "active",
-    employeeCount: 15,
+    id: "JOB-OP-001",
+    title: "Senior Logistics Coordinator",
+    dept: "Logistics",
+    type: "Full-time",
+    location: "Kigali",
+    applicants: 45,
+    status: "published",
+    date: "2024-03-05",
   },
 ];
 
-export const mockPolicyCompliance: PolicyCompliance = {
+export const mockLeaveRequests: LeaveRequest[] = [
+  {
+    id: "LV-001",
+    employeeId: "EMP-001",
+    employeeName: "Jean Paul Nkurunziza",
+    type: "Annual",
+    startDate: "2024-04-10",
+    endDate: "2024-04-15",
+    days: 5,
+    reason: "Family vacation",
+    status: "pending",
+    appliedAt: "2024-03-01",
+  },
+];
+
+export const mockPayrollRuns: PayrollRun[] = [
+  {
+    id: "RUN-001",
+    month: "February",
+    year: 2024,
+    currentStep: 6,
+    status: "completed",
+    totalGross: 145000000,
+    totalDeductions: 32000000,
+    totalNet: 113000000,
+  },
+];
+
+export const mockPayrollRecords: PayrollRecord[] = [
+  {
+    id: "REC-001",
+    employee: "Jean Paul Nkurunziza",
+    role: "Fleet Manager",
+    amount: 1200000,
+    method: "Bank Transfer",
+    date: "2024-02-28",
+    status: "paid",
+    base: 1200000,
+    tax: 360000,
+    deductions: 50000,
+    net: 790000,
+  },
+];
+
+export const mockCompliance: PolicyCompliance = {
   onboarding: {
-    compliant: 135,
-    nonCompliant: 8,
-    total: 143,
-    nonCompliantEmployees: [
-      {
-        id: "EMP-045",
-        name: "Divine Uwase",
-        missingDoc: "CRIMINAL_CERTIFICATE",
-      },
-      { id: "EMP-082", name: "Kevin Patrick", missingDoc: "MEDICAL_REPORT" },
-      { id: "EMP-103", name: "Sarah Manzi", missingDoc: "ID" },
-    ],
+    compliant: 124,
+    nonCompliant: 14,
+    total: 138,
+    nonCompliantEmployees: [],
   },
   offboarding: {
     compliant: 12,
-    nonCompliant: 3,
-    total: 15,
-    nonCompliantEmployees: [
-      { id: "EMP-012", name: "Alice Umutoni", missingDoc: "CLEARENCE_LETTER" },
-      {
-        id: "EMP-033",
-        name: "Claude Mugisha",
-        missingDoc: "EXPERIENCE_LETTER",
-      },
-    ],
+    nonCompliant: 2,
+    total: 14,
+    nonCompliantEmployees: [],
   },
 };
 
 export const mockPipeline: ApplicantPipelineStage[] = [
   { stage: "New Applied", count: 145 },
   { stage: "Screening", count: 82 },
-  { stage: "Online Assessment", count: 45 },
-  { stage: "First Interview", count: 24 },
-  { stage: "Second and Final Interview", count: 8 },
-  { stage: "Offer Sent", count: 3 },
-  { stage: "Recruited", count: 1 },
 ];
+
+export const mockTaxConfig: TaxConfig = {
+  rraBrackets: [
+    { min: 0, max: 60000, rate: 0 },
+    { min: 60001, max: 100000, rate: 10 },
+    { min: 100001, max: null, rate: 30 },
+  ],
+  rssbEmployee: 3,
+  rssbEmployer: 5,
+  maternityEmployee: 0.3,
+  maternityEmployer: 0.3,
+  cbhiRate: 0.5,
+};
 
 export const mockUsers: User[] = [
   {
     id: "USER-001",
     name: "Saddy Nkurunziza",
     email: "saddy@precision.rw",
-    role: "SYSTEM_ADMIN",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop",
-    status: "online",
-  },
-  {
-    id: "USER-002",
-    name: "Jean Paul Nkurunziza",
-    email: "jp.nkurunziza@igihe.rw",
-    role: "COMPANY_ADMIN",
-    companyId: "COMP-001",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=120&h=120&auto=format&fit=crop",
-    status: "away",
-  },
-  {
-    id: "USER-003",
-    name: "Divine Uwase",
-    email: "d.uwase@vision.rw",
-    role: "COMPANY_ADMIN",
-    companyId: "COMP-002",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=120&h=120&auto=format&fit=crop",
-    status: "online",
-  },
-  {
-    id: "USER-004",
-    name: "Patrick Habimana",
-    email: "p.habimana@kivuheights.com",
-    role: "COMPANY_ADMIN",
-    companyId: "COMP-003",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=120&h=120&auto=format&fit=crop",
-    status: "offline",
-  },
-  {
-    id: "USER-005",
-    name: "Alice Umutoni",
-    email: "a.umutoni@igihe.rw",
-    role: "EMPLOYEE",
-    companyId: "COMP-001",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&h=120&auto=format&fit=crop",
+    role: "ADMIN",
     status: "online",
   },
 ];
 
 export const api = {
-  getUsers: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    return [...mockUsers];
-  },
-  addUser: async (user: Omit<User, "id">) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    const newUser: User = {
-      ...user,
-      id: `USER-${Math.floor(Math.random() * 1000)}`,
-    };
-    mockUsers.push(newUser);
-    return newUser;
-  },
-  deleteUser: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    const index = mockUsers.findIndex((u) => u.id === id);
-    if (index !== -1) {
-      mockUsers.splice(index, 1);
-      return true;
-    }
-    return false;
-  },
-  deleteEmployee: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    const index = mockEmployees.findIndex((e) => e.id === id);
-    if (index !== -1) {
-      mockEmployees.splice(index, 1);
-      return true;
-    }
-    return false;
-  },
-  deleteCompany: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    const index = mockCompanies.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      mockCompanies.splice(index, 1);
-      return true;
-    }
-    return false;
-  },
-  getDocuments: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return mockDocuments;
-  },
-  getSystemLogs: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    return mockSystemLogs;
-  },
-  getApplicants: async (jobId?: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    if (jobId) return mockApplicants.filter((a) => a.jobTitleId === jobId);
-    return mockApplicants;
-  },
-  getApplicant: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockApplicants.find((a) => a.id === id) || null;
-  },
-  getTaxConfig: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockTaxConfig;
-  },
-  getActivePayrollRun: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    return mockActivePayroll;
-  },
-  getCompanies: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    return mockCompanies;
-  },
-  getCompany: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockCompanies.find((c) => c.id === id) || null;
-  },
-  getEmployees: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return [...mockEmployees];
-  },
-  getEmployee: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockEmployees.find((e) => e.id === id) || null;
-  },
-  addEmployee: async (emp: Employee) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    mockEmployees.push(emp);
-    return emp;
-  },
-  updateEmployee: async (id: string, updates: Partial<Employee>) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    const index = mockEmployees.findIndex((e) => e.id === id);
-    if (index !== -1) {
-      mockEmployees[index] = { ...mockEmployees[index], ...updates };
-      return mockEmployees[index];
-    }
-    throw new Error("Employee not found");
-  },
-  getLeaves: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    return mockLeaves;
-  },
-  getLeaveBalance: async (empId: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    return mockLeaveBalances.find((b) => b.employeeId === empId) || null;
-  },
-  getPerformanceReviews: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return mockPerformance;
-  },
-  getPayroll: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return mockPayroll;
-  },
-  getPayrollRecord: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockPayroll.find((p) => p.id === id) || null;
-  },
-  getJobs: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return mockJobs;
-  },
-  getJob: async (id: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockJobs.find((j) => j.id === id) || null;
-  },
-  getDepartments: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockDepartments;
-  },
-  getJobTitles: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockJobTitles;
-  },
-  getPolicyCompliance: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockPolicyCompliance;
-  },
-  getRecruitmentPipeline: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return mockPipeline;
-  },
-  addJobOpening: async (
-    job: Omit<JobOpening, "id" | "applicants" | "date">,
-  ) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    const newJob: JobOpening = {
-      ...job,
-      id: `JOB-${Math.floor(Math.random() * 1000)}`,
-      applicants: 0,
-      date: new Date().toISOString().split("T")[0],
-    };
-    mockJobs.push(newJob);
-    return newJob;
-  },
-  addDepartment: async (dept: Omit<Department, "id" | "employeeCount">) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    const newDept: Department = {
-      ...dept,
-      id: `DEPT-${Math.floor(Math.random() * 1000)}`,
-      employeeCount: 0,
-    };
-    mockDepartments.push(newDept);
-    return newDept;
-  },
-  addCompany: async (
-    company: Omit<Company, "id" | "registeredAt" | "employeeCount">,
-  ) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    const newCompany: Company = {
-      ...company,
-      id: `COMP-${Math.floor(Math.random() * 1000)}`,
-      registeredAt: new Date().toISOString().split("T")[0],
-      employeeCount: 0,
-    };
-    mockCompanies.push(newCompany);
-    return newCompany;
-  },
-  addApplicant: async (
-    applicant: Omit<
-      Applicant,
-      | "id"
-      | "applicationReference"
-      | "appliedAt"
-      | "history"
-      | "score"
-      | "stage"
-    >,
-  ) => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    const newApplicant: Applicant = {
-      ...applicant,
-      id: `CAN-${Math.floor(Math.random() * 1000)}`,
-      applicationReference: `APP-RW-${Math.floor(Math.random() * 1000)}`,
-      stage: "New Applied",
-      score: 0,
-      appliedAt: new Date().toISOString().split("T")[0],
-      history: [
-        {
-          status: "New Applied",
-          doneBy: "System",
-          doneAt: new Date().toISOString(),
-          comment: "Application received via public portal",
-        },
-      ],
-    };
-    mockApplicants.push(newApplicant);
-    return newApplicant;
-  },
+  getCompanies: async () => mockCompanies as Company[],
+  getCompany: async (id: string) => mockCompanies.find((c) => c.id === id) as Company | undefined,
+  deleteCompany: async (_id: string) => true,
+  getEmployees: async () => mockEmployees as Employee[],
+  getEmployee: async (id: string) => mockEmployees.find((e) => e.id === id) as Employee | undefined,
+  deleteEmployee: async (_id: string) => true,
+  addEmployee: async (emp: any) => ({ ...emp, id: "NEW-EMP" }),
+  updateEmployee: async (_id: string, data: any) => ({ ...data }),
+  getDepartments: async () => mockDepartments as Department[],
+  addDepartment: async (dept: any) => ({ ...dept, id: "NEW-DEPT" }),
+  getJobTitles: async () => [] as JobTitle[],
+  getPayrollRuns: async () => mockPayrollRuns as PayrollRun[],
+  getPayrollRecords: async () => mockPayrollRecords as PayrollRecord[],
+  getPayroll: async () => mockPayrollRecords as PayrollRecord[],
+  getActivePayrollRun: async () => mockPayrollRuns[0] as PayrollRun,
+  getPayrollRecord: async (id: string) => mockPayrollRecords.find(r => r.id === id) as PayrollRecord | undefined,
+  getLeaveRequests: async () => mockLeaveRequests as LeaveRequest[],
+  getLeaves: async () => mockLeaveRequests as LeaveRequest[],
+  getLeaveBalance: async (_id: string) => ({ annual: 18, sick: 12, maternity: 0, used: 4 }) as LeaveBalance,
+  getPerformanceReviews: async () => [] as PerformanceReview[],
+  getJobOpenings: async () => mockJobOpenings as JobOpening[],
+  getJobs: async () => mockJobOpenings as JobOpening[],
+  getJob: async (id: string) => mockJobOpenings.find(j => j.id === id) as JobOpening | undefined,
+  addJobOpening: async (job: any) => ({ ...job, id: "NEW-JOB" }),
+  getApplicants: async (_id?: string) => [] as Applicant[],
+  getDocuments: async () => [] as EmployeeDocument[],
+  getSystemLogs: async () => [] as SystemLog[],
+  getTaxConfig: async () => mockTaxConfig as TaxConfig,
+  getCompliance: async () => mockCompliance as PolicyCompliance,
+  getPolicyCompliance: async () => mockCompliance as PolicyCompliance,
+  getPipeline: async () => mockPipeline as ApplicantPipelineStage[],
+  getRecruitmentPipeline: async () => mockPipeline as ApplicantPipelineStage[],
+  getUsers: async () => mockUsers as User[],
+  addUser: async (user: any) => ({ ...user, id: "NEW-USER" }),
+  deleteUser: async (_id: string) => true,
+  addApplicant: async (app: any) => ({ ...app, id: "NEW-APP" }),
 };

@@ -55,7 +55,7 @@ function ApplyForJobPage() {
     const fetchJob = async () => {
       try {
         const data = await api.getJob(jobId);
-        setJob(data);
+        setJob(data || null);
       } catch (err) {
         toast.error("Job opening not found");
       } finally {

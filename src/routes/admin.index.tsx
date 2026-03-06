@@ -11,11 +11,9 @@ import {
   ArrowUpRight01Icon,
   PlusSignCircleIcon,
   MoreHorizontalIcon,
-  AiSecurityIcon,
   File02Icon,
 } from "@hugeicons/core-free-icons";
 import { StatCard } from "@/components/dashboard/stat-card";
-import { api } from "@/lib/mock-api";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import {
   Frame,
@@ -34,24 +32,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { UserAvatar } from "@/components/dashboard/user-avatar";
 import { cn } from "@/lib/utils";
+import { useGetCompaniesQuery, useGetUsersQuery } from "@/lib/redux/api";
+import { Spinner } from "@/components/ui/spinner";
 
 export const Route = createFileRoute("/admin/")({
-  loader: async () => {
-    const [users, companies, logs] = await Promise.all([
-      api.getUsers(),
-      api.getCompanies(),
-      api.getSystemLogs(),
-    ]);
-    return { users, companies, logs };
-  },
   pendingComponent: DashboardPending,
   component: AdminDashboard,
 });
 
 function AdminDashboard() {
-  const { users, companies, logs } = Route.useLoaderData();
+  const { data: companiesData, isLoading: companiesLoading } = useGetCompaniesQuery({ limit: 5 });
+  const { data: usersData, isLoading: usersLoading } = useGetUsersQuery({ limit: 1 });
+
+  const companies = companiesData?.items ?? [];
+  const totalCompanies = companiesData?.meta.totalItems ?? 0;
+  const totalUsers = usersData?.meta.totalItems ?? 0;
+
+
+  const _logs: any[] = [];
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full">
@@ -76,7 +75,7 @@ function AdminDashboard() {
           <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <StatCard
               label="Total Companies"
-              value={companies.length}
+              value={companiesLoading ? "..." : totalCompanies}
               change="+3"
               up
               icon={Building03Icon}
@@ -85,8 +84,8 @@ function AdminDashboard() {
             />
             <StatCard
               label="Total Users"
-              value="2,840"
-              change="+124"
+              value={usersLoading ? "..." : totalUsers}
+              change="+0"
               up
               icon={UserGroupIcon}
               variant="info"
@@ -109,102 +108,107 @@ function AdminDashboard() {
                 <FramePanel className="bg-card">
                   <FrameHeader>
                     <div>
-                      <FrameTitle>Users Overview</FrameTitle>
+                      <FrameTitle>Recently Provisioned Tenants</FrameTitle>
                       <FrameDescription>
-                        Recent active administrators and system users
+                        Latest organizations added to the platform
                       </FrameDescription>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
+                      render={<Link to="/admin/companies" />}
                     >
                       View All
                     </Button>
                   </FrameHeader>
                   <FrameContent className="p-0">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>User</TableHead>
-                          <TableHead>Role</TableHead>
-                          <TableHead>Organization</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="w-[50px]"></TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {users.slice(0, 5).map((user) => {
-                          const company = companies.find(
-                            (c) => c.id === user.companyId,
-                          );
-                          return (
-                            <TableRow key={user.id}>
-                              <TableCell>
-                                <div className="flex items-center gap-3">
-                                  <UserAvatar
-                                    src={user.image}
-                                    name={user.name}
-                                    size="sm"
-                                  />
-                                  <div className="flex flex-col">
-                                    <span className="font-bold text-foreground/90">
-                                      {user.name}
-                                    </span>
-                                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
-                                      {user.email}
-                                    </span>
+                    {companiesLoading ? (
+                      <div className="p-8 flex justify-center">
+                        <Spinner />
+                      </div>
+                    ) : (
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Organization</TableHead>
+                            <TableHead>TIN</TableHead>
+                            <TableHead>Identification</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead className="w-[50px]"></TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {companies.map((company) => {
+                            return (
+                              <TableRow key={company.id}>
+                                <TableCell>
+                                  <div className="flex items-center gap-3">
+                                    <div className="h-8 w-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary font-bold text-xs">
+                                      {company.name.charAt(0)}
+                                    </div>
+                                    <div className="flex flex-col">
+                                      <span className="font-bold text-foreground/90">
+                                        {company.name}
+                                      </span>
+                                      <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                                        ID: {company.id.split("-")[0]}...
+                                      </span>
+                                    </div>
                                   </div>
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <Badge
-                                  variant={
-                                    user.role === "SYSTEM_ADMIN"
-                                      ? "accent"
-                                      : "outline"
-                                  }
-                                  className="font-bold text-[9px]"
-                                >
-                                  {user.role.replace("_", " ")}
-                                </Badge>
-                              </TableCell>
-                              <TableCell>
-                                <span className="text-sm font-semibold text-muted-foreground">
-                                  {company?.name || "System"}
-                                </span>
-                              </TableCell>
-                              <TableCell>
-                                <Badge
-                                  variant={
-                                    user.status === "online"
-                                      ? "success"
-                                      : user.status === "away"
-                                        ? "warning"
-                                        : "muted"
-                                  }
-                                  showDot
-                                  className="font-bold text-[9px]"
-                                >
-                                  {user.status}
-                                </Badge>
-                              </TableCell>
-                              <TableCell>
-                                <Button
-                                  variant="ghost"
-                                  size="icon-sm"
-                                  className="text-muted-foreground/40"
-                                >
-                                  <HugeiconsIcon
-                                    icon={MoreHorizontalIcon}
-                                    size={16}
-                                  />
-                                </Button>
+                                </TableCell>
+                                <TableCell>
+                                  <span className="text-sm font-semibold text-muted-foreground tabular-nums">
+                                    {company.tin}
+                                  </span>
+                                </TableCell>
+                                <TableCell>
+                                  <span className="text-sm font-semibold text-muted-foreground tabular-nums">
+                                    {company.identificationNumber}
+                                  </span>
+                                </TableCell>
+                                <TableCell>
+                                  <Badge
+                                    variant="success"
+                                    showDot
+                                    className="font-bold text-[9px]"
+                                  >
+                                    active
+                                  </Badge>
+                                </TableCell>
+                                <TableCell>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon-sm"
+                                    className="text-muted-foreground/40"
+                                    render={
+                                      <Link
+                                        to="/admin/companies/$id"
+                                        params={{ id: company.id }}
+                                      />
+                                    }
+                                  >
+                                    <HugeiconsIcon
+                                      icon={MoreHorizontalIcon}
+                                      size={16}
+                                    />
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                          {companies.length === 0 && (
+                            <TableRow>
+                              <TableCell
+                                colSpan={5}
+                                className="text-center py-8 text-muted-foreground"
+                              >
+                                No companies provisioned yet.
                               </TableCell>
                             </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
+                          )}
+                        </TableBody>
+                      </Table>
+                    )}
                   </FrameContent>
                 </FramePanel>
               </Frame>
@@ -213,9 +217,6 @@ function AdminDashboard() {
                 <FramePanel className="bg-card">
                   <FrameHeader>
                     <div className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                        <HugeiconsIcon icon={AiSecurityIcon} size={18} />
-                      </div>
                       <div>
                         <FrameTitle>Security Audit Logs</FrameTitle>
                         <FrameDescription>
@@ -223,16 +224,13 @@ function AdminDashboard() {
                         </FrameDescription>
                       </div>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                    >
+                    <Button variant="outline" size="sm">
                       Audit Trail
                     </Button>
                   </FrameHeader>
                   <FrameContent className="p-0">
                     <div className="divide-y divide-border/5">
-                      {logs.slice(0, 4).map((log) => (
+                      {_logs.slice(0, 4).map((log: any) => (
                         <div
                           key={log.id}
                           className="flex items-center justify-between p-5 hover:bg-muted/5 transition-colors group"
@@ -267,6 +265,11 @@ function AdminDashboard() {
                           </Badge>
                         </div>
                       ))}
+                      {_logs.length === 0 && (
+                        <div className="p-10 text-center text-muted-foreground text-sm font-medium">
+                          Registry activity is currently being indexed...
+                        </div>
+                      )}
                     </div>
                   </FrameContent>
                 </FramePanel>

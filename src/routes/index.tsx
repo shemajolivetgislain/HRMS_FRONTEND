@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -11,8 +11,29 @@ import {
   FlashIcon,
   Globe02Icon,
 } from "@hugeicons/core-free-icons";
+import { store } from "@/lib/redux/store";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: () => {
+    const state = store.getState();
+    const user = state.auth.user;
+    const token =
+      state.auth.token ||
+      (typeof window !== "undefined"
+        ? localStorage.getItem("auth_token")
+        : null);
+
+    if (token && user) {
+      if (user.role === "ADMIN") {
+        throw redirect({
+          to: "/admin",
+        });
+      }
+      throw redirect({
+        to: "/dashboard",
+      });
+    }
+  },
   component: Home,
 });
 

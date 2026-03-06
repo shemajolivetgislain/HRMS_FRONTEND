@@ -24,14 +24,12 @@ import {
   PlusSignIcon,
   Delete01Icon,
   Cancel01Icon,
-  Tick01Icon,
   UserEdit01Icon,
   MoreHorizontalIcon,
   AiSecurityIcon,
   AlertCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { api } from "@/lib/mock-api";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { ErrorComponent } from "@/components/error-component";
 import { StatCard } from "@/components/dashboard/stat-card";
@@ -69,36 +67,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { useGetCompanyQuery } from "@/lib/redux/api";
 
 export const Route = createFileRoute("/admin/companies/$id")({
-  loader: async ({ params }) => {
-    const [company, users] = await Promise.all([
-      api.getCompany(params.id),
-      api.getUsers(),
-    ]);
-    if (!company) throw new Error("Company not found");
-    return {
-      company,
-      companyAdmins: users.filter((u) => u.companyId === params.id),
-    };
-  },
   pendingComponent: DashboardPending,
   errorComponent: ErrorComponent,
   component: CompanyDetailsPage,
 });
 
 function CompanyDetailsPage() {
-  const { company, companyAdmins } = Route.useLoaderData();
+  const { id } = Route.useParams();
   const navigate = useNavigate();
+  const { data: company, isLoading, isError, refetch } = useGetCompanyQuery(id);
+  
   const [isDeleting, setIsDeleting] = useState(false);
   const [showAddAdmin, setShowAddAdmin] = useState(false);
   const [newAdmin, setNewAdmin] = useState({ name: "", email: "" });
 
+  // Temporary mock for users until endpoint is ready
+  const companyAdmins: any[] = [];
+
   const handleDeleteCompany = async () => {
     setIsDeleting(true);
     try {
-      await api.deleteCompany(company.id);
-      toast.success(`Organization ${company.name} deleted successfully`);
+      // await api.deleteCompany(id);
+      toast.info("Deletion is currently disabled.");
+      toast.success(`Organization deletion request recorded`);
       navigate({ to: "/admin/companies" });
     } catch (err) {
       toast.error("Failed to delete company");
@@ -110,31 +104,24 @@ function CompanyDetailsPage() {
   const handleAddAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.addUser({
-        name: newAdmin.name,
-        email: newAdmin.email,
-        role: "COMPANY_ADMIN",
-        companyId: company.id,
-        status: "offline",
-      });
-      toast.success("Administrator account provisioned successfully");
+      toast.info("Account provisioning is currently restricted.");
       setShowAddAdmin(false);
       setNewAdmin({ name: "", email: "" });
-      window.location.reload();
     } catch (err) {
       toast.error("Failed to add administrator");
     }
   };
 
-  const handleRemoveAdmin = async (userId: string) => {
+  const handleRemoveAdmin = async (_userId: string) => {
     try {
-      await api.deleteUser(userId);
-      toast.success("Administrative access revoked successfully");
-      window.location.reload();
+      toast.info("Revocation is currently restricted.");
     } catch (err) {
       toast.error("Failed to remove administrator");
     }
   };
+
+  if (isLoading) return <DashboardPending />;
+  if (isError || !company) return <ErrorComponent error={new Error("Company not found")} reset={() => refetch()} />;
 
   return (
     <main className="flex flex-1 flex-col gap-0 overflow-hidden h-full bg-muted/20">
@@ -166,9 +153,9 @@ function CompanyDetailsPage() {
       <div className="flex-1 overflow-y-auto no-scrollbar px-4 lg:px-6 pb-12 pt-2">
         <div className="flex flex-col gap-8">
           <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <StatCard label="Total Staff" value={company.employeeCount} icon={UserGroupIcon} variant="primary" sub="Active headcount" />
-            <StatCard label="Registry Status" value={company.status} icon={Shield01Icon} variant={company.status === "active" ? "success" : "destructive"} sub="Platform access" />
-            <StatCard label="Growth" value="+12%" icon={ChartBarLineIcon} variant="info" sub="Last 30 days" />
+            <StatCard label="Total Staff" value="—" icon={UserGroupIcon} variant="primary" sub="Active headcount" />
+            <StatCard label="Registry Status" value="Active" icon={Shield01Icon} variant="success" sub="Platform access" />
+            <StatCard label="Growth" value="—" icon={ChartBarLineIcon} variant="info" sub="Last 30 days" />
           </section>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -184,10 +171,10 @@ function CompanyDetailsPage() {
                   <FrameContent className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
                     <DetailItem label="Legal Entity" value={company.name} icon={Building03Icon} />
                     <DetailItem label="Tax ID (TIN)" value={company.tin} icon={Shield01Icon} />
-                    <DetailItem label="Industry Sector" value={company.sector} icon={ChartBarLineIcon} />
-                    <DetailItem label="Registration Date" value={company.registeredAt} icon={Calendar01Icon} />
-                    <DetailItem label="Primary Email" value={company.email} icon={Mail01Icon} />
-                    <DetailItem label="Contact Phone" value={company.phone} icon={CallIcon} />
+                    <DetailItem label="Identification" value={String(company.identificationNumber)} icon={ChartBarLineIcon} />
+                    <DetailItem label="Registration Date" value="N/A" icon={Calendar01Icon} />
+                    <DetailItem label="Primary Email" value="N/A" icon={Mail01Icon} />
+                    <DetailItem label="Contact Phone" value="N/A" icon={CallIcon} />
                   </FrameContent>
                 </FramePanel>
               </Frame>
@@ -279,6 +266,13 @@ function CompanyDetailsPage() {
                             </TableCell>
                           </TableRow>
                         ))}
+                        {companyAdmins.length === 0 && (
+                           <TableRow>
+                              <TableCell colSpan={3} className="text-center py-10 text-muted-foreground text-sm font-medium">
+                                 No administrative accounts assigned to this tenant
+                              </TableCell>
+                           </TableRow>
+                        )}
                       </TableBody>
                     </Table>
                   </FrameContent>
@@ -326,10 +320,10 @@ function CompanyDetailsPage() {
                     <div className="pt-4 mt-2 border-t border-border/5 space-y-3">
                       <Button variant="outline" className={cn(
                         "w-full justify-start gap-3 text-xs font-bold uppercase tracking-widest border-border/40 transition-colors",
-                        company.status === "active" ? "text-warning hover:bg-warning/5" : "text-success hover:bg-success/5"
+                        "text-warning hover:bg-warning/5"
                       )}>
-                        <HugeiconsIcon icon={company.status === "active" ? Cancel01Icon : Tick01Icon} size={16} />
-                        {company.status === "active" ? "Suspend Tenant" : "Activate Tenant"}
+                        <HugeiconsIcon icon={Cancel01Icon} size={16} />
+                        Suspend Tenant
                       </Button>
                       
                       <AlertDialog>

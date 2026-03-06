@@ -28,7 +28,9 @@ import {
   Message01Icon,
 } from "@hugeicons/core-free-icons";
 import { useTheme } from "next-themes";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useAppDispatch } from "@/lib/redux/store";
+import { logout } from "@/lib/redux/slices/auth";
 
 export function NavUser({
   user,
@@ -41,6 +43,14 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const { setTheme } = useTheme();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate({ to: "/auth/login" });
+  };
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -53,11 +63,11 @@ export function NavUser({
               />
             }
           >
-            <UserAvatar 
-              src={user.image} 
-              name={user.name} 
-              size="sm" 
-              className="rounded-lg shadow-xs group-hover:scale-105 transition-transform duration-300" 
+            <UserAvatar
+              src={user.image}
+              name={user.name}
+              size="sm"
+              className="rounded-lg shadow-xs group-hover:scale-105 transition-transform duration-300"
             />
             <div className="grid flex-1 text-start text-sm leading-tight ml-1">
               <span className="truncate font-semibold tracking-tight text-foreground/90">
@@ -82,11 +92,7 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                  <UserAvatar 
-                    src={user.image} 
-                    name={user.name} 
-                    size="sm" 
-                  />
+                  <UserAvatar src={user.image} name={user.name} size="sm" />
                   <div className="grid flex-1 text-start text-sm leading-tight">
                     <span className="truncate font-semibold">{user.name}</span>
                     <span className="text-muted-foreground truncate text-xs">
@@ -106,7 +112,14 @@ export function NavUser({
                 <HugeiconsIcon icon={HelpCircleIcon} strokeWidth={2} />
                 Help Center
               </DropdownMenuItem>
-              <DropdownMenuItem render={<a href="mailto:support@hrms.com?subject=HRMS Feedback" />}>
+              <DropdownMenuItem
+                render={
+                  <a
+                    href="mailto:support@hrms.com?subject=HRMS Feedback"
+                    aria-label="Send Feedback"
+                  />
+                }
+              >
                 <HugeiconsIcon icon={Message01Icon} strokeWidth={2} />
                 Send Feedback
               </DropdownMenuItem>
@@ -130,7 +143,10 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive focus:bg-destructive/10">
+            <DropdownMenuItem
+              className="text-destructive focus:bg-destructive/10 cursor-pointer"
+              onClick={handleLogout}
+            >
               <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />
               Log out
             </DropdownMenuItem>

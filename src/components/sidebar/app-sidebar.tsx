@@ -20,134 +20,136 @@ import {
   ChartBarLineIcon,
   JobShareIcon,
   Building03Icon,
-  Building04Icon,
-  GlobeIcon,
 } from "@hugeicons/core-free-icons";
 import { NavMain } from "./nav-main";
 import { CompanySwitcher } from "./company-switcher";
 import { Logo } from "@/components/logo";
 
-const defaultData = {
-  user: {
-    name: "Admin",
-    email: "admin@hrms.com",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop",
+import { useAppSelector } from "@/lib/redux/store";
+import { useGetCompaniesQuery } from "@/lib/redux/api";
+
+const navMain = [
+  {
+    title: "Overview",
+    url: "/dashboard",
+    icon: <HugeiconsIcon icon={DashboardSquare01Icon} strokeWidth={2} />,
   },
-  companies: [
-    {
-      name: "Igihe Logistics",
-      logo: Building03Icon,
-      plan: "Enterprise",
-    },
-    {
-      name: "Vision Finance",
-      logo: Building04Icon,
-      plan: "Growth",
-    },
-    {
-      name: "Kivu Heights",
-      logo: GlobeIcon,
-      plan: "Standard",
-    },
-  ],
-  navMain: [
-    {
-      title: "Overview",
-      url: "/dashboard",
-      icon: <HugeiconsIcon icon={DashboardSquare01Icon} strokeWidth={2} />,
-    },
-    {
-      title: "Organization",
-      url: "#",
-      icon: <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />,
-      items: [
-        {
-          title: "Departments",
-          url: "/dashboard/departments",
-        },
-        {
-          title: "Company Settings",
-          url: "/dashboard/settings",
-        },
-      ],
-    },
-    {
-      title: "Workforce",
-      url: "#",
-      icon: <HugeiconsIcon icon={UserGroupIcon} strokeWidth={2} />,
-      items: [
-        {
-          title: "All Employees",
-          url: "/dashboard/employees",
-        },
-        {
-          title: "Onboarding",
-          url: "/dashboard/employees/onboard",
-        },
-        {
-          title: "Resignations",
-          url: "/dashboard/employees/resign",
-        },
-      ],
-    },
-    {
-      title: "Recruitment",
-      url: "/dashboard/recruitment",
-      icon: <HugeiconsIcon icon={JobShareIcon} strokeWidth={2} />,
-    },
-    {
-      title: "Performance",
-      url: "#",
-      icon: <HugeiconsIcon icon={ChartBarLineIcon} strokeWidth={2} />,
-      items: [
-        {
-          title: "Staff Appraisals",
-          url: "/dashboard/performance",
-        },
-        {
-          title: "Analytics",
-          url: "/dashboard/analytics",
-        },
-      ],
-    },
-    {
-      title: "Payroll",
-      url: "/dashboard/payroll",
-      icon: <HugeiconsIcon icon={Coins01Icon} strokeWidth={2} />,
-    },
-    {
-      title: "Leave Management",
-      url: "/dashboard/leaves",
-      icon: <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} />,
-    },
-    {
-      title: "Operations",
-      url: "#",
-      icon: <HugeiconsIcon icon={File02Icon} strokeWidth={2} />,
-      items: [
-        {
-          title: "Document Vault",
-          url: "/dashboard/documents",
-        },
-        {
-          title: "Reports",
-          url: "/dashboard/reports",
-        },
-        {
-          title: "Calendar",
-          url: "/dashboard/calendar",
-        },
-      ],
-    },
-  ],
-};
+  {
+    title: "Organization",
+    url: "#",
+    icon: <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />,
+    items: [
+      {
+        title: "Departments",
+        url: "/dashboard/departments",
+      },
+      {
+        title: "Company Settings",
+        url: "/dashboard/settings",
+      },
+    ],
+  },
+  {
+    title: "Workforce",
+    url: "#",
+    icon: <HugeiconsIcon icon={UserGroupIcon} strokeWidth={2} />,
+    items: [
+      {
+        title: "All Employees",
+        url: "/dashboard/employees",
+      },
+      {
+        title: "Onboarding",
+        url: "/dashboard/employees/onboard",
+      },
+      {
+        title: "Resignations",
+        url: "/dashboard/employees/resign",
+      },
+    ],
+  },
+  {
+    title: "Recruitment",
+    url: "/dashboard/recruitment",
+    icon: <HugeiconsIcon icon={JobShareIcon} strokeWidth={2} />,
+  },
+  {
+    title: "Performance",
+    url: "#",
+    icon: <HugeiconsIcon icon={ChartBarLineIcon} strokeWidth={2} />,
+    items: [
+      {
+        title: "Staff Appraisals",
+        url: "/dashboard/performance",
+      },
+      {
+        title: "Analytics",
+        url: "/dashboard/analytics",
+      },
+    ],
+  },
+  {
+    title: "Payroll",
+    url: "/dashboard/payroll",
+    icon: <HugeiconsIcon icon={Coins01Icon} strokeWidth={2} />,
+  },
+  {
+    title: "Leave Management",
+    url: "/dashboard/leaves",
+    icon: <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} />,
+  },
+  {
+    title: "Operations",
+    url: "#",
+    icon: <HugeiconsIcon icon={File02Icon} strokeWidth={2} />,
+    items: [
+      {
+        title: "Document Vault",
+        url: "/dashboard/documents",
+      },
+      {
+        title: "Reports",
+        url: "/dashboard/reports",
+      },
+      {
+        title: "Calendar",
+        url: "/dashboard/calendar",
+      },
+    ],
+  },
+];
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  customNav?: typeof defaultData.navMain;
+  customNav?: typeof navMain;
 }
 
 export function AppSidebar({ customNav, ...props }: AppSidebarProps) {
-  const navItems = customNav || defaultData.navMain;
+  const { user } = useAppSelector((state) => state.auth);
+  const isAdmin = user?.role === "ADMIN";
+
+  const { data: companiesData } = useGetCompaniesQuery(undefined, {
+    skip: !isAdmin,
+  });
+
+  const sidebarCompanies = isAdmin
+    ? (companiesData?.items.map((c) => ({
+        id: c.id,
+        name: c.name,
+        logo: Building03Icon,
+        plan: "Enterprise",
+      })) || [])
+    : user?.company
+      ? [
+          {
+            id: user.company.id,
+            name: user.company.name,
+            logo: Building03Icon,
+            plan: "Managed",
+          },
+        ]
+      : [];
+
+  const navItems = customNav || navMain;
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -158,13 +160,23 @@ export function AppSidebar({ customNav, ...props }: AppSidebarProps) {
             HRMS
           </span>
         </div>
-        <CompanySwitcher companies={defaultData.companies} />
+        {sidebarCompanies.length > 0 && (
+          <CompanySwitcher companies={sidebarCompanies as any} />
+        )}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navItems} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={defaultData.user} />
+        {user && (
+          <NavUser
+            user={{
+              name: `${user.firstName} ${user.lastName}`,
+              email: user.email,
+              image: user.profilePicture || "",
+            }}
+          />
+        )}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
