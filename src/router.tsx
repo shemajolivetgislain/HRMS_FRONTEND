@@ -1,6 +1,5 @@
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
-import { getCookie } from './lib/cookies'
 
 export function getRouter() {
   const router = createTanStackRouter({

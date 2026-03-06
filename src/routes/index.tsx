@@ -23,14 +23,21 @@ export const Route = createFileRoute("/")({
     const { user } = state.auth;
 
     if (token && user) {
-      if (user.role === "ADMIN") {
+      const isVerified = user.status === "ACTIVE";
+      const needsPasswordChange =
+        (user.role === "COMPANY_ADMIN" || user.role === "EMPLOYEE") &&
+        !user.passwordResetAt;
+
+      if (isVerified && !needsPasswordChange) {
+        if (user.role === "ADMIN") {
+          throw redirect({
+            to: "/admin",
+          });
+        }
         throw redirect({
-          to: "/admin",
+          to: "/dashboard",
         });
       }
-      throw redirect({
-        to: "/dashboard",
-      });
     }
   },
   component: Home,
