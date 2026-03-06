@@ -1,138 +1,143 @@
 "use client";
 
-import * as React from "react";
-import { 
-  Frame, 
-  FramePanel, 
-  FrameHeader, 
-  FrameTitle, 
-  FrameDescription, 
-  FrameContent,
-  FrameFooter
-} from "@/components/ui/frame";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { UserMultiple02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import * as React from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+	Frame,
+	FrameContent,
+	FrameDescription,
+	FrameFooter,
+	FrameHeader,
+	FramePanel,
+	FrameTitle,
+} from "@/components/ui/frame";
 
 const topCompanies = [
-  {
-    name: "Igihe Logistics",
-    employees: "1,248",
-    plan: "Enterprise",
-    status: "Active",
-  },
-  {
-    name: "Vision Finance",
-    employees: "892",
-    plan: "Growth",
-    status: "Active",
-  },
-  {
-    name: "Kivu Heights",
-    employees: "450",
-    plan: "Standard",
-    status: "Suspended",
-  },
-  {
-    name: "Precision Corp",
-    employees: "312",
-    plan: "Growth",
-    status: "Pending",
-  },
-  {
-    name: "Global Tech",
-    employees: "155",
-    plan: "Startup",
-    status: "Active",
-  },
+	{
+		name: "Igihe Logistics",
+		employees: "1,248",
+		plan: "Enterprise",
+		status: "Active",
+	},
+	{
+		name: "Vision Finance",
+		employees: "892",
+		plan: "Growth",
+		status: "Active",
+	},
+	{
+		name: "Kivu Heights",
+		employees: "450",
+		plan: "Standard",
+		status: "Suspended",
+	},
+	{
+		name: "Precision Corp",
+		employees: "312",
+		plan: "Growth",
+		status: "Pending",
+	},
+	{
+		name: "Global Tech",
+		employees: "155",
+		plan: "Startup",
+		status: "Active",
+	},
 ];
 
 const planVariant: Record<string, "accent" | "info" | "secondary"> = {
-  Enterprise: "accent",
-  Growth: "info",
-  Startup: "secondary",
+	Enterprise: "accent",
+	Growth: "info",
+	Startup: "secondary",
 };
 
 export const TopCompanies = React.memo(function TopCompanies() {
-  return (
-    <Frame className="h-full group/frame">
-      <FramePanel className="flex flex-col h-full overflow-hidden">
-        <FrameHeader>
-          <div>
-            <FrameTitle>Top Companies</FrameTitle>
-            <FrameDescription>Ranked by employee count</FrameDescription>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
-          >
-            Directory
-          </Button>
-        </FrameHeader>
+	return (
+		<Frame className="h-full group/frame">
+			<FramePanel className="flex flex-col h-full overflow-hidden">
+				<FrameHeader>
+					<div>
+						<FrameTitle>Top Companies</FrameTitle>
+						<FrameDescription>Ranked by employee count</FrameDescription>
+					</div>
+					<Button
+						variant="outline"
+						size="sm"
+						className="font-bold capitalize tracking-wider shadow-none hover:bg-muted/50"
+					>
+						Directory
+					</Button>
+				</FrameHeader>
 
-        <FrameContent className="p-0 flex-1">
-          {/* table headers */}
-          <div className="grid grid-cols-[32px_1fr_80px_72px] items-center px-6 py-2.5 bg-muted/20 border-b border-border/5">
-            {["#", "Company", "Plan", "Status"].map((h) => (
-              <span
-                key={h}
-                className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest"
-              >
-                {h}
-              </span>
-            ))}
-          </div>
+				<FrameContent className="p-0 flex-1">
+					{/* table headers */}
+					<div className="grid grid-cols-[32px_1fr_80px_72px] items-center px-6 py-2.5 bg-muted/20 border-b border-border/5">
+						{["#", "Company", "Plan", "Status"].map((h) => (
+							<span
+								key={h}
+								className="text-xs font-bold text-muted-foreground/40 capitalize tracking-widest"
+							>
+								{h}
+							</span>
+						))}
+					</div>
 
-          {/* rows */}
-          <div className="divide-y divide-border/5">
-            {topCompanies.map((company, i) => {
-              return (
-                <div
-                  key={i}
-                  className="grid grid-cols-[32px_1fr_80px_72px] items-center px-6 py-4 hover:bg-muted/10 transition-colors group"
-                >
-                  <span className="text-xs font-mono text-muted-foreground/30 tabular-nums">
-                    {(i + 1).toString().padStart(2, "0")}
-                  </span>
-                  <div className="flex flex-col gap-0.5 min-w-0">
-                    <span className="text-sm font-semibold text-foreground/90 leading-tight truncate group-hover:text-foreground transition-colors">
-                      {company.name}
-                    </span>
-                    <span className="text-xs text-muted-foreground/50 flex items-center gap-1 font-medium tabular-nums">
-                      <HugeiconsIcon
-                        icon={UserMultiple02Icon}
-                        strokeWidth={2}
-                        size={11}
-                      />
-                      {company.employees}
-                    </span>
-                  </div>
-                  <Badge variant={planVariant[company.plan] || "secondary"} className="w-fit">
-                    {company.plan}
-                  </Badge>
-                  <div className="flex items-center">
-                    <Badge 
-                      variant={company.status === "Active" ? "success" : "warning"} 
-                      showDot 
-                      className="border-none bg-transparent p-0 text-muted-foreground/70"
-                    >
-                      {company.status}
-                    </Badge>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </FrameContent>
+					{/* rows */}
+					<div className="divide-y divide-border/5">
+						{topCompanies.map((company, i) => {
+							return (
+								<div
+									key={i}
+									className="grid grid-cols-[32px_1fr_80px_72px] items-center px-6 py-4 hover:bg-muted/10 transition-colors group"
+								>
+									<span className="text-xs font-mono text-muted-foreground/30 tabular-nums">
+										{(i + 1).toString().padStart(2, "0")}
+									</span>
+									<div className="flex flex-col gap-0.5 min-w-0">
+										<span className="text-sm font-semibold text-foreground/90 leading-tight truncate group-hover:text-foreground transition-colors">
+											{company.name}
+										</span>
+										<span className="text-xs text-muted-foreground/50 flex items-center gap-1 font-medium tabular-nums">
+											<HugeiconsIcon
+												icon={UserMultiple02Icon}
+												strokeWidth={2}
+												size={11}
+											/>
+											{company.employees}
+										</span>
+									</div>
+									<Badge
+										variant={planVariant[company.plan] || "secondary"}
+										className="w-fit"
+									>
+										{company.plan}
+									</Badge>
+									<div className="flex items-center">
+										<Badge
+											variant={
+												company.status === "Active" ? "success" : "warning"
+											}
+											showDot
+											className="border-none bg-transparent p-0 text-muted-foreground/70"
+										>
+											{company.status}
+										</Badge>
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				</FrameContent>
 
-        <FrameFooter>
-          <span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
-            Showing {topCompanies.length} of 42 companies
-          </span>
-        </FrameFooter>
-      </FramePanel>
-    </Frame>
-  );
+				<FrameFooter>
+					<span className="text-xs text-muted-foreground/40 font-bold capitalize tracking-widest">
+						Showing {topCompanies.length} of 42 companies
+					</span>
+				</FrameFooter>
+			</FramePanel>
+		</Frame>
+	);
 });
