@@ -27,7 +27,6 @@ import { Route as DashboardCalendarRouteImport } from './routes/dashboard.calend
 import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard.analytics'
 import { Route as AuthVerifyRouteImport } from './routes/auth.verify'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
-import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 import { Route as AuthChangePasswordRouteImport } from './routes/auth.change-password'
@@ -136,11 +135,6 @@ const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthRegisterRoute = AuthRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => AuthRoute,
-} as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -242,7 +236,6 @@ export interface FileRoutesByFullPath {
   '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
@@ -278,7 +271,6 @@ export interface FileRoutesByTo {
   '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
@@ -317,7 +309,6 @@ export interface FileRoutesById {
   '/auth/change-password': typeof AuthChangePasswordRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
@@ -357,7 +348,6 @@ export interface FileRouteTypes {
     | '/auth/change-password'
     | '/auth/forgot-password'
     | '/auth/login'
-    | '/auth/register'
     | '/auth/reset-password'
     | '/auth/verify'
     | '/dashboard/analytics'
@@ -393,7 +383,6 @@ export interface FileRouteTypes {
     | '/auth/change-password'
     | '/auth/forgot-password'
     | '/auth/login'
-    | '/auth/register'
     | '/auth/reset-password'
     | '/auth/verify'
     | '/dashboard/analytics'
@@ -431,7 +420,6 @@ export interface FileRouteTypes {
     | '/auth/change-password'
     | '/auth/forgot-password'
     | '/auth/login'
-    | '/auth/register'
     | '/auth/reset-password'
     | '/auth/verify'
     | '/dashboard/analytics'
@@ -595,13 +583,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthResetPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/auth/register': {
-      id: '/auth/register'
-      path: '/register'
-      fullPath: '/auth/register'
-      preLoaderRoute: typeof AuthRegisterRouteImport
-      parentRoute: typeof AuthRoute
-    }
     '/auth/login': {
       id: '/auth/login'
       path: '/login'
@@ -748,7 +729,6 @@ interface AuthRouteChildren {
   AuthChangePasswordRoute: typeof AuthChangePasswordRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
-  AuthRegisterRoute: typeof AuthRegisterRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthVerifyRoute: typeof AuthVerifyRoute
 }
@@ -757,7 +737,6 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthChangePasswordRoute: AuthChangePasswordRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthLoginRoute: AuthLoginRoute,
-  AuthRegisterRoute: AuthRegisterRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthVerifyRoute: AuthVerifyRoute,
 }

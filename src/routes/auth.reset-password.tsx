@@ -1,253 +1,301 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-	Alert01Icon,
-	ArrowRight01Icon,
-	Tick01Icon,
-	ViewIcon,
-	ViewOffIcon,
+  Alert01Icon,
+  ArrowRight01Icon,
+  Tick01Icon,
+  ViewIcon,
+  ViewOffIcon,
+  Mail01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { PasswordStrengthIndicator } from "@/components/auth/password-strength-indicator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { useResetPasswordMutation } from "@/lib/redux/api";
 
 const resetPasswordSchema = z
-	.object({
-		password: z.string().min(8, "Password must be at least 8 characters"),
-		confirmPassword: z.string().min(8, "Please confirm your password"),
-	})
-	.refine((data) => data.password === data.confirmPassword, {
-		message: "Passwords do not match",
-		path: ["confirmPassword"],
-	});
+  .object({
+    otp: z.string().length(6, "Security code must be 6 digits"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Must contain at least one lowercase letter")
+      .regex(/[0-9]/, "Must contain at least one number")
+      .regex(/[^A-Za-z0-9]/, "Must contain at least one special character"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
 export const Route = createFileRoute("/auth/reset-password")({
-	component: ResetPasswordPage,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      email: (search.email as string) || "",
+    };
+  },
+  component: ResetPasswordPage,
 });
 
 function ResetPasswordPage() {
-	const [showPassword, setShowPassword] = useState(false);
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-	const [resetComplete, setResetComplete] = useState(false);
-	const [globalError, setGlobalError] = useState<string | null>(null);
-	const [resetPassword] = useResetPasswordMutation();
-	const id = React.useId();
+  const { email } = useSearch({ from: "/auth/reset-password" });
 
-	const search: any = useSearch({ from: "/auth/reset-password" });
-	const token = search?.token || "";
+  const [showPassword, setShowPassword] = useState(false);
+  const [resetComplete, setResetComplete] = useState(false);
+  const [globalError, setGlobalError] = useState<string | null>(null);
 
-	const {
-		register,
-		handleSubmit,
-		watch,
-		formState: { errors, isSubmitting },
-	} = useForm<ResetPasswordValues>({
-		resolver: zodResolver(resetPasswordSchema),
-		defaultValues: { password: "", confirmPassword: "" },
-	});
+  const [resetPasswordApi] = useResetPasswordMutation();
+  const id = React.useId();
 
-	const passwordValue = watch("password");
-	const confirmPasswordValue = watch("confirmPassword");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<ResetPasswordValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: { otp: "", password: "", confirmPassword: "" },
+  });
 
-	const onSubmit = async (data: ResetPasswordValues) => {
-		setGlobalError(null);
-		if (!token) {
-			setGlobalError(
-				"Invalid or missing reset token. Please request a new link.",
-			);
-			return;
-		}
+  const otpValue = watch("otp");
+  const passwordValue = watch("password");
 
-		try {
-			await resetPassword({
-				token,
-				newPassword: data.password,
-			}).unwrap();
-			setResetComplete(true);
-		} catch (error: any) {
-			setGlobalError(
-				error?.data?.message ||
-					error?.message ||
-					"Failed to reset password. The link might be expired.",
-			);
-		}
-	};
+  const onSubmit = async (data: ResetPasswordValues) => {
+    setGlobalError(null);
 
-	if (resetComplete) {
-		return (
-			<div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-				<div className="space-y-2">
-					<h1 className="text-2xl font-semibold tracking-tight text-foreground/90">
-						Success!
-					</h1>
-					<p className="text-[14px] font-medium text-muted-foreground/50 leading-relaxed">
-						Your password has been successfully updated.
-					</p>
-				</div>
+    if (!email) {
+      setGlobalError(
+        "User email is missing. Please restart the reset process.",
+      );
+      return;
+    }
 
-				<div className="space-y-6">
-					<div className="p-4 rounded-xl bg-primary/[0.02] border border-primary/10 flex items-start gap-4">
-						<div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
-							<HugeiconsIcon icon={Tick01Icon} size={20} />
-						</div>
-						<div>
-							<p className="text-sm font-semibold text-foreground/80 leading-none">
-								Password Reset
-							</p>
-							<p className="text-xs font-medium text-muted-foreground/50 mt-1.5 leading-relaxed">
-								You can now sign in to your workspace with your new credentials.
-							</p>
-						</div>
-					</div>
+    try {
+      await resetPasswordApi({
+        email,
+        otp: data.otp,
+        newPassword: data.password,
+      }).unwrap();
 
-					<div className="space-y-3 pt-2">
-						<Button
-							render={<Link to="/auth/login" />}
-							size="xl"
-							className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group"
-						>
-							Sign In Now
-							<HugeiconsIcon
-								icon={ArrowRight01Icon}
-								size={16}
-								className="group-hover:translate-x-0.5 transition-transform"
-							/>
-						</Button>
-					</div>
-				</div>
-			</div>
-		);
-	}
+      setResetComplete(true);
+      toast.success("Password reset successful!");
+    } catch (error: any) {
+      setGlobalError(
+        error?.data?.message ||
+          error?.message ||
+          "Failed to reset password. The code might be invalid or expired.",
+      );
+    }
+  };
 
-	return (
-		<div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-			<div className="space-y-2">
-				<h1 className="text-2xl font-semibold tracking-tight text-foreground/90">
-					Set New Password
-				</h1>
-				<p className="text-[14px] font-medium text-muted-foreground/50 leading-relaxed">
-					Create a strong password to protect your account.
-				</p>
-			</div>
+  if (resetComplete) {
+    return (
+      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-2">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground/90">
+            Success!
+          </h1>
+          <p className="text-[14px] font-medium text-muted-foreground/50 leading-relaxed">
+            Your account has been secured with a new password.
+          </p>
+        </div>
 
-			{globalError && (
-				<Alert
-					variant="destructive"
-					className="animate-in fade-in slide-in-from-top-2"
-				>
-					<HugeiconsIcon icon={Alert01Icon} />
-					<AlertTitle>Reset Failed</AlertTitle>
-					<AlertDescription>{globalError}</AlertDescription>
-				</Alert>
-			)}
+        <div className="space-y-6">
+          <div className="p-4 rounded-xl bg-primary/[0.02] border border-primary/10 flex items-start gap-4">
+            <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+              <HugeiconsIcon icon={Tick01Icon} size={20} />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-foreground/80 leading-none">
+                Password Secured
+              </p>
+              <p className="text-xs font-medium text-muted-foreground/50 mt-1.5 leading-relaxed">
+                You can now sign in to your workspace with your new credentials.
+              </p>
+            </div>
+          </div>
 
-			<form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-				<div className="space-y-2">
-					<Label
-						htmlFor={`${id}-password`}
-						className="text-xs font-semibold text-muted-foreground/60 capitalize"
-					>
-						New Password
-					</Label>
-					<div className="relative">
-						<Input
-							id={`${id}-password`}
-							type={showPassword ? "text" : "password"}
-							placeholder="••••••••"
-							{...register("password")}
-							className={`h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all pl-3 pr-10 shadow-none text-sm ${
-								errors.password
-									? "border-destructive/50 ring-destructive/20"
-									: ""
-							}`}
-						/>
-						<button
-							type="button"
-							onClick={() => setShowPassword(!showPassword)}
-							className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/30 hover:text-foreground transition-colors"
-							tabIndex={-1}
-						>
-							<HugeiconsIcon
-								icon={showPassword ? ViewOffIcon : ViewIcon}
-								size={16}
-							/>
-						</button>
-					</div>
-					{errors.password && (
-						<p className="text-xs font-medium text-destructive mt-1">
-							{errors.password.message}
-						</p>
-					)}
-					{passwordValue && (
-						<div className="pt-1">
-							<PasswordStrengthIndicator password={passwordValue} />
-						</div>
-					)}
-				</div>
+          <div className="space-y-3 pt-2">
+            <Button
+              render={<Link to="/auth/login" />}
+              size="xl"
+              className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group"
+            >
+              Sign In Now
+              <HugeiconsIcon
+                icon={ArrowRight01Icon}
+                size={16}
+                className="group-hover:translate-x-0.5 transition-transform"
+              />
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-				<div className="space-y-2">
-					<Label
-						htmlFor={`${id}-confirmPassword`}
-						className="text-xs font-semibold text-muted-foreground/60 capitalize"
-					>
-						Confirm Password
-					</Label>
-					<div className="relative">
-						<Input
-							id={`${id}-confirmPassword`}
-							type={showConfirmPassword ? "text" : "password"}
-							placeholder="••••••••"
-							{...register("confirmPassword")}
-							className={`h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all pl-3 pr-10 shadow-none text-sm ${
-								errors.confirmPassword
-									? "border-destructive/50 ring-destructive/20"
-									: ""
-							}`}
-						/>
-						<button
-							type="button"
-							onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-							className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/30 hover:text-foreground transition-colors"
-							tabIndex={-1}
-						>
-							<HugeiconsIcon
-								icon={showConfirmPassword ? ViewOffIcon : ViewIcon}
-								size={16}
-							/>
-						</button>
-					</div>
-					{errors.confirmPassword && (
-						<p className="text-xs font-medium text-destructive mt-1">
-							{errors.confirmPassword.message}
-						</p>
-					)}
-				</div>
+  return (
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="space-y-2">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground/90">
+          Reset Password
+        </h1>
+        <p className="text-[14px] font-medium text-muted-foreground/50 leading-relaxed">
+          Enter the security code sent to{" "}
+          <span className="text-foreground font-bold">
+            {email || "your email"}
+          </span>
+          .
+        </p>
+      </div>
 
-				<Button
-					type="submit"
-					size="xl"
-					disabled={!passwordValue || !confirmPasswordValue || isSubmitting}
-					className="w-full bg-primary text-primary-foreground font-bold shadow-sm hover:opacity-95 transition-all group"
-				>
-					{isSubmitting ? "Updating…" : "Update Password"}
-					{!isSubmitting && (
-						<HugeiconsIcon
-							icon={ArrowRight01Icon}
-							size={16}
-							className="group-hover:translate-x-0.5 transition-transform"
-						/>
-					)}
-				</Button>
-			</form>
-		</div>
-	);
+      {globalError && (
+        <Alert
+          variant="destructive"
+          className="animate-in fade-in slide-in-from-top-2"
+        >
+          <HugeiconsIcon icon={Alert01Icon} />
+          <AlertTitle>Reset Failed</AlertTitle>
+          <AlertDescription>{globalError}</AlertDescription>
+        </Alert>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* OTP Input Section */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
+              Security Code
+            </Label>
+            {email && (
+              <Link
+                to="/auth/forgot-password"
+                size="sm"
+                className="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline"
+              >
+                Resend?
+              </Link>
+            )}
+          </div>
+          <div className="flex justify-center">
+            <InputOTP
+              maxLength={6}
+              value={otpValue}
+              onChange={(val) => setValue("otp", val, { shouldValidate: true })}
+            >
+              <div className="flex items-center gap-2">
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </div>
+            </InputOTP>
+          </div>
+          {errors.otp && (
+            <p className="text-center text-xs text-destructive">
+              {errors.otp.message}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-5 pt-2 border-t border-border/5">
+          <div className="space-y-2">
+            <Label
+              htmlFor={`${id}-password`}
+              className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest"
+            >
+              New Password
+            </Label>
+            <div className="relative group/pass">
+              <Input
+                id={`${id}-password`}
+                type={showPassword ? "text" : "password"}
+                placeholder="At least 8 characters"
+                className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all pr-10 shadow-none text-sm"
+                {...register("password")}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/30 hover:text-foreground transition-colors"
+              >
+                <HugeiconsIcon
+                  icon={showPassword ? ViewOffIcon : ViewIcon}
+                  size={16}
+                />
+              </button>
+            </div>
+            <PasswordStrengthIndicator password={passwordValue} />
+            {errors.password && (
+              <p className="text-xs text-destructive mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label
+              htmlFor={`${id}-confirmPassword`}
+              className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest"
+            >
+              Confirm Password
+            </Label>
+            <Input
+              id={`${id}-confirmPassword`}
+              type="password"
+              placeholder="••••••••"
+              className="h-10 rounded-lg border-border/40 bg-muted/5 focus:bg-background transition-all pl-3 shadow-none text-sm"
+              {...register("confirmPassword")}
+            />
+            {errors.confirmPassword && (
+              <p className="text-xs text-destructive mt-1">
+                {errors.confirmPassword.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <Button
+          type="submit"
+          size="xl"
+          disabled={isSubmitting || otpValue.length !== 6}
+          className="w-full bg-primary text-primary-foreground font-bold hover:opacity-95 transition-all group mt-2"
+        >
+          {isSubmitting ? "Securing account..." : "Reset Password"}
+          {!isSubmitting && (
+            <HugeiconsIcon
+              icon={ArrowRight01Icon}
+              size={16}
+              className="group-hover:translate-x-0.5 transition-transform"
+            />
+          )}
+        </Button>
+      </form>
+    </div>
+  );
 }
