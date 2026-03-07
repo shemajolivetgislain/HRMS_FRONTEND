@@ -113,7 +113,7 @@ describe("Company Lifecycle", () => {
     }
   });
 
-  it("GET /company — should list all tenants for system admin", async () => {
+  it("GET /company — should list all companies for system admin", async () => {
     const { status, data } = await get("/company", adminToken);
     expect(status).toBe(200);
     expect(data).toHaveProperty("items");
