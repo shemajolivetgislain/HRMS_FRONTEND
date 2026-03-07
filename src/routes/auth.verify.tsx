@@ -7,6 +7,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
 	createFileRoute,
 	Link,
+	redirect,
 	useNavigate,
 	useSearch,
 } from "@tanstack/react-router";
@@ -25,7 +26,47 @@ import { useSendOtpMutation, useVerifyEmailMutation } from "@/lib/redux/api";
 import { setCredentials } from "@/lib/redux/slices/auth";
 import { useAppDispatch } from "@/lib/redux/store";
 
+import { store } from "@/lib/redux/store";
+import { getCookie } from "@/lib/cookies";
+
 export const Route = createFileRoute("/auth/verify")({
+	validateSearch: (search: Record<string, unknown>) => {
+		return {
+			email: (search.email as string) || "",
+		};
+	},
+	beforeLoad: () => {
+		if (typeof window === "undefined") return;
+
+		const state = store.getState();
+		const { user } = state.auth;
+		const token = getCookie("auth_token");
+
+		// 1. Must be logged in to verify
+		if (!token) {
+			throw redirect({ to: "/auth/login" });
+		}
+
+		// 2. If already verified, move them along
+		if (user && user.isEmailVerified) {
+			const needsPasswordChange =
+
+				(user.role === "COMPANY_ADMIN" || user.role === "EMPLOYEE") &&
+				!user.passwordResetAt;
+
+			if (needsPasswordChange) {
+				throw redirect({
+					to: "/auth/change-password",
+					search: { email: user.email },
+				});
+			}
+
+			if (user.role === "ADMIN") {
+				throw redirect({ to: "/admin" });
+			}
+			throw redirect({ to: "/dashboard" });
+		}
+	},
 	component: VerifyPage,
 });
 

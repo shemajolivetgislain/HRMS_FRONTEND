@@ -22,8 +22,9 @@ export const Route = createFileRoute("/dashboard")({
 		}
 
 		if (user) {
-			const isVerified = user.status === "ACTIVE";
-			const needsPasswordChange =
+		  const isVerified = !!user.isEmailVerified;
+		  const needsPasswordChange =
+
 				(user.role === "COMPANY_ADMIN" || user.role === "EMPLOYEE") &&
 				!user.passwordResetAt;
 

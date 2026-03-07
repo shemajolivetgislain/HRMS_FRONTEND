@@ -38,13 +38,13 @@ export const authApi = hrmsApi.injectEndpoints({
 				body: data, // email, type
 			}),
 		}),
-		changePassword: builder.mutation({
-			query: (data) => ({
-				url: "/auth/change-password",
-				method: "PATCH",
-				body: data,
-			}),
-		}),
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: "/user/change-password",
+        method: "PATCH",
+        body: data, // newPassword
+      }),
+    }),
 	}),
 });
 
