@@ -188,7 +188,6 @@ function ResetPasswordPage() {
             {email && (
               <Link
                 to="/auth/forgot-password"
-                size="sm"
                 className="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline"
               >
                 Resend?
