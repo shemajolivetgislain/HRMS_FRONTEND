@@ -16,6 +16,17 @@ import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
@@ -37,10 +48,12 @@ import {
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
+	SelectSeparator,
 	SelectValue,
 } from "@/components/ui/select";
 import {
 	useCreateCompanyDepartmentMutation,
+	useCreateDepartmentReferenceMutation,
 	useGetCompanyDepartmentsQuery,
 	useGetDepartmentReferencesQuery,
 } from "@/lib/redux/api/department";
@@ -64,15 +77,19 @@ function DepartmentsPage() {
 	);
 	const { data: referencesData } = useGetDepartmentReferencesQuery(undefined);
 	const [createDepartment] = useCreateCompanyDepartmentMutation();
+	const [createReference] = useCreateDepartmentReferenceMutation();
 
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [isReferenceDialogOpen, setIsReferenceDialogOpen] = useState(false);
 	const [newDept, setNewDept] = useState({
 		name: "",
 		description: "",
 		departmentReferenceId: "",
 	});
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [referenceName, setReferenceName] = useState("");
+	const [isReferenceSubmitting, setIsReferenceSubmitting] = useState(false);
 
 	if (isLoading) return <DashboardPending />;
 	if (isError) return <div>Error loading departments.</div>;
@@ -104,6 +121,29 @@ function DepartmentsPage() {
 			toast.error("Failed to create department");
 		} finally {
 			setIsSubmitting(false);
+		}
+	};
+
+	const handleCreateReference = async () => {
+		if (!referenceName.trim()) return;
+		setIsReferenceSubmitting(true);
+		try {
+			const created = await createReference({
+				name: referenceName.trim(),
+			}).unwrap();
+			setNewDept((prev) => ({
+				...prev,
+				departmentReferenceId: created.id,
+				name: prev.name || created.name,
+			}));
+			setReferenceName("");
+			setIsReferenceDialogOpen(false);
+			toast.success("Department reference created");
+		} catch (err) {
+			console.error(err);
+			toast.error("Failed to create department reference");
+		} finally {
+			setIsReferenceSubmitting(false);
 		}
 	};
 
@@ -146,13 +186,78 @@ function DepartmentsPage() {
 										<SelectValue placeholder="Select a global department" />
 									</SelectTrigger>
 									<SelectContent>
-										{referencesData?.items.map((ref) => (
-											<SelectItem key={ref.id} value={ref.id}>
-												{ref.name}
+										{referencesData?.items.length ? (
+											referencesData.items.map((ref) => (
+												<SelectItem key={ref.id} value={ref.id}>
+													{ref.name}
+												</SelectItem>
+											))
+										) : (
+											<SelectItem value="no-references" disabled>
+												No references yet
 											</SelectItem>
-										))}
+										)}
+										<SelectSeparator />
+										<SelectItem value="create-reference" disabled>
+											Need a new reference? Use the button below.
+										</SelectItem>
 									</SelectContent>
 								</Select>
+								<div className="flex items-center justify-between">
+									<p className="text-xs text-muted-foreground">
+										Missing a department reference?
+									</p>
+									<AlertDialog
+										open={isReferenceDialogOpen}
+										onOpenChange={setIsReferenceDialogOpen}
+									>
+										<AlertDialogTrigger
+											render={
+												<Button
+													variant="ghost"
+													size="sm"
+													className="px-2"
+												>
+													Create new
+												</Button>
+											}
+										/>
+										<AlertDialogContent>
+											<AlertDialogHeader>
+												<AlertDialogTitle>
+													Create Department Reference
+												</AlertDialogTitle>
+												<AlertDialogDescription>
+													Add a global reference so this department can be
+													reused across the company.
+												</AlertDialogDescription>
+											</AlertDialogHeader>
+											<div className="py-2 space-y-2">
+												<Label htmlFor="reference-name">
+													Reference Name
+												</Label>
+												<Input
+													id="reference-name"
+													value={referenceName}
+													onChange={(e) => setReferenceName(e.target.value)}
+													placeholder="e.g. Engineering"
+												/>
+											</div>
+											<AlertDialogFooter>
+												<AlertDialogCancel>Cancel</AlertDialogCancel>
+												<AlertDialogAction
+													onClick={handleCreateReference}
+													disabled={
+														isReferenceSubmitting ||
+														!referenceName.trim()
+													}
+												>
+													{isReferenceSubmitting ? "Creating..." : "Create"}
+												</AlertDialogAction>
+											</AlertDialogFooter>
+										</AlertDialogContent>
+									</AlertDialog>
+								</div>
 							</div>
 							<div className="space-y-2">
 								<Label htmlFor="name">Display Name</Label>
