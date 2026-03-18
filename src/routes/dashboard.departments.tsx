@@ -183,7 +183,16 @@ function DepartmentsPage() {
 									}
 								>
 									<SelectTrigger id="reference">
-										<SelectValue placeholder="Select a global department" />
+										<SelectValue>
+											{(value: string | null) => {
+												if (!value)
+													return "Select a global department";
+												const ref = referencesData?.items.find(
+													(r) => r.id === value,
+												);
+												return ref?.name ?? value;
+											}}
+										</SelectValue>
 									</SelectTrigger>
 									<SelectContent>
 										{referencesData?.items.length ? (
