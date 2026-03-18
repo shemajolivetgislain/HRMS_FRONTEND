@@ -60,7 +60,7 @@ function DocsPage() {
           ],
           links: [
             { label: "Login Portal", to: "/auth/login" },
-            { label: "Managed Provisioning Info", to: "/auth/register" },
+            { label: "Managed Provisioning Info", to: "/auth/login" },
             { label: "Forgot Password", to: "/auth/forgot-password" },
           ],
         },
