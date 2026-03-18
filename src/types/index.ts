@@ -184,11 +184,10 @@ export interface Department {
 
 export interface CreateCompanyDepartmentRequest {
   name: string;
-  description: string;
+  description?: string;
   departmentReferenceId: string;
   companyId: string;
 }
-
 export interface JobTitle {
   id: string;
   name: string;
@@ -243,13 +242,16 @@ export interface Applicant {
   lastName?: string;
   email?: string;
   phone?: string;
+  phoneNumber?: string; // added for consistency with CreateApplicantRequest
   image?: string;
   jobTitleId?: string;
   referenceCode: string;
   status: string;
   score?: number;
+  gender?: "MALE" | "FEMALE";
+  documentNumber?: string;
   createdAt: string;
-  appliedAt?: string; // keeping for compatibility
+  appliedAt?: string;
   history?:
     | {
         status: string;
@@ -259,7 +261,6 @@ export interface Applicant {
       }[]
     | null;
 }
-
 export interface LeaveRequest {
   id: string;
   employeeId: string;
