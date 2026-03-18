@@ -7,22 +7,25 @@ import {
 	ViewOffIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { createFileRoute, useNavigate, useSearch, redirect } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	redirect,
+	useNavigate,
+	useSearch,
+} from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { PasswordStrengthIndicator } from "@/components/auth/password-strength-indicator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PasswordStrengthIndicator } from "@/components/auth/password-strength-indicator";
-import { useChangePasswordMutation } from "@/lib/redux/api";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
-import { updateUser } from "@/lib/redux/slices/auth";
-
 import { getCookie } from "@/lib/cookies";
-import { store } from "@/lib/redux/store";
+import { useChangePasswordMutation } from "@/lib/redux/api";
+import { updateUser } from "@/lib/redux/slices/auth";
+import { store, useAppDispatch, useAppSelector } from "@/lib/redux/store";
 
 export const Route = createFileRoute("/auth/change-password")({
 	validateSearch: (search: Record<string, unknown>) => {
@@ -90,7 +93,7 @@ function ChangePasswordPage() {
 	const { email } = useSearch({ from: "/auth/change-password" });
 	const [showPassword, setShowPassword] = useState(false);
 	const [globalError, setGlobalError] = useState<string | null>(null);
-	
+
 	const id = useId();
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
@@ -149,12 +152,17 @@ function ChangePasswordPage() {
 					Secure Your Account
 				</h1>
 				<p className="text-[14px] font-medium text-muted-foreground/50 leading-relaxed">
-					Set a new secure password for <span className="text-foreground">{email}</span> to complete your account setup.
+					Set a new secure password for{" "}
+					<span className="text-foreground">{email}</span> to complete your
+					account setup.
 				</p>
 			</div>
 
 			{globalError && (
-				<Alert variant="destructive" className="animate-in fade-in slide-in-from-top-2">
+				<Alert
+					variant="destructive"
+					className="animate-in fade-in slide-in-from-top-2"
+				>
 					<HugeiconsIcon icon={Alert01Icon} />
 					<AlertTitle>Setup Failed</AlertTitle>
 					<AlertDescription>{globalError}</AlertDescription>
@@ -190,7 +198,9 @@ function ChangePasswordPage() {
 					</div>
 					<PasswordStrengthIndicator password={passwordValue} />
 					{errors.password && (
-						<p className="text-xs text-destructive">{errors.password.message}</p>
+						<p className="text-xs text-destructive">
+							{errors.password.message}
+						</p>
 					)}
 				</div>
 
@@ -209,7 +219,9 @@ function ChangePasswordPage() {
 						{...register("confirmPassword")}
 					/>
 					{errors.confirmPassword && (
-						<p className="text-xs text-destructive">{errors.confirmPassword.message}</p>
+						<p className="text-xs text-destructive">
+							{errors.confirmPassword.message}
+						</p>
 					)}
 				</div>
 

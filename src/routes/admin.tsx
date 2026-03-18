@@ -1,8 +1,8 @@
 import {
-  Building03Icon,
-  DashboardSquare01Icon,
-  Settings02Icon,
-  Shield01Icon,
+	Building03Icon,
+	DashboardSquare01Icon,
+	Settings02Icon,
+	Shield01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
@@ -14,88 +14,88 @@ import { getCookie } from "@/lib/cookies";
 import { store } from "@/lib/redux/store";
 
 export const Route = createFileRoute("/admin")({
-  beforeLoad: ({ location }) => {
-    if (typeof window === "undefined") return;
+	beforeLoad: ({ location }) => {
+		if (typeof window === "undefined") return;
 
-    const token = getCookie("auth_token");
-    const state = store.getState();
-    const { user } = state.auth;
+		const token = getCookie("auth_token");
+		const state = store.getState();
+		const { user } = state.auth;
 
-    if (!token) {
-      throw redirect({
-        to: "/auth/login",
-        search: { redirect: location.href },
-      });
-    }
+		if (!token) {
+			throw redirect({
+				to: "/auth/login",
+				search: { redirect: location.href },
+			});
+		}
 
-    if (user) {
-      const isVerified = !!user.isEmailVerified;
-      const needsPasswordChange =
-        (user.role === "COMPANY_ADMIN" || user.role === "EMPLOYEE") &&
-        !user.passwordResetAt;
+		if (user) {
+			const isVerified = !!user.isEmailVerified;
+			const needsPasswordChange =
+				(user.role === "COMPANY_ADMIN" || user.role === "EMPLOYEE") &&
+				!user.passwordResetAt;
 
-      if (!isVerified) {
-        throw redirect({
-          to: "/auth/verify",
-          search: { email: user.email },
-        });
-      }
+			if (!isVerified) {
+				throw redirect({
+					to: "/auth/verify",
+					search: { email: user.email },
+				});
+			}
 
-      if (needsPasswordChange) {
-        throw redirect({
-          to: "/auth/change-password",
-          search: { email: user.email },
-        });
-      }
+			if (needsPasswordChange) {
+				throw redirect({
+					to: "/auth/change-password",
+					search: { email: user.email },
+				});
+			}
 
-      if (user.role !== "ADMIN") {
-        throw redirect({ to: "/dashboard" });
-      }
-    }
-  },
+			if (user.role !== "ADMIN") {
+				throw redirect({ to: "/dashboard" });
+			}
+		}
+	},
 
-  errorComponent: ErrorComponent,
-  component: AdminLayout,
+	errorComponent: ErrorComponent,
+	component: AdminLayout,
 });
 
 const adminNav = [
-  {
-    title: "Overview",
-    url: "/admin",
-    icon: <HugeiconsIcon icon={DashboardSquare01Icon} strokeWidth={2} />,
-  },
-  {
-    title: "Companies",
-    url: "/admin/companies",
-    icon: <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />,
-  },
-  {
-    title: "Global Departments",
-    url: "/admin/departments",
-    icon: <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />,
-  },
-  {
-    title: "System Logs",
-    url: "/admin/logs",
-    icon: <HugeiconsIcon icon={Shield01Icon} strokeWidth={2} />,
-  },
-  {
-    title: "Global Settings",
-    url: "/admin/settings",
-    icon: <HugeiconsIcon icon={Settings02Icon} strokeWidth={2} />,
-  },
+	{
+		title: "Overview",
+		url: "/admin",
+		icon: <HugeiconsIcon icon={DashboardSquare01Icon} strokeWidth={2} />,
+	},
+	{
+		title: "Companies",
+		url: "/admin/companies",
+		icon: <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />,
+	},
+	{
+		title: "Global Departments",
+		url: "/admin/departments",
+		icon: <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />,
+	},
+	{
+		title: "System Logs",
+		url: "/admin/logs",
+		icon: <HugeiconsIcon icon={Shield01Icon} strokeWidth={2} />,
+	},
+	{
+		title: "Global Settings",
+		url: "/admin/settings",
+		icon: <HugeiconsIcon icon={Settings02Icon} strokeWidth={2} />,
+	},
 ];
 
 function AdminLayout() {
-  return (
-    <SidebarProvider>
-      <AppSidebar variant="inset" customNav={adminNav} />
-      <SidebarInset className="bg-background relative overflow-hidden">
-        <SiteHeader />
-        <div className="relative z-10 flex flex-1 flex-col overflow-hidden">
-          <Outlet />
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
-  );
+	return (
+		<SidebarProvider>
+			<AppSidebar variant="inset" customNav={adminNav} />
+			<SidebarInset className="bg-background relative overflow-hidden">
+				<SiteHeader />
+				<div className="relative z-10 flex flex-1 flex-col overflow-hidden">
+					<Outlet />
+				</div>
+			</SidebarInset>
+		</SidebarProvider>
+	);
 }

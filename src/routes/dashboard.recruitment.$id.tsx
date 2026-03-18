@@ -75,16 +75,13 @@ function RecruitmentDetailsPage() {
 		isLoading: isLoadingJob,
 		isError: isErrorJob,
 	} = useGetJobTitleQuery(id);
-	const {
-		data: applicantsData,
-		isLoading: isLoadingApps,
-		isError: isErrorApps,
-	} = useGetApplicantsQuery({ jobTitleId: id });
+	const { data: applicantsData, isLoading: isLoadingApps } =
+		useGetApplicantsQuery({ jobTitleId: id });
 
 	if (isLoadingJob || isLoadingApps) return <DashboardPending />;
 	if (isErrorJob || !role) return <div>Error loading job details.</div>;
 
-	// Use server-filtered results directly. 
+	// Use server-filtered results directly.
 	// We stop filtering on the client because the backend list doesn't return jobTitleId.
 	const candidates = applicantsData?.items || [];
 
@@ -191,7 +188,8 @@ function RecruitmentDetailsPage() {
 															</p>
 															<span className="size-1 rounded-full bg-border/40" />
 															<p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
-																Applied {new Date(can.createdAt).toLocaleDateString()}
+																Applied{" "}
+																{new Date(can.createdAt).toLocaleDateString()}
 															</p>
 														</div>
 													</div>
@@ -224,7 +222,10 @@ function RecruitmentDetailsPage() {
 														<Select
 															value={can.status}
 															onValueChange={(val) =>
-																handleUpdateStage(can.id, val as RecruitmentStage)
+																handleUpdateStage(
+																	can.id,
+																	val as RecruitmentStage,
+																)
 															}
 														>
 															<SelectTrigger className="h-8 rounded-lg text-[10px] font-bold uppercase tracking-widest border-border/40 bg-muted/5 hover:bg-background transition-colors px-2">
@@ -353,7 +354,9 @@ function RecruitmentDetailsPage() {
 					<Frame>
 						<FramePanel className="p-0 overflow-hidden bg-card border-border/40 shadow-sm">
 							<FrameHeader className="px-8 pt-8 pb-4">
-								<FrameTitle className="text-base font-bold">Role Specification</FrameTitle>
+								<FrameTitle className="text-base font-bold">
+									Role Specification
+								</FrameTitle>
 							</FrameHeader>
 							<FrameContent className="px-8 pb-8 pt-0 space-y-6">
 								<div className="grid grid-cols-2 gap-4">
@@ -437,7 +440,10 @@ function RecruitmentDetailsPage() {
 							</div>
 							<div className="flex items-center -space-x-3">
 								{[1, 2, 3].map((i) => (
-									<div key={i} className="size-10 rounded-2xl border-2 border-background overflow-hidden ring-2 ring-primary/5">
+									<div
+										key={i}
+										className="size-10 rounded-2xl border-2 border-background overflow-hidden ring-2 ring-primary/5"
+									>
 										<img
 											src={`https://i.pravatar.cc/150?u=${i + 10}`}
 											alt="Collaborator"
@@ -475,7 +481,9 @@ function MetaItem({
 				<p className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-widest leading-none mb-2">
 					{label}
 				</p>
-				<p className="text-sm font-bold text-foreground/80 leading-tight truncate max-w-[180px]">{value}</p>
+				<p className="text-sm font-bold text-foreground/80 leading-tight truncate max-w-[180px]">
+					{value}
+				</p>
 			</div>
 		</div>
 	);

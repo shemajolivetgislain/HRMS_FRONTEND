@@ -11,7 +11,8 @@ export const departmentApi = hrmsApi.injectEndpoints({
 	endpoints: (builder) => ({
 		getDepartmentReferences: builder.query<
 			ApiPaginatedResponse<DepartmentReference>,
-			{ page?: number; limit?: number; name?: string; companyId?: string } | undefined
+			| { page?: number; limit?: number; name?: string; companyId?: string }
+			| undefined
 		>({
 			query: (params) => ({
 				url: "/department-ref",
@@ -46,7 +47,8 @@ export const departmentApi = hrmsApi.injectEndpoints({
 		}),
 		getCompanyDepartments: builder.query<
 			ApiPaginatedResponse<Department>,
-			{ page?: number; limit?: number; name?: string; companyId?: string } | undefined
+			| { page?: number; limit?: number; name?: string; companyId?: string }
+			| undefined
 		>({
 			query: (params) => ({
 				url: "/company-department",

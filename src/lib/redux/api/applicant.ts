@@ -38,8 +38,10 @@ export const applicantApi = hrmsApi.injectEndpoints({
 				body: data,
 			}),
 			invalidatesTags: (result) => [
-				{ type: "Applicant", id: "LIST" },
-				...(result ? [{ type: "Applicant", jobTitleId: result.jobTitleId }] : []),
+				{ type: "Applicant" as const, id: "LIST" },
+				...(result
+					? [{ type: "Applicant" as const, jobTitleId: result.jobTitleId }]
+					: []),
 			],
 		}),
 	}),

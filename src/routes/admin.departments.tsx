@@ -6,6 +6,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { toast } from "sonner";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { Button } from "@/components/ui/button";
@@ -32,14 +33,14 @@ import {
 	useCreateDepartmentReferenceMutation,
 	useGetDepartmentReferencesQuery,
 } from "@/lib/redux/api/department";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/departments")({
 	component: AdminDepartmentsPage,
 });
 
 function AdminDepartmentsPage() {
-	const { data, isLoading, isError } = useGetDepartmentReferencesQuery(undefined);
+	const { data, isLoading, isError } =
+		useGetDepartmentReferencesQuery(undefined);
 	const [createReference] = useCreateDepartmentReferenceMutation();
 
 	const [searchTerm, setSearchTerm] = useState("");
@@ -107,7 +108,10 @@ function AdminDepartmentsPage() {
 							<Button variant="outline" onClick={() => setIsDialogOpen(false)}>
 								Cancel
 							</Button>
-							<Button onClick={handleCreate} disabled={isSubmitting || !newName}>
+							<Button
+								onClick={handleCreate}
+								disabled={isSubmitting || !newName}
+							>
 								{isSubmitting ? "Creating..." : "Create"}
 							</Button>
 						</DialogFooter>
