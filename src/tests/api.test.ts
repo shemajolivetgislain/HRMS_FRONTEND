@@ -14,8 +14,7 @@
  */
 import { describe, expect, it } from "vitest";
 
-const BASE_URL =
-  "https://db48-2c0f-fe30-73ff-300-1492-ad44-749d-c2d9.ngrok-free.app/api/v1";
+const BASE_URL = "http://84.247.172.162:7009/api/v1";
 
 let adminToken = "";
 let categoryId = "";

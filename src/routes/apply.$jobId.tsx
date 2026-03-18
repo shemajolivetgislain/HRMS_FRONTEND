@@ -1,7 +1,6 @@
 import {
 	ArrowLeft01Icon,
 	Briefcase02Icon,
-	Building03Icon,
 	CheckmarkCircle01Icon,
 	Clock02Icon,
 	FileUploadIcon,
@@ -11,7 +10,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -26,10 +25,17 @@ import {
 } from "@/components/ui/frame";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { api } from "@/lib/mock-api";
+import { useCreateApplicantMutation } from "@/lib/redux/api/applicant";
+import { useGetJobTitleQuery } from "@/lib/redux/api/job-title";
 import { cn } from "@/lib/utils";
-import type { JobOpening } from "@/types";
 
 export const Route = createFileRoute("/apply/$jobId")({
 	component: ApplyForJobPage,
@@ -37,8 +43,9 @@ export const Route = createFileRoute("/apply/$jobId")({
 
 function ApplyForJobPage() {
 	const { jobId } = Route.useParams();
-	const [job, setJob] = useState<JobOpening | null>(null);
-	const [loading, setLoading] = useState(true);
+	const { data: job, isLoading, isError } = useGetJobTitleQuery(jobId);
+	const [createApplicant] = useCreateApplicantMutation();
+
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isSuccess, setIsSuccess] = useState(false);
 
@@ -47,23 +54,11 @@ function ApplyForJobPage() {
 		lastName: "",
 		email: "",
 		phone: "",
+		documentNumber: "",
+		gender: "MALE" as "MALE" | "FEMALE",
 		coverLetter: "",
 		resume: null as File | null,
 	});
-
-	useEffect(() => {
-		const fetchJob = async () => {
-			try {
-				const data = await api.getJob(jobId);
-				setJob(data || null);
-			} catch (_err) {
-				toast.error("Job opening not found");
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchJob();
-	}, [jobId]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -71,7 +66,8 @@ function ApplyForJobPage() {
 			!formData.firstName ||
 			!formData.lastName ||
 			!formData.email ||
-			!formData.phone
+			!formData.phone ||
+			!formData.documentNumber
 		) {
 			toast.error("Please fill in all required fields");
 			return;
@@ -80,13 +76,15 @@ function ApplyForJobPage() {
 		setIsSubmitting(true);
 		try {
 			if (job) {
-				await api.addApplicant({
+				await createApplicant({
 					firstName: formData.firstName,
 					lastName: formData.lastName,
 					email: formData.email,
-					phone: formData.phone,
+					phoneNumber: formData.phone,
 					jobTitleId: job.id,
-				});
+					documentNumber: formData.documentNumber,
+					gender: formData.gender,
+				}).unwrap();
 			}
 			setIsSuccess(true);
 			toast.success("Application submitted successfully!");
@@ -97,7 +95,7 @@ function ApplyForJobPage() {
 		}
 	};
 
-	if (loading) {
+	if (isLoading) {
 		return (
 			<div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
 				<div className="size-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
@@ -108,7 +106,7 @@ function ApplyForJobPage() {
 		);
 	}
 
-	if (!job) {
+	if (isError || !job) {
 		return (
 			<div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center">
 				<div className="h-16 w-16 bg-muted/50 text-muted-foreground rounded-xl flex items-center justify-center mb-6">
@@ -137,7 +135,7 @@ function ApplyForJobPage() {
 				</h1>
 				<p className="text-muted-foreground text-sm mb-10 max-w-sm leading-relaxed">
 					Your application for{" "}
-					<span className="font-semibold text-foreground">{job.title}</span> has
+					<span className="font-semibold text-foreground">{job.name}</span> has
 					been successfully transmitted to our team.
 				</p>
 				<div className="flex gap-3">
@@ -184,8 +182,8 @@ function ApplyForJobPage() {
 							<FramePanel className="bg-card">
 								<FrameHeader>
 									<div>
-										<FrameTitle>{job.title}</FrameTitle>
-										<FrameDescription>{job.dept} Department</FrameDescription>
+										<FrameTitle>{job.name}</FrameTitle>
+										<FrameDescription>Position Overview</FrameDescription>
 									</div>
 								</FrameHeader>
 								<FrameContent className="space-y-6">
@@ -200,7 +198,7 @@ function ApplyForJobPage() {
 													size={14}
 													className="text-muted-foreground/60"
 												/>
-												{job.location}
+												Remote / Kigali
 											</div>
 										</div>
 										<div className="space-y-1">
@@ -213,7 +211,7 @@ function ApplyForJobPage() {
 													size={14}
 													className="text-muted-foreground/60"
 												/>
-												{job.type}
+												Full-time
 											</div>
 										</div>
 									</div>
@@ -227,33 +225,12 @@ function ApplyForJobPage() {
 												<p>{job.description}</p>
 											) : (
 												<p>
-													We are seeking a talented {job.title} to join our
-													growing {job.dept} team. In this role, you will be
-													responsible for contributing to high-impact projects
-													that shape our organization's future.
+													We are seeking a talented {job.name} to join our
+													growing team. In this role, you will be responsible
+													for contributing to high-impact projects that shape
+													our organization's future.
 												</p>
 											)}
-											<p>
-												Our company offers a dynamic work environment,
-												competitive compensation, and opportunities for
-												continuous professional development.
-											</p>
-										</div>
-									</div>
-								</FrameContent>
-							</FramePanel>
-
-							<FramePanel className="bg-muted/10 border-dashed">
-								<FrameContent className="p-4">
-									<div className="flex items-center gap-3">
-										<div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-											<HugeiconsIcon icon={Building03Icon} size={16} />
-										</div>
-										<div>
-											<p className="text-xs font-semibold">Equal Opportunity</p>
-											<p className="text-[10px] text-muted-foreground">
-												We value diversity and excellence.
-											</p>
 										</div>
 									</div>
 								</FrameContent>
@@ -356,6 +333,54 @@ function ApplyForJobPage() {
 														setFormData({ ...formData, phone: e.target.value })
 													}
 												/>
+											</div>
+										</div>
+
+										<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+											<div className="space-y-2">
+												<Label
+													htmlFor="documentNumber"
+													className="text-xs font-semibold text-muted-foreground/70"
+												>
+													ID / Document Number
+												</Label>
+												<Input
+													id="documentNumber"
+													placeholder="11990..."
+													className="h-10 rounded-lg bg-muted/5 focus:bg-background transition-colors"
+													value={formData.documentNumber}
+													onChange={(e) =>
+														setFormData({
+															...formData,
+															documentNumber: e.target.value,
+														})
+													}
+												/>
+											</div>
+											<div className="space-y-2">
+												<Label
+													htmlFor="gender"
+													className="text-xs font-semibold text-muted-foreground/70"
+												>
+													Gender
+												</Label>
+												<Select
+													value={formData.gender}
+													onValueChange={(val) =>
+														setFormData({
+															...formData,
+															gender: val as "MALE" | "FEMALE",
+														})
+													}
+												>
+													<SelectTrigger className="h-10 rounded-lg bg-muted/5 focus:bg-background">
+														<SelectValue placeholder="Select Gender" />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem value="MALE">Male</SelectItem>
+														<SelectItem value="FEMALE">Female</SelectItem>
+													</SelectContent>
+												</Select>
 											</div>
 										</div>
 

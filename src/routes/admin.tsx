@@ -70,6 +70,11 @@ const adminNav = [
     icon: <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />,
   },
   {
+    title: "Global Departments",
+    url: "/admin/departments",
+    icon: <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />,
+  },
+  {
     title: "System Logs",
     url: "/admin/logs",
     icon: <HugeiconsIcon icon={Shield01Icon} strokeWidth={2} />,

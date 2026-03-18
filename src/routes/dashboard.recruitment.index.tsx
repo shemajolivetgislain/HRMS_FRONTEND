@@ -1,6 +1,7 @@
 import {
 	ArrowRight01Icon,
 	Briefcase01Icon,
+	Copy01Icon,
 	Delete02Icon,
 	Download01Icon,
 	FilterIcon,
@@ -17,6 +18,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
@@ -78,93 +80,87 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { api } from "@/lib/mock-api";
-
-// sample candidates data
-const recentCandidates = [
-	{
-		id: 1,
-		name: "Alice Cooper",
-		role: "Senior Frontend Engineer",
-		stage: "Interview",
-		time: "2h ago",
-		status: "info" as const,
-		image:
-			"https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=120&h=120&auto=format&fit=crop",
-	},
-	{
-		id: 2,
-		name: "Marcus Webb",
-		role: "Product Designer",
-		stage: "Screening",
-		time: "4h ago",
-		status: "warning" as const,
-		image:
-			"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&h=120&auto=format&fit=crop",
-	},
-	{
-		id: 3,
-		name: "Jada Smith",
-		role: "HR Specialist",
-		stage: "New Applied",
-		time: "5h ago",
-		status: "success" as const,
-		image:
-			"https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&h=120&auto=format&fit=crop",
-	},
-];
+import { useGetApplicantsQuery } from "@/lib/redux/api/applicant";
+import { useGetCompanyDepartmentsQuery } from "@/lib/redux/api/department";
+import {
+	useCreateJobTitleMutation,
+	useGetJobTitlesQuery,
+} from "@/lib/redux/api/job-title";
+import type { RootState } from "@/lib/redux/store";
 
 export const Route = createFileRoute("/dashboard/recruitment/")({
-	loader: async () => await api.getJobs(),
-	pendingComponent: DashboardPending,
 	component: RecruitmentPage,
 });
 
 function RecruitmentPage() {
-	const jobs = Route.useLoaderData();
+	const activeCompanyId = useSelector(
+		(state: RootState) => state.auth.activeCompanyId,
+	);
+	const {
+		data: jobTitlesData,
+		isLoading: isLoadingJobs,
+		isError: isErrorJobs,
+	} = useGetJobTitlesQuery(undefined);
+	const { data: applicantsData } = useGetApplicantsQuery(undefined);
+	const { data: departmentsData } = useGetCompanyDepartmentsQuery(
+		{ companyId: activeCompanyId || "" },
+		{ skip: !activeCompanyId },
+	);
+	const [createJobTitle] = useCreateJobTitleMutation();
+
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [newJob, setNewJob] = useState({
-		title: "",
-		dept: "",
-		type: "",
-		location: "",
+		name: "",
+		departmentId: "",
 		description: "",
 	});
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	if (isLoadingJobs) return <DashboardPending />;
+	if (isErrorJobs) return <div>Error loading job titles.</div>;
+
+	const jobs = jobTitlesData?.items || [];
+	const applicants = applicantsData?.items || [];
+	const departments = departmentsData?.items || [];
 
 	const filteredJobs = jobs.filter(
 		(job) =>
-			job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			job.dept.toLowerCase().includes(searchTerm.toLowerCase()),
+			job.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			job.description?.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
 
 	const handlePublishJob = async () => {
-		if (!newJob.title || !newJob.dept) {
-			toast.error("provide role title and department");
+		if (!newJob.name || !newJob.departmentId || !activeCompanyId) {
+			toast.error("provide role name and department");
 			return;
 		}
+		setIsSubmitting(true);
 		try {
-			await api.addJobOpening({
-				title: newJob.title,
-				dept: newJob.dept,
-				type: newJob.type || "Full-time",
-				location: newJob.location || "On-site",
+			await createJobTitle({
+				name: newJob.name,
+				departmentId: newJob.departmentId,
+				companyId: activeCompanyId,
 				description: newJob.description,
-				status: "published",
-			});
+			}).unwrap();
 			toast.success("job position published");
 			setIsDialogOpen(false);
 			setNewJob({
-				title: "",
-				dept: "",
-				type: "",
-				location: "",
+				name: "",
+				departmentId: "",
 				description: "",
 			});
-			window.location.reload();
 		} catch (_err) {
 			toast.error("failed to publish job opening");
+		} finally {
+			setIsSubmitting(false);
 		}
+	};
+
+	const handleCopyLink = (jobId: string) => {
+		const url = `${window.location.origin}/apply/${jobId}`;
+		navigator.clipboard.writeText(url);
+		toast.success("Application link copied to clipboard");
 	};
 
 	return (
@@ -199,18 +195,18 @@ function RecruitmentPage() {
 							<div className="grid grid-cols-2 gap-6">
 								<div className="space-y-2">
 									<Label
-										htmlFor="title"
+										htmlFor="name"
 										className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1"
 									>
-										title
+										name
 									</Label>
 									<Input
-										id="title"
+										id="name"
 										placeholder="e.g. Product Manager"
 										className="h-10 bg-muted/5 border-border/40 focus:bg-background"
-										value={newJob.title}
+										value={newJob.name}
 										onChange={(e) =>
-											setNewJob({ ...newJob, title: e.target.value })
+											setNewJob({ ...newJob, name: e.target.value })
 										}
 									/>
 								</div>
@@ -222,9 +218,9 @@ function RecruitmentPage() {
 										department
 									</Label>
 									<Select
-										value={newJob.dept}
+										value={newJob.departmentId}
 										onValueChange={(val) =>
-											setNewJob({ ...newJob, dept: val || "" })
+											setNewJob({ ...newJob, departmentId: val || "" })
 										}
 									>
 										<SelectTrigger
@@ -234,10 +230,11 @@ function RecruitmentPage() {
 											<SelectValue placeholder="select unit" />
 										</SelectTrigger>
 										<SelectContent>
-											<SelectItem value="Engineering">Engineering</SelectItem>
-											<SelectItem value="Design">Design</SelectItem>
-											<SelectItem value="Operations">Operations</SelectItem>
-											<SelectItem value="Sales">Sales</SelectItem>
+											{departments.map((dept) => (
+												<SelectItem key={dept.id} value={dept.id}>
+													{dept.name}
+												</SelectItem>
+											))}
 										</SelectContent>
 									</Select>
 								</div>
@@ -271,9 +268,10 @@ function RecruitmentPage() {
 							<Button
 								type="submit"
 								onClick={handlePublishJob}
+								disabled={isSubmitting}
 								className="font-bold px-8 h-10 rounded-xl"
 							>
-								Publish Role
+								{isSubmitting ? "Publishing..." : "Publish Role"}
 							</Button>
 						</DialogFooter>
 					</DialogContent>
@@ -292,7 +290,7 @@ function RecruitmentPage() {
 						/>
 						<StatCard
 							label="Total Applicants"
-							value="132"
+							value={applicants.length.toString()}
 							icon={UserMultiple02Icon}
 							variant="info"
 							sub="Pipeline across roles"
@@ -321,7 +319,7 @@ function RecruitmentPage() {
 								</FrameHeader>
 
 								<div className="px-8 pb-6 pt-4 flex flex-col xl:flex-row items-center justify-between gap-4 border-b border-border/5">
-									<div className="relative flex-1 w-full max-w-xl">
+									<div className="relative flex-1 w-full max-xl">
 										<HugeiconsIcon
 											icon={Search01Icon}
 											className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground/40"
@@ -367,7 +365,7 @@ function RecruitmentPage() {
 													<TableCell className="pl-8 py-5">
 														<div>
 															<p className="text-sm font-bold text-foreground/90 group-hover:text-primary transition-colors leading-none">
-																{job.title}
+																{job.name}
 															</p>
 															<div className="flex items-center gap-3 mt-2 text-xs font-semibold text-muted-foreground/40 uppercase tracking-widest">
 																<span className="flex items-center gap-1.5">
@@ -375,7 +373,9 @@ function RecruitmentPage() {
 																		icon={Briefcase01Icon}
 																		size={12}
 																	/>
-																	{job.dept}
+																	{departments.find(
+																		(d) => d.id === job.departmentId,
+																	)?.name || "N/A"}
 																</span>
 																<span>•</span>
 																<span className="flex items-center gap-1.5">
@@ -383,29 +383,25 @@ function RecruitmentPage() {
 																		icon={Location01Icon}
 																		size={12}
 																	/>
-																	{job.location}
+																	Remote
 																</span>
 															</div>
 														</div>
 													</TableCell>
 													<TableCell className="px-4">
 														<div className="flex items-center gap-3">
-															<div className="flex items-center justify-center h-8 w-12 rounded-lg bg-primary/5 text-primary text-sm font-black tabular-nums border border-primary/10">
-																{job.applicants}
+															<div className="flex items-center justify-center h-8 px-2 rounded-lg bg-primary/5 text-primary text-[10px] font-black uppercase tabular-nums border border-primary/10">
+																{job.status === "ACTIVE" ? "Open" : "Closed"}
 															</div>
 															<span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-widest">
-																in queue
+																status
 															</span>
 														</div>
 													</TableCell>
 													<TableCell className="px-4">
 														<Badge
 															variant={
-																job.status === "published"
-																	? "success"
-																	: job.status === "draft"
-																		? "muted"
-																		: "warning"
+																job.status === "active" ? "success" : "muted"
 															}
 															showDot
 															className="font-bold text-[10px] uppercase tracking-widest h-6"
@@ -441,6 +437,16 @@ function RecruitmentPage() {
 																	align="end"
 																	className="w-52 rounded-2xl border-border/40 shadow-2xl p-2"
 																>
+																	<DropdownMenuItem
+																		className="rounded-xl py-1.5 font-semibold text-sm"
+																		onClick={() => handleCopyLink(job.id)}
+																	>
+																		<HugeiconsIcon
+																			icon={Copy01Icon}
+																			className="size-4 mr-3 text-muted-foreground/60"
+																		/>
+																		<span>Copy Job Link</span>
+																	</DropdownMenuItem>
 																	<DropdownMenuItem className="rounded-xl py-1.5 font-semibold text-sm">
 																		<HugeiconsIcon
 																			icon={UserAdd01Icon}
@@ -527,14 +533,14 @@ function RecruitmentPage() {
 							</FrameHeader>
 							<FrameContent className="p-0 pt-4">
 								<div className="divide-y divide-border/5">
-									{recentCandidates.map((candidate) => (
+									{applicants.slice(0, 5).map((candidate) => (
 										<div
 											key={candidate.id}
 											className="p-6 hover:bg-muted/5 transition-all group/candidate cursor-pointer"
 										>
 											<div className="flex items-start gap-4">
 												<UserAvatar
-													name={candidate.name}
+													name={candidate.firstName ? `${candidate.firstName} ${candidate.lastName}` : candidate.referenceCode}
 													src={candidate.image}
 													size="lg"
 													className="rounded-xl ring-2 ring-background shadow-sm"
@@ -542,18 +548,18 @@ function RecruitmentPage() {
 												<div className="flex-1 min-w-0 pt-0.5">
 													<div className="flex items-start justify-between gap-2">
 														<p className="text-sm font-bold text-foreground/90 leading-tight truncate group-hover/candidate:text-primary transition-colors">
-															{candidate.name}
+															{candidate.firstName ? `${candidate.firstName} ${candidate.lastName}` : candidate.referenceCode}
 														</p>
 														<span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-widest shrink-0 mt-0.5 tabular-nums">
-															{candidate.time}
+															{new Date(candidate.createdAt).toLocaleDateString()}
 														</span>
 													</div>
 													<p className="text-[10px] font-semibold text-muted-foreground/60 mt-1 truncate uppercase tracking-wider">
-														{candidate.role}
+														{candidate.status}
 													</p>
 													<div className="mt-4">
 														<Badge
-															variant={candidate.status}
+															variant="info"
 															className="h-5 rounded-lg px-2 text-[9px] font-black uppercase tracking-widest"
 														>
 															{candidate.stage}

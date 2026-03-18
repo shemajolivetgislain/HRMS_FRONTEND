@@ -9,6 +9,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
 import { Badge } from "@/components/ui/badge";
@@ -30,21 +31,53 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { api } from "@/lib/mock-api";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import {
+	useCreateCompanyDepartmentMutation,
+	useGetCompanyDepartmentsQuery,
+	useGetDepartmentReferencesQuery,
+} from "@/lib/redux/api/department";
+import type { RootState } from "@/lib/redux/store";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard/departments")({
-	loader: async () => await api.getDepartments(),
-	pendingComponent: DashboardPending,
 	component: DepartmentsPage,
 });
 
 function DepartmentsPage() {
-	const initialDepartments = Route.useLoaderData();
-	const [departments, setDepartments] = useState(initialDepartments);
+	const activeCompanyId = useSelector(
+		(state: RootState) => state.auth.activeCompanyId,
+	);
+	const {
+		data: departmentsData,
+		isLoading,
+		isError,
+	} = useGetCompanyDepartmentsQuery(
+		{ companyId: activeCompanyId || "" },
+		{ skip: !activeCompanyId },
+	);
+	const { data: referencesData } = useGetDepartmentReferencesQuery(undefined);
+	const [createDepartment] = useCreateCompanyDepartmentMutation();
+
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
-	const [newDept, setNewDept] = useState({ name: "", description: "" });
+	const [newDept, setNewDept] = useState({
+		name: "",
+		description: "",
+		departmentReferenceId: "",
+	});
 	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	if (isLoading) return <DashboardPending />;
+	if (isError) return <div>Error loading departments.</div>;
+
+	const departments = departmentsData?.items || [];
 
 	const filteredDepts = departments.filter(
 		(d) =>
@@ -53,19 +86,22 @@ function DepartmentsPage() {
 	);
 
 	const handleAddDepartment = async () => {
-		if (!newDept.name) return;
+		if (!newDept.name || !newDept.departmentReferenceId || !activeCompanyId)
+			return;
 		setIsSubmitting(true);
 		try {
-			const created = await api.addDepartment({
+			await createDepartment({
 				name: newDept.name,
 				description: newDept.description,
-				status: "active",
-			});
-			setDepartments([...departments, created]);
+				departmentReferenceId: newDept.departmentReferenceId,
+				companyId: activeCompanyId,
+			}).unwrap();
 			setIsDialogOpen(false);
-			setNewDept({ name: "", description: "" });
+			setNewDept({ name: "", description: "", departmentReferenceId: "" });
+			toast.success("Department created successfully");
 		} catch (err) {
 			console.error(err);
+			toast.error("Failed to create department");
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -96,10 +132,30 @@ function DepartmentsPage() {
 						</DialogHeader>
 						<div className="grid gap-4 py-4">
 							<div className="space-y-2">
-								<Label htmlFor="name">Department Name</Label>
+								<Label htmlFor="reference">Department Reference</Label>
+								<Select
+									value={newDept.departmentReferenceId}
+									onValueChange={(value) =>
+										setNewDept({ ...newDept, departmentReferenceId: value || "" })
+									}
+								>
+									<SelectTrigger id="reference">
+										<SelectValue placeholder="Select a global department" />
+									</SelectTrigger>
+									<SelectContent>
+										{referencesData?.items.map((ref) => (
+											<SelectItem key={ref.id} value={ref.id}>
+												{ref.name}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</div>
+							<div className="space-y-2">
+								<Label htmlFor="name">Display Name</Label>
 								<Input
 									id="name"
-									placeholder="e.g. Marketing"
+									placeholder="e.g. Marketing & Communications"
 									value={newDept.name}
 									onChange={(e) =>
 										setNewDept({ ...newDept, name: e.target.value })
@@ -125,7 +181,9 @@ function DepartmentsPage() {
 							</Button>
 							<Button
 								onClick={handleAddDepartment}
-								disabled={isSubmitting || !newDept.name}
+								disabled={
+									isSubmitting || !newDept.name || !newDept.departmentReferenceId
+								}
 							>
 								{isSubmitting ? "Saving..." : "Create Department"}
 							</Button>

@@ -33,6 +33,7 @@ import { Route as AuthChangePasswordRouteImport } from './routes/auth.change-pas
 import { Route as ApplyJobIdRouteImport } from './routes/apply.$jobId'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminLogsRouteImport } from './routes/admin.logs'
+import { Route as AdminDepartmentsRouteImport } from './routes/admin.departments'
 import { Route as DashboardRecruitmentIndexRouteImport } from './routes/dashboard.recruitment.index'
 import { Route as DashboardPayrollIndexRouteImport } from './routes/dashboard.payroll.index'
 import { Route as DashboardEmployeesIndexRouteImport } from './routes/dashboard.employees.index'
@@ -165,6 +166,11 @@ const AdminLogsRoute = AdminLogsRouteImport.update({
   path: '/logs',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminDepartmentsRoute = AdminDepartmentsRouteImport.update({
+  id: '/departments',
+  path: '/departments',
+  getParentRoute: () => AdminRoute,
+} as any)
 const DashboardRecruitmentIndexRoute =
   DashboardRecruitmentIndexRouteImport.update({
     id: '/recruitment/',
@@ -230,6 +236,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
   '/docs': typeof DocsRoute
+  '/admin/departments': typeof AdminDepartmentsRoute
   '/admin/logs': typeof AdminLogsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/apply/$jobId': typeof ApplyJobIdRoute
@@ -265,6 +272,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/docs': typeof DocsRoute
+  '/admin/departments': typeof AdminDepartmentsRoute
   '/admin/logs': typeof AdminLogsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/apply/$jobId': typeof ApplyJobIdRoute
@@ -303,6 +311,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
   '/docs': typeof DocsRoute
+  '/admin/departments': typeof AdminDepartmentsRoute
   '/admin/logs': typeof AdminLogsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/apply/$jobId': typeof ApplyJobIdRoute
@@ -342,6 +351,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/docs'
+    | '/admin/departments'
     | '/admin/logs'
     | '/admin/settings'
     | '/apply/$jobId'
@@ -377,6 +387,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/docs'
+    | '/admin/departments'
     | '/admin/logs'
     | '/admin/settings'
     | '/apply/$jobId'
@@ -414,6 +425,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/docs'
+    | '/admin/departments'
     | '/admin/logs'
     | '/admin/settings'
     | '/apply/$jobId'
@@ -625,6 +637,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLogsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/departments': {
+      id: '/admin/departments'
+      path: '/departments'
+      fullPath: '/admin/departments'
+      preLoaderRoute: typeof AdminDepartmentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/dashboard/recruitment/': {
       id: '/dashboard/recruitment/'
       path: '/recruitment'
@@ -706,6 +725,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminDepartmentsRoute: typeof AdminDepartmentsRoute
   AdminLogsRoute: typeof AdminLogsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -715,6 +735,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminDepartmentsRoute: AdminDepartmentsRoute,
   AdminLogsRoute: AdminLogsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
