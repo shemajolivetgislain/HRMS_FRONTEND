@@ -206,8 +206,92 @@ export interface CreateJobTitleRequest {
 	companyId: string;
 }
 
-export interface CreateApplicantRequest {
+export interface UpdateJobTitleRequest {
+	id: string;
+	name?: string;
+	description?: string;
+	departmentId?: string;
+}
+
+export type JobPostingStatus = "DRAFT" | "PUBLISHED" | "CLOSED" | "ARCHIVED";
+export type WorkMode = "HYBRID" | "REMOTE" | "ONSITE";
+export type SkillCategory = "TECHNICAL" | "SOFT" | "OTHER";
+export type SectionType =
+	| "KEY_RESPONSIBILITIES"
+	| "REQUIREMENTS"
+	| "BENEFITS"
+	| "ABOUT_COMPANY";
+
+export interface JobPostingHistoryEntry {
+	doneAt: string;
+	doneBy: {
+		id: string;
+		firstName: string;
+		lastName: string;
+		email: string;
+		role: string;
+	};
+	status: JobPostingStatus;
+	doneByName: string;
+}
+
+export interface JobPostingSectionItem {
+	content: string;
+	order: number;
+}
+
+export interface JobPostingSection {
+	id: string;
+	createdAt: string;
+	updatedAt: string;
+	deletedAt: string | null;
+	type: SectionType;
+	title: string;
+	order?: number;
+	items?: JobPostingSectionItem[];
+}
+
+export interface JobPostingSkill {
+	id: string;
+	createdAt: string;
+	updatedAt: string;
+	deletedAt: string | null;
+	name: string;
+	category: SkillCategory;
+	isRequired: boolean;
+}
+
+export interface JobPosting {
+	id: string;
+	createdAt: string;
+	updatedAt: string;
+	deletedAt: string | null;
+	title: string;
+	aboutRole: string;
+	mission: string;
+	location: string;
+	status: JobPostingStatus;
+	workMode: WorkMode;
+	applicationDeadline: string;
+	history: JobPostingHistoryEntry[] | null;
+	sections: JobPostingSection[];
+	skills: JobPostingSkill[];
+}
+
+export interface CreateJobPostingRequest {
+	title: string;
 	jobTitleId: string;
+	aboutRole: string;
+	mission: string;
+	location: string;
+	workMode: WorkMode;
+	applicationDeadline: string;
+	sections: JobPostingSection[];
+	skills: JobPostingSkill[];
+}
+
+export interface CreateApplicantRequest {
+	jobPostId: string;
 	firstName: string;
 	lastName: string;
 	email: string;
@@ -236,6 +320,17 @@ export interface ApplicantPipelineStage {
 	count: number;
 }
 
+export type ApplicantStatus =
+	| "INTERVIEWED"
+	| "INTERVIEW_SCHEDULED"
+	| "OFFERED"
+	| "REJECTED";
+
+export interface ChangeApplicantStatusRequest {
+	status: ApplicantStatus;
+	comment?: string;
+}
+
 export interface Applicant {
 	id: string;
 	firstName?: string;
@@ -244,7 +339,7 @@ export interface Applicant {
 	phone?: string;
 	phoneNumber?: string; // added for consistency with CreateApplicantRequest
 	image?: string;
-	jobTitleId?: string;
+	jobPostId?: string;
 	referenceCode: string;
 	status: string;
 	score?: number;

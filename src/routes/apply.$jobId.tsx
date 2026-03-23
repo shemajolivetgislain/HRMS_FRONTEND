@@ -1,6 +1,7 @@
 import {
 	ArrowLeft01Icon,
 	Briefcase02Icon,
+	Calendar01Icon,
 	CheckmarkCircle01Icon,
 	Clock02Icon,
 	FileUploadIcon,
@@ -34,7 +35,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateApplicantMutation } from "@/lib/redux/api/applicant";
-import { useGetJobTitleQuery } from "@/lib/redux/api/job-title";
+import { useGetJobPostingQuery } from "@/lib/redux/api/job-posting";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/apply/$jobId")({
@@ -43,7 +44,7 @@ export const Route = createFileRoute("/apply/$jobId")({
 
 function ApplyForJobPage() {
 	const { jobId } = Route.useParams();
-	const { data: job, isLoading, isError } = useGetJobTitleQuery(jobId);
+	const { data: job, isLoading, isError } = useGetJobPostingQuery(jobId);
 	const [createApplicant] = useCreateApplicantMutation();
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -81,7 +82,7 @@ function ApplyForJobPage() {
 					lastName: formData.lastName,
 					email: formData.email,
 					phoneNumber: formData.phone,
-					jobTitleId: job.id,
+					jobPostId: jobId,
 					documentNumber: formData.documentNumber,
 					gender: formData.gender,
 				}).unwrap();
@@ -135,7 +136,7 @@ function ApplyForJobPage() {
 				</h1>
 				<p className="text-muted-foreground text-sm mb-10 max-w-sm leading-relaxed">
 					Your application for{" "}
-					<span className="font-semibold text-foreground">{job.name}</span> has
+					<span className="font-semibold text-foreground">{job.title}</span> has
 					been successfully transmitted to our team.
 				</p>
 				<div className="flex gap-3">
@@ -182,7 +183,7 @@ function ApplyForJobPage() {
 							<FramePanel className="bg-card">
 								<FrameHeader>
 									<div>
-										<FrameTitle>{job.name}</FrameTitle>
+										<FrameTitle>{job.title}</FrameTitle>
 										<FrameDescription>Position Overview</FrameDescription>
 									</div>
 								</FrameHeader>
@@ -198,12 +199,12 @@ function ApplyForJobPage() {
 													size={14}
 													className="text-muted-foreground/60"
 												/>
-												Remote / Kigali
+												{job.location}
 											</div>
 										</div>
 										<div className="space-y-1">
 											<p className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
-												Type
+												Work Mode
 											</p>
 											<div className="flex items-center gap-2 text-sm font-medium">
 												<HugeiconsIcon
@@ -211,28 +212,107 @@ function ApplyForJobPage() {
 													size={14}
 													className="text-muted-foreground/60"
 												/>
-												Full-time
+												{job.workMode}
+											</div>
+										</div>
+										<div className="space-y-1">
+											<p className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
+												Deadline
+											</p>
+											<div className="flex items-center gap-2 text-sm font-medium">
+												<HugeiconsIcon
+													icon={Calendar01Icon}
+													size={14}
+													className="text-muted-foreground/60"
+												/>
+												{new Date(job.applicationDeadline).toLocaleDateString()}
+											</div>
+										</div>
+										<div className="space-y-1">
+											<p className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
+												Status
+											</p>
+											<div className="flex items-center gap-2 text-sm font-medium">
+												<HugeiconsIcon
+													icon={Briefcase02Icon}
+													size={14}
+													className="text-muted-foreground/60"
+												/>
+												{job.status}
 											</div>
 										</div>
 									</div>
 
-									<div className="space-y-3 pt-4 border-t border-border/50">
-										<h4 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest flex items-center gap-2">
-											About the role
-										</h4>
-										<div className="text-sm leading-relaxed text-muted-foreground space-y-4">
-											{job.description ? (
-												<p>{job.description}</p>
-											) : (
-												<p>
-													We are seeking a talented {job.name} to join our
-													growing team. In this role, you will be responsible
-													for contributing to high-impact projects that shape
-													our organization's future.
-												</p>
-											)}
+									{job.aboutRole && (
+										<div className="space-y-3 pt-4 border-t border-border/50">
+											<h4 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
+												About the Role
+											</h4>
+											<p className="text-sm leading-relaxed text-muted-foreground">
+												{job.aboutRole}
+											</p>
 										</div>
-									</div>
+									)}
+
+									{job.mission && (
+										<div className="space-y-3 pt-4 border-t border-border/50">
+											<h4 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
+												Mission
+											</h4>
+											<p className="text-sm leading-relaxed text-muted-foreground">
+												{job.mission}
+											</p>
+										</div>
+									)}
+
+									{job.sections && job.sections.length > 0 && (
+										<div className="space-y-3 pt-4 border-t border-border/50">
+											{job.sections.map((section) => (
+												<div key={section.id} className="space-y-2">
+													<h4 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
+														{section.title}
+													</h4>
+													{section.items && section.items.length > 0 && (
+														<ul className="space-y-1.5">
+															{section.items.map((item, i) => (
+																<li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+																	<span className="mt-1.5 size-1.5 rounded-full bg-primary/40 shrink-0" />
+																	{item.content}
+																</li>
+															))}
+														</ul>
+													)}
+												</div>
+											))}
+										</div>
+									)}
+
+									{job.skills && job.skills.length > 0 && (
+										<div className="space-y-3 pt-4 border-t border-border/50">
+											<h4 className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
+												Skills
+											</h4>
+											<div className="flex flex-wrap gap-2">
+												{job.skills.map((skill) => (
+													<span
+														key={skill.id}
+														className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
+															skill.isRequired
+																? "bg-primary/5 text-primary border-primary/20"
+																: "bg-muted/50 text-muted-foreground border-border/40"
+														}`}
+													>
+														{skill.name}
+														{skill.isRequired && (
+															<span className="text-[9px] font-black uppercase tracking-wider opacity-60">
+																req
+															</span>
+														)}
+													</span>
+												))}
+											</div>
+										</div>
+									)}
 								</FrameContent>
 							</FramePanel>
 						</Frame>

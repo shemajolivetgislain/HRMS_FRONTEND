@@ -229,7 +229,7 @@ function CompaniesManagementPage() {
 																	{company.name}
 																</p>
 																<p className="text-xs font-semibold text-muted-foreground/40 mt-1.5 uppercase tracking-wider">
-																	ID: {company.id.split("-")[0]}...
+																	{company.ownershipType.replace(/_/g, " ")}
 																</p>
 															</div>
 														</div>

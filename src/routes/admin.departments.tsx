@@ -138,7 +138,6 @@ function AdminDepartmentsPage() {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>ID</TableHead>
 							<TableHead>Name</TableHead>
 							<TableHead className="w-[100px] text-right">Actions</TableHead>
 						</TableRow>
@@ -146,7 +145,6 @@ function AdminDepartmentsPage() {
 					<TableBody>
 						{filtered.map((ref) => (
 							<TableRow key={ref.id}>
-								<TableCell className="font-mono text-xs">{ref.id}</TableCell>
 								<TableCell className="font-bold">{ref.name}</TableCell>
 								<TableCell className="text-right">
 									<Button variant="ghost" size="icon-sm">

@@ -186,8 +186,8 @@ function ReportsPage() {
 															<p className="text-sm font-semibold text-foreground/90 leading-none">
 																{report.name}
 															</p>
-															<p className="text-xs font-bold text-muted-foreground/30 tabular-nums uppercase tracking-tight mt-1">
-																{report.id}
+															<p className="text-xs font-bold text-muted-foreground/30 uppercase tracking-tight mt-1">
+																{report.type}
 															</p>
 														</div>
 													</div>

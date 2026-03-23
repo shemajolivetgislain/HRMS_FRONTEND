@@ -21,6 +21,7 @@ export const hrmsApi = createApi({
 		"Department",
 		"DepartmentReference",
 		"JobTitle",
+		"JobPosting",
 		"Applicant",
 	],
 	endpoints: () => ({}),

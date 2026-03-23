@@ -47,21 +47,13 @@ export const Route = createFileRoute("/auth/verify")({
 
 		// 2. If already verified, move them along
 		if (user?.isEmailVerified) {
-			const needsPasswordChange =
-				(user.role === "COMPANY_ADMIN" || user.role === "EMPLOYEE") &&
-				!user.passwordResetAt;
-
-			if (needsPasswordChange) {
-				throw redirect({
-					to: "/auth/change-password",
-					search: { email: user.email },
-				});
-			}
-
 			if (user.role === "ADMIN") {
 				throw redirect({ to: "/admin" });
 			}
-			throw redirect({ to: "/dashboard" });
+			throw redirect({
+				to: "/auth/change-password",
+				search: { email: user.email },
+			});
 		}
 	},
 	component: VerifyPage,
@@ -100,6 +92,12 @@ function VerifyPage() {
 				otp,
 			}).unwrap();
 
+			if (!response?.user || !response?.accessToken) {
+				toast.success("Email verified. Please log in.");
+				navigate({ to: "/auth/login" });
+				return;
+			}
+
 			const { user: verifiedUser, accessToken } = response;
 
 			dispatch(
@@ -110,20 +108,13 @@ function VerifyPage() {
 			);
 			toast.success("Email verified successfully");
 
-			const needsPasswordChange =
-				(verifiedUser.role === "COMPANY_ADMIN" ||
-					verifiedUser.role === "EMPLOYEE") &&
-				!verifiedUser.passwordResetAt;
-
-			if (needsPasswordChange) {
+			if (verifiedUser.role === "ADMIN") {
+				navigate({ to: "/admin" });
+			} else {
 				navigate({
 					to: "/auth/change-password",
 					search: { email: verifiedUser.email },
 				});
-			} else if (verifiedUser.role === "ADMIN") {
-				navigate({ to: "/admin" });
-			} else {
-				navigate({ to: "/dashboard" });
 			}
 		} catch (error: any) {
 			setGlobalError(

@@ -42,6 +42,10 @@ const navMain = [
 				url: "/dashboard/departments",
 			},
 			{
+				title: "Positions",
+				url: "/dashboard/positions",
+			},
+			{
 				title: "Company Settings",
 				url: "/dashboard/settings",
 			},

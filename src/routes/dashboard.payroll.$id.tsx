@@ -49,7 +49,7 @@ function PayrollDetailsPage() {
 			<DashboardHeader
 				category="Financials"
 				title="Payment Record"
-				description={`Transaction reference ${data.id}`}
+				description={`${data.employee} · ${formatDate(data.date)}`}
 			>
 				<Button
 					variant="outline"

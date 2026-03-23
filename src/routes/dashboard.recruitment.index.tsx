@@ -1,6 +1,7 @@
 import {
 	ArrowRight01Icon,
 	Briefcase01Icon,
+	Calendar01Icon,
 	Copy01Icon,
 	Delete02Icon,
 	Download01Icon,
@@ -18,7 +19,6 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardPending } from "@/components/dashboard/dashboard-pending";
@@ -81,87 +81,159 @@ import {
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import { useGetApplicantsQuery } from "@/lib/redux/api/applicant";
-import { useGetCompanyDepartmentsQuery } from "@/lib/redux/api/department";
 import {
-	useCreateJobTitleMutation,
-	useGetJobTitlesQuery,
-} from "@/lib/redux/api/job-title";
-import type { RootState } from "@/lib/redux/store";
+	useChangeJobPostingStatusMutation,
+	useCreateJobPostingMutation,
+	useGetJobPostingsQuery,
+} from "@/lib/redux/api/job-posting";
+import { useGetJobTitlesQuery } from "@/lib/redux/api/job-title";
+import type {
+	JobPostingSkill,
+	JobPostingStatus,
+	SkillCategory,
+	WorkMode,
+} from "@/types";
 
 export const Route = createFileRoute("/dashboard/recruitment/")({
 	component: RecruitmentPage,
 });
 
+const STATUS_VARIANT: Record<JobPostingStatus, "success" | "muted" | "destructive" | "warning"> = {
+	PUBLISHED: "success",
+	DRAFT: "muted",
+	CLOSED: "warning",
+	ARCHIVED: "destructive",
+};
+
 function RecruitmentPage() {
-	const activeCompanyId = useSelector(
-		(state: RootState) => state.auth.activeCompanyId,
-	);
 	const {
-		data: jobTitlesData,
-		isLoading: isLoadingJobs,
-		isError: isErrorJobs,
-	} = useGetJobTitlesQuery(undefined);
+		data: postingsData,
+		isLoading,
+		isError,
+	} = useGetJobPostingsQuery(undefined);
 	const { data: applicantsData } = useGetApplicantsQuery(undefined);
-	const { data: departmentsData } = useGetCompanyDepartmentsQuery(
-		{ companyId: activeCompanyId || "" },
-		{ skip: !activeCompanyId },
-	);
-	const [createJobTitle] = useCreateJobTitleMutation();
+	const { data: jobTitlesData } = useGetJobTitlesQuery(undefined);
+	const [createJobPosting] = useCreateJobPostingMutation();
+	const [changeStatus] = useChangeJobPostingStatusMutation();
 
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
-	const [newJob, setNewJob] = useState({
-		name: "",
-		departmentId: "",
-		description: "",
-	});
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	if (isLoadingJobs) return <DashboardPending />;
-	if (isErrorJobs) return <div>Error loading job titles.</div>;
+	const [form, setForm] = useState({
+		title: "",
+		jobTitleId: "",
+		aboutRole: "",
+		mission: "",
+		location: "",
+		workMode: "HYBRID" as WorkMode,
+		applicationDeadline: "",
+	});
 
-	const jobs = jobTitlesData?.items || [];
+	const [skills, setSkills] = useState<JobPostingSkill[]>([
+		{ name: "", category: "TECHNICAL", isRequired: true },
+	]);
+
+	const [sectionItems, setSectionItems] = useState([{ content: "", order: 1 }]);
+
+	const resetForm = () => {
+		setForm({
+			title: "",
+			jobTitleId: "",
+			aboutRole: "",
+			mission: "",
+			location: "",
+			workMode: "HYBRID",
+			applicationDeadline: "",
+		});
+		setSkills([{ name: "", category: "TECHNICAL", isRequired: true }]);
+		setSectionItems([{ content: "", order: 1 }]);
+	};
+
+	if (isLoading) return <DashboardPending />;
+	if (isError) return <div>Error loading job postings.</div>;
+
+	const postings = postingsData?.items || [];
 	const applicants = applicantsData?.items || [];
-	const departments = departmentsData?.items || [];
+	const jobTitles = jobTitlesData?.items || [];
 
-	const filteredJobs = jobs.filter(
-		(job) =>
-			job.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			job.description?.toLowerCase().includes(searchTerm.toLowerCase()),
+	const filteredPostings = postings.filter(
+		(p) =>
+			p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			p.location.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
 
-	const handlePublishJob = async () => {
-		if (!newJob.name.trim() || !newJob.departmentId || !activeCompanyId) {
-			toast.error("Role name and department are required");
+	const publishedCount = postings.filter((p) => p.status === "PUBLISHED").length;
+
+	const handleCreate = async () => {
+		if (!form.title || !form.jobTitleId || !form.location || !form.applicationDeadline) {
+			toast.error("Title, position, location and deadline are required");
 			return;
 		}
 		setIsSubmitting(true);
 		try {
-			await createJobTitle({
-				name: newJob.name.trim(),
-				departmentId: newJob.departmentId,
-				companyId: activeCompanyId,
-				description: newJob.description?.trim() || "",
+			await createJobPosting({
+				...form,
+				applicationDeadline: new Date(form.applicationDeadline).toISOString(),
+				skills: skills.filter((s) => s.name.trim()),
+				sections: [
+					{
+						type: "KEY_RESPONSIBILITIES",
+						title: "What You'll Work On",
+						order: 1,
+						items: sectionItems
+							.filter((i) => i.content.trim())
+							.map((i, idx) => ({ content: i.content.trim(), order: idx + 1 })),
+					},
+				],
 			}).unwrap();
-			toast.success("job position published");
+			toast.success("Job posting created successfully");
 			setIsDialogOpen(false);
-			setNewJob({
-				name: "",
-				departmentId: "",
-				description: "",
-			});
-		} catch (_err) {
-			toast.error("failed to publish job opening");
+			resetForm();
+		} catch (err) {
+			console.error(err);
+			toast.error("Failed to create job posting");
 		} finally {
 			setIsSubmitting(false);
 		}
 	};
 
-	const handleCopyLink = (jobId: string) => {
-		const url = `${window.location.origin}/apply/${jobId}`;
+	const handleCopyLink = (postingId: string) => {
+		const url = `${window.location.origin}/apply/${postingId}`;
 		navigator.clipboard.writeText(url);
 		toast.success("Application link copied to clipboard");
 	};
+
+	const handleChangeStatus = async (id: string, status: JobPostingStatus) => {
+		try {
+			await changeStatus({ id, status }).unwrap();
+			toast.success(`Posting ${status.toLowerCase()} successfully`);
+		} catch (err) {
+			console.error(err);
+			toast.error("Failed to update posting status");
+		}
+	};
+
+	const addSkill = () =>
+		setSkills((prev) => [
+			...prev,
+			{ name: "", category: "TECHNICAL", isRequired: false },
+		]);
+
+	const removeSkill = (i: number) =>
+		setSkills((prev) => prev.filter((_, idx) => idx !== i));
+
+	const updateSkill = (i: number, patch: Partial<JobPostingSkill>) =>
+		setSkills((prev) => prev.map((s, idx) => (idx === i ? { ...s, ...patch } : s)));
+
+	const addSectionItem = () =>
+		setSectionItems((prev) => [
+			...prev,
+			{ content: "", order: prev.length + 1 },
+		]);
+
+	const removeSectionItem = (i: number) =>
+		setSectionItems((prev) => prev.filter((_, idx) => idx !== i));
 
 	return (
 		<main className="flex flex-1 flex-col gap-0 overflow-hidden bg-muted/20">
@@ -184,79 +256,237 @@ function RecruitmentPage() {
 							</Button>
 						}
 					/>
-					<DialogContent className="sm:max-w-[600px] rounded-2xl">
+					<DialogContent className="sm:max-w-160 rounded-2xl max-h-[90vh] overflow-y-auto">
 						<DialogHeader>
-							<DialogTitle>publish new role</DialogTitle>
+							<DialogTitle>Publish New Job Posting</DialogTitle>
 							<DialogDescription>
-								define a new job opening for the global recruitment portal.
+								Define a new job opening for the recruitment portal.
 							</DialogDescription>
 						</DialogHeader>
-						<div className="grid gap-6 py-6">
-							<div className="grid grid-cols-2 gap-6">
-								<div className="space-y-2">
-									<Label
-										htmlFor="name"
-										className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1"
-									>
-										name
+
+						<div className="grid gap-6 py-4">
+							{/* Basic info */}
+							<div className="grid grid-cols-2 gap-4">
+								<div className="col-span-2 space-y-2">
+									<Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+										Posting Title
 									</Label>
 									<Input
-										id="name"
-										placeholder="e.g. Product Manager"
-										className="h-10 bg-muted/5 border-border/40 focus:bg-background"
-										value={newJob.name}
-										onChange={(e) =>
-											setNewJob({ ...newJob, name: e.target.value })
-										}
+										placeholder="e.g. Open Engineering Application (Mid-Senior)"
+										value={form.title}
+										onChange={(e) => setForm({ ...form, title: e.target.value })}
 									/>
 								</div>
 								<div className="space-y-2">
-									<Label
-										htmlFor="dept"
-										className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1"
-									>
-										department
+									<Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+										Position
 									</Label>
 									<Select
-										value={newJob.departmentId}
-										onValueChange={(val) =>
-											setNewJob({ ...newJob, departmentId: val || "" })
-										}
+										value={form.jobTitleId}
+										onValueChange={(v) => setForm({ ...form, jobTitleId: v })}
 									>
-										<SelectTrigger
-											id="dept"
-											className="h-10 bg-muted/5 border-border/40 focus:bg-background"
-										>
-											<SelectValue placeholder="select unit" />
+										<SelectTrigger>
+											<SelectValue>
+												{(value: string | null) => {
+													if (!value) return "Select a position";
+													const jt = jobTitles.find((t) => t.id === value);
+													return jt?.name ?? value;
+												}}
+											</SelectValue>
 										</SelectTrigger>
 										<SelectContent>
-											{departments.map((dept) => (
-												<SelectItem key={dept.id} value={dept.id}>
-													{dept.name}
+											{jobTitles.length ? (
+												jobTitles.map((jt) => (
+													<SelectItem key={jt.id} value={jt.id}>
+														{jt.name}
+													</SelectItem>
+												))
+											) : (
+												<SelectItem value="none" disabled>
+													No positions available
 												</SelectItem>
-											))}
+											)}
 										</SelectContent>
 									</Select>
 								</div>
+								<div className="space-y-2">
+									<Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+										Work Mode
+									</Label>
+									<Select
+										value={form.workMode}
+										onValueChange={(v) =>
+											setForm({ ...form, workMode: v as WorkMode })
+										}
+									>
+										<SelectTrigger>
+											<SelectValue />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value="HYBRID">Hybrid</SelectItem>
+											<SelectItem value="REMOTE">Remote</SelectItem>
+											<SelectItem value="ONSITE">On-site</SelectItem>
+										</SelectContent>
+									</Select>
+								</div>
+								<div className="space-y-2">
+									<Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+										Location
+									</Label>
+									<Input
+										placeholder="e.g. Kigali, Rwanda"
+										value={form.location}
+										onChange={(e) => setForm({ ...form, location: e.target.value })}
+									/>
+								</div>
+								<div className="space-y-2">
+									<Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+										Application Deadline
+									</Label>
+									<Input
+										type="date"
+										value={form.applicationDeadline}
+										onChange={(e) =>
+											setForm({ ...form, applicationDeadline: e.target.value })
+										}
+									/>
+								</div>
 							</div>
+
+							{/* About */}
 							<div className="space-y-2">
-								<Label
-									htmlFor="description"
-									className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1"
-								>
-									description (optional)
+								<Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+									About the Role
 								</Label>
 								<Textarea
-									id="description"
-									placeholder="responsibilities and requirements..."
-									className="min-h-[120px] bg-muted/5 border-border/40 focus:bg-background resize-none"
-									value={newJob.description}
-									onChange={(e) =>
-										setNewJob({ ...newJob, description: e.target.value })
-									}
+									placeholder="Describe the role, team, and what success looks like..."
+									className="min-h-20 resize-none"
+									value={form.aboutRole}
+									onChange={(e) => setForm({ ...form, aboutRole: e.target.value })}
 								/>
 							</div>
+							<div className="space-y-2">
+								<Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+									Mission
+								</Label>
+								<Textarea
+									placeholder="What will this person build or achieve?"
+									className="min-h-16 resize-none"
+									value={form.mission}
+									onChange={(e) => setForm({ ...form, mission: e.target.value })}
+								/>
+							</div>
+
+							{/* Key Responsibilities */}
+							<div className="space-y-3">
+								<div className="flex items-center justify-between">
+									<Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+										Key Responsibilities
+									</Label>
+									<Button
+										type="button"
+										variant="ghost"
+										size="sm"
+										className="text-xs h-7"
+										onClick={addSectionItem}
+									>
+										+ Add item
+									</Button>
+								</div>
+								{sectionItems.map((item, i) => (
+									<div key={i} className="flex gap-2 items-center">
+										<Input
+											placeholder={`Responsibility ${i + 1}`}
+											value={item.content}
+											onChange={(e) =>
+												setSectionItems((prev) =>
+													prev.map((s, idx) =>
+														idx === i ? { ...s, content: e.target.value } : s,
+													),
+												)
+											}
+										/>
+										{sectionItems.length > 1 && (
+											<Button
+												type="button"
+												variant="ghost"
+												size="icon-sm"
+												onClick={() => removeSectionItem(i)}
+												className="text-destructive hover:text-destructive shrink-0"
+											>
+												×
+											</Button>
+										)}
+									</div>
+								))}
+							</div>
+
+							{/* Skills */}
+							<div className="space-y-3">
+								<div className="flex items-center justify-between">
+									<Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 ml-1">
+										Skills
+									</Label>
+									<Button
+										type="button"
+										variant="ghost"
+										size="sm"
+										className="text-xs h-7"
+										onClick={addSkill}
+									>
+										+ Add skill
+									</Button>
+								</div>
+								{skills.map((skill, i) => (
+									<div key={i} className="flex gap-2 items-center">
+										<Input
+											placeholder="e.g. TypeScript"
+											className="flex-1"
+											value={skill.name}
+											onChange={(e) => updateSkill(i, { name: e.target.value })}
+										/>
+										<Select
+											value={skill.category}
+											onValueChange={(v) =>
+												updateSkill(i, { category: v as SkillCategory })
+											}
+										>
+											<SelectTrigger className="w-32">
+												<SelectValue />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="TECHNICAL">Technical</SelectItem>
+												<SelectItem value="SOFT">Soft</SelectItem>
+												<SelectItem value="OTHER">Other</SelectItem>
+											</SelectContent>
+										</Select>
+										<label className="flex items-center gap-1.5 text-xs text-muted-foreground whitespace-nowrap cursor-pointer">
+											<input
+												type="checkbox"
+												checked={skill.isRequired}
+												onChange={(e) =>
+													updateSkill(i, { isRequired: e.target.checked })
+												}
+												className="rounded"
+											/>
+											Required
+										</label>
+										{skills.length > 1 && (
+											<Button
+												type="button"
+												variant="ghost"
+												size="icon-sm"
+												onClick={() => removeSkill(i)}
+												className="text-destructive hover:text-destructive shrink-0"
+											>
+												×
+											</Button>
+										)}
+									</div>
+								))}
+							</div>
 						</div>
+
 						<DialogFooter className="bg-muted/5 -mx-6 -mb-6 p-6 rounded-b-2xl border-t border-border/5">
 							<Button
 								variant="ghost"
@@ -266,12 +496,11 @@ function RecruitmentPage() {
 								cancel
 							</Button>
 							<Button
-								type="submit"
-								onClick={handlePublishJob}
+								onClick={handleCreate}
 								disabled={isSubmitting}
 								className="font-bold px-8 h-10 rounded-xl"
 							>
-								{isSubmitting ? "Publishing..." : "Publish Role"}
+								{isSubmitting ? "Publishing..." : "Publish Posting"}
 							</Button>
 						</DialogFooter>
 					</DialogContent>
@@ -283,10 +512,10 @@ function RecruitmentPage() {
 					<section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 						<StatCard
 							label="Active Openings"
-							value={jobs.length}
+							value={publishedCount}
 							icon={JobShareIcon}
 							variant="primary"
-							sub="Roles published"
+							sub="Postings published"
 						/>
 						<StatCard
 							label="Total Applicants"
@@ -326,7 +555,7 @@ function RecruitmentPage() {
 											strokeWidth={2}
 										/>
 										<Input
-											placeholder="Search roles or units…"
+											placeholder="Search postings or location…"
 											value={searchTerm}
 											onChange={(e) => setSearchTerm(e.target.value)}
 											className="pl-9 h-10 rounded-xl border-border/40 bg-muted/5 focus:bg-background transition-all text-sm"
@@ -342,14 +571,17 @@ function RecruitmentPage() {
 									<Table>
 										<TableHeader className="bg-muted/5">
 											<TableRow className="hover:bg-transparent border-border/5">
-												<TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-8 py-3 w-[300px]">
-													Specification
+												<TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest pl-8 py-3 w-[320px]">
+													Posting
 												</TableHead>
 												<TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
-													Density
+													Mode
 												</TableHead>
 												<TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
 													Status
+												</TableHead>
+												<TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3">
+													Deadline
 												</TableHead>
 												<TableHead className="text-[10px] font-bold text-muted-foreground/40 capitalize tracking-widest px-4 py-3 text-right pr-8">
 													Management
@@ -357,57 +589,53 @@ function RecruitmentPage() {
 											</TableRow>
 										</TableHeader>
 										<TableBody>
-											{filteredJobs.map((job) => (
+											{filteredPostings.map((posting) => (
 												<TableRow
-													key={job.id}
+													key={posting.id}
 													className="border-border/5 hover:bg-muted/5 transition-colors group"
 												>
 													<TableCell className="pl-8 py-5">
 														<div>
 															<p className="text-sm font-bold text-foreground/90 group-hover:text-primary transition-colors leading-none">
-																{job.name}
+																{posting.title}
 															</p>
 															<div className="flex items-center gap-3 mt-2 text-xs font-semibold text-muted-foreground/40 uppercase tracking-widest">
 																<span className="flex items-center gap-1.5">
-																	<HugeiconsIcon
-																		icon={Briefcase01Icon}
-																		size={12}
-																	/>
-																	{departments.find(
-																		(d) => d.id === job.departmentId,
-																	)?.name || "N/A"}
+																	<HugeiconsIcon icon={Briefcase01Icon} size={12} />
+																	{posting.workMode}
 																</span>
 																<span>•</span>
 																<span className="flex items-center gap-1.5">
-																	<HugeiconsIcon
-																		icon={Location01Icon}
-																		size={12}
-																	/>
-																	Remote
+																	<HugeiconsIcon icon={Location01Icon} size={12} />
+																	{posting.location}
 																</span>
 															</div>
 														</div>
 													</TableCell>
 													<TableCell className="px-4">
-														<div className="flex items-center gap-3">
-															<div className="flex items-center justify-center h-8 px-2 rounded-lg bg-primary/5 text-primary text-[10px] font-black uppercase tabular-nums border border-primary/10">
-																{job.status === "active" ? "Open" : "Closed"}
-															</div>
-															<span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-widest">
-																status
-															</span>
+														<div className="flex items-center justify-center h-8 px-2 rounded-lg bg-primary/5 text-primary text-[10px] font-black uppercase tabular-nums border border-primary/10">
+															{posting.workMode}
 														</div>
 													</TableCell>
 													<TableCell className="px-4">
 														<Badge
 															variant={
-																job.status === "active" ? "success" : "muted"
+																STATUS_VARIANT[posting.status] ?? "muted"
 															}
 															showDot
 															className="font-bold text-[10px] uppercase tracking-widest h-6"
 														>
-															{job.status}
+															{posting.status}
 														</Badge>
+													</TableCell>
+													<TableCell className="px-4">
+														<div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground/60">
+															<HugeiconsIcon
+																icon={Calendar01Icon}
+																size={12}
+															/>
+															{new Date(posting.applicationDeadline).toLocaleDateString()}
+														</div>
 													</TableCell>
 													<TableCell className="text-right pr-8">
 														<div className="flex items-center justify-end gap-2">
@@ -417,7 +645,7 @@ function RecruitmentPage() {
 																render={
 																	<Link
 																		to="/dashboard/recruitment/$id"
-																		params={{ id: job.id }}
+																		params={{ id: posting.id }}
 																	/>
 																}
 															>
@@ -427,19 +655,17 @@ function RecruitmentPage() {
 																<DropdownMenuTrigger
 																	render={
 																		<Button variant="ghost" size="icon-sm">
-																			<HugeiconsIcon
-																				icon={MoreHorizontalIcon}
-																			/>
+																			<HugeiconsIcon icon={MoreHorizontalIcon} />
 																		</Button>
 																	}
-																/>{" "}
+																/>
 																<DropdownMenuContent
 																	align="end"
 																	className="w-52 rounded-2xl border-border/40 shadow-2xl p-2"
 																>
 																	<DropdownMenuItem
 																		className="rounded-xl py-1.5 font-semibold text-sm"
-																		onClick={() => handleCopyLink(job.id)}
+																		onClick={() => handleCopyLink(posting.id)}
 																	>
 																		<HugeiconsIcon
 																			icon={Copy01Icon}
@@ -462,55 +688,80 @@ function RecruitmentPage() {
 																		<span>Broadcast</span>
 																	</DropdownMenuItem>
 																	<DropdownMenuSeparator className="bg-border/5 my-1" />
-																	<AlertDialog>
-																		<AlertDialogTrigger
-																			render={
-																				<DropdownMenuItem
-																					onSelect={(e) => e.preventDefault()}
-																					className="rounded-xl py-1.5 font-semibold text-sm text-destructive focus:bg-destructive/5"
-																				>
-																					<HugeiconsIcon
-																						icon={Delete02Icon}
-																						className="size-4 mr-3"
-																					/>
-																					<span>Close Opening</span>
-																				</DropdownMenuItem>
-																			}
-																		/>
-																		<AlertDialogContent>
-																			<AlertDialogHeader>
-																				<AlertDialogTitle>
-																					close job opening?
-																				</AlertDialogTitle>
-																				<AlertDialogDescription>
-																					this will archive the role and notify
-																					pending candidates. this action is
-																					recorded for metrics.
-																				</AlertDialogDescription>
-																			</AlertDialogHeader>
-																			<AlertDialogFooter>
-																				<AlertDialogCancel>
-																					keep open
-																				</AlertDialogCancel>
-																				<AlertDialogAction className="bg-destructive hover:bg-destructive/90">
-																					Archive Role
-																				</AlertDialogAction>
-																			</AlertDialogFooter>
-																		</AlertDialogContent>
-																	</AlertDialog>
+																	{posting.status !== "PUBLISHED" && (
+																		<DropdownMenuItem
+																			className="rounded-xl py-1.5 font-semibold text-sm text-success focus:bg-success/5 focus:text-success"
+																			onClick={() => handleChangeStatus(posting.id, "PUBLISHED")}
+																		>
+																			<HugeiconsIcon icon={JobShareIcon} className="size-4 mr-3" />
+																			<span>Publish</span>
+																		</DropdownMenuItem>
+																	)}
+																	{posting.status !== "CLOSED" && (
+																		<DropdownMenuItem
+																			className="rounded-xl py-1.5 font-semibold text-sm text-warning focus:bg-warning/5 focus:text-warning"
+																			onClick={() => handleChangeStatus(posting.id, "CLOSED")}
+																		>
+																			<HugeiconsIcon icon={Delete02Icon} className="size-4 mr-3" />
+																			<span>Close Opening</span>
+																		</DropdownMenuItem>
+																	)}
+																	{posting.status !== "ARCHIVED" && (
+																		<AlertDialog>
+																			<AlertDialogTrigger
+																				render={
+																					<DropdownMenuItem
+																						onSelect={(e) => e.preventDefault()}
+																						className="rounded-xl py-1.5 font-semibold text-sm text-destructive focus:bg-destructive/5"
+																					>
+																						<HugeiconsIcon icon={Delete02Icon} className="size-4 mr-3" />
+																						<span>Archive</span>
+																					</DropdownMenuItem>
+																				}
+																			/>
+																			<AlertDialogContent>
+																				<AlertDialogHeader>
+																					<AlertDialogTitle>Archive this posting?</AlertDialogTitle>
+																					<AlertDialogDescription>
+																						This will permanently archive the posting and notify
+																						pending candidates. This action is recorded for metrics.
+																					</AlertDialogDescription>
+																				</AlertDialogHeader>
+																				<AlertDialogFooter>
+																					<AlertDialogCancel>Cancel</AlertDialogCancel>
+																					<AlertDialogAction
+																						className="bg-destructive hover:bg-destructive/90"
+																						onClick={() => handleChangeStatus(posting.id, "ARCHIVED")}
+																					>
+																						Archive Posting
+																					</AlertDialogAction>
+																				</AlertDialogFooter>
+																			</AlertDialogContent>
+																		</AlertDialog>
+																	)}
 																</DropdownMenuContent>
 															</DropdownMenu>
 														</div>
 													</TableCell>
 												</TableRow>
 											))}
+											{filteredPostings.length === 0 && (
+												<TableRow>
+													<TableCell
+														colSpan={5}
+														className="py-12 text-center text-muted-foreground/50 text-sm font-medium"
+													>
+														No job postings found.
+													</TableCell>
+												</TableRow>
+											)}
 										</TableBody>
 									</Table>
 								</FrameContent>
 
 								<FrameFooter className="px-8 py-5 border-t border-border/5">
 									<p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-[0.2em]">
-										Registry Ledger: {filteredJobs.length} active requisitions
+										Registry Ledger: {filteredPostings.length} requisitions
 									</p>
 								</FrameFooter>
 							</FramePanel>
@@ -518,7 +769,7 @@ function RecruitmentPage() {
 					</section>
 				</div>
 
-				<div className="w-full xl:w-[400px] space-y-8">
+				<div className="w-full xl:w-100 space-y-8">
 					<Frame>
 						<FramePanel className="p-0 overflow-hidden bg-card border-border/40 shadow-sm">
 							<FrameHeader className="px-8 pt-8 border-b-0 pb-2">
@@ -557,9 +808,7 @@ function RecruitmentPage() {
 																: candidate.referenceCode}
 														</p>
 														<span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-widest shrink-0 mt-0.5 tabular-nums">
-															{new Date(
-																candidate.createdAt,
-															).toLocaleDateString()}
+															{new Date(candidate.createdAt).toLocaleDateString()}
 														</span>
 													</div>
 													<p className="text-[10px] font-semibold text-muted-foreground/60 mt-1 truncate uppercase tracking-wider">
@@ -588,7 +837,7 @@ function RecruitmentPage() {
 					</Frame>
 
 					<Frame>
-						<FramePanel className="p-8 flex flex-col gap-6 bg-primary/[0.02] border-primary/10 rounded-[2rem] relative overflow-hidden group">
+						<FramePanel className="p-8 flex flex-col gap-6 bg-primary/2 border-primary/10 rounded-[2rem] relative overflow-hidden group">
 							<div className="flex items-center gap-4 relative z-10">
 								<div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shadow-sm shadow-primary/5">
 									<HugeiconsIcon icon={UserAdd01Icon} size={24} />

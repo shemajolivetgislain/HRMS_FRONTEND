@@ -18,6 +18,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
 import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
+import { Route as DashboardPositionsRouteImport } from './routes/dashboard.positions'
 import { Route as DashboardPerformanceRouteImport } from './routes/dashboard.performance'
 import { Route as DashboardLeavesRouteImport } from './routes/dashboard.leaves'
 import { Route as DashboardHelpRouteImport } from './routes/dashboard.help'
@@ -89,6 +90,11 @@ const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
 const DashboardReportsRoute = DashboardReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardPositionsRoute = DashboardPositionsRouteImport.update({
+  id: '/positions',
+  path: '/positions',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardPerformanceRoute = DashboardPerformanceRouteImport.update({
@@ -252,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/help': typeof DashboardHelpRoute
   '/dashboard/leaves': typeof DashboardLeavesRoute
   '/dashboard/performance': typeof DashboardPerformanceRoute
+  '/dashboard/positions': typeof DashboardPositionsRoute
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/admin/': typeof AdminIndexRoute
@@ -288,6 +295,7 @@ export interface FileRoutesByTo {
   '/dashboard/help': typeof DashboardHelpRoute
   '/dashboard/leaves': typeof DashboardLeavesRoute
   '/dashboard/performance': typeof DashboardPerformanceRoute
+  '/dashboard/positions': typeof DashboardPositionsRoute
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/admin': typeof AdminIndexRoute
@@ -327,6 +335,7 @@ export interface FileRoutesById {
   '/dashboard/help': typeof DashboardHelpRoute
   '/dashboard/leaves': typeof DashboardLeavesRoute
   '/dashboard/performance': typeof DashboardPerformanceRoute
+  '/dashboard/positions': typeof DashboardPositionsRoute
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/admin/': typeof AdminIndexRoute
@@ -367,6 +376,7 @@ export interface FileRouteTypes {
     | '/dashboard/help'
     | '/dashboard/leaves'
     | '/dashboard/performance'
+    | '/dashboard/positions'
     | '/dashboard/reports'
     | '/dashboard/settings'
     | '/admin/'
@@ -403,6 +413,7 @@ export interface FileRouteTypes {
     | '/dashboard/help'
     | '/dashboard/leaves'
     | '/dashboard/performance'
+    | '/dashboard/positions'
     | '/dashboard/reports'
     | '/dashboard/settings'
     | '/admin'
@@ -441,6 +452,7 @@ export interface FileRouteTypes {
     | '/dashboard/help'
     | '/dashboard/leaves'
     | '/dashboard/performance'
+    | '/dashboard/positions'
     | '/dashboard/reports'
     | '/dashboard/settings'
     | '/admin/'
@@ -530,6 +542,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/dashboard/reports'
       preLoaderRoute: typeof DashboardReportsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/positions': {
+      id: '/dashboard/positions'
+      path: '/positions'
+      fullPath: '/dashboard/positions'
+      preLoaderRoute: typeof DashboardPositionsRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/performance': {
@@ -772,6 +791,7 @@ interface DashboardRouteChildren {
   DashboardHelpRoute: typeof DashboardHelpRoute
   DashboardLeavesRoute: typeof DashboardLeavesRoute
   DashboardPerformanceRoute: typeof DashboardPerformanceRoute
+  DashboardPositionsRoute: typeof DashboardPositionsRoute
   DashboardReportsRoute: typeof DashboardReportsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
@@ -793,6 +813,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardHelpRoute: DashboardHelpRoute,
   DashboardLeavesRoute: DashboardLeavesRoute,
   DashboardPerformanceRoute: DashboardPerformanceRoute,
+  DashboardPositionsRoute: DashboardPositionsRoute,
   DashboardReportsRoute: DashboardReportsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardIndexRoute: DashboardIndexRoute,

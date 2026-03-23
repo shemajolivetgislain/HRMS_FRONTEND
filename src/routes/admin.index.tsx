@@ -153,7 +153,7 @@ function AdminDashboard() {
 																				{company.name}
 																			</span>
 																			<span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
-																				ID: {company.id.split("-")[0]}...
+																				{company.ownershipType.replace(/_/g, " ")}
 																			</span>
 																		</div>
 																	</div>

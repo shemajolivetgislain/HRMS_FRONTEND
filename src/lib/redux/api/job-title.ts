@@ -2,6 +2,7 @@ import type {
 	ApiPaginatedResponse,
 	CreateJobTitleRequest,
 	JobTitle,
+	UpdateJobTitleRequest,
 } from "@/types";
 import { hrmsApi } from "./index";
 
@@ -41,6 +42,17 @@ export const jobTitleApi = hrmsApi.injectEndpoints({
 			}),
 			invalidatesTags: [{ type: "JobTitle", id: "LIST" }],
 		}),
+		updateJobTitle: builder.mutation<JobTitle, UpdateJobTitleRequest>({
+			query: ({ id, ...data }) => ({
+				url: `/job-title/${id}`,
+				method: "PATCH",
+				body: data,
+			}),
+			invalidatesTags: (_result, _error, { id }) => [
+				{ type: "JobTitle", id },
+				{ type: "JobTitle", id: "LIST" },
+			],
+		}),
 	}),
 });
 
@@ -48,4 +60,5 @@ export const {
 	useGetJobTitlesQuery,
 	useGetJobTitleQuery,
 	useCreateJobTitleMutation,
+	useUpdateJobTitleMutation,
 } = jobTitleApi;
